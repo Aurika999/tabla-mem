@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabla Înmulțirii - Joc</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,system-ui,sans-serif;background:linear-gradient(180deg,#39a9ff,#86d95b);min-height:100vh;color:#24304a}
+button{font:inherit;cursor:pointer}
+.app{max-width:1180px;margin:auto;padding:18px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{font-size:clamp(28px,5vw,54px);font-weight:1000;color:#fff;text-shadow:3px 4px #2855a5;letter-spacing:-2px}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{background:#fff;border:3px solid #e6eefc;border-radius:18px;padding:9px 15px;font-weight:900;box-shadow:0 5px 0 #2e69a8}
+.main{display:grid;grid-template-columns:230px 1fr 260px;gap:15px;margin-top:15px}
+.panel,.game{background:#fff;border:5px solid #fff;border-radius:25px;box-shadow:0 9px 0 #3b78a8;padding:16px}
+.panel h2{text-align:center;margin:0 0 12px;color:#6d42a9}
+.level{width:100%;border:0;border-radius:15px;margin:6px 0;padding:12px;text-align:left;font-weight:900;color:#fff;box-shadow:inset 0 -4px #0002}
+.level small{display:block;font-weight:700;margin-top:3px}
+.level.active{outline:4px solid #ffd83d;transform:scale(1.02)}
+.l1{background:#5fc84a}.l2{background:#20a8e8}.l3{background:#f4a623}.l4{background:#9258d8}.l5{background:#e84d8d}
+.game{text-align:center;position:relative;overflow:hidden}
+.ribbon{display:inline-block;background:#8145c7;color:#fff;padding:10px 28px;border-radius:14px;font-size:20px;font-weight:1000;box-shadow:0 5px #5c2e96;margin-bottom:10px}
+.question{font-size:clamp(52px,9vw,92px);font-weight:1000;margin:10px 0 16px;color:#49311c}
+.question-word{font-size:clamp(19px,3.1vw,26px);font-weight:800;margin:8px 0 16px;color:#3b2a1a;line-height:1.4;max-width:560px;margin-left:auto;margin-right:auto}
+.wp-badge{display:inline-block;background:#ffe28a;color:#7a5b00;font-size:13px;font-weight:900;padding:4px 12px;border-radius:10px;margin-bottom:8px}
+.hint-toggle{border:0;border-radius:14px;padding:9px 20px;background:#fff3c4;color:#7a5b00;font-weight:900;font-size:15px;box-shadow:0 4px #d9b400;margin:0 0 10px;transition:.12s}
+.hint-toggle:hover{transform:translateY(-2px)}
+.hint-toggle:active{transform:translateY(2px);box-shadow:0 1px #d9b400}
+.breakdown{font-size:clamp(20px,4.5vw,32px);font-weight:1000;color:#6d42a9;margin:2px 0 12px;min-height:0}
+.dot-groups{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin:0 0 16px}
+.dot-group{background:#eef4ff;border:2px solid #dbe6fb;border-radius:14px;padding:7px;display:flex;flex-wrap:wrap;gap:2px;max-width:140px;justify-content:center;animation:popIn .35s cubic-bezier(.34,1.56,.64,1) backwards}
+.dot{font-size:20px;line-height:1;flex:0 0 auto}
+.plus-sep{font-size:24px;font-weight:1000;color:#9258d8}
+@keyframes popIn{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:570px;margin:auto}
+.answer{border:0;border-radius:20px;padding:18px;background:#35a9ee;color:#fff;font-size:32px;font-weight:1000;box-shadow:0 7px #2077b2;transition:.12s}
+.answer:nth-child(2){background:#65d53f;box-shadow:0 7px #3b9c22}
+.answer:nth-child(3){background:#ffc72e;box-shadow:0 7px #d49600}
+.answer:nth-child(4){background:#f05b91;box-shadow:0 7px #bd3768}
+.answer:hover{transform:translateY(-3px)}
+.answer:active{transform:translateY(4px);box-shadow:0 3px #777}
+.answer.correct{outline:5px solid #18b54a}
+.answer.wrong{outline:5px solid #e62c42;opacity:.8}
+.feedback{min-height:42px;font-size:22px;font-weight:1000;margin:14px 0}
+.progress{height:16px;background:#e4e8ef;border-radius:99px;overflow:hidden}
+.progress>div{height:100%;width:0;background:#ffc72e;transition:.3s}
+.bigbtn{border:0;border-radius:18px;padding:14px 22px;background:#27c94f;color:#fff;font-weight:1000;box-shadow:0 6px #159632;margin:8px}
+.bigbtn.blue{background:#268fe8;box-shadow:0 6px #1765a8}
+.stat{background:#f7f9fd;border-radius:16px;padding:12px;margin:9px 0;text-align:left;font-weight:900}
+.stat span{float:right}
+.reward{font-size:58px}
+.timer.low{color:#e62c42}
+.overlay{position:fixed;inset:0;background:#172033aa;display:flex;align-items:center;justify-content:center;padding:20px;z-index:5}
+.modal{max-width:520px;width:100%;background:#fff;border-radius:28px;padding:30px;text-align:center;box-shadow:0 12px 0 #31516c}
+.modal h2{font-size:38px;margin:5px}
+.hidden{display:none}
+#tableArea{margin-top:15px}
+.table-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.table-grid div{padding:9px;border-radius:10px;background:#eef4ff;font-weight:900}
+.toast{position:absolute;top:80px;left:50%;transform:translateX(-50%);padding:12px 20px;background:#fff;border-radius:15px;box-shadow:0 5px 15px #0002;font-weight:900;opacity:0;pointer-events:none;transition:.2s}
+.toast.show{opacity:1}
+@media(max-width:900px){.main{grid-template-columns:1fr}.levels{display:grid;grid-template-columns:1fr 1fr;gap:6px}.panel{padding:12px}.table-grid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="logo">⭐ TABLA ÎNMULȚIRII</div>
+  <div class="badges">
+    <div class="badge">⭐ Puncte: <span id="points">0</span></div>
+    <div class="badge">❤️ Vieți: <span id="lives">3</span></div>
+    <div class="badge">🔥 Combo: x<span id="combo">0</span></div>
+    <div class="badge">⏱️ <span id="timer">30</span>s</div>
+  </div>
+</header>
+
+<div class="main">
+<section class="panel">
+<h2>🏆 NIVELURI</h2>
+<div id="levels">
+<button class="level l1 active" data-level="1">1. UȘOR<small>1 × 1 până la 5 × 5</small></button>
+<button class="level l2" data-level="2">2. ÎNCEPĂTOR<small>1 × 6 până la 5 × 10</small></button>
+<button class="level l3" data-level="3">3. MEDIU<small>6 × 1 până la 10 × 10</small></button>
+<button class="level l4" data-level="4">4. AVANSAT<small>11 × 1 până la 12 × 12</small></button>
+<button class="level l5" data-level="5">5. EXPERT<small>Provocări mixte</small></button>
+</div>
+<div id="tableArea">
+<h2>📚 Tabla</h2>
+<div class="table-grid" id="tableGrid"></div>
+</div>
+</section>
+
+<section class="game">
+<div class="toast" id="toast"></div>
+<div class="ribbon">ÎNTREBAREA <span id="qnum">1</span> / 10</div>
+<div class="question" id="question">2 × 3 = ?</div>
+<button class="hint-toggle" id="hintToggle">👀 Arată explicația</button>
+<div class="breakdown hidden" id="breakdown"></div>
+<div class="dot-groups hidden" id="dotGroups"></div>
+<div class="answers" id="answers"></div>
+<div class="feedback" id="feedback">Alege răspunsul corect! 😊</div>
+<div class="progress"><div id="progress"></div></div>
+<div>
+<button class="bigbtn" id="nextBtn">▶ Următoarea întrebare</button>
+<button class="bigbtn blue" id="restartBtn">↻ Reîncearcă nivelul</button>
+</div>
+</section>
+
+<aside class="panel">
+<h2>📊 STATISTICI</h2>
+<div class="stat">✅ Corecte <span id="correct">0</span></div>
+<div class="stat">❌ Greșite <span id="wrong">0</span></div>
+<div class="stat">⭐ Puncte <span id="sidePoints">0</span></div>
+<div class="stat">🔥 Cel mai mare combo <span id="bestCombo">0</span></div>
+<div class="stat">🏆 Nivel <span id="sideLevel">1</span></div>
+<div class="reward">🎁</div>
+<p id="rewardText"><b>Recompense:</b><br>Fă 3 răspunsuri corecte la rând pentru un combo!</p>
+</aside>
+</div>
+</div>
+
+<div class="overlay hidden" id="modal">
+<div class="modal">
+<div class="reward">🏆</div>
+<h2 id="modalTitle">Bravo!</h2>
+<p id="modalText"></p>
+<button class="bigbtn" id="modalRestart">Joacă din nou</button>
+<button class="bigbtn blue" id="modalNext">Următorul nivel</button>
+</div>
+</div>
+
+<script>
+const state={level:1,points:0,lives:3,combo:0,bestCombo:0,correct:0,wrong:0,q:0,time:30,answer:false,a:null,b:null};
+let timerId;
+
+const $=id=>document.getElementById(id);
+const levels={
+1:[1,5,1,5], 2:[1,5,6,10], 3:[6,10,1,10], 4:[11,12,1,12], 5:[1,12,1,12]
+};
+
+document.querySelectorAll('.level').forEach(btn=>{
+ btn.onclick=()=>{state.level=+btn.dataset.level; document.querySelectorAll('.level').forEach(x=>x.classList.remove('active')); btn.classList.add('active'); start();};
+});
+
+function update(){
+ $('points').textContent=state.points; $('sidePoints').textContent=state.points;
+ $('lives').textContent=state.lives; $('combo').textContent=state.combo;
+ $('bestCombo').textContent=state.bestCombo; $('correct').textContent=state.correct;
+ $('wrong').textContent=state.wrong; $('sideLevel').textContent=state.level;
+ $('qnum').textContent=Math.min(state.q+1,10);
+ $('timer').textContent=state.time;
+ $('timer').classList.toggle('low',state.time<=7);
+ $('progress').style.width=(state.q/10*100)+'%';
+}
+
+function rangeForLevel(){
+ if(state.level===5) return [1,12,1,12];
+ return levels[state.level];
+}
+
+function randomQuestion(){
+ let [amin,amax,bmin,bmax]=rangeForLevel();
+ state.a=amin+Math.floor(Math.random()*(amax-amin+1));
+ state.b=bmin+Math.floor(Math.random()*(bmax-bmin+1));
+ if(state.level===5 && Math.random()<.5) [state.a,state.b]=[state.b,state.a];
+
+ state.isWordProblem=false; state.isMultOp=true; state.problemText=null; state.wpAnswer=null;
+ if(Math.random()<0.35){
+   const wp=buildWordProblem(state.a,state.b);
+   state.isWordProblem=true; state.problemText=wp.text; state.isMultOp=wp.isMult; state.wpAnswer=wp.answer;
+ }
+}
+
+function correctAnswer(){
+ return state.isWordProblem ? state.wpAnswer : state.a*state.b;
+}
+
+const WP_NAMES=['Andrei','Mara','Ioana','Matei','Elena','David','Sofia','Alex','Diana','Bogdan'];
+const WP_OBJECTS=['scoici','mere','baloane','creioane','bomboane','cărți','biluțe','ouă','nasturi'];
+const WP_OBJECTS_CMP=['scoici','mere','baloane','creioane','bomboane','flori','cărți','biluțe','ouă'];
+
+function pickTwoNames(){
+ const n1=WP_NAMES[Math.floor(Math.random()*WP_NAMES.length)];
+ let n2=WP_NAMES[Math.floor(Math.random()*WP_NAMES.length)];
+ while(n2===n1) n2=WP_NAMES[Math.floor(Math.random()*WP_NAMES.length)];
+ return [n1,n2];
+}
+
+function buildWordProblem(a,b){
+ const obj=WP_OBJECTS[Math.floor(Math.random()*WP_OBJECTS.length)];
+ const objCmp=WP_OBJECTS_CMP[Math.floor(Math.random()*WP_OBJECTS_CMP.length)];
+ const [n1,n2]=pickTwoNames();
+ const templates=[
+   ()=>({text:`${n1} are ${a} pungi cu câte ${b} ${obj} în fiecare pungă. Câte ${obj} are ${n1} în total?`, answer:a*b, isMult:true}),
+   ()=>({text:`În grădină sunt ${a} rânduri cu câte ${b} flori pe fiecare rând. Câte flori sunt în total?`, answer:a*b, isMult:true}),
+   ()=>({text:`${n1} are ${a} cutii cu câte ${b} ${obj} în fiecare cutie. Câte ${obj} are ${n1}?`, answer:a*b, isMult:true}),
+   ()=>({text:`${n1} are ${a} ${objCmp}, iar ${n2} are cu ${b} mai multe. Câte ${objCmp} are ${n2}?`, answer:a+b, isMult:false}),
+   ()=>{ const hi=Math.max(a,b), lo=Math.min(a,b); const diff=hi>lo?hi-lo:(hi>1?1:0);
+     return {text:`${n1} are ${hi} ${objCmp}, iar ${n2} are cu ${diff} mai puține. Câte ${objCmp} are ${n2}?`, answer:hi-diff, isMult:false}; }
+ ];
+ if(b>=2){
+   templates.push(()=>({text:`${n1} are ${a} ${objCmp}. ${n2} are de ${b} ori mai multe ${objCmp} decât ${n1}. Câte ${objCmp} are ${n2}?`, answer:a*b, isMult:true}));
+ }
+ return templates[Math.floor(Math.random()*templates.length)]();
+}
+
+function makeAnswers(correct){
+ let set=new Set([correct]);
+ while(set.size<4){
+   let d=Math.floor(Math.random()*9)-4, v=correct+d;
+   if(v>=0 && v!==correct) set.add(v);
+ }
+ return [...set].sort(()=>Math.random()-.5);
+}
+
+const FRUITS=['🍎','🍐','🍊','🥝'];
+
+function buildBreakdownText(a,b){
+ return Array(a).fill(b).join(' + ');
+}
+
+function buildDotGroups(a,b){
+ const wrap=$('dotGroups'); wrap.innerHTML='';
+ if(a>10||b>10||a*b>90) return false;
+ const fruit=state.fruit||FRUITS[0];
+ for(let i=0;i<a;i++){
+   if(i>0){ const plus=document.createElement('div'); plus.className='plus-sep'; plus.textContent='+'; wrap.appendChild(plus); }
+   const group=document.createElement('div'); group.className='dot-group';
+   group.style.animationDelay=(i*0.06)+'s';
+   for(let j=0;j<b;j++){ const dot=document.createElement('span'); dot.className='dot'; dot.textContent=fruit; group.appendChild(dot); }
+   wrap.appendChild(group);
+ }
+ return true;
+}
+
+function resetHint(){
+ state.hintOpen=false;
+ state.fruit=FRUITS[Math.floor(Math.random()*FRUITS.length)];
+ $('breakdown').classList.add('hidden');
+ $('dotGroups').classList.add('hidden');
+ $('hintToggle').textContent='👀 Arată explicația';
+}
+
+$('hintToggle').onclick=()=>{
+ state.hintOpen=!state.hintOpen;
+ if(state.hintOpen){
+   $('breakdown').textContent=`${state.a} × ${state.b}  =  ${buildBreakdownText(state.a,state.b)}`;
+   $('breakdown').classList.remove('hidden');
+   const hasDots=buildDotGroups(state.a,state.b);
+   $('dotGroups').classList.toggle('hidden',!hasDots);
+   $('hintToggle').textContent='🙈 Ascunde explicația';
+ }else{
+   $('breakdown').classList.add('hidden');
+   $('dotGroups').classList.add('hidden');
+   $('hintToggle').textContent='👀 Arată explicația';
+ }
+};
+
+function renderQuestion(){
+ randomQuestion(); state.answer=false; state.time=30; update();
+ const qEl=$('question');
+ if(state.isWordProblem){
+   qEl.className='question-word';
+   qEl.innerHTML=`<span class="wp-badge">📖 Problemă</span><br>${state.problemText}`;
+ } else {
+   qEl.className='question';
+   qEl.textContent=`${state.a} × ${state.b} = ?`;
+ }
+ resetHint();
+ $('hintToggle').classList.toggle('hidden', !state.isMultOp);
+ $('feedback').textContent='Alege răspunsul corect! 😊';
+ $('feedback').style.color='';
+ $('answers').innerHTML='';
+ makeAnswers(correctAnswer()).forEach(v=>{
+   const btn=document.createElement('button'); btn.className='answer'; btn.textContent=v;
+   btn.onclick=()=>answer(v,btn); $('answers').appendChild(btn);
+ });
+ clearInterval(timerId); timerId=setInterval(()=>{state.time--;update();if(state.time<=0){clearInterval(timerId);answer(null,null)}},1000);
+}
+
+function answer(v,btn){
+ if(state.answer)return;
+ state.answer=true; clearInterval(timerId);
+ const correct=correctAnswer();
+ document.querySelectorAll('.answer').forEach(b=>b.disabled=true);
+ if(v===correct){
+   state.correct++; state.combo++; state.bestCombo=Math.max(state.bestCombo,state.combo);
+   let gained=10+(state.combo>=3?5*state.combo:0);
+   state.points+=gained;
+   if(btn)btn.classList.add('correct');
+   $('feedback').textContent=`🎉 Corect! +${gained} puncte! ${state.combo>=3?'🔥 SUPER COMBO!':''}`;
+   $('feedback').style.color='#159632';
+   if(state.combo===3) toast('🔥 Ai primit bonus de combo!');
+ }else{
+   state.wrong++; state.lives--; state.combo=0;
+   if(btn)btn.classList.add('wrong');
+   $('feedback').textContent=`💡 Răspunsul era ${correct}. Mai încearcă!`;
+   $('feedback').style.color='#dc263e';
+   if(state.lives<=0){update();setTimeout(()=>gameOver(),400);return;}
+ }
+ state.q++; update();
+ if(state.q>=10)setTimeout(finish,500);
+}
+
+function finish(){
+ clearInterval(timerId);
+ const pct=Math.round(state.correct/10*100);
+ $('modalTitle').textContent=pct>=80?'🌟 Extraordinar!':pct>=50?'👏 Bravo!':'💪 Continuă să exersezi!';
+ $('modalText').innerHTML=`Ai terminat nivelul <b>${state.level}</b> cu <b>${state.correct}/10</b> răspunsuri corecte și <b>${state.points}</b> puncte.<br><br>${pct>=80?'Ai câștigat o stea ⭐!':''}`;
+ $('modal').classList.remove('hidden');
+ $('modalNext').style.display=state.level<5?'inline-block':'none';
+}
+
+function gameOver(){
+ clearInterval(timerId);
+ $('modalTitle').textContent='❤️ S-au terminat viețile!';
+ $('modalText').innerHTML=`Ai obținut <b>${state.points}</b> puncte. Nu-i nimic — mai încearcă! 😊`;
+ $('modal').classList.remove('hidden');
+ $('modalNext').style.display='none';
+}
+
+function start(){
+ clearInterval(timerId); Object.assign(state,{points:0,lives:3,combo:0,bestCombo:0,correct:0,wrong:0,q:0,time:30});
+ $('modal').classList.add('hidden'); renderQuestion(); renderTable();
+}
+function renderTable(){
+ let n=state.level===1?5:state.level===2?10:state.level===4?12:12;
+ $('tableGrid').innerHTML='';
+ for(let i=1;i<=n;i++){let d=document.createElement('div');d.textContent=`${n===5?i:n} × ${i} = ${n===5?5*i:n*i}`;$('tableGrid').appendChild(d)}
+}
+function toast(t){$('toast').textContent=t;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1300)}
+
+$('nextBtn').onclick=()=>{if(state.answer){if(state.q>=10)finish();else renderQuestion();}else toast('Alege mai întâi un răspuns! 😊')};
+$('restartBtn').onclick=start;
+$('modalRestart').onclick=start;
+$('modalNext').onclick=()=>{if(state.level<5){state.level++;document.querySelectorAll('.level').forEach(x=>x.classList.toggle('active',+x.dataset.level===state.level));start()}};
+
+start();
+</script>
+</body>
+</html>

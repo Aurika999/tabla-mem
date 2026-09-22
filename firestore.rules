@@ -1,0 +1,29 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Clasament pe nivel: oricine poate citi (public), dar fiecare user
+    // poate scrie doar propriul scor (uid-ul din document trebuie sa fie al lui).
+    match /scores/{scoreId} {
+      allow read: if true;
+      allow create, update: if request.auth != null
+                             && request.resource.data.uid == request.auth.uid;
+      allow delete: if false;
+    }
+
+    // Clasament general: oricine poate citi, dar fiecare user isi poate
+    // scrie doar propriul document (id-ul documentului == uid-ul lui).
+    match /players/{playerId} {
+      allow read: if true;
+      allow create, update: if request.auth != null
+                             && request.auth.uid == playerId;
+      allow delete: if false;
+    }
+
+    // Orice altceva e blocat implicit.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
