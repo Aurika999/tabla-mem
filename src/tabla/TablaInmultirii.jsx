@@ -8,6 +8,7 @@ import LevelPanel from './components/LevelPanel';
 import GameCard from './components/GameCard';
 import StatsPanel from './components/StatsPanel';
 import Leaderboard from './components/Leaderboard';
+import Chat from './components/Chat';
 import ResultModal from './components/ResultModal';
 import NameGate from './components/NameGate';
 
@@ -57,6 +58,7 @@ export default function TablaInmultirii() {
               {openPanel === 'leaderboard' && (
                 <Leaderboard uid={uid} firebaseEnabled={firebaseEnabled} />
               )}
+              {openPanel === 'chat' && <Chat uid={uid} name={name} firebaseEnabled={firebaseEnabled} />}
               <button className="bigbtn" onClick={() => setOpenPanel(null)}>▶ Înapoi la exercițiu</button>
             </div>
           ) : (

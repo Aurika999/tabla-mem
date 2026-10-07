@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { auth, firebaseEnabled, onAuthStateChanged, signInAnonymously, updateProfile } from '../firebase';
+import { touchPlayer } from './useChat';
 
 const NAME_STORAGE_KEY = 'tabla-inmultirii:playerName';
 
@@ -34,6 +35,10 @@ export function usePlayerProfile() {
 
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    touchPlayer({ uid, name });
+  }, [uid, name]);
 
   const saveName = useCallback(async (newName) => {
     const trimmed = newName.trim();
