@@ -1,12 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './TablaInmultirii.css';
 import { useTablaGame } from './useTablaGame';
 import { usePlayerProfile } from './usePlayerProfile';
 import { submitScore, addPlayerPoints } from './useLeaderboard';
-import { PROBLEME_LEVEL, AVANSATE_LEVEL } from './data';
 import Header from './components/Header';
 import LevelPanel from './components/LevelPanel';
-import TableGrid from './components/TableGrid';
 import GameCard from './components/GameCard';
 import StatsPanel from './components/StatsPanel';
 import Leaderboard from './components/Leaderboard';
@@ -14,13 +12,20 @@ import ResultModal from './components/ResultModal';
 import NameGate from './components/NameGate';
 
 export default function TablaInmultirii() {
+  const [openPanel, setOpenPanel] = useState(null);
+  const togglePanel = key => setOpenPanel(prev => (prev === key ? null : key));
+
   const {
     stats, current, time, answered, selected, hintOpen, feedback, modal, toast,
     questionsPerLevel, selectLevel, restartLevel, goToNextLevel,
     handleAnswer, toggleHint, goToNextQuestionOrFinish,
-  } = useTablaGame(1);
+  } = useTablaGame(1, openPanel !== null);
 
   const { uid, name, ready, saveName, firebaseEnabled } = usePlayerProfile();
+  const handleSelectLevel = level => {
+    setOpenPanel(null);
+    selectLevel(level);
+  };
 
   useEffect(() => {
     if (!modal || !uid || !name) return;
@@ -39,29 +44,37 @@ export default function TablaInmultirii() {
         <Header points={stats.points} lives={stats.lives} combo={stats.combo} time={time} playerName={name} />
 
         <div className="main">
-          <LevelPanel activeLevel={stats.level} onSelectLevel={selectLevel}>
-            {stats.level !== PROBLEME_LEVEL && stats.level !== AVANSATE_LEVEL && <TableGrid level={stats.level} />}
-          </LevelPanel>
-
-          <GameCard
-            current={current}
-            stats={stats}
-            questionsPerLevel={questionsPerLevel}
-            answered={answered}
-            selected={selected}
-            hintOpen={hintOpen}
-            feedback={feedback}
-            toast={toast}
-            onAnswer={handleAnswer}
-            onToggleHint={toggleHint}
-            onNext={goToNextQuestionOrFinish}
-            onRestart={restartLevel}
+          <LevelPanel
+            activeLevel={stats.level}
+            onSelectLevel={handleSelectLevel}
+            openPanel={openPanel}
+            onTogglePanel={togglePanel}
           />
 
-          <div className="side-column">
-            <StatsPanel stats={stats} />
-            <Leaderboard level={stats.level} uid={uid} firebaseEnabled={firebaseEnabled} />
-          </div>
+          {openPanel ? (
+            <div className="info-view">
+              {openPanel === 'stats' && <StatsPanel stats={stats} />}
+              {openPanel === 'leaderboard' && (
+                <Leaderboard uid={uid} firebaseEnabled={firebaseEnabled} />
+              )}
+              <button className="bigbtn" onClick={() => setOpenPanel(null)}>▶ Înapoi la exercițiu</button>
+            </div>
+          ) : (
+            <GameCard
+              current={current}
+              stats={stats}
+              questionsPerLevel={questionsPerLevel}
+              answered={answered}
+              selected={selected}
+              hintOpen={hintOpen}
+              feedback={feedback}
+              toast={toast}
+              onAnswer={handleAnswer}
+              onToggleHint={toggleHint}
+              onNext={goToNextQuestionOrFinish}
+              onRestart={restartLevel}
+            />
+          )}
         </div>
       </div>
 

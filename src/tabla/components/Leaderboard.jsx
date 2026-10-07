@@ -1,8 +1,28 @@
 import { useState } from 'react';
-import { LEVELS } from '../data';
-import { useLeaderboard, useGlobalLeaderboard } from '../useLeaderboard';
+import { LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL } from '../data';
+import { useGlobalLeaderboard, useMyScores } from '../useLeaderboard';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
+const ALL_LEVELS = [...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL];
+
+function MyScoresList({ scores, loading }) {
+  if (loading) return <p className="leaderboard-empty">Se încarcă…</p>;
+  return (
+    <ol className="leaderboard-list">
+      {ALL_LEVELS.map(key => {
+        const score = scores[key];
+        return (
+          <li key={key} className="leaderboard-row">
+            <span className="name">{LEVELS[key].label}</span>
+            <span className="points">
+              {score ? `${score.points} pct · ${score.correct}/10 ✅` : '—'}
+            </span>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
 
 function LeaderboardList({ entries, loading, uid, pointsField, emptyText }) {
   if (loading) return <p className="leaderboard-empty">Se încarcă…</p>;
@@ -20,9 +40,9 @@ function LeaderboardList({ entries, loading, uid, pointsField, emptyText }) {
   );
 }
 
-export default function Leaderboard({ level, uid, firebaseEnabled }) {
-  const [tab, setTab] = useState('level');
-  const { entries: levelEntries, loading: levelLoading } = useLeaderboard(level);
+export default function Leaderboard({ uid, firebaseEnabled }) {
+  const [tab, setTab] = useState('mine');
+  const { scores: myScores, loading: myLoading } = useMyScores(uid);
   const { entries: globalEntries, loading: globalLoading } = useGlobalLeaderboard();
 
   if (!firebaseEnabled) {
@@ -41,10 +61,10 @@ export default function Leaderboard({ level, uid, firebaseEnabled }) {
       <h2>🏅 CLASAMENT</h2>
       <div className="leaderboard-tabs">
         <button
-          className={`leaderboard-tab${tab === 'level' ? ' active' : ''}`}
-          onClick={() => setTab('level')}
+          className={`leaderboard-tab${tab === 'mine' ? ' active' : ''}`}
+          onClick={() => setTab('mine')}
         >
-          Nivel {level}
+          ⭐ Scorurile mele
         </button>
         <button
           className={`leaderboard-tab${tab === 'global' ? ' active' : ''}`}
@@ -54,16 +74,10 @@ export default function Leaderboard({ level, uid, firebaseEnabled }) {
         </button>
       </div>
 
-      {tab === 'level' ? (
+      {tab === 'mine' ? (
         <>
-          <p className="leaderboard-sub">{LEVELS[level].label}</p>
-          <LeaderboardList
-            entries={levelEntries}
-            loading={levelLoading}
-            uid={uid}
-            pointsField="points"
-            emptyText="Niciun scor încă. Fii primul! 🚀"
-          />
+          <p className="leaderboard-sub">Cel mai bun scor al tău pe fiecare nivel</p>
+          <MyScoresList scores={myScores} loading={myLoading} />
         </>
       ) : (
         <>

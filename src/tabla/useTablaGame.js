@@ -54,7 +54,7 @@ function createStats(level) {
   return { level, points: 0, lives: 3, combo: 0, bestCombo: 0, correct: 0, wrong: 0, q: 0 };
 }
 
-export function useTablaGame(initialLevel = 1) {
+export function useTablaGame(initialLevel = 1, paused = false) {
   const [stats, setStats] = useState(() => createStats(initialLevel));
   const [current, setCurrent] = useState(() => generateQuestion(initialLevel));
   const [time, setTime] = useState(QUESTION_TIME);
@@ -136,14 +136,14 @@ export function useTablaGame(initialLevel = 1) {
   }, [answered, current, stats.combo, showToast]);
 
   useEffect(() => {
-    if (answered) return;
+    if (answered || paused) return;
     if (time <= 0) {
       handleAnswer(null);
       return;
     }
     const id = setTimeout(() => setTime(t => t - 1), 1000);
     return () => clearTimeout(id);
-  }, [time, answered, handleAnswer]);
+  }, [time, answered, paused, handleAnswer]);
 
   useEffect(() => {
     if (!answered) return;

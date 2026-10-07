@@ -9,34 +9,31 @@ const SCORES_COLLECTION = 'scores';
 const PLAYERS_COLLECTION = 'players';
 const TOP_N = 20;
 
-export function useLeaderboard(level) {
-  const [entries, setEntries] = useState([]);
+export function useMyScores(uid) {
+  const [scores, setScores] = useState({});
   const [loading, setLoading] = useState(firebaseEnabled);
 
   useEffect(() => {
-    if (!firebaseEnabled) {
-      setEntries([]);
+    if (!firebaseEnabled || !uid) {
+      setScores({});
       setLoading(false);
       return undefined;
     }
     setLoading(true);
-    const q = query(
-      collection(db, SCORES_COLLECTION),
-      where('level', '==', level),
-      orderBy('points', 'desc'),
-      limit(TOP_N),
-    );
+    const q = query(collection(db, SCORES_COLLECTION), where('uid', '==', uid));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      setEntries(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+      const byLevel = {};
+      snapshot.docs.forEach(d => { byLevel[d.data().level] = d.data(); });
+      setScores(byLevel);
       setLoading(false);
     }, (err) => {
-      console.error('Nu am putut încărca clasamentul', err);
+      console.error('Nu am putut încărca scorurile tale', err);
       setLoading(false);
     });
     return unsubscribe;
-  }, [level]);
+  }, [uid]);
 
-  return { entries, loading };
+  return { scores, loading };
 }
 
 export function useGlobalLeaderboard() {

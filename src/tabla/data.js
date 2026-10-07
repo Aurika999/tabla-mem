@@ -74,7 +74,3 @@ export function makeAnswers(correct) {
 export function rangeForLevel(level) {
   return LEVELS[level].range;
 }
-
-export function tableSize(level) {
-  return level === 1 ? 5 : level === 2 ? 10 : level === 4 ? 12 : 12;
-}
