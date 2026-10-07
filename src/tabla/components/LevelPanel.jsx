@@ -8,7 +8,7 @@ const INFO_PANELS = [
   { key: 'chat', label: '💬 CHAT', hint: 'Vorbește cu ceilalți jucători', className: 'lc' },
 ];
 
-export default function LevelPanel({ activeLevel, onSelectLevel, openPanel, onTogglePanel }) {
+export default function LevelPanel({ activeLevel, onSelectLevel, openPanel, onTogglePanel, badges = {} }) {
   return (
     <section className="panel">
       <h2>🏆 NIVELURI</h2>
@@ -52,6 +52,7 @@ export default function LevelPanel({ activeLevel, onSelectLevel, openPanel, onTo
             onClick={() => onTogglePanel(panel.key)}
           >
             {panel.label}
+            {badges[panel.key] > 0 && <span className="level-badge">{badges[panel.key]}</span>}
             <small>{panel.hint}</small>
           </button>
         ))}

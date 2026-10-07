@@ -33,6 +33,38 @@
 .tabla-inmultirii .chat-conversation{min-width:0}
 .tabla-inmultirii .chat-title{font-weight:900;color:#6d42a9;margin:0 0 8px}
 @media(max-width:700px){.tabla-inmultirii .chat-layout{grid-template-columns:1fr}.tabla-inmultirii .chat-sidebar{max-height:200px}}
+.tabla-inmultirii .level{position:relative}
+.tabla-inmultirii .level-badge{position:absolute;top:-6px;right:-6px;min-width:26px;height:26px;padding:0 7px;border-radius:13px;background:#e8264d;color:#fff;font-size:14px;line-height:26px;text-align:center;border:3px solid #fff;animation:tabla-badgePop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes tabla-badgePop{from{transform:scale(0)}to{transform:scale(1)}}
+.tabla-inmultirii .chat-toast{position:fixed;top:16px;right:16px;z-index:10;display:flex;align-items:flex-start;max-width:min(340px,calc(100vw - 32px));background:#fff;border:3px solid #8145c7;border-radius:18px;box-shadow:0 6px 0 #5c2e96;animation:tabla-toastIn .3s ease-out}
+@keyframes tabla-toastIn{from{transform:translateY(-20px);opacity:0}to{transform:none;opacity:1}}
+.tabla-inmultirii .chat-toast-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;text-align:left;border:0;background:none;padding:12px 4px 12px 14px;color:#24304a}
+.tabla-inmultirii .chat-toast-body b{color:#6d42a9}
+.tabla-inmultirii .chat-toast-body span{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tabla-inmultirii .chat-toast-body small{color:#6a7590;font-weight:700}
+.tabla-inmultirii .chat-toast-close{border:0;background:none;font-size:22px;font-weight:900;color:#6a7590;padding:6px 12px}
+.tabla-inmultirii .chat-emoji-picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:4px;margin-top:10px;padding:8px;max-height:150px;overflow-y:auto;background:#f7f9fd;border:2px solid #e6eefc;border-radius:14px}
+.tabla-inmultirii .chat-emoji-picker button{border:0;background:none;font-size:24px;padding:4px;border-radius:10px;line-height:1}
+.tabla-inmultirii .chat-emoji-picker button:hover{background:#e6eefc;transform:scale(1.15)}
+.tabla-inmultirii .chat-form .chat-emoji-toggle{background:#fff3c4;box-shadow:0 4px #d9b400;font-size:20px;padding:8px 12px}
+.tabla-inmultirii .chat-form .chat-emoji-toggle.active{background:#ffd83d}
+.tabla-inmultirii .chat-title{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tabla-inmultirii .chat-call-btn{border:0;border-radius:12px;padding:7px 14px;background:#27c94f;color:#fff;font-weight:900;box-shadow:0 4px #159632}
+.tabla-inmultirii .chat-call-btn:disabled{opacity:.5;cursor:default}
+.tabla-inmultirii .call-modal h2{font-size:32px}
+.tabla-inmultirii .call-ringing{display:inline-block;animation:tabla-ring 1s ease-in-out infinite}
+@keyframes tabla-ring{0%,100%{transform:rotate(0)}20%{transform:rotate(-15deg)}40%{transform:rotate(15deg)}60%{transform:rotate(-10deg)}80%{transform:rotate(10deg)}}
+.tabla-inmultirii .call-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.tabla-inmultirii .call-btn{border:0;border-radius:16px;padding:12px 20px;font-weight:1000;color:#fff;font-size:17px}
+.tabla-inmultirii .call-btn.accept{background:#27c94f;box-shadow:0 5px #159632}
+.tabla-inmultirii .call-btn.decline{background:#e8264d;box-shadow:0 5px #a8163a}
+.tabla-inmultirii .call-btn.mute{background:#f7f9fd;color:#24304a;border:2px solid #e6eefc;padding:10px 14px;box-shadow:0 4px #d5deee}
+.tabla-inmultirii .call-btn.mute.active{background:#fff3c4;border-color:#ffd83d}
+.tabla-inmultirii .call-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9;display:flex;align-items:center;gap:10px;width:min(460px,calc(100vw - 32px));background:#fff;border:3px solid #27c94f;border-radius:20px;padding:10px 12px;box-shadow:0 6px 0 #159632}
+.tabla-inmultirii .call-bar-info{flex:1;min-width:0;display:flex;flex-direction:column}
+.tabla-inmultirii .call-bar-info b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tabla-inmultirii .call-bar-info span{color:#6a7590;font-weight:700;font-size:14px}
+.tabla-inmultirii .call-notice{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9;background:#24304a;color:#fff;font-weight:800;padding:12px 18px;border-radius:14px;max-width:calc(100vw - 32px);text-align:center}
 .tabla-inmultirii .chat-messages{height:min(55vh,420px);overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:6px;background:#f7f9fd;border-radius:16px}
 .tabla-inmultirii .chat-message{max-width:80%;align-self:flex-start;background:#fff;border:2px solid #e6eefc;border-radius:14px;padding:8px 12px}
 .tabla-inmultirii .chat-message.me{align-self:flex-end;background:#f4eeff;border-color:#d9c8f5}
@@ -93,6 +125,10 @@
 .tabla-inmultirii .leaderboard-row .points{color:#6d42a9}
 .tabla-inmultirii .name-input{width:100%;border:3px solid #e6eefc;border-radius:14px;padding:12px 14px;font-size:18px;font-weight:800;text-align:center;margin:14px 0;color:#24304a}
 .tabla-inmultirii .name-input:focus{outline:3px solid #ffd83d}
+.tabla-inmultirii .flag{display:inline-block;width:24px;height:18px;vertical-align:-3px;border-radius:3px;box-shadow:0 0 0 1px #0002;object-fit:cover}
+.tabla-inmultirii .country-select{display:flex;align-items:center;gap:10px;border:3px solid #e6eefc;border-radius:14px;padding:8px 12px;margin:0 0 14px}
+.tabla-inmultirii .country-select:focus-within{outline:3px solid #ffd83d}
+.tabla-inmultirii .country-select select{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:17px;font-weight:800;color:#24304a;outline:none;cursor:pointer}
 .tabla-inmultirii .player-badge{background:#8145c7;color:#fff;border-color:#8145c7}
 .tabla-inmultirii .leaderboard-tabs{display:flex;gap:6px;margin-bottom:10px}
 .tabla-inmultirii .leaderboard-tab{flex:1;border:2px solid #e6eefc;background:#f7f9fd;border-radius:12px;padding:8px 6px;font-weight:800;font-size:13px;color:#6a7590}

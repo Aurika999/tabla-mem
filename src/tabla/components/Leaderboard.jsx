@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL } from '../data';
 import { useGlobalLeaderboard, useMyScores } from '../useLeaderboard';
+import Flag from './Flag';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 const ALL_LEVELS = [...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL];
@@ -32,7 +33,7 @@ function LeaderboardList({ entries, loading, uid, pointsField, emptyText }) {
       {entries.map((entry, i) => (
         <li key={entry.id} className={`leaderboard-row${entry.uid === uid || entry.id === uid ? ' me' : ''}`}>
           <span className="rank">{MEDALS[i] || `${i + 1}.`}</span>
-          <span className="name">{entry.name}</span>
+          <span className="name">{entry.name} <Flag code={entry.country} /></span>
           <span className="points">{entry[pointsField]} pct</span>
         </li>
       ))}

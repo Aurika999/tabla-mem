@@ -1,17 +1,33 @@
 import { useCallback, useEffect, useState } from 'react';
 import { auth, firebaseEnabled, onAuthStateChanged, signInAnonymously, updateProfile } from '../firebase';
-import { touchPlayer } from './useChat';
+import { loadPlayerCountry, touchPlayer } from './useChat';
+import { isValidCountry } from './countries';
 
 const NAME_STORAGE_KEY = 'tabla-inmultirii:playerName';
+const COUNTRY_STORAGE_KEY = 'tabla-inmultirii:playerCountry';
+
+function readStorage(key) {
+  try {
+    return localStorage.getItem(key) || '';
+  } catch {
+    return '';
+  }
+}
+
+function writeStorage(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // localStorage poate fi indisponibil (mod privat) — nu blocăm jocul.
+  }
+}
 
 export function usePlayerProfile() {
   const [uid, setUid] = useState(null);
-  const [name, setName] = useState(() => {
-    try {
-      return localStorage.getItem(NAME_STORAGE_KEY) || '';
-    } catch {
-      return '';
-    }
+  const [name, setName] = useState(() => readStorage(NAME_STORAGE_KEY));
+  const [country, setCountry] = useState(() => {
+    const stored = readStorage(COUNTRY_STORAGE_KEY);
+    return isValidCountry(stored) ? stored : '';
   });
   const [ready, setReady] = useState(!firebaseEnabled);
 
@@ -22,6 +38,13 @@ export function usePlayerProfile() {
       if (user) {
         setUid(user.uid);
         if (user.displayName) setName(user.displayName);
+        // Țara poate fi salvată doar în Firebase (ex. localStorage golit);
+        // o căutăm înainte de a decide dacă cerem din nou profilul.
+        const savedCountry = await loadPlayerCountry(user.uid);
+        if (isValidCountry(savedCountry)) {
+          setCountry(prev => prev || savedCountry);
+          writeStorage(COUNTRY_STORAGE_KEY, savedCountry);
+        }
         setReady(true);
       } else {
         try {
@@ -37,18 +60,16 @@ export function usePlayerProfile() {
   }, []);
 
   useEffect(() => {
-    touchPlayer({ uid, name });
-  }, [uid, name]);
+    touchPlayer({ uid, name, country });
+  }, [uid, name, country]);
 
-  const saveName = useCallback(async (newName) => {
+  const saveProfile = useCallback(async (newName, newCountry) => {
     const trimmed = newName.trim();
-    if (!trimmed) return;
+    if (!trimmed || !isValidCountry(newCountry)) return;
     setName(trimmed);
-    try {
-      localStorage.setItem(NAME_STORAGE_KEY, trimmed);
-    } catch {
-      // localStorage poate fi indisponibil (mod privat) — nu blocăm jocul.
-    }
+    setCountry(newCountry);
+    writeStorage(NAME_STORAGE_KEY, trimmed);
+    writeStorage(COUNTRY_STORAGE_KEY, newCountry);
     if (firebaseEnabled && auth.currentUser) {
       try {
         await updateProfile(auth.currentUser, { displayName: trimmed });
@@ -58,5 +79,5 @@ export function usePlayerProfile() {
     }
   }, []);
 
-  return { uid, name, ready, saveName, firebaseEnabled };
+  return { uid, name, country, ready, saveProfile, firebaseEnabled };
 }

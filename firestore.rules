@@ -72,6 +72,38 @@ service cloud.firestore {
       }
     }
 
+    // Apeluri audio (WebRTC). Documentul tine doar semnalizarea (oferta,
+    // raspunsul, starea apelului); sunetul nu trece prin Firebase.
+    // Doar apelantul si cel sunat pot citi sau modifica un apel.
+    match /calls/{callId} {
+      function isParty(data) {
+        return request.auth != null
+               && (request.auth.uid == data.caller || request.auth.uid == data.callee);
+      }
+
+      allow read: if isParty(resource.data);
+      allow create: if request.auth != null
+                    && request.resource.data.caller == request.auth.uid
+                    && request.resource.data.callee is string
+                    && request.resource.data.callee != request.auth.uid
+                    && request.resource.data.status == 'ringing';
+      allow update: if isParty(resource.data)
+                    && request.resource.data.caller == resource.data.caller
+                    && request.resource.data.callee == resource.data.callee;
+      allow delete: if false;
+
+      // Candidatii ICE ai fiecarei parti.
+      match /{side}/{candidateId} {
+        function call() {
+          return get(/databases/$(database)/documents/calls/$(callId)).data;
+        }
+        allow read, create: if (side == 'callerCandidates' || side == 'calleeCandidates')
+                            && request.auth != null
+                            && request.auth.uid in [call().caller, call().callee];
+        allow update, delete: if false;
+      }
+    }
+
     // Orice altceva e blocat implicit.
     match /{document=**} {
       allow read, write: if false;

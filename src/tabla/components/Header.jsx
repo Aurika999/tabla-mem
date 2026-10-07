@@ -1,3 +1,5 @@
+import Flag from './Flag';
+
 const ABACUS_ROWS = [
   { y: 22, color: '#e84d8d', beads: [0, 1, 2, 6, 7] },
   { y: 40, color: '#f4a623', beads: [0, 1, 5, 6, 7] },
@@ -22,12 +24,12 @@ function AbacusLogo() {
   );
 }
 
-export default function Header({ points, lives, combo, time, playerName }) {
+export default function Header({ points, lives, combo, time, playerName, playerCountry }) {
   return (
     <header>
       <div className="logo"><AbacusLogo /> TABLA ÎNMULȚIRII</div>
       <div className="badges">
-        {playerName && <div className="badge player-badge">👤 {playerName}</div>}
+        {playerName && <div className="badge player-badge">👤 {playerName} <Flag code={playerCountry} /></div>}
         <div className="badge">⭐ Puncte: <span>{points}</span></div>
         <div className="badge">❤️ Vieți: <span>{lives}</span></div>
         <div className="badge">🔥 Combo: x<span>{combo}</span></div>
