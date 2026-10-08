@@ -3,7 +3,7 @@ import {
   addDoc, collection, doc, getDoc, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where,
 } from 'firebase/firestore';
 import { db, firebaseEnabled } from '../firebase';
-import { notifySystem } from './useChat';
+import { notifySystem, logCallInChat } from './useChat';
 
 // Apeluri audio WebRTC. Firestore e folosit doar pentru „semnalizare”
 // (ofertă/răspuns/candidați ICE); sunetul merge direct între jucători.
@@ -62,16 +62,28 @@ export function useCall({ uid, name }) {
   }, []);
 
   // Încheie apelul local; dacă status e dat, îl scrie și în Firestore ca să afle și celălalt.
-  const finish = useCallback((message, status) => {
+  // outcome = cum s-a terminat apelul pentru cel care a sunat ('ended', 'missed',
+  // 'declined', 'busy', 'failed'); din el scriem în chat durata sau „nepreluat”.
+  const finish = useCallback((message, status, outcome) => {
     const current = callRef.current;
     if (current && status) {
       updateDoc(callDocRef(current.id), { status, endedAt: serverTimestamp() })
         .catch(err => console.error('Nu am putut închide apelul', err));
     }
+    if (current?.role === 'caller' && outcome) {
+      let callStatus;
+      if (current.connectedAt) callStatus = 'completed';
+      else if (['declined', 'busy', 'missed'].includes(outcome)) callStatus = outcome;
+      else if (current.status === 'ringing') callStatus = 'missed';
+      else callStatus = 'failed';
+      const durationSec = current.connectedAt ? Math.round((Date.now() - current.connectedAt) / 1000) : 0;
+      logCallInChat({ uid, name, peer: current.peer, callStatus, durationSec })
+        .catch(err => console.error('Nu am putut salva apelul în chat', err));
+    }
     cleanup();
     updateCall(null);
     if (message) showNotice(message);
-  }, [cleanup, updateCall, showNotice]);
+  }, [cleanup, updateCall, showNotice, uid, name]);
 
   const createPeerConnection = useCallback((callId, ownSide, otherSide) => {
     const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
@@ -95,7 +107,7 @@ export function useCall({ uid, name }) {
           ? { ...prev, status: 'connected', connectedAt: Date.now() }
           : prev));
       } else if (pc.connectionState === 'failed') {
-        finish('Conexiunea a eșuat. Mai încearcă!', 'ended');
+        finish('Conexiunea a eșuat. Mai încearcă!', 'ended', 'failed');
       }
     };
 
@@ -173,15 +185,15 @@ export function useCall({ uid, name }) {
           flushCandidates();
           updateCall(prev => (prev && prev.status === 'ringing' ? { ...prev, status: 'connecting' } : prev));
         }
-        if (data.status === 'declined') finish(`${peer.name} a refuzat apelul.`);
-        else if (data.status === 'busy') finish(`${peer.name} e într-un alt apel.`);
-        else if (data.status === 'ended') finish('Apel încheiat.');
+        if (data.status === 'declined') finish(`${peer.name} a refuzat apelul.`, null, 'declined');
+        else if (data.status === 'busy') finish(`${peer.name} e într-un alt apel.`, null, 'busy');
+        else if (data.status === 'ended') finish('Apel încheiat.', null, 'ended');
       });
       unsubsRef.current.push(unsub);
 
       const timeoutId = setTimeout(() => {
         if (callRef.current?.id === callDoc.id && callRef.current.status === 'ringing') {
-          finish(`${peer.name} nu a răspuns.`, 'missed');
+          finish(`${peer.name} nu a răspuns.`, 'missed', 'missed');
         }
       }, RING_TIMEOUT_MS);
       timersRef.current.push(timeoutId);
@@ -249,7 +261,7 @@ export function useCall({ uid, name }) {
     const current = callRef.current;
     if (!current) return;
     const status = current.role === 'caller' && current.status === 'ringing' ? 'missed' : 'ended';
-    finish('Apel încheiat.', status);
+    finish('Apel încheiat.', status, 'ended');
   }, [finish]);
 
   const toggleMute = useCallback(() => {

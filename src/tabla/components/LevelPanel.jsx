@@ -12,7 +12,7 @@ export default function LevelPanel({
   activeLevel, onSelectLevel, isLocked = () => false, onOpenMap, openPanel, onTogglePanel, badges = {},
 }) {
   return (
-    <section className="panel">
+    <section className="panel level-panel">
       {onOpenMap && <button className="map-back-btn" onClick={onOpenMap}>🗺️ HARTA AVENTURII</button>}
       <h2>🏆 NIVELURI</h2>
       <div id="levels">

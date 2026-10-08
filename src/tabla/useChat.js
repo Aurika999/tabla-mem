@@ -255,6 +255,41 @@ export function setChatTyping(chatId, uid, on) {
   });
 }
 
+export function formatCallDuration(seconds) {
+  if (seconds < 60) return `${seconds} s`;
+  const minutes = Math.floor(seconds / 60);
+  const rest = seconds % 60;
+  return rest ? `${minutes} min ${rest} s` : `${minutes} min`;
+}
+
+const CALL_SUMMARY = {
+  completed: (sec) => `📞 Apel vocal · ${formatCallDuration(sec)}`,
+  missed: () => '📞 Apel nepreluat',
+  declined: () => '📞 Apel refuzat',
+  busy: () => '📞 Apel nepreluat (ocupat)',
+  failed: () => '📞 Apel nereușit',
+};
+
+// Mesajul din conversație care rămâne după un apel (durata sau „nepreluat”).
+// Îl scrie cel care a sunat, ca să apară o singură dată.
+export async function logCallInChat({ uid, name, peer, callStatus, durationSec }) {
+  if (!firebaseEnabled || !uid || !name || !peer) return;
+  const text = CALL_SUMMARY[callStatus](durationSec);
+  const chatId = privateChatId(uid, peer.uid);
+  const batch = writeBatch(db);
+  batch.set(doc(collection(db, messagesPath(chatId))), {
+    uid, name, text, type: 'call', callStatus, durationSec, createdAt: serverTimestamp(),
+  });
+  batch.set(doc(db, CHATS_COLLECTION, chatId), {
+    members: [uid, peer.uid].sort(),
+    names: { [uid]: name, [peer.uid]: peer.name },
+    lastMessage: text,
+    lastSender: uid,
+    updatedAt: serverTimestamp(),
+  }, { merge: true });
+  await batch.commit();
+}
+
 export function useSendMessage() {
   // peer null = camera generală; altfel { uid, name } al celuilalt jucător.
   // replyTo = mesajul la care se răspunde ({ id, name, text }), opțional.

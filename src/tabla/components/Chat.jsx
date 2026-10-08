@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  useMessages, usePlayers, useSendMessage, privateChatId, peerOf, markChatRead, setChatTyping,
+  useMessages, usePlayers, useSendMessage, privateChatId, peerOf, markChatRead, setChatTyping, formatCallDuration,
   MAX_MESSAGE_LENGTH, ONLINE_WINDOW_MS, TYPING_WINDOW_MS,
 } from '../useChat';
 import Avatar from './Avatar';
@@ -82,6 +82,42 @@ function Ticks({ msg, peerReadAt, isPrivate }) {
     return <span className="chat-ticks read" title="Citit">✓✓</span>;
   }
   return <span className="chat-ticks" title="Trimis">✓</span>;
+}
+
+// Mesajul lăsat de un apel: pentru cine a sunat și pentru cine a fost sunat textul diferă.
+function CallLogBubble({ msg, mine, date, peer, canCall, onCall }) {
+  const { callStatus, durationSec = 0 } = msg;
+  let icon = mine ? '↗' : '↙';
+  let title;
+  let detail = '';
+  let missedForMe = false;
+  if (callStatus === 'completed') {
+    title = 'Apel vocal';
+    detail = formatCallDuration(durationSec);
+  } else if (mine) {
+    title = { missed: 'Apel fără răspuns', declined: 'Apel refuzat', busy: 'Ocupat — era în alt apel', failed: 'Apel nereușit' }[callStatus]
+      || 'Apel';
+  } else {
+    missedForMe = callStatus === 'missed' || callStatus === 'busy';
+    title = { missed: 'Apel pierdut', declined: 'Ai refuzat apelul', busy: 'Apel pierdut (erai în alt apel)', failed: 'Apel nereușit' }[callStatus]
+      || 'Apel';
+    if (missedForMe) icon = '📵';
+  }
+  return (
+    <div className={`chat-bubble chat-call-log${mine ? ' me' : ''}${missedForMe ? ' missed' : ''}`}>
+      <span className="chat-call-log-icon">{callStatus === 'completed' || !missedForMe ? '📞' : icon}</span>
+      <span className="chat-call-log-body">
+        <b>{title}</b>
+        <small>
+          {callStatus === 'completed' ? `${icon} ${detail}` : icon !== '📵' ? icon : ''}
+          {' · '}{formatClock(date)}
+        </small>
+      </span>
+      {missedForMe && peer && (
+        <button className="chat-call-back" onClick={() => onCall(peer)} disabled={!canCall}>Sună înapoi</button>
+      )}
+    </div>
+  );
 }
 
 function Conversation({
@@ -276,6 +312,20 @@ function Conversation({
             const mine = msg.uid === uid;
             const author = profiles[msg.uid];
             const showAuthor = !isPrivate && !mine;
+            if (msg.type === 'call') {
+              return (
+                <div key={row.key} data-mid={msg.id} className={`chat-row first${mine ? ' me' : ''}`}>
+                  <CallLogBubble
+                    msg={msg}
+                    mine={mine}
+                    date={date}
+                    peer={peer}
+                    canCall={canWrite && !callBusy}
+                    onCall={onCall}
+                  />
+                </div>
+              );
+            }
             return (
               <div
                 key={row.key}

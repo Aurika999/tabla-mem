@@ -1,12 +1,12 @@
 .tabla-inmultirii *{box-sizing:border-box}
-.tabla-inmultirii{font-family:Arial,system-ui,sans-serif;background:linear-gradient(180deg,#39a9ff,#86d95b);min-height:100vh;color:#24304a}
+.tabla-inmultirii{font-family:Arial,system-ui,sans-serif;background:radial-gradient(ellipse at top,#22686a 0%,#14484b 55%,#0c3134 100%);background-attachment:fixed;min-height:100vh;color:#24304a}
 .tabla-inmultirii button{font:inherit;cursor:pointer}
 .tabla-inmultirii .app{max-width:1180px;margin:auto;padding:18px}
 .tabla-inmultirii header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:linear-gradient(180deg,#b57442 0%,#9a5d30 55%,#844d25 100%);border:4px solid #6b3d1c;border-radius:20px;padding:10px 16px;box-shadow:0 7px 0 #5a3216,inset 0 2px 0 #d39a63;background-image:repeating-linear-gradient(90deg,#0000 0 120px,#00000014 120px 123px),linear-gradient(180deg,#b57442 0%,#9a5d30 55%,#844d25 100%)}
-.tabla-inmultirii .logo{font-size:clamp(24px,3.8vw,42px);font-weight:1000;color:#fff;text-shadow:2px 3px #5a3216;letter-spacing:-2px;display:flex;align-items:center;gap:14px}
+.tabla-inmultirii .logo{font-size:clamp(22px,3.2vw,38px);font-weight:1000;color:#fff;text-shadow:2px 3px #5a3216;letter-spacing:-2px;display:flex;align-items:center;gap:14px}
 .tabla-inmultirii .logo-abacus{height:1.15em;width:auto;flex:0 0 auto;filter:drop-shadow(3px 4px 0 #2855a5)}
 .tabla-inmultirii .badges{display:flex;gap:8px;flex-wrap:wrap}
-.tabla-inmultirii .badge{background:#fff;border:3px solid #f1e3cf;border-radius:18px;padding:8px 14px;font-weight:900;box-shadow:0 4px 0 #5a3216}
+.tabla-inmultirii .badge{background:#fffaf0;border:2px solid #5a3216;border-radius:16px;padding:5px 12px;font-weight:900;font-size:14px;box-shadow:0 3px 0 #5a3216}
 .tabla-inmultirii .main{display:grid;grid-template-columns:260px 1fr;gap:15px;margin-top:15px}
 .tabla-inmultirii .panel,.tabla-inmultirii .game{background:#fff;border:5px solid #fff;border-radius:25px;box-shadow:0 9px 0 #3b78a8;padding:16px}
 .tabla-inmultirii .panel h2{text-align:center;margin:0 0 12px;color:#6d42a9}
@@ -95,6 +95,16 @@
 .tabla-inmultirii .chat-reply-btn{align-self:center;border:0;background:#fff;color:#54656f;border-radius:50%;width:28px;height:28px;font-size:15px;font-weight:900;box-shadow:0 1px 2px #0002;opacity:0;transition:opacity .15s;flex:0 0 auto}
 .tabla-inmultirii .chat-row:hover .chat-reply-btn{opacity:1}
 @media(hover:none){.tabla-inmultirii .chat-reply-btn{opacity:.6}}
+.tabla-inmultirii .chat-call-log{display:flex;align-items:center;gap:10px;padding:8px 12px;min-width:200px}
+.tabla-inmultirii .chat-call-log-icon{width:38px;height:38px;border-radius:50%;background:#e7f3ee;display:inline-flex;align-items:center;justify-content:center;font-size:18px;flex:0 0 auto}
+.tabla-inmultirii .chat-call-log.me .chat-call-log-icon{background:#c4f0bb}
+.tabla-inmultirii .chat-call-log.missed .chat-call-log-icon{background:#fde2e2}
+.tabla-inmultirii .chat-call-log-body{display:flex;flex-direction:column;min-width:0}
+.tabla-inmultirii .chat-call-log-body b{font-size:14px;color:#111b21}
+.tabla-inmultirii .chat-call-log.missed .chat-call-log-body b{color:#e02424}
+.tabla-inmultirii .chat-call-log-body small{font-size:12px;color:#667781;font-weight:700}
+.tabla-inmultirii .chat-call-back{margin-left:auto;border:0;border-radius:16px;background:#00a884;color:#fff;font-weight:900;font-size:12px;padding:6px 10px;white-space:nowrap}
+.tabla-inmultirii .chat-call-back:disabled{opacity:.5;cursor:default}
 .tabla-inmultirii .chat-typing-bubble{display:flex;gap:4px;padding:12px 14px}
 .tabla-inmultirii .chat-typing-bubble span{width:7px;height:7px;border-radius:50%;background:#8696a0;animation:tabla-typing 1.2s infinite ease-in-out}
 .tabla-inmultirii .chat-typing-bubble span:nth-child(2){animation-delay:.2s}
@@ -270,16 +280,17 @@
 
 /* ---------- Harta aventurii (prima pagină) ---------- */
 .tabla-inmultirii .map-home{position:relative;margin-top:16px}
-.tabla-inmultirii .map-scroll{overflow-x:auto;border-radius:26px;border:5px solid #fff;box-shadow:0 9px 0 #2e69a8}
+.tabla-inmultirii .map-scroll{overflow-x:auto;border-radius:26px;border:8px solid #52a83a;box-shadow:0 0 0 4px #2d6b20,inset 0 0 0 3px #8fdc6a,0 14px 30px #0007}
 .tabla-inmultirii .map-canvas{position:relative;aspect-ratio:1000/600;min-width:760px}
 .tabla-inmultirii .map-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .tabla-inmultirii .map-island-label{font-size:15px;font-weight:1000;fill:#24304a;stroke:#fff;stroke-width:4px;paint-order:stroke;letter-spacing:.5px}
 .tabla-inmultirii .map-node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;border:0;background:none;padding:0;cursor:pointer;z-index:2}
-.tabla-inmultirii .map-node-circle{width:clamp(40px,5.2vw,56px);height:clamp(40px,5.2vw,56px);border-radius:50%;background:var(--node-color);color:#fff;font-size:clamp(18px,2.4vw,26px);font-weight:1000;display:flex;align-items:center;justify-content:center;border:4px solid #fff;box-shadow:0 5px 0 #0004,0 0 0 3px #0001;transition:transform .15s;text-shadow:1px 2px #0003}
+.tabla-inmultirii .map-node-circle{width:clamp(40px,5.2vw,56px);height:clamp(40px,5.2vw,56px);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6 0%,#fff0 45%),var(--node-color);color:#fff;font-size:clamp(18px,2.4vw,26px);font-weight:1000;display:flex;align-items:center;justify-content:center;border:4px solid #ffe7a0;box-shadow:0 0 0 3px #c9971f,0 6px 0 3px #0004;transition:transform .15s;text-shadow:1px 2px #0003}
 .tabla-inmultirii .map-node:hover .map-node-circle{transform:scale(1.12)}
-.tabla-inmultirii .map-node.locked .map-node-circle{background:#9aa3b2;font-size:clamp(16px,2vw,22px)}
+.tabla-inmultirii .map-node.locked .map-node-circle{background:radial-gradient(circle at 35% 30%,#fff6 0%,#fff0 45%),#9aa3b2;border-color:#eef1f6;box-shadow:0 0 0 3px #8b95a5,0 6px 0 3px #0004;font-size:clamp(16px,2vw,22px)}
 .tabla-inmultirii .map-node.locked .map-node-label{opacity:.75}
 .tabla-inmultirii .map-node.done .map-node-circle{border-color:#ffd83d}
+.tabla-inmultirii .map-node-label{border-color:#8a5a2b!important;background:#fff8e6!important}
 .tabla-inmultirii .map-node.current .map-node-circle{animation:tabla-mapPulse 1.6s ease-in-out infinite}
 @keyframes tabla-mapPulse{0%,100%{box-shadow:0 5px 0 #0004,0 0 0 0 #ffd83dcc}50%{box-shadow:0 5px 0 #0004,0 0 0 12px #ffd83d00}}
 .tabla-inmultirii .map-node-stars{font-size:13px;line-height:1;margin-top:2px;letter-spacing:-1px;color:#ffd83d;text-shadow:0 1px 2px #0006}
@@ -289,31 +300,28 @@
 .tabla-inmultirii .map-node-here::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#e8264d}
 @keyframes tabla-mapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .tabla-inmultirii .map-node.arena .map-node-circle{width:clamp(36px,4.4vw,48px);height:clamp(36px,4.4vw,48px)}
-.tabla-inmultirii .map-home-island{position:absolute;transform:translate(-50%,-50%);width:17%;height:15%;border:0;background:none;cursor:pointer;border-radius:50%;z-index:1}
-.tabla-inmultirii .map-home-island:hover{background:#ffffff22}
 .tabla-inmultirii .map-owl{position:absolute;left:.5%;top:60%;display:flex;flex-direction:column;align-items:flex-start;z-index:3;pointer-events:none}
-.tabla-inmultirii .map-owl-bubble{max-width:min(150px,15%);min-width:110px;font-size:clamp(10.5px,1.15vw,13px)!important;background:#fff;border:3px solid #6b3d1c;border-radius:16px;padding:7px 11px;font-size:13px;font-weight:900;color:#24304a;box-shadow:0 4px 0 #6b3d1c55;position:relative;margin-left:4px}
+.tabla-inmultirii .map-owl-bubble{max-width:min(150px,15%);min-width:110px;font-size:clamp(10.5px,1.15vw,13px)!important;background:linear-gradient(180deg,#fbf0d2,#f1dfb0);border:3px solid #8a5a2b;border-radius:6px 16px 6px 16px;padding:7px 11px;font-size:13px;font-weight:900;color:#24304a;box-shadow:0 4px 0 #6b3d1c55;position:relative;margin-left:4px}
 .tabla-inmultirii .map-owl-bubble::after{content:'';position:absolute;left:18px;top:100%;border:9px solid transparent;border-top-color:#6b3d1c}
 .tabla-inmultirii .map-owl-emoji{font-size:clamp(46px,6vw,70px);line-height:1;margin-top:6px;filter:drop-shadow(2px 4px 0 #0003);animation:tabla-mapBounce 2.4s ease-in-out infinite}
-.tabla-inmultirii .map-legend{position:absolute;left:52%;top:43.5%;transform:translateX(-50%);display:flex;flex-direction:column;gap:4px;background:#fffdf6;border:4px solid #6b3d1c;border-radius:16px;padding:8px 10px;box-shadow:0 6px 0 #5a3216;z-index:2;width:clamp(120px,13vw,150px)}
-.tabla-inmultirii .map-legend-title{text-align:center;font-weight:1000;color:#6d42a9;font-size:13px;margin-bottom:2px}
-.tabla-inmultirii .map-legend-item{border:0;border-radius:8px;background:var(--node-color);color:#fff;font-weight:900;font-size:11px;padding:3px 6px;box-shadow:inset 0 -3px #0002;cursor:pointer}
 .tabla-inmultirii .map-start{position:absolute;left:44%;top:84%;transform:translate(-50%,-50%);border:4px solid #fff;border-radius:22px;background:linear-gradient(180deg,#ffd23f,#ff9f1c);color:#7a3d00;font-weight:1000;font-size:clamp(15px,2vw,22px);padding:10px 22px;box-shadow:0 7px 0 #c46a00,0 10px 18px #0003;z-index:3;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.15;white-space:nowrap;animation:tabla-mapStartBounce 2s ease-in-out infinite}
 @keyframes tabla-mapStartBounce{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 4px))}}
 .tabla-inmultirii .map-start small{font-size:12px;font-weight:900;color:#9a5300}
 .tabla-inmultirii .map-start:active{box-shadow:0 3px 0 #c46a00}
-.tabla-inmultirii .map-side{position:absolute;right:-8px;top:120px;display:flex;flex-direction:column;gap:8px;z-index:4}
-.tabla-inmultirii .map-side button{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;width:88px;padding:8px 4px;border:3px solid #6b3d1c;border-radius:16px;background:linear-gradient(180deg,#b57442,#8a5129);color:#fff3dc;font-weight:900;font-size:12px;box-shadow:0 5px 0 #5a3216;cursor:pointer}
-.tabla-inmultirii .map-side button span{font-size:26px;line-height:1.1}
+.tabla-inmultirii .map-side{position:absolute;top:14px;right:14px;z-index:4;display:flex;gap:10px}
+.tabla-inmultirii .map-side button{position:relative;display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:3px solid #6b3d1c;border-radius:16px;background:linear-gradient(180deg,#b57442,#8a5129);color:#fff3dc;font-weight:900;font-size:15px;box-shadow:0 5px 0 #5a3216;cursor:pointer}
+.tabla-inmultirii .map-side button span{font-size:22px;line-height:1}
 .tabla-inmultirii .map-side button:hover{filter:brightness(1.1)}
-.tabla-inmultirii .map-side .level-badge{top:-8px;right:-8px}
+.tabla-inmultirii .map-side button:active{transform:translateY(3px);box-shadow:0 2px 0 #5a3216}
+.tabla-inmultirii .map-side .level-badge{top:-10px;right:-10px}
+@media(max-width:700px){.tabla-inmultirii .map-side{position:static;padding:10px 10px 0}.tabla-inmultirii .map-side button{flex:1;justify-content:center;padding:7px 10px;font-size:14px}}
+.tabla-inmultirii .phone-only{display:none}
+@media(max-width:900px){.tabla-inmultirii .level-panel{display:none}.tabla-inmultirii .map-back-btn.phone-only{display:block}}
 .tabla-inmultirii .map-back-btn{display:block;width:100%;margin:0 0 12px;border:3px solid #6b3d1c;border-radius:14px;background:linear-gradient(180deg,#b57442,#8a5129);color:#fff3dc;font-weight:1000;padding:10px;box-shadow:0 4px 0 #5a3216;cursor:pointer}
 .tabla-inmultirii .level.locked{filter:grayscale(.85);opacity:.6;cursor:not-allowed}
 .tabla-inmultirii .map-modal-btn{background:linear-gradient(180deg,#b57442,#8a5129);box-shadow:0 6px #5a3216}
 @media(max-width:900px){
 .tabla-inmultirii .map-owl-bubble{max-width:118px}
-.tabla-inmultirii .map-side{position:static;flex-direction:row;justify-content:center;flex-wrap:wrap;margin-top:14px}
-.tabla-inmultirii .map-side button{width:auto;min-width:76px;padding:8px 10px}
 }
 
 /* ---------- Harta pe telefon (verticală) ---------- */
@@ -321,7 +329,7 @@
 .tabla-inmultirii .map-mobile-owl .map-owl-emoji{font-size:54px}
 .tabla-inmultirii .map-mobile-owl .map-owl-bubble{max-width:none;min-width:0;flex:1;font-size:14px!important;margin:0 0 10px}
 .tabla-inmultirii .map-mobile-owl .map-owl-bubble::after{left:-9px;top:auto;bottom:12px;border:8px solid transparent;border-right-color:#6b3d1c}
-.tabla-inmultirii .map-mobile-frame{border-radius:24px;border:5px solid #fff;box-shadow:0 8px 0 #2e69a8;overflow:hidden;background-color:#2ea0e0;background-image:radial-gradient(#ffffff26 2px,transparent 2px),linear-gradient(180deg,#4cc3f1,#1f8fd8 60%,#1b7fc4);background-size:34px 34px,100% 100%}
+.tabla-inmultirii .map-mobile-frame{border-radius:24px;border:6px solid #52a83a;box-shadow:0 0 0 3px #2d6b20,0 10px 24px #0007;overflow:hidden;background-color:#2ea0e0;background-image:radial-gradient(#ffffff26 2px,transparent 2px),linear-gradient(180deg,#4cc3f1,#1f8fd8 60%,#1b7fc4);background-size:34px 34px,100% 100%}
 .tabla-inmultirii .map-mobile{position:relative;width:100%}
 .tabla-inmultirii .map-mobile-path{position:absolute;inset:0;width:100%;height:100%}
 .tabla-inmultirii .map-mobile-island{position:absolute;transform:translate(-50%,-50%);width:min(56vw,230px);display:flex;flex-direction:column;align-items:center;pointer-events:none}
@@ -343,3 +351,11 @@
 .tabla-inmultirii button.player-badge{max-width:100%;overflow:hidden;white-space:nowrap}
 .tabla-inmultirii .map-home{margin-top:10px}
 }
+
+/* Butonul de start cu ramă aurie și romburi roșii, ca în model. */
+.tabla-inmultirii .map-start,.tabla-inmultirii .map-start-mobile{border:4px solid #fff3c4;box-shadow:0 0 0 4px #b8860b,0 7px 0 4px #7a4e00,0 14px 24px #0006;background:linear-gradient(180deg,#ffe066 0%,#ffc21a 45%,#ff9f1c 100%)}
+.tabla-inmultirii .map-start::before,.tabla-inmultirii .map-start::after,.tabla-inmultirii .map-start-mobile::before,.tabla-inmultirii .map-start-mobile::after{content:'';position:absolute;top:50%;width:16px;height:16px;background:#e8264d;border:3px solid #ffe08a;box-shadow:0 0 0 2px #b8860b;transform:translateY(-50%) rotate(45deg)}
+.tabla-inmultirii .map-start::before,.tabla-inmultirii .map-start-mobile::before{left:-17px}
+.tabla-inmultirii .map-start::after,.tabla-inmultirii .map-start-mobile::after{right:-17px}
+.tabla-inmultirii .map-start-mobile{position:sticky;width:calc(100% - 40px);margin:16px 20px 0}
+.tabla-inmultirii .map-side button{padding:6px 14px;font-size:14px;border-width:2px;box-shadow:0 4px 0 #5a3216}

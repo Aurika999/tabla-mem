@@ -14,6 +14,16 @@ service cloud.firestore {
                  && data.replyTo.name.size() <= 30);
     }
 
+    // Mesajul lasat de un apel in conversatia privata (durata sau „nepreluat”).
+    function validCallLog(data) {
+      return !('type' in data)
+             || (data.type == 'call'
+                 && data.callStatus in ['completed', 'missed', 'declined', 'busy', 'failed']
+                 && data.durationSec is int
+                 && data.durationSec >= 0
+                 && data.durationSec <= 86400);
+    }
+
     // Clasament pe nivel: oricine poate citi (public), dar fiecare user
     // poate scrie doar propriul scor (uid-ul din document trebuie sa fie al lui).
     match /scores/{scoreId} {
@@ -86,8 +96,9 @@ service cloud.firestore {
                     && request.auth.uid in chatId.split('_');
         allow create: if request.auth != null
                       && request.auth.uid in chatId.split('_')
-                      && request.resource.data.keys().hasOnly(['uid', 'name', 'text', 'createdAt', 'replyTo'])
-                    && validReply(request.resource.data)
+                      && request.resource.data.keys().hasOnly(['uid', 'name', 'text', 'createdAt', 'replyTo', 'type', 'callStatus', 'durationSec'])
+                      && validReply(request.resource.data)
+                      && validCallLog(request.resource.data)
                       && request.resource.data.uid == request.auth.uid
                       && request.resource.data.name is string
                       && request.resource.data.name.size() > 0

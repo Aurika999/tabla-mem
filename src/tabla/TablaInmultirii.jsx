@@ -172,6 +172,8 @@ export default function TablaInmultirii() {
           />
 
           <div className="main-content" ref={contentRef}>
+            {/* Pe telefon lista de niveluri e ascunsă (nivelurile se aleg de pe hartă). */}
+            <button className="map-back-btn phone-only" onClick={goToMap}>🗺️ HARTA AVENTURII</button>
             {openPanel ? (
               <div className="info-view">
                 {openPanel === 'leaderboard' && (
