@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import {
   useMessages, usePlayers, useSendMessage, privateChatId, peerOf, MAX_MESSAGE_LENGTH,
 } from '../useChat';
+import Avatar from './Avatar';
+import Flag from './Flag';
 
 const EMOJIS = [
   '😀', '😃', '😄', '😁', '😆', '😂', '🤣', '😊', '🙂', '😉',
@@ -17,7 +19,7 @@ function formatTime(timestamp) {
   return timestamp.toDate().toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' });
 }
 
-function Conversation({ uid, name, peer, onCall, callBusy }) {
+function Conversation({ uid, name, peer, profiles, onCall, callBusy }) {
   const chatId = peer ? privateChatId(uid, peer.uid) : null;
   const { messages, loading } = useMessages(chatId);
   const sendMessage = useSendMessage();
@@ -68,7 +70,14 @@ function Conversation({ uid, name, peer, onCall, callBusy }) {
   return (
     <div className="chat-conversation">
       <div className="chat-title">
-        <span>{peer ? `💬 ${peer.name}` : '🌍 General — toți jucătorii'}</span>
+        {peer ? (
+          <span className="chat-title-peer">
+            <Avatar src={profiles[peer.uid]?.avatar} name={peer.name} size={34} />
+            {peer.name} <Flag code={profiles[peer.uid]?.country} />
+          </span>
+        ) : (
+          <span>🌍 General — toți jucătorii</span>
+        )}
         {peer && (
           <button
             className="chat-call-btn"
@@ -83,14 +92,20 @@ function Conversation({ uid, name, peer, onCall, callBusy }) {
       <div className="chat-messages" ref={listRef}>
         {loading && <p className="leaderboard-empty">Se încarcă…</p>}
         {!loading && messages.length === 0 && <p className="leaderboard-empty">{emptyText}</p>}
-        {messages.map(msg => (
-          <div key={msg.id} className={`chat-message${msg.uid === uid ? ' me' : ''}`}>
-            <div className="chat-meta">
-              <b>{msg.name}</b> <span>{formatTime(msg.createdAt)}</span>
+        {messages.map(msg => {
+          const author = profiles[msg.uid];
+          return (
+            <div key={msg.id} className={`chat-row${msg.uid === uid ? ' me' : ''}`}>
+              <Avatar src={author?.avatar} name={msg.name} size={32} />
+              <div className={`chat-message${msg.uid === uid ? ' me' : ''}`}>
+                <div className="chat-meta">
+                  <b>{msg.name}</b> <Flag code={author?.country} /> <span>{formatTime(msg.createdAt)}</span>
+                </div>
+                <div className="chat-text">{msg.text}</div>
+              </div>
             </div>
-            <div className="chat-text">{msg.text}</div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       {showEmojis && canWrite && (
         <div className="chat-emoji-picker">
@@ -129,6 +144,8 @@ export default function Chat({
 }) {
   const players = usePlayers();
   const [search, setSearch] = useState('');
+  // Avatar și țară pentru fiecare jucător, după uid (din profilurile publice).
+  const profiles = Object.fromEntries(players.map(p => [p.uid, p]));
 
   if (!firebaseEnabled) {
     return (
@@ -174,7 +191,8 @@ export default function Chat({
                 className={`chat-contact${conv.id === activeChatId ? ' active' : ''}`}
                 onClick={() => onSelectPeer(other)}
               >
-                <span className="chat-contact-name">{other.name}</span>
+                <Avatar src={profiles[other.uid]?.avatar} name={other.name} size={28} />
+                <span className="chat-contact-name">{other.name} <Flag code={profiles[other.uid]?.country} /></span>
                 {isUnread(conv) && <span className="chat-unread" title="Mesaj nou" />}
                 <small>{conv.lastMessage}</small>
               </button>
@@ -187,7 +205,8 @@ export default function Chat({
               className={`chat-contact${peer?.uid === p.uid ? ' active' : ''}`}
               onClick={() => onSelectPeer({ uid: p.uid, name: p.name })}
             >
-              <span className="chat-contact-name">{p.name}</span>
+              <Avatar src={p.avatar} name={p.name} size={28} />
+              <span className="chat-contact-name">{p.name} <Flag code={p.country} /></span>
             </button>
           ))}
           {shownConversations.length === 0 && otherPlayers.length === 0 && (
@@ -199,6 +218,7 @@ export default function Chat({
           uid={uid}
           name={name}
           peer={peer}
+          profiles={profiles}
           onCall={onCall}
           callBusy={callBusy}
         />

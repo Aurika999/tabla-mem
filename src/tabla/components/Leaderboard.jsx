@@ -93,6 +93,11 @@ export default function Leaderboard({ uid, firebaseEnabled }) {
         <ContestHistory uid={uid} />
       ) : (
         <>
+          {!globalLoading && (
+            <p className="leaderboard-count">
+              👥 {globalEntries.length} {globalEntries.length === 1 ? 'jucător înregistrat' : 'jucători înregistrați'}
+            </p>
+          )}
           <p className="leaderboard-sub">Punctaj total, toate nivelurile</p>
           <LeaderboardList
             entries={globalEntries}

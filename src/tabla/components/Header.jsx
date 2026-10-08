@@ -26,7 +26,8 @@ function AbacusLogo() {
 }
 
 export default function Header({
-  points, lives, combo, time, playerName, playerCountry, playerAvatar, accountEmail, onOpenProfile, profileOpen,
+  totalPoints, roundPoints, lives, combo, time,
+  playerName, playerCountry, playerAvatar, accountEmail, onOpenProfile, profileOpen,
 }) {
   return (
     <header>
@@ -41,7 +42,10 @@ export default function Header({
             <Avatar src={playerAvatar} name={playerName} size={28} /> {playerName} <Flag code={playerCountry} /> ⚙️
           </button>
         )}
-        <div className="badge">⭐ Puncte: <span>{points}</span></div>
+        <div className="badge" title="Toate punctele tale, din toate jocurile">
+          ⭐ Puncte: <span>{totalPoints}</span>
+          {roundPoints > 0 && <small className="round-points"> (+{roundPoints} acum)</small>}
+        </div>
         <div className="badge">❤️ Vieți: <span>{lives}</span></div>
         <div className="badge">🔥 Combo: x<span>{combo}</span></div>
         <div className="badge">⏱️ <span className={time <= 7 ? 'timer low' : ''}>{time}</span>s</div>

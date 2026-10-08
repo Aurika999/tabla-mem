@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './TablaInmultirii.css';
 import { useTablaGame } from './useTablaGame';
 import { usePlayerProfile } from './usePlayerProfile';
-import { submitScore, addPlayerPoints } from './useLeaderboard';
+import { submitScore, addPlayerPoints, useMyTotalPoints } from './useLeaderboard';
 import Header from './components/Header';
 import LevelPanel from './components/LevelPanel';
 import GameCard from './components/GameCard';
@@ -19,10 +19,23 @@ import AuthGate from './components/AuthGate';
 import ProfilePanel from './components/ProfilePanel';
 
 const PAGE_TITLE = 'Tabla Înmulțirii';
+// Sub această lățime coloanele stau una sub alta (vezi .main în CSS).
+const STACKED_LAYOUT_QUERY = '(max-width: 900px)';
 
 export default function TablaInmultirii() {
   const [openPanel, setOpenPanel] = useState(null);
   const togglePanel = key => setOpenPanel(prev => (prev === key ? null : key));
+
+  // Pe mobil, conținutul (exercițiul sau panoul deschis) e sub lista de niveluri;
+  // după fiecare alegere a utilizatorului derulăm până la el.
+  const contentRef = useRef(null);
+  const [scrollRequest, setScrollRequest] = useState(0);
+  const scrollToContent = () => setScrollRequest(n => n + 1);
+
+  useEffect(() => {
+    if (scrollRequest === 0 || !window.matchMedia(STACKED_LAYOUT_QUERY).matches) return;
+    contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [scrollRequest]);
 
   const {
     uid, name, country, email, isAnonymous, ready, avatar, account,
@@ -40,9 +53,20 @@ export default function TablaInmultirii() {
     handleAnswer, toggleHint, goToNextQuestionOrFinish,
   } = useTablaGame(1, openPanel !== null || showAuthGate || showNameGate || (firebaseEnabled && !ready));
 
+  // Punctele rundei se adaugă la total abia la final (când apare rezultatul);
+  // până atunci le arătăm separat, ca să nu fie numărate de două ori.
+  const savedTotalPoints = useMyTotalPoints(uid);
+  const roundPoints = modal ? 0 : stats.points;
+
   const handleSelectLevel = level => {
     setOpenPanel(null);
     selectLevel(level);
+    scrollToContent();
+  };
+
+  const closePanel = () => {
+    setOpenPanel(null);
+    scrollToContent();
   };
 
   const [chatPeer, setChatPeer] = useState(null);
@@ -61,12 +85,14 @@ export default function TablaInmultirii() {
     // Cererea de permisiune trebuie să vină dintr-un clic al utilizatorului.
     if (key === 'chat') requestSystemNotifications();
     togglePanel(key);
+    scrollToContent();
   };
 
   const openChatWith = peer => {
     setChatPeer(peer);
     setOpenPanel('chat');
     dismissIncoming();
+    scrollToContent();
   };
 
   useEffect(() => {
@@ -94,7 +120,7 @@ export default function TablaInmultirii() {
   return (
     <div className="tabla-inmultirii">
       <div className="app">
-        <Header points={stats.points} lives={stats.lives} combo={stats.combo} time={time} playerName={name} playerCountry={country}
+        <Header totalPoints={savedTotalPoints + roundPoints} roundPoints={roundPoints} lives={stats.lives} combo={stats.combo} time={time} playerName={name} playerCountry={country}
           playerAvatar={avatar} accountEmail={isAnonymous ? '' : email}
           onOpenProfile={() => handleTogglePanel('profile')} profileOpen={openPanel === 'profile'} />
 
@@ -107,67 +133,69 @@ export default function TablaInmultirii() {
             badges={{ chat: unreadCount }}
           />
 
-          {openPanel ? (
-            <div className="info-view">
-              {openPanel === 'leaderboard' && (
-                <Leaderboard uid={uid} firebaseEnabled={firebaseEnabled} />
-              )}
-              {openPanel === 'profile' && (
-                <ProfilePanel
-                  uid={uid}
-                  name={name}
-                  country={country}
-                  email={email}
-                  isAnonymous={isAnonymous}
-                  avatar={avatar}
-                  account={account}
-                  onSaveDetails={saveProfile}
-                  onUpdateAvatar={updateAvatar}
-                  onChangePassword={changePassword}
-                  onLogout={isAnonymous ? null : handleLogout}
-                />
-              )}
-              {openPanel === 'contest' && (
-                <ContestPanel
-                  uid={uid}
-                  name={name}
-                  country={country}
-                  firebaseEnabled={firebaseEnabled}
-                  contestId={contestId}
-                  onContestChange={setContestId}
-                />
-              )}
-              {openPanel === 'chat' && (
-                <Chat
-                  uid={uid}
-                  name={name}
-                  firebaseEnabled={firebaseEnabled}
-                  peer={chatPeer}
-                  onSelectPeer={setChatPeer}
-                  conversations={conversations}
-                  isUnread={isUnread}
-                  onCall={startCall}
-                  callBusy={Boolean(call)}
-                />
-              )}
-              <button className="bigbtn" onClick={() => setOpenPanel(null)}>▶ Înapoi la exercițiu</button>
-            </div>
-          ) : (
-            <GameCard
-              current={current}
-              stats={stats}
-              questionsPerLevel={questionsPerLevel}
-              answered={answered}
-              selected={selected}
-              hintOpen={hintOpen}
-              feedback={feedback}
-              toast={toast}
-              onAnswer={handleAnswer}
-              onToggleHint={toggleHint}
-              onNext={goToNextQuestionOrFinish}
-              onRestart={restartLevel}
-            />
-          )}
+          <div className="main-content" ref={contentRef}>
+            {openPanel ? (
+              <div className="info-view">
+                {openPanel === 'leaderboard' && (
+                  <Leaderboard uid={uid} firebaseEnabled={firebaseEnabled} />
+                )}
+                {openPanel === 'profile' && (
+                  <ProfilePanel
+                    uid={uid}
+                    name={name}
+                    country={country}
+                    email={email}
+                    isAnonymous={isAnonymous}
+                    avatar={avatar}
+                    account={account}
+                    onSaveDetails={saveProfile}
+                    onUpdateAvatar={updateAvatar}
+                    onChangePassword={changePassword}
+                    onLogout={isAnonymous ? null : handleLogout}
+                  />
+                )}
+                {openPanel === 'contest' && (
+                  <ContestPanel
+                    uid={uid}
+                    name={name}
+                    country={country}
+                    firebaseEnabled={firebaseEnabled}
+                    contestId={contestId}
+                    onContestChange={setContestId}
+                  />
+                )}
+                {openPanel === 'chat' && (
+                  <Chat
+                    uid={uid}
+                    name={name}
+                    firebaseEnabled={firebaseEnabled}
+                    peer={chatPeer}
+                    onSelectPeer={setChatPeer}
+                    conversations={conversations}
+                    isUnread={isUnread}
+                    onCall={startCall}
+                    callBusy={Boolean(call)}
+                  />
+                )}
+                <button className="bigbtn" onClick={closePanel}>▶ Înapoi la exercițiu</button>
+              </div>
+            ) : (
+              <GameCard
+                current={current}
+                stats={stats}
+                questionsPerLevel={questionsPerLevel}
+                answered={answered}
+                selected={selected}
+                hintOpen={hintOpen}
+                feedback={feedback}
+                toast={toast}
+                onAnswer={handleAnswer}
+                onToggleHint={toggleHint}
+                onNext={goToNextQuestionOrFinish}
+                onRestart={restartLevel}
+              />
+            )}
+          </div>
         </div>
       </div>
 

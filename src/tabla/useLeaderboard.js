@@ -9,6 +9,24 @@ const SCORES_COLLECTION = 'scores';
 const PLAYERS_COLLECTION = 'players';
 const MAX_PLAYERS = 200;
 
+// Punctajul total salvat al jucătorului (toate jocurile), actualizat în timp real.
+export function useMyTotalPoints(uid) {
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    setTotal(0);
+    if (!firebaseEnabled || !uid) return undefined;
+    const unsubscribe = onSnapshot(doc(db, PLAYERS_COLLECTION, uid), (snap) => {
+      setTotal(snap.data()?.totalPoints || 0);
+    }, (err) => {
+      console.error('Nu am putut încărca punctajul total', err);
+    });
+    return unsubscribe;
+  }, [uid]);
+
+  return total;
+}
+
 export function useMyScores(uid) {
   const [scores, setScores] = useState({});
   const [loading, setLoading] = useState(firebaseEnabled);

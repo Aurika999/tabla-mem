@@ -17,6 +17,7 @@
 .tabla-inmultirii .lp{background:#3d9b70}
 .tabla-inmultirii .la{background:#e0632c}
 .tabla-inmultirii .lb{background:#c9a400}
+.tabla-inmultirii .main-content{min-width:0;scroll-margin-top:10px}
 .tabla-inmultirii .info-view{display:flex;flex-direction:column;align-items:center;gap:15px}
 .tabla-inmultirii .info-view>.panel{width:100%}
 .tabla-inmultirii .lc{background:#14a3a3}
@@ -103,6 +104,13 @@
 .tabla-inmultirii .contest-history-list li>span:first-child{width:26px}
 .tabla-inmultirii .contest-history-list .name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tabla-inmultirii .contest-history-place{margin-top:6px;font-weight:800;color:#6d42a9;font-size:14px}
+.tabla-inmultirii .chat-row{display:flex;align-items:flex-end;gap:8px;align-self:flex-start;max-width:85%}
+.tabla-inmultirii .chat-row.me{flex-direction:row-reverse;align-self:flex-end}
+.tabla-inmultirii .chat-row .chat-message{max-width:none;align-self:auto;min-width:0}
+.tabla-inmultirii .chat-meta .flag{width:18px;height:13px;vertical-align:-2px}
+.tabla-inmultirii .chat-title-peer{display:inline-flex;align-items:center;gap:8px;min-width:0}
+.tabla-inmultirii .chat-contact .avatar{box-shadow:0 0 0 2px #fff}
+.tabla-inmultirii .chat-contact-name .flag{width:18px;height:13px;vertical-align:-2px}
 .tabla-inmultirii .chat-messages{height:min(55vh,420px);overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:6px;background:#f7f9fd;border-radius:16px}
 .tabla-inmultirii .chat-message{max-width:80%;align-self:flex-start;background:#fff;border:2px solid #e6eefc;border-radius:14px;padding:8px 12px}
 .tabla-inmultirii .chat-message.me{align-self:flex-end;background:#f4eeff;border-color:#d9c8f5}
@@ -153,6 +161,7 @@
 .tabla-inmultirii .modal h2{font-size:38px;margin:5px}
 .tabla-inmultirii .toast{position:absolute;top:80px;left:50%;transform:translateX(-50%);padding:12px 20px;background:#fff;border-radius:15px;box-shadow:0 5px 15px #0002;font-weight:900;opacity:0;pointer-events:none;transition:.2s}
 .tabla-inmultirii .toast.show{opacity:1}
+.tabla-inmultirii .leaderboard-count{text-align:center;margin:-4px 0 12px;font-weight:900;color:#24304a;font-size:18px}
 .tabla-inmultirii .leaderboard-sub{text-align:center;margin:-8px 0 12px;color:#6d42a9;font-weight:800}
 .tabla-inmultirii .leaderboard-empty{text-align:center;color:#6a7590;font-weight:700;font-size:14px}
 .tabla-inmultirii .leaderboard-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
@@ -163,6 +172,7 @@
 .tabla-inmultirii .leaderboard-row .points{color:#6d42a9}
 .tabla-inmultirii .name-input{width:100%;border:3px solid #e6eefc;border-radius:14px;padding:12px 14px;font-size:18px;font-weight:800;text-align:center;margin:14px 0;color:#24304a}
 .tabla-inmultirii .name-input:focus{outline:3px solid #ffd83d}
+.tabla-inmultirii .round-points{color:#159632;font-weight:900;font-size:.8em}
 .tabla-inmultirii .avatar{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;object-fit:cover;flex:0 0 auto;vertical-align:middle;color:#fff;font-weight:900;box-shadow:0 0 0 2px #fff,0 0 0 3px #0001}
 .tabla-inmultirii button.player-badge{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font:inherit;font-weight:900;color:#fff}
 .tabla-inmultirii button.player-badge:hover,.tabla-inmultirii button.player-badge.active{outline:3px solid #ffd83d}
