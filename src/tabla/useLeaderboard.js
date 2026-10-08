@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import {
-  collection, doc, getFirestore, increment, onSnapshot, orderBy, query,
+  collection, doc, getFirestore, increment, onSnapshot, query,
   runTransaction, serverTimestamp, setDoc, limit, where,
 } from 'firebase/firestore';
 import { db, firebaseEnabled } from '../firebase';
 
 const SCORES_COLLECTION = 'scores';
 const PLAYERS_COLLECTION = 'players';
-const TOP_N = 20;
+const MAX_PLAYERS = 200;
 
 export function useMyScores(uid) {
   const [scores, setScores] = useState({});
@@ -47,13 +47,16 @@ export function useGlobalLeaderboard() {
       return undefined;
     }
     setLoading(true);
-    const q = query(
-      collection(db, PLAYERS_COLLECTION),
-      orderBy('totalPoints', 'desc'),
-      limit(TOP_N),
-    );
+    // Fără orderBy pe server: Firestore ar ascunde jucătorii fără totalPoints
+    // (cei care n-au terminat încă niciun nivel). Îi punem cu 0 și sortăm aici.
+    const q = query(collection(db, PLAYERS_COLLECTION), limit(MAX_PLAYERS));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      setEntries(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+      const list = snapshot.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .filter(p => p.name)
+        .map(p => ({ ...p, totalPoints: p.totalPoints || 0 }));
+      list.sort((a, b) => b.totalPoints - a.totalPoints);
+      setEntries(list);
       setLoading(false);
     }, (err) => {
       console.error('Nu am putut încărca clasamentul general', err);

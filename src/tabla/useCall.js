@@ -104,17 +104,24 @@ export function useCall({ uid, name }) {
     const addCandidate = (data) => {
       pc.addIceCandidate(new RTCIceCandidate(data)).catch(err => console.error('Candidat ICE invalid', err));
     };
-    const unsub = onSnapshot(collection(db, CALLS_COLLECTION, callId, otherSide), (snapshot) => {
-      snapshot.docChanges().forEach(change => {
-        if (change.type !== 'added') return;
-        if (pc.remoteDescription) addCandidate(change.doc.data());
-        else pending.push(change.doc.data());
+    // Se apelează doar după ce documentul apelului există: regulile îl citesc
+    // ca să verifice participanții, altfel ascultarea e refuzată definitiv.
+    const listenForCandidates = () => {
+      const unsub = onSnapshot(collection(db, CALLS_COLLECTION, callId, otherSide), (snapshot) => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type !== 'added') return;
+          if (pc.remoteDescription) addCandidate(change.doc.data());
+          else pending.push(change.doc.data());
+        });
+      }, (err) => {
+        console.error('Nu am putut asculta candidații ICE', err);
       });
-    });
-    unsubsRef.current.push(unsub);
+      unsubsRef.current.push(unsub);
+    };
 
     return {
       pc,
+      listenForCandidates,
       flushCandidates: () => pending.splice(0).forEach(addCandidate),
     };
   }, [finish, updateCall]);
@@ -143,7 +150,9 @@ export function useCall({ uid, name }) {
     updateCall({ id: callDoc.id, role: 'caller', peer, status: 'ringing' });
 
     try {
-      const { pc, flushCandidates } = createPeerConnection(callDoc.id, 'callerCandidates', 'calleeCandidates');
+      const { pc, listenForCandidates, flushCandidates } = createPeerConnection(
+        callDoc.id, 'callerCandidates', 'calleeCandidates',
+      );
       const offer = await pc.createOffer();
       // Documentul trebuie să existe înainte de candidații ICE (regulile îl citesc).
       await setDoc(callDoc, {
@@ -153,6 +162,7 @@ export function useCall({ uid, name }) {
         offer: { type: offer.type, sdp: offer.sdp },
         createdAt: serverTimestamp(),
       });
+      listenForCandidates();
       await pc.setLocalDescription(offer);
 
       const unsub = onSnapshot(callDoc, async (snap) => {
@@ -177,7 +187,9 @@ export function useCall({ uid, name }) {
       timersRef.current.push(timeoutId);
     } catch (err) {
       console.error('Nu am putut porni apelul', err);
-      finish('Apelul nu a putut fi pornit.', 'ended');
+      finish(err?.code === 'permission-denied'
+        ? 'Apelurile nu sunt activate încă în Firebase (regulile pentru apeluri).'
+        : 'Apelul nu a putut fi pornit.', 'ended');
     }
   }, [uid, name, getMicrophone, createPeerConnection, updateCall, finish]);
 
@@ -201,7 +213,10 @@ export function useCall({ uid, name }) {
         finish('Apelul s-a încheiat deja.');
         return;
       }
-      const { pc, flushCandidates } = createPeerConnection(offerCall.id, 'calleeCandidates', 'callerCandidates');
+      const { pc, listenForCandidates, flushCandidates } = createPeerConnection(
+        offerCall.id, 'calleeCandidates', 'callerCandidates',
+      );
+      listenForCandidates();
       await pc.setRemoteDescription(new RTCSessionDescription(data.offer));
       flushCandidates();
       const answer = await pc.createAnswer();

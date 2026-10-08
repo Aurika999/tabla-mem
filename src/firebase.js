@@ -1,5 +1,9 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, onAuthStateChanged, updateProfile } from 'firebase/auth';
+import {
+  getAuth, signInAnonymously, onAuthStateChanged, updateProfile,
+  EmailAuthProvider, linkWithCredential, signInWithEmailAndPassword, signOut, sendPasswordResetEmail,
+  reauthenticateWithCredential, updatePassword,
+} from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -16,6 +20,12 @@ export const firebaseEnabled = Boolean(firebaseConfig.apiKey && firebaseConfig.p
 const app = firebaseEnabled ? initializeApp(firebaseConfig) : null;
 
 export const auth = app ? getAuth(app) : null;
+// Emailurile trimise de Firebase (ex. resetarea parolei) vin în română.
+if (auth) auth.languageCode = 'ro';
 export const db = app ? getFirestore(app) : null;
 
-export { signInAnonymously, onAuthStateChanged, updateProfile };
+export {
+  signInAnonymously, onAuthStateChanged, updateProfile,
+  EmailAuthProvider, linkWithCredential, signInWithEmailAndPassword, signOut, sendPasswordResetEmail,
+  reauthenticateWithCredential, updatePassword,
+};

@@ -16,7 +16,6 @@
 .tabla-inmultirii .l1{background:#5fc84a}.tabla-inmultirii .l2{background:#20a8e8}.tabla-inmultirii .l3{background:#f4a623}.tabla-inmultirii .l4{background:#9258d8}.tabla-inmultirii .l5{background:#e84d8d}
 .tabla-inmultirii .lp{background:#3d9b70}
 .tabla-inmultirii .la{background:#e0632c}
-.tabla-inmultirii .ls{background:#2f7fd6}
 .tabla-inmultirii .lb{background:#c9a400}
 .tabla-inmultirii .info-view{display:flex;flex-direction:column;align-items:center;gap:15px}
 .tabla-inmultirii .info-view>.panel{width:100%}
@@ -65,6 +64,45 @@
 .tabla-inmultirii .call-bar-info b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tabla-inmultirii .call-bar-info span{color:#6a7590;font-weight:700;font-size:14px}
 .tabla-inmultirii .call-notice{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9;background:#24304a;color:#fff;font-weight:800;padding:12px 18px;border-radius:14px;max-width:calc(100vw - 32px);text-align:center}
+.tabla-inmultirii .lt{background:linear-gradient(135deg,#ff7a18,#e8264d)}
+.tabla-inmultirii .contest-intro{text-align:center;font-weight:700;color:#4a5570;line-height:1.5;max-width:620px;margin:0 auto 12px}
+.tabla-inmultirii .contest .bigbtn{display:block;margin:8px auto}
+.tabla-inmultirii .contest .call-actions .bigbtn{display:inline-block;margin:4px}
+.tabla-inmultirii .contest-subtitle{color:#6d42a9;text-align:center;margin:18px 0 10px}
+.tabla-inmultirii .contest-room .name{display:flex;flex-direction:column}
+.tabla-inmultirii .contest-room .name small{font-weight:600;color:#6a7590;overflow:hidden;text-overflow:ellipsis}
+.tabla-inmultirii .contest-count{font-weight:900;color:#6d42a9}
+.tabla-inmultirii .contest-empty-slot{opacity:.55;border:2px dashed #d5deee}
+.tabla-inmultirii .contest-progress{color:#6d42a9;font-weight:800;font-size:14px;white-space:nowrap}
+.tabla-inmultirii .contest-countdown{text-align:center;padding:30px 0;font-weight:800;font-size:20px;color:#4a5570}
+.tabla-inmultirii .contest-countdown-number{font-size:110px;font-weight:1000;color:#e8264d;line-height:1;animation:tabla-badgePop .5s cubic-bezier(.34,1.56,.64,1)}
+.tabla-inmultirii .contest-play{display:grid;grid-template-columns:1fr 240px;gap:16px;align-items:start}
+.tabla-inmultirii .contest-play-main{text-align:center;min-width:0}
+.tabla-inmultirii .contest-play-side .contest-subtitle{margin-top:0}
+.tabla-inmultirii .contest-play-side .leaderboard-row{flex-wrap:wrap}
+.tabla-inmultirii .contest-play-side .contest-progress{flex-basis:100%;padding-left:34px}
+.tabla-inmultirii .contest-timer{font-size:22px;font-weight:1000;color:#24304a}
+.tabla-inmultirii .contest-timer.low{color:#e8264d}
+.tabla-inmultirii .contest-timer-bar{height:10px;background:#e6eefc;border-radius:5px;overflow:hidden;margin:6px auto 4px;max-width:570px}
+.tabla-inmultirii .contest-timer-bar span{display:block;height:100%;background:linear-gradient(90deg,#27c94f,#ffc72e);transition:width .2s linear}
+.tabla-inmultirii .contest-final{text-align:center}
+.tabla-inmultirii .contest-final h3{font-size:28px;color:#6d42a9;margin:6px 0}
+@media(max-width:900px){.tabla-inmultirii .contest-play{grid-template-columns:1fr}}
+.tabla-inmultirii .contest-create{max-width:520px;margin:0 auto}
+.tabla-inmultirii .contest-create .name-input{margin:4px 0 6px;font-size:16px}
+.tabla-inmultirii .contest-history-title{font-size:18px;font-weight:900;color:#24304a;margin-bottom:2px;overflow-wrap:anywhere}
+.tabla-inmultirii .contest-history{display:flex;flex-direction:column;gap:10px}
+.tabla-inmultirii .contest-history-card{background:#f7f9fd;border:2px solid #e6eefc;border-radius:16px;padding:12px 14px}
+.tabla-inmultirii .contest-history-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-weight:800;color:#6a7590;font-size:14px}
+.tabla-inmultirii .contest-history-winner{font-size:18px;font-weight:800;margin:6px 0;color:#24304a}
+.tabla-inmultirii .contest-history-winner b{color:#6d42a9}
+.tabla-inmultirii .contest-history-me{color:#159632;font-weight:900}
+.tabla-inmultirii .contest-history-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.tabla-inmultirii .contest-history-list li{display:flex;align-items:center;gap:8px;font-weight:700;padding:4px 8px;border-radius:10px}
+.tabla-inmultirii .contest-history-list li.me{background:#fff3c4}
+.tabla-inmultirii .contest-history-list li>span:first-child{width:26px}
+.tabla-inmultirii .contest-history-list .name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tabla-inmultirii .contest-history-place{margin-top:6px;font-weight:800;color:#6d42a9;font-size:14px}
 .tabla-inmultirii .chat-messages{height:min(55vh,420px);overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:6px;background:#f7f9fd;border-radius:16px}
 .tabla-inmultirii .chat-message{max-width:80%;align-self:flex-start;background:#fff;border:2px solid #e6eefc;border-radius:14px;padding:8px 12px}
 .tabla-inmultirii .chat-message.me{align-self:flex-end;background:#f4eeff;border-color:#d9c8f5}
@@ -125,6 +163,33 @@
 .tabla-inmultirii .leaderboard-row .points{color:#6d42a9}
 .tabla-inmultirii .name-input{width:100%;border:3px solid #e6eefc;border-radius:14px;padding:12px 14px;font-size:18px;font-weight:800;text-align:center;margin:14px 0;color:#24304a}
 .tabla-inmultirii .name-input:focus{outline:3px solid #ffd83d}
+.tabla-inmultirii .avatar{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;object-fit:cover;flex:0 0 auto;vertical-align:middle;color:#fff;font-weight:900;box-shadow:0 0 0 2px #fff,0 0 0 3px #0001}
+.tabla-inmultirii button.player-badge{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font:inherit;font-weight:900;color:#fff}
+.tabla-inmultirii button.player-badge:hover,.tabla-inmultirii button.player-badge.active{outline:3px solid #ffd83d}
+.tabla-inmultirii .profile-top{display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center}
+.tabla-inmultirii .profile-avatar{display:flex;flex-direction:column;align-items:center;gap:8px}
+.tabla-inmultirii .profile-avatar-actions{display:flex;flex-direction:column;align-items:center;gap:4px}
+.tabla-inmultirii .profile-link-btn{border:0;background:none;color:#e8264d;font-weight:800;cursor:pointer;text-decoration:underline}
+.tabla-inmultirii .profile-identity{min-width:0}
+.tabla-inmultirii .profile-name{font-size:28px;font-weight:1000;color:#24304a;overflow-wrap:anywhere}
+.tabla-inmultirii .profile-email{font-weight:700;color:#6a7590;margin-top:4px;overflow-wrap:anywhere}
+.tabla-inmultirii .profile-info{display:flex;flex-direction:column;gap:6px;max-width:620px;margin:0 auto}
+.tabla-inmultirii .profile-info-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;background:#f7f9fd;border-radius:12px;padding:9px 12px}
+.tabla-inmultirii .profile-info-label{font-weight:800;color:#4a5570}
+.tabla-inmultirii .profile-info-value{font-weight:900;color:#24304a;text-align:right}
+.tabla-inmultirii .profile-info-value small{font-weight:700;color:#6a7590}
+.tabla-inmultirii .profile .auth-form{max-width:460px;margin:0 auto}
+.tabla-inmultirii .profile-logout{display:block;margin:20px auto 4px}
+.tabla-inmultirii .auth-modal{max-height:calc(100vh - 40px);overflow-y:auto}
+.tabla-inmultirii .auth-modal .leaderboard-tabs{margin:6px 0 4px}
+.tabla-inmultirii .auth-form{text-align:left}
+.tabla-inmultirii .auth-form label{display:block;font-weight:800;color:#4a5570;font-size:14px;margin-top:6px}
+.tabla-inmultirii .auth-form .name-input{margin:4px 0 4px;font-size:16px;text-align:left}
+.tabla-inmultirii .auth-form .country-select{margin:12px 0 4px}
+.tabla-inmultirii .auth-form .bigbtn{display:block;margin:12px auto 4px}
+.tabla-inmultirii .auth-link{display:block;margin:4px auto 0;border:0;background:none;color:#6d42a9;font-weight:800;text-decoration:underline;cursor:pointer}
+.tabla-inmultirii .auth-success{background:#e9f9ee;border:2px solid #9fe0b2;border-radius:14px;padding:12px 14px;font-weight:700;color:#24304a;text-align:center;line-height:1.5}
+.tabla-inmultirii .auth-note{font-size:13px;font-weight:700;color:#6a7590;text-align:center;margin:6px 0}
 .tabla-inmultirii .flag{display:inline-block;width:24px;height:18px;vertical-align:-3px;border-radius:3px;box-shadow:0 0 0 1px #0002;object-fit:cover}
 .tabla-inmultirii .country-select{display:flex;align-items:center;gap:10px;border:3px solid #e6eefc;border-radius:14px;padding:8px 12px;margin:0 0 14px}
 .tabla-inmultirii .country-select:focus-within{outline:3px solid #ffd83d}

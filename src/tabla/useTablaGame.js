@@ -5,7 +5,7 @@ import { buildAdvancedProblem } from './advancedProblems';
 const QUESTIONS_PER_LEVEL = 10;
 const QUESTION_TIME = 30;
 
-function generateQuestion(level) {
+export function generateQuestion(level) {
   const fruit = FRUITS[Math.floor(Math.random() * FRUITS.length)];
 
   if (level === AVANSATE_LEVEL) {

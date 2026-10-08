@@ -6,15 +6,17 @@ import { submitScore, addPlayerPoints } from './useLeaderboard';
 import Header from './components/Header';
 import LevelPanel from './components/LevelPanel';
 import GameCard from './components/GameCard';
-import StatsPanel from './components/StatsPanel';
 import Leaderboard from './components/Leaderboard';
 import Chat from './components/Chat';
 import ChatToast from './components/ChatToast';
 import CallOverlay from './components/CallOverlay';
+import ContestPanel from './components/ContestPanel';
 import { useCall } from './useCall';
 import { useChatNotifications, privateChatId, requestSystemNotifications } from './useChat';
 import ResultModal from './components/ResultModal';
 import NameGate from './components/NameGate';
+import AuthGate from './components/AuthGate';
+import ProfilePanel from './components/ProfilePanel';
 
 const PAGE_TITLE = 'Tabla Înmulțirii';
 
@@ -23,18 +25,28 @@ export default function TablaInmultirii() {
   const togglePanel = key => setOpenPanel(prev => (prev === key ? null : key));
 
   const {
+    uid, name, country, email, isAnonymous, ready, avatar, account,
+    saveProfile, register, login, logout, resetPassword, updateAvatar, changePassword, firebaseEnabled,
+  } = usePlayerProfile();
+
+  // Fără cont → înregistrare/logare; cont fără nume sau țară → completare profil.
+  const showAuthGate = firebaseEnabled && ready && isAnonymous;
+  const showNameGate = firebaseEnabled && ready && !isAnonymous && (!name || !country);
+
+  // Jocul stă pe pauză cât timp e deschis un panou sau ecranul de cont.
+  const {
     stats, current, time, answered, selected, hintOpen, feedback, modal, toast,
     questionsPerLevel, selectLevel, restartLevel, goToNextLevel,
     handleAnswer, toggleHint, goToNextQuestionOrFinish,
-  } = useTablaGame(1, openPanel !== null);
+  } = useTablaGame(1, openPanel !== null || showAuthGate || showNameGate || (firebaseEnabled && !ready));
 
-  const { uid, name, country, ready, saveProfile, firebaseEnabled } = usePlayerProfile();
   const handleSelectLevel = level => {
     setOpenPanel(null);
     selectLevel(level);
   };
 
   const [chatPeer, setChatPeer] = useState(null);
+  const [contestId, setContestId] = useState(null);
   const activeChatId = openPanel === 'chat' && chatPeer && uid ? privateChatId(uid, chatPeer.uid) : null;
   const {
     conversations, isUnread, unreadCount, incoming, dismissIncoming,
@@ -70,12 +82,21 @@ export default function TablaInmultirii() {
     addPlayerPoints({ uid, name, pointsEarned: stats.points });
   }, [modal, uid, name, stats.level, stats.points, stats.correct, stats.bestCombo]);
 
-  const showNameGate = firebaseEnabled && ready && (!name || !country);
+  const handleLogout = async () => {
+    if (!window.confirm('Sigur vrei să ieși din cont?')) return;
+    hangUp();
+    setOpenPanel(null);
+    setChatPeer(null);
+    setContestId(null);
+    await logout();
+  };
 
   return (
     <div className="tabla-inmultirii">
       <div className="app">
-        <Header points={stats.points} lives={stats.lives} combo={stats.combo} time={time} playerName={name} playerCountry={country} />
+        <Header points={stats.points} lives={stats.lives} combo={stats.combo} time={time} playerName={name} playerCountry={country}
+          playerAvatar={avatar} accountEmail={isAnonymous ? '' : email}
+          onOpenProfile={() => handleTogglePanel('profile')} profileOpen={openPanel === 'profile'} />
 
         <div className="main">
           <LevelPanel
@@ -88,9 +109,33 @@ export default function TablaInmultirii() {
 
           {openPanel ? (
             <div className="info-view">
-              {openPanel === 'stats' && <StatsPanel stats={stats} />}
               {openPanel === 'leaderboard' && (
                 <Leaderboard uid={uid} firebaseEnabled={firebaseEnabled} />
+              )}
+              {openPanel === 'profile' && (
+                <ProfilePanel
+                  uid={uid}
+                  name={name}
+                  country={country}
+                  email={email}
+                  isAnonymous={isAnonymous}
+                  avatar={avatar}
+                  account={account}
+                  onSaveDetails={saveProfile}
+                  onUpdateAvatar={updateAvatar}
+                  onChangePassword={changePassword}
+                  onLogout={isAnonymous ? null : handleLogout}
+                />
+              )}
+              {openPanel === 'contest' && (
+                <ContestPanel
+                  uid={uid}
+                  name={name}
+                  country={country}
+                  firebaseEnabled={firebaseEnabled}
+                  contestId={contestId}
+                  onContestChange={setContestId}
+                />
               )}
               {openPanel === 'chat' && (
                 <Chat
@@ -127,6 +172,10 @@ export default function TablaInmultirii() {
       </div>
 
       <ResultModal modal={modal} onRestart={restartLevel} onNextLevel={goToNextLevel} />
+      {showAuthGate && (
+        <AuthGate initialName={name} initialCountry={country} onRegister={register} onLogin={login}
+          onResetPassword={resetPassword} />
+      )}
       {showNameGate && <NameGate initialName={name} initialCountry={country} onSubmit={saveProfile} />}
       <ChatToast incoming={incoming} onOpen={openChatWith} onDismiss={dismissIncoming} />
       <CallOverlay

@@ -14,10 +14,16 @@ service cloud.firestore {
 
     // Clasament general: oricine poate citi, dar fiecare user isi poate
     // scrie doar propriul document (id-ul documentului == uid-ul lui).
+    // Doar jucatorii autentificati (si cei anonimi din joc) vad profilurile,
+    // fiindca pot contine poza de avatar.
     match /players/{playerId} {
-      allow read: if true;
+      allow read: if request.auth != null;
       allow create, update: if request.auth != null
-                             && request.auth.uid == playerId;
+                             && request.auth.uid == playerId
+                             && (!('avatar' in request.resource.data)
+                                 || (request.resource.data.avatar is string
+                                     && request.resource.data.avatar.size() <= 100000
+                                     && request.resource.data.avatar.matches('^data:image/jpeg;base64,[A-Za-z0-9+/=]+$')));
       allow delete: if false;
     }
 
@@ -101,6 +107,47 @@ service cloud.firestore {
                             && request.auth != null
                             && request.auth.uid in [call().caller, call().callee];
         allow update, delete: if false;
+      }
+    }
+
+    // Concurs test: 2-10 jucatori, aceleasi 10 intrebari.
+    // Organizatorul porneste/anuleaza concursul; ceilalti pot doar sa intre
+    // sau sa iasa (doar ei insisi), cat timp concursul asteapta.
+    match /contests/{contestId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+                    && request.resource.data.host == request.auth.uid
+                    && request.resource.data.status == 'waiting'
+                    && request.resource.data.title is string
+                    && request.resource.data.title.size() > 0
+                    && request.resource.data.title.size() <= 40
+                    && request.resource.data.players.keys().hasOnly([request.auth.uid]);
+      allow update: if request.auth != null && (
+                      (resource.data.host == request.auth.uid
+                        && request.resource.data.host == resource.data.host)
+                      || (resource.data.status == 'waiting'
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['players'])
+                        && request.resource.data.players.diff(resource.data.players).affectedKeys().hasOnly([request.auth.uid])
+                        && request.resource.data.players.size() <= 10)
+                      // La final, oricare participant salveaza clasamentul (pentru Statistici).
+                      || (resource.data.status == 'running'
+                        && request.auth.uid in resource.data.players
+                        && request.resource.data.status == 'finished'
+                        && request.resource.data.diff(resource.data).affectedKeys()
+                             .hasOnly(['status', 'finishedAt', 'participants', 'ranking']))
+                    );
+      allow delete: if false;
+
+      // Progresul fiecarui jucator; fiecare isi scrie doar propriul rezultat.
+      match /results/{playerId} {
+        allow read: if request.auth != null;
+        allow create, update: if request.auth != null
+                              && request.auth.uid == playerId
+                              && playerId in get(/databases/$(database)/documents/contests/$(contestId)).data.players
+                              && request.resource.data.correct is int
+                              && request.resource.data.correct >= 0
+                              && request.resource.data.correct <= 10;
+        allow delete: if false;
       }
     }
 

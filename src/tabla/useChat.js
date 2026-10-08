@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  addDoc, collection, doc, getDoc, limit, onSnapshot, orderBy, query, serverTimestamp,
+  addDoc, collection, deleteField, doc, getDoc, increment, limit, onSnapshot, orderBy, query, serverTimestamp,
   setDoc, where, writeBatch,
 } from 'firebase/firestore';
 import { db, firebaseEnabled } from '../firebase';
@@ -205,7 +205,8 @@ export function usePlayers() {
 // Marchează jucătorul ca activ, ca să apară în lista de chat.
 export async function touchPlayer({ uid, name, country }) {
   if (!firebaseEnabled || !uid || !name) return;
-  const data = { name, lastSeenAt: serverTimestamp() };
+  // increment(0) pune totalPoints = 0 la jucătorii noi și nu schimbă punctele existente.
+  const data = { name, lastSeenAt: serverTimestamp(), totalPoints: increment(0) };
   if (country) data.country = country;
   try {
     await setDoc(doc(db, PLAYERS_COLLECTION, uid), data, { merge: true });
@@ -214,15 +215,23 @@ export async function touchPlayer({ uid, name, country }) {
   }
 }
 
-export async function loadPlayerCountry(uid) {
-  if (!firebaseEnabled || !uid) return '';
+// Profilul public al jucătorului (nume, țară, puncte, avatar).
+export async function loadPlayer(uid) {
+  if (!firebaseEnabled || !uid) return {};
   try {
     const snap = await getDoc(doc(db, PLAYERS_COLLECTION, uid));
-    return snap.exists() ? snap.data().country || '' : '';
+    return snap.exists() ? snap.data() : {};
   } catch (err) {
-    console.error('Nu am putut încărca țara jucătorului', err);
-    return '';
+    console.error('Nu am putut încărca profilul jucătorului', err);
+    return {};
   }
+}
+
+// avatar = imagine JPEG mică, ca data URL; null o șterge.
+export function savePlayerAvatar(uid, avatar) {
+  return setDoc(doc(db, PLAYERS_COLLECTION, uid), {
+    avatar: avatar || deleteField(),
+  }, { merge: true });
 }
 
 export function useSendMessage() {

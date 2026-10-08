@@ -3,7 +3,7 @@ import { LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL } from '../data';
 const MODE_KEYS = [PROBLEME_LEVEL, AVANSATE_LEVEL];
 
 const INFO_PANELS = [
-  { key: 'stats', label: '📊 STATISTICI', hint: 'Cum te descurci', className: 'ls' },
+  { key: 'contest', label: '🏁 CONCURS TEST', hint: 'Minimum 2 jucători, 10 întrebări', className: 'lt' },
   { key: 'leaderboard', label: '🏅 CLASAMENT', hint: 'Cei mai buni jucători', className: 'lb' },
   { key: 'chat', label: '💬 CHAT', hint: 'Vorbește cu ceilalți jucători', className: 'lc' },
 ];

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL } from '../data';
 import { useGlobalLeaderboard, useMyScores } from '../useLeaderboard';
 import Flag from './Flag';
+import Avatar from './Avatar';
+import ContestHistory from './ContestHistory';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 const ALL_LEVELS = [...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL];
@@ -33,6 +35,7 @@ function LeaderboardList({ entries, loading, uid, pointsField, emptyText }) {
       {entries.map((entry, i) => (
         <li key={entry.id} className={`leaderboard-row${entry.uid === uid || entry.id === uid ? ' me' : ''}`}>
           <span className="rank">{MEDALS[i] || `${i + 1}.`}</span>
+          <Avatar src={entry.avatar} name={entry.name} size={28} />
           <span className="name">{entry.name} <Flag code={entry.country} /></span>
           <span className="points">{entry[pointsField]} pct</span>
         </li>
@@ -73,6 +76,12 @@ export default function Leaderboard({ uid, firebaseEnabled }) {
         >
           🌍 Toți jucătorii
         </button>
+        <button
+          className={`leaderboard-tab${tab === 'contests' ? ' active' : ''}`}
+          onClick={() => setTab('contests')}
+        >
+          🏁 Concursurile mele
+        </button>
       </div>
 
       {tab === 'mine' ? (
@@ -80,6 +89,8 @@ export default function Leaderboard({ uid, firebaseEnabled }) {
           <p className="leaderboard-sub">Cel mai bun scor al tău pe fiecare nivel</p>
           <MyScoresList scores={myScores} loading={myLoading} />
         </>
+      ) : tab === 'contests' ? (
+        <ContestHistory uid={uid} />
       ) : (
         <>
           <p className="leaderboard-sub">Punctaj total, toate nivelurile</p>

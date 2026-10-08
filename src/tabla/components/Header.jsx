@@ -1,4 +1,5 @@
 import Flag from './Flag';
+import Avatar from './Avatar';
 
 const ABACUS_ROWS = [
   { y: 22, color: '#e84d8d', beads: [0, 1, 2, 6, 7] },
@@ -24,12 +25,22 @@ function AbacusLogo() {
   );
 }
 
-export default function Header({ points, lives, combo, time, playerName, playerCountry }) {
+export default function Header({
+  points, lives, combo, time, playerName, playerCountry, playerAvatar, accountEmail, onOpenProfile, profileOpen,
+}) {
   return (
     <header>
       <div className="logo"><AbacusLogo /> TABLA ÎNMULȚIRII</div>
       <div className="badges">
-        {playerName && <div className="badge player-badge">👤 {playerName} <Flag code={playerCountry} /></div>}
+        {playerName && (
+          <button
+            className={`badge player-badge${profileOpen ? ' active' : ''}`}
+            onClick={onOpenProfile}
+            title={accountEmail ? `Contul meu: ${accountEmail}` : 'Contul meu'}
+          >
+            <Avatar src={playerAvatar} name={playerName} size={28} /> {playerName} <Flag code={playerCountry} /> ⚙️
+          </button>
+        )}
         <div className="badge">⭐ Puncte: <span>{points}</span></div>
         <div className="badge">❤️ Vieți: <span>{lives}</span></div>
         <div className="badge">🔥 Combo: x<span>{combo}</span></div>
