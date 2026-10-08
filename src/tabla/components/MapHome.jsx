@@ -19,9 +19,9 @@ const ISLANDS = [
     decor: [['🏞️', 228, 304, 40], ['🌳', 388, 300, 32], ['🪨', 366, 340, 20]] },
   { key: 'camp', cx: 335, cy: 160, rx: 118, ry: 54, label: 'Câmpul Cifrelor', lx: 315, ly: 238,
     decor: [['⛺', 262, 150, 36], ['🔥', 300, 168, 22], ['🌳', 440, 148, 32], ['🌼', 285, 186, 16]] },
-  { key: 'forest', cx: 630, cy: 162, rx: 130, ry: 58, label: 'Pădurea Înmulțirii', lx: 712, ly: 246,
+  { key: 'forest', cx: 630, cy: 162, rx: 130, ry: 58, label: 'Pădurea Înmulțirii', lx: 625, ly: 246,
     decor: [['🌲', 530, 146, 38], ['🌲', 556, 122, 30], ['🍄', 700, 180, 22], ['🌲', 718, 134, 36], ['🌲', 746, 156, 30]] },
-  { key: 'mountains', cx: 862, cy: 140, rx: 122, ry: 68, label: 'Munții Geniului', lx: 822, ly: 236,
+  { key: 'mountains', cx: 862, cy: 140, rx: 122, ry: 68, label: 'Munții Geniului', lx: 848, ly: 236,
     decor: [['🏔️', 792, 108, 52], ['⛰️', 912, 100, 48], ['🌲', 940, 166, 26]] },
   { key: 'library', cx: 862, cy: 352, rx: 110, ry: 54, label: 'Biblioteca Problemelor', lx: 862, ly: 432,
     decor: [['🏛️', 928, 338, 36], ['📚', 790, 358, 26], ['🌳', 952, 372, 24]] },
@@ -214,7 +214,6 @@ export default function MapHome({
   const isPhone = useMediaQuery(PHONE_QUERY);
   const doneCount = LEVEL_PATH.filter(level => isLevelDone(scores, level)).length;
   const current = currentLevel(scores);
-  const progress = Math.round((doneCount / LEVEL_PATH.length) * 100);
 
   const handleSelect = (level) => {
     if (!isLevelUnlocked(scores, level)) {
@@ -232,18 +231,6 @@ export default function MapHome({
 
   return (
     <section className="map-home">
-      <div className="map-progress">
-        <div className="map-progress-title">HARTĂ DE ÎNVĂȚARE PROGRESIVĂ</div>
-        <div className="map-progress-bar">
-          <span className="map-progress-icon">🧮</span>
-          <div className="map-progress-track">
-            <span style={{ width: `${progress}%` }} />
-            <b>{doneCount} / {LEVEL_PATH.length} niveluri</b>
-          </div>
-          <span className="map-progress-icon">🏅</span>
-        </div>
-      </div>
-
       {isPhone ? (
         <>
           <div className="map-mobile-owl">
