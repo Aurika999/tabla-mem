@@ -8,9 +8,12 @@ const INFO_PANELS = [
   { key: 'chat', label: '💬 CHAT', hint: 'Vorbește cu ceilalți jucători', className: 'lc' },
 ];
 
-export default function LevelPanel({ activeLevel, onSelectLevel, openPanel, onTogglePanel, badges = {} }) {
+export default function LevelPanel({
+  activeLevel, onSelectLevel, isLocked = () => false, onOpenMap, openPanel, onTogglePanel, badges = {},
+}) {
   return (
     <section className="panel">
+      {onOpenMap && <button className="map-back-btn" onClick={onOpenMap}>🗺️ HARTA AVENTURII</button>}
       <h2>🏆 NIVELURI</h2>
       <div id="levels">
         {LEVEL_ORDER.map(key => {
@@ -18,10 +21,12 @@ export default function LevelPanel({ activeLevel, onSelectLevel, openPanel, onTo
           return (
             <button
               key={key}
-              className={`level ${level.className}${activeLevel === key ? ' active' : ''}`}
+              className={`level ${level.className}${activeLevel === key ? ' active' : ''}${isLocked(key) ? ' locked' : ''}`}
               onClick={() => onSelectLevel(key)}
+              disabled={isLocked(key)}
+              title={isLocked(key) ? 'Termină nivelul dinainte ca să-l deblochezi' : undefined}
             >
-              {level.label}
+              {isLocked(key) && '🔒 '}{level.label}
               <small>{level.hint}</small>
             </button>
           );
@@ -34,10 +39,12 @@ export default function LevelPanel({ activeLevel, onSelectLevel, openPanel, onTo
           return (
             <button
               key={key}
-              className={`level ${mode.className}${activeLevel === key ? ' active' : ''}`}
+              className={`level ${mode.className}${activeLevel === key ? ' active' : ''}${isLocked(key) ? ' locked' : ''}`}
               onClick={() => onSelectLevel(key)}
+              disabled={isLocked(key)}
+              title={isLocked(key) ? 'Termină nivelul dinainte ca să-l deblochezi' : undefined}
             >
-              {mode.label}
+              {isLocked(key) && '🔒 '}{mode.label}
               <small>{mode.hint}</small>
             </button>
           );

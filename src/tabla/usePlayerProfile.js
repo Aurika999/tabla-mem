@@ -9,6 +9,7 @@ import { isValidCountry } from './countries';
 
 const NAME_STORAGE_KEY = 'tabla-inmultirii:playerName';
 const COUNTRY_STORAGE_KEY = 'tabla-inmultirii:playerCountry';
+const PRESENCE_INTERVAL_MS = 60 * 1000;
 
 // Contul folosește adresa de email, ca parola să poată fi resetată prin email.
 export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -118,6 +119,20 @@ export function usePlayerProfile() {
   // numele vechi de pe dispozitiv peste profilul contului nou.
   useEffect(() => {
     if (ready) touchPlayer({ uid, name, country });
+  }, [ready, uid, name, country]);
+
+  // Semn de viață cât timp jocul e deschis și vizibil, pentru „online” în chat.
+  useEffect(() => {
+    if (!ready || !uid || !name) return undefined;
+    const beat = () => {
+      if (document.visibilityState === 'visible') touchPlayer({ uid, name, country });
+    };
+    const id = setInterval(beat, PRESENCE_INTERVAL_MS);
+    document.addEventListener('visibilitychange', beat);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener('visibilitychange', beat);
+    };
   }, [ready, uid, name, country]);
 
   const applyProfile = useCallback(async (newName, newCountry) => {

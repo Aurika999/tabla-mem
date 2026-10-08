@@ -1,4 +1,4 @@
-export default function ResultModal({ modal, onRestart, onNextLevel }) {
+export default function ResultModal({ modal, onRestart, onNextLevel, onMap }) {
   if (!modal) return null;
   return (
     <div className="overlay">
@@ -10,6 +10,7 @@ export default function ResultModal({ modal, onRestart, onNextLevel }) {
         {modal.showNext && (
           <button className="bigbtn blue" onClick={onNextLevel}>Următorul nivel</button>
         )}
+        {onMap && <button className="bigbtn map-modal-btn" onClick={onMap}>🗺️ Harta</button>}
       </div>
     </div>
   );

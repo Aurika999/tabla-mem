@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   addDoc, collection, deleteField, doc, getDoc, increment, limit, onSnapshot, orderBy, query, serverTimestamp,
+  updateDoc,
   setDoc, where, writeBatch,
 } from 'firebase/firestore';
 import { db, firebaseEnabled } from '../firebase';
@@ -11,6 +12,11 @@ const PLAYERS_COLLECTION = 'players';
 const LAST_N = 50;
 const MAX_PLAYERS = 200;
 export const MAX_MESSAGE_LENGTH = 300;
+const MAX_REPLY_QUOTE = 100;
+// Un jucător e „online” dacă aplicația lui a dat semn de viață recent (vezi usePlayerProfile).
+export const ONLINE_WINDOW_MS = 2.5 * 60 * 1000;
+// „scrie…” dispare dacă nu mai vine niciun semnal de tastare.
+export const TYPING_WINDOW_MS = 6000;
 
 // Id-ul unei conversații private e format din cele două uid-uri sortate,
 // ca ambii jucători să ajungă la același document.
@@ -40,9 +46,12 @@ export function useMessages(chatId) {
       orderBy('createdAt', 'desc'),
       limit(LAST_N),
     );
-    const unsubscribe = onSnapshot(q, (snapshot) => {
+    // Cu metadate, ca să știm care mesaje încă se trimit (🕓 în loc de ✓).
+    const unsubscribe = onSnapshot(q, { includeMetadataChanges: true }, (snapshot) => {
       // Cele mai noi vin primele din query; le afișăm în ordine cronologică.
-      setMessages(snapshot.docs.map(d => ({ id: d.id, ...d.data() })).reverse());
+      setMessages(snapshot.docs
+        .map(d => ({ id: d.id, ...d.data(), pending: d.metadata.hasPendingWrites }))
+        .reverse());
       setLoading(false);
     }, (err) => {
       console.error('Nu am putut încărca mesajele', err);
@@ -234,12 +243,33 @@ export function savePlayerAvatar(uid, avatar) {
   }, { merge: true });
 }
 
+// Marchează conversația privată ca citită de jucător (pentru bifele albastre ✓✓).
+export function markChatRead(chatId, uid) {
+  return updateDoc(doc(db, CHATS_COLLECTION, chatId), { [`readAt.${uid}`]: serverTimestamp() });
+}
+
+// Semnalul „scrie…”: on = true la tastare, false când a trimis sau a șters textul.
+export function setChatTyping(chatId, uid, on) {
+  return updateDoc(doc(db, CHATS_COLLECTION, chatId), {
+    [`typing.${uid}`]: on ? serverTimestamp() : deleteField(),
+  });
+}
+
 export function useSendMessage() {
   // peer null = camera generală; altfel { uid, name } al celuilalt jucător.
-  return useCallback(async ({ uid, name, text, peer }) => {
+  // replyTo = mesajul la care se răspunde ({ id, name, text }), opțional.
+  return useCallback(async ({ uid, name, text, peer, replyTo }) => {
     const trimmed = text.trim().slice(0, MAX_MESSAGE_LENGTH);
     if (!firebaseEnabled || !uid || !name || !trimmed) return false;
     const message = { uid, name, text: trimmed, createdAt: serverTimestamp() };
+    if (replyTo) {
+      message.replyTo = {
+        id: replyTo.id,
+        uid: replyTo.uid || '',
+        name: replyTo.name || '',
+        text: (replyTo.text || '').slice(0, MAX_REPLY_QUOTE),
+      };
+    }
     try {
       if (!peer) {
         await addDoc(collection(db, GENERAL_COLLECTION), message);

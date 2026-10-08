@@ -2,11 +2,11 @@
 .tabla-inmultirii{font-family:Arial,system-ui,sans-serif;background:linear-gradient(180deg,#39a9ff,#86d95b);min-height:100vh;color:#24304a}
 .tabla-inmultirii button{font:inherit;cursor:pointer}
 .tabla-inmultirii .app{max-width:1180px;margin:auto;padding:18px}
-.tabla-inmultirii header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.tabla-inmultirii .logo{font-size:clamp(28px,5vw,54px);font-weight:1000;color:#fff;text-shadow:3px 4px #2855a5;letter-spacing:-2px;display:flex;align-items:center;gap:14px}
+.tabla-inmultirii header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:linear-gradient(180deg,#b57442 0%,#9a5d30 55%,#844d25 100%);border:4px solid #6b3d1c;border-radius:20px;padding:10px 16px;box-shadow:0 7px 0 #5a3216,inset 0 2px 0 #d39a63;background-image:repeating-linear-gradient(90deg,#0000 0 120px,#00000014 120px 123px),linear-gradient(180deg,#b57442 0%,#9a5d30 55%,#844d25 100%)}
+.tabla-inmultirii .logo{font-size:clamp(24px,3.8vw,42px);font-weight:1000;color:#fff;text-shadow:2px 3px #5a3216;letter-spacing:-2px;display:flex;align-items:center;gap:14px}
 .tabla-inmultirii .logo-abacus{height:1.15em;width:auto;flex:0 0 auto;filter:drop-shadow(3px 4px 0 #2855a5)}
 .tabla-inmultirii .badges{display:flex;gap:8px;flex-wrap:wrap}
-.tabla-inmultirii .badge{background:#fff;border:3px solid #e6eefc;border-radius:18px;padding:9px 15px;font-weight:900;box-shadow:0 5px 0 #2e69a8}
+.tabla-inmultirii .badge{background:#fff;border:3px solid #f1e3cf;border-radius:18px;padding:8px 14px;font-weight:900;box-shadow:0 4px 0 #5a3216}
 .tabla-inmultirii .main{display:grid;grid-template-columns:260px 1fr;gap:15px;margin-top:15px}
 .tabla-inmultirii .panel,.tabla-inmultirii .game{background:#fff;border:5px solid #fff;border-radius:25px;box-shadow:0 9px 0 #3b78a8;padding:16px}
 .tabla-inmultirii .panel h2{text-align:center;margin:0 0 12px;color:#6d42a9}
@@ -21,18 +21,6 @@
 .tabla-inmultirii .info-view{display:flex;flex-direction:column;align-items:center;gap:15px}
 .tabla-inmultirii .info-view>.panel{width:100%}
 .tabla-inmultirii .lc{background:#14a3a3}
-.tabla-inmultirii .chat-layout{display:grid;grid-template-columns:220px 1fr;gap:12px}
-.tabla-inmultirii .chat-sidebar{display:flex;flex-direction:column;gap:6px;max-height:calc(min(55vh,420px) + 100px);overflow-y:auto}
-.tabla-inmultirii .chat-search{border:3px solid #e6eefc;border-radius:12px;padding:8px 10px;font:inherit;font-weight:700;min-width:0}
-.tabla-inmultirii .chat-section{font-size:12px;font-weight:900;color:#6a7590;text-transform:uppercase;margin:6px 0 0}
-.tabla-inmultirii .chat-contact{display:flex;flex-wrap:wrap;align-items:center;gap:6px;text-align:left;border:2px solid #e6eefc;background:#f7f9fd;border-radius:12px;padding:8px 10px;font-weight:800;color:#24304a}
-.tabla-inmultirii .chat-contact.active{background:#8145c7;border-color:#8145c7;color:#fff}
-.tabla-inmultirii .chat-contact small{flex-basis:100%;font-weight:600;opacity:.75;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tabla-inmultirii .chat-contact-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tabla-inmultirii .chat-unread{width:10px;height:10px;border-radius:50%;background:#e84d8d;flex:0 0 auto}
-.tabla-inmultirii .chat-conversation{min-width:0}
-.tabla-inmultirii .chat-title{font-weight:900;color:#6d42a9;margin:0 0 8px}
-@media(max-width:700px){.tabla-inmultirii .chat-layout{grid-template-columns:1fr}.tabla-inmultirii .chat-sidebar{max-height:200px}}
 .tabla-inmultirii .level{position:relative}
 .tabla-inmultirii .level-badge{position:absolute;top:-6px;right:-6px;min-width:26px;height:26px;padding:0 7px;border-radius:13px;background:#e8264d;color:#fff;font-size:14px;line-height:26px;text-align:center;border:3px solid #fff;animation:tabla-badgePop .4s cubic-bezier(.34,1.56,.64,1)}
 @keyframes tabla-badgePop{from{transform:scale(0)}to{transform:scale(1)}}
@@ -46,9 +34,96 @@
 .tabla-inmultirii .chat-emoji-picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:4px;margin-top:10px;padding:8px;max-height:150px;overflow-y:auto;background:#f7f9fd;border:2px solid #e6eefc;border-radius:14px}
 .tabla-inmultirii .chat-emoji-picker button{border:0;background:none;font-size:24px;padding:4px;border-radius:10px;line-height:1}
 .tabla-inmultirii .chat-emoji-picker button:hover{background:#e6eefc;transform:scale(1.15)}
-.tabla-inmultirii .chat-form .chat-emoji-toggle{background:#fff3c4;box-shadow:0 4px #d9b400;font-size:20px;padding:8px 12px}
-.tabla-inmultirii .chat-form .chat-emoji-toggle.active{background:#ffd83d}
-.tabla-inmultirii .chat-title{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tabla-inmultirii .chat{padding-bottom:12px}
+.tabla-inmultirii .chat-layout{display:grid;grid-template-columns:270px 1fr;height:min(70vh,620px);min-height:440px;border:2px solid #e6eefc;border-radius:18px;overflow:hidden;background:#fff}
+.tabla-inmultirii .chat-sidebar{display:flex;flex-direction:column;overflow-y:auto;border-right:2px solid #eef2f8;background:#fff;min-height:0}
+.tabla-inmultirii .chat-search{margin:10px;border:0;background:#f0f2f5;border-radius:10px;padding:9px 12px;font:inherit;font-weight:700;min-width:0}
+.tabla-inmultirii .chat-section{font-size:12px;font-weight:900;color:#008069;text-transform:uppercase;padding:10px 14px 4px}
+.tabla-inmultirii .chat-contact{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid #f0f2f5;background:#fff;padding:9px 12px;color:#111b21;font:inherit}
+.tabla-inmultirii .chat-contact:hover{background:#f5f6f6}
+.tabla-inmultirii .chat-contact.active{background:#f0f2f5}
+.tabla-inmultirii .chat-contact-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.tabla-inmultirii .chat-contact-top,.tabla-inmultirii .chat-contact-bottom{display:flex;align-items:center;gap:6px;min-width:0}
+.tabla-inmultirii .chat-contact-name{flex:1;min-width:0;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tabla-inmultirii .chat-contact-name .flag{width:18px;height:13px;vertical-align:-2px}
+.tabla-inmultirii .chat-contact small{flex:1;min-width:0;color:#667781;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tabla-inmultirii .chat-contact-time{font-size:12px;color:#667781;font-weight:700;flex:0 0 auto}
+.tabla-inmultirii .chat-contact.unread .chat-contact-time{color:#25d366}
+.tabla-inmultirii .chat-contact.unread small{color:#111b21;font-weight:800}
+.tabla-inmultirii .chat-unread{width:11px;height:11px;border-radius:50%;background:#25d366;flex:0 0 auto}
+.tabla-inmultirii .chat-avatar-wrap{position:relative;flex:0 0 auto;display:inline-flex}
+.tabla-inmultirii .chat-online-dot{position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;background:#25d366;border:2px solid #fff}
+.tabla-inmultirii .chat-header-icon{width:40px;height:40px;border-radius:50%;background:#e7f3ee;display:inline-flex;align-items:center;justify-content:center;font-size:22px;flex:0 0 auto}
+.tabla-inmultirii .chat-conversation{display:flex;flex-direction:column;min-width:0;min-height:0;background:#efeae2}
+.tabla-inmultirii .chat-header{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f0f2f5;border-bottom:1px solid #e3e6ea}
+.tabla-inmultirii .chat-header-info{flex:1;min-width:0}
+.tabla-inmultirii .chat-header-name{font-weight:900;color:#111b21;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tabla-inmultirii .chat-header-name .flag{width:18px;height:13px;vertical-align:-2px}
+.tabla-inmultirii .chat-header-status{font-size:13px;color:#667781;font-weight:600;min-height:17px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tabla-inmultirii .chat-status-online{color:#008069;font-weight:800}
+.tabla-inmultirii .chat-status-typing{color:#25d366!important;font-weight:800;font-style:italic}
+.tabla-inmultirii .chat-header-call{border:0;background:none;font-size:22px;padding:6px 10px;border-radius:50%}
+.tabla-inmultirii .chat-header-call:hover:not(:disabled){background:#e3e6ea}
+.tabla-inmultirii .chat-header-call:disabled{opacity:.4;cursor:default}
+.tabla-inmultirii .chat-back{display:none;border:0;background:none;font-size:24px;font-weight:900;color:#54656f;padding:0 6px}
+.tabla-inmultirii .chat-wallpaper{position:relative;flex:1;min-height:0;background-color:#efeae2;background-image:radial-gradient(#d9d2c5 1px,transparent 1px),radial-gradient(#e6dfd3 1px,transparent 1px);background-size:22px 22px,22px 22px;background-position:0 0,11px 11px}
+.tabla-inmultirii .chat-messages{position:absolute;inset:0;overflow-y:auto;display:flex;flex-direction:column;gap:2px;padding:10px 4%}
+.tabla-inmultirii .chat-system{align-self:center;background:#fff7d6;color:#54656f;font-weight:700;font-size:14px;border-radius:8px;padding:6px 12px;margin:auto 0;box-shadow:0 1px 1px #0001}
+.tabla-inmultirii .chat-day{align-self:center;margin:10px 0 6px}
+.tabla-inmultirii .chat-day span{background:#fff;color:#54656f;font-size:12.5px;font-weight:800;border-radius:8px;padding:5px 12px;box-shadow:0 1px 1px #0001}
+.tabla-inmultirii .chat-row{display:flex;align-items:flex-start;gap:6px;max-width:80%;align-self:flex-start;position:relative}
+.tabla-inmultirii .chat-row.me{align-self:flex-end;flex-direction:row-reverse}
+.tabla-inmultirii .chat-row.first{margin-top:6px}
+.tabla-inmultirii .chat-row.highlight .chat-bubble{animation:tabla-chatFlash 1.5s ease-out}
+@keyframes tabla-chatFlash{0%,40%{box-shadow:0 0 0 4px #ffd83d}100%{box-shadow:0 1px .5px #0b141a21}}
+.tabla-inmultirii .chat-avatar-space{width:30px;flex:0 0 30px}
+.tabla-inmultirii .chat-bubble{position:relative;background:#fff;color:#111b21;border-radius:8px;padding:6px 8px 8px 9px;box-shadow:0 1px .5px #0b141a21;min-width:0;overflow-wrap:anywhere}
+.tabla-inmultirii .chat-bubble.me{background:#d9fdd3}
+.tabla-inmultirii .chat-bubble.tail{border-top-left-radius:0}
+.tabla-inmultirii .chat-bubble.me.tail{border-top-left-radius:8px;border-top-right-radius:0}
+.tabla-inmultirii .chat-bubble.tail::before{content:'';position:absolute;top:0;left:-8px;border-style:solid;border-width:0 8px 10px 0;border-color:transparent #fff transparent transparent}
+.tabla-inmultirii .chat-bubble.me.tail::before{left:auto;right:-8px;border-width:0 0 10px 8px;border-color:transparent transparent transparent #d9fdd3}
+.tabla-inmultirii .chat-author{font-size:13px;font-weight:900;color:#c2410c;margin-bottom:2px}
+.tabla-inmultirii .chat-author .flag{width:16px;height:12px;vertical-align:-1px}
+.tabla-inmultirii .chat-text{font-weight:600;white-space:pre-wrap;line-height:1.35}
+.tabla-inmultirii .chat-time{float:right;margin:6px 0 -4px 10px;font-size:11px;color:#667781;font-weight:600;white-space:nowrap;line-height:1.6}
+.tabla-inmultirii .chat-ticks{margin-left:3px;font-size:12px;letter-spacing:-3px;color:#8696a0}
+.tabla-inmultirii .chat-ticks.read{color:#53bdeb}
+.tabla-inmultirii .chat-quote{display:flex;flex-direction:column;align-items:flex-start;width:100%;text-align:left;border:0;border-left:4px solid #06cf9c;background:#0000000d;border-radius:6px;padding:4px 8px;margin:0 0 4px;font:inherit;cursor:pointer;min-width:0}
+.tabla-inmultirii .chat-quote b{color:#06cf9c;font-size:13px}
+.tabla-inmultirii .chat-quote span{font-size:13px;color:#54656f;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.tabla-inmultirii .chat-reply-btn{align-self:center;border:0;background:#fff;color:#54656f;border-radius:50%;width:28px;height:28px;font-size:15px;font-weight:900;box-shadow:0 1px 2px #0002;opacity:0;transition:opacity .15s;flex:0 0 auto}
+.tabla-inmultirii .chat-row:hover .chat-reply-btn{opacity:1}
+@media(hover:none){.tabla-inmultirii .chat-reply-btn{opacity:.6}}
+.tabla-inmultirii .chat-typing-bubble{display:flex;gap:4px;padding:12px 14px}
+.tabla-inmultirii .chat-typing-bubble span{width:7px;height:7px;border-radius:50%;background:#8696a0;animation:tabla-typing 1.2s infinite ease-in-out}
+.tabla-inmultirii .chat-typing-bubble span:nth-child(2){animation-delay:.2s}
+.tabla-inmultirii .chat-typing-bubble span:nth-child(3){animation-delay:.4s}
+@keyframes tabla-typing{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+.tabla-inmultirii .chat-jump{position:absolute;right:14px;bottom:12px;width:42px;height:42px;border:0;border-radius:50%;background:#fff;color:#54656f;font-size:22px;font-weight:900;box-shadow:0 2px 5px #0003;line-height:1}
+.tabla-inmultirii .chat-jump-count{position:absolute;top:-8px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#25d366;color:#fff;font-size:12px;line-height:20px}
+.tabla-inmultirii .chat-reply-preview{display:flex;align-items:center;gap:8px;background:#f0f2f5;padding:8px 12px 0}
+.tabla-inmultirii .chat-reply-preview .chat-quote{flex:1;cursor:default;background:#fff}
+.tabla-inmultirii .chat-reply-preview button{border:0;background:none;font-size:18px;color:#54656f;padding:4px 6px}
+.tabla-inmultirii .chat-input-bar{display:flex;align-items:center;gap:8px;background:#f0f2f5;padding:8px 10px}
+.tabla-inmultirii .chat-input-pill{flex:1;min-width:0;display:flex;align-items:center;background:#fff;border-radius:24px;padding:2px 6px}
+.tabla-inmultirii .chat-input-pill input{flex:1;min-width:0;border:0;outline:none;background:none;padding:10px 6px;font:inherit;font-weight:600;color:#111b21}
+.tabla-inmultirii .chat-emoji-toggle{border:0;background:none;font-size:22px;padding:4px 6px;border-radius:50%;filter:grayscale(.3)}
+.tabla-inmultirii .chat-emoji-toggle.active{filter:none;background:#f0f2f5}
+.tabla-inmultirii .chat-send{width:46px;height:46px;flex:0 0 auto;border:0;border-radius:50%;background:#00a884;color:#fff;font-size:20px;display:inline-flex;align-items:center;justify-content:center;padding-left:3px}
+.tabla-inmultirii .chat-send:disabled{background:#8fd9c6;cursor:default}
+.tabla-inmultirii .chat-conversation .chat-emoji-picker{margin:0;border-radius:0;border:0;border-top:1px solid #e3e6ea;background:#f0f2f5}
+.tabla-inmultirii .chat-conversation .chat-error{background:#f0f2f5;margin:0;padding:0 10px 8px}
+@media(max-width:700px){
+.tabla-inmultirii .chat{padding:8px}
+.tabla-inmultirii .chat>h2{display:none}
+.tabla-inmultirii .chat-layout{grid-template-columns:1fr;height:calc(100vh - 140px);min-height:420px}
+.tabla-inmultirii .chat-layout.view-list .chat-conversation{display:none}
+.tabla-inmultirii .chat-layout.view-conversation .chat-sidebar{display:none}
+.tabla-inmultirii .chat-sidebar{border-right:0}
+.tabla-inmultirii .chat-back{display:inline-block}
+.tabla-inmultirii .chat-row{max-width:90%}
+}
 .tabla-inmultirii .chat-call-btn{border:0;border-radius:12px;padding:7px 14px;background:#27c94f;color:#fff;font-weight:900;box-shadow:0 4px #159632}
 .tabla-inmultirii .chat-call-btn:disabled{opacity:.5;cursor:default}
 .tabla-inmultirii .call-modal h2{font-size:32px}
@@ -104,23 +179,6 @@
 .tabla-inmultirii .contest-history-list li>span:first-child{width:26px}
 .tabla-inmultirii .contest-history-list .name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tabla-inmultirii .contest-history-place{margin-top:6px;font-weight:800;color:#6d42a9;font-size:14px}
-.tabla-inmultirii .chat-row{display:flex;align-items:flex-end;gap:8px;align-self:flex-start;max-width:85%}
-.tabla-inmultirii .chat-row.me{flex-direction:row-reverse;align-self:flex-end}
-.tabla-inmultirii .chat-row .chat-message{max-width:none;align-self:auto;min-width:0}
-.tabla-inmultirii .chat-meta .flag{width:18px;height:13px;vertical-align:-2px}
-.tabla-inmultirii .chat-title-peer{display:inline-flex;align-items:center;gap:8px;min-width:0}
-.tabla-inmultirii .chat-contact .avatar{box-shadow:0 0 0 2px #fff}
-.tabla-inmultirii .chat-contact-name .flag{width:18px;height:13px;vertical-align:-2px}
-.tabla-inmultirii .chat-messages{height:min(55vh,420px);overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:6px;background:#f7f9fd;border-radius:16px}
-.tabla-inmultirii .chat-message{max-width:80%;align-self:flex-start;background:#fff;border:2px solid #e6eefc;border-radius:14px;padding:8px 12px}
-.tabla-inmultirii .chat-message.me{align-self:flex-end;background:#f4eeff;border-color:#d9c8f5}
-.tabla-inmultirii .chat-meta{font-size:12px;color:#6a7590}
-.tabla-inmultirii .chat-meta b{color:#6d42a9}
-.tabla-inmultirii .chat-text{font-weight:700;overflow-wrap:anywhere;white-space:pre-wrap}
-.tabla-inmultirii .chat-form{display:flex;gap:8px;margin-top:10px}
-.tabla-inmultirii .chat-form input{flex:1;min-width:0;border:3px solid #e6eefc;border-radius:14px;padding:10px 12px;font:inherit;font-weight:700}
-.tabla-inmultirii .chat-form button{border:0;border-radius:14px;padding:10px 18px;background:#8145c7;color:#fff;font-weight:900;box-shadow:0 4px #5c2e96}
-.tabla-inmultirii .chat-form button:disabled{opacity:.5;cursor:default}
 .tabla-inmultirii .chat-error{color:#dc263e;font-weight:800;text-align:center;margin:8px 0 0}
 .tabla-inmultirii #modes{margin-bottom:15px}
 .tabla-inmultirii .game{text-align:center;position:relative;overflow:hidden}
@@ -209,3 +267,88 @@
 .tabla-inmultirii .leaderboard-tab{flex:1;border:2px solid #e6eefc;background:#f7f9fd;border-radius:12px;padding:8px 6px;font-weight:800;font-size:13px;color:#6a7590}
 .tabla-inmultirii .leaderboard-tab.active{background:#8145c7;border-color:#8145c7;color:#fff}
 @media(max-width:900px){.tabla-inmultirii .main{grid-template-columns:1fr}.tabla-inmultirii .levels{display:grid;grid-template-columns:1fr 1fr;gap:6px}.tabla-inmultirii .panel{padding:12px}}
+
+/* ---------- Harta aventurii (prima pagină) ---------- */
+.tabla-inmultirii .map-home{position:relative;margin-top:16px}
+.tabla-inmultirii .map-progress{display:flex;flex-direction:column;align-items:center;margin:0 auto 10px;max-width:560px}
+.tabla-inmultirii .map-progress-title{background:linear-gradient(180deg,#b57442,#8a5129);color:#fff3dc;font-weight:1000;letter-spacing:1px;font-size:14px;padding:6px 22px;border:3px solid #6b3d1c;border-bottom:0;border-radius:14px 14px 0 0;text-shadow:1px 2px #5a3216}
+.tabla-inmultirii .map-progress-bar{display:flex;align-items:center;gap:8px;width:100%;background:linear-gradient(180deg,#b57442,#8a5129);border:3px solid #6b3d1c;border-radius:30px;padding:6px 8px;box-shadow:0 5px 0 #5a3216}
+.tabla-inmultirii .map-progress-icon{width:36px;height:36px;border-radius:50%;background:#fff3dc;border:3px solid #6b3d1c;display:inline-flex;align-items:center;justify-content:center;font-size:20px;flex:0 0 auto}
+.tabla-inmultirii .map-progress-track{position:relative;flex:1;height:24px;background:#f6ead6;border-radius:14px;overflow:hidden;box-shadow:inset 0 2px 3px #0003}
+.tabla-inmultirii .map-progress-track span{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#5fc84a,#ffd83d);border-radius:14px;transition:width .6s ease}
+.tabla-inmultirii .map-progress-track b{position:relative;display:block;text-align:center;line-height:24px;font-size:13px;color:#5a3216}
+.tabla-inmultirii .map-scroll{overflow-x:auto;border-radius:26px;border:5px solid #fff;box-shadow:0 9px 0 #2e69a8}
+.tabla-inmultirii .map-canvas{position:relative;aspect-ratio:1000/600;min-width:760px}
+.tabla-inmultirii .map-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.tabla-inmultirii .map-island-label{font-size:15px;font-weight:1000;fill:#24304a;stroke:#fff;stroke-width:4px;paint-order:stroke;letter-spacing:.5px}
+.tabla-inmultirii .map-node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;border:0;background:none;padding:0;cursor:pointer;z-index:2}
+.tabla-inmultirii .map-node-circle{width:clamp(40px,5.2vw,56px);height:clamp(40px,5.2vw,56px);border-radius:50%;background:var(--node-color);color:#fff;font-size:clamp(18px,2.4vw,26px);font-weight:1000;display:flex;align-items:center;justify-content:center;border:4px solid #fff;box-shadow:0 5px 0 #0004,0 0 0 3px #0001;transition:transform .15s;text-shadow:1px 2px #0003}
+.tabla-inmultirii .map-node:hover .map-node-circle{transform:scale(1.12)}
+.tabla-inmultirii .map-node.locked .map-node-circle{background:#9aa3b2;font-size:clamp(16px,2vw,22px)}
+.tabla-inmultirii .map-node.locked .map-node-label{opacity:.75}
+.tabla-inmultirii .map-node.done .map-node-circle{border-color:#ffd83d}
+.tabla-inmultirii .map-node.current .map-node-circle{animation:tabla-mapPulse 1.6s ease-in-out infinite}
+@keyframes tabla-mapPulse{0%,100%{box-shadow:0 5px 0 #0004,0 0 0 0 #ffd83dcc}50%{box-shadow:0 5px 0 #0004,0 0 0 12px #ffd83d00}}
+.tabla-inmultirii .map-node-stars{font-size:13px;line-height:1;margin-top:2px;letter-spacing:-1px;color:#ffd83d;text-shadow:0 1px 2px #0006}
+.tabla-inmultirii .map-node-label{margin-top:3px;background:#fffdf6;border:2px solid #6b3d1c;border-radius:10px;padding:2px 8px;font-size:12px;font-weight:1000;color:#24304a;white-space:nowrap;box-shadow:0 3px 0 #6b3d1c55;text-align:center;line-height:1.25}
+.tabla-inmultirii .map-node-label small{display:block;font-size:10px;font-weight:700;color:#6a7590}
+.tabla-inmultirii .map-node-here{position:absolute;bottom:calc(100% + 4px);background:#e8264d;color:#fff;font-size:11px;font-weight:1000;padding:3px 8px;border-radius:10px;white-space:nowrap;animation:tabla-mapBounce 1.2s ease-in-out infinite}
+.tabla-inmultirii .map-node-here::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#e8264d}
+@keyframes tabla-mapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.tabla-inmultirii .map-node.arena .map-node-circle{width:clamp(36px,4.4vw,48px);height:clamp(36px,4.4vw,48px)}
+.tabla-inmultirii .map-home-island{position:absolute;transform:translate(-50%,-50%);width:17%;height:15%;border:0;background:none;cursor:pointer;border-radius:50%;z-index:1}
+.tabla-inmultirii .map-home-island:hover{background:#ffffff22}
+.tabla-inmultirii .map-owl{position:absolute;left:.5%;top:60%;display:flex;flex-direction:column;align-items:flex-start;z-index:3;pointer-events:none}
+.tabla-inmultirii .map-owl-bubble{max-width:min(150px,15%);min-width:110px;font-size:clamp(10.5px,1.15vw,13px)!important;background:#fff;border:3px solid #6b3d1c;border-radius:16px;padding:7px 11px;font-size:13px;font-weight:900;color:#24304a;box-shadow:0 4px 0 #6b3d1c55;position:relative;margin-left:4px}
+.tabla-inmultirii .map-owl-bubble::after{content:'';position:absolute;left:18px;top:100%;border:9px solid transparent;border-top-color:#6b3d1c}
+.tabla-inmultirii .map-owl-emoji{font-size:clamp(46px,6vw,70px);line-height:1;margin-top:6px;filter:drop-shadow(2px 4px 0 #0003);animation:tabla-mapBounce 2.4s ease-in-out infinite}
+.tabla-inmultirii .map-legend{position:absolute;left:52%;top:39%;transform:translateX(-50%);display:flex;flex-direction:column;gap:4px;background:#fffdf6;border:4px solid #6b3d1c;border-radius:16px;padding:8px 10px;box-shadow:0 6px 0 #5a3216;z-index:2;width:clamp(120px,13vw,150px)}
+.tabla-inmultirii .map-legend-title{text-align:center;font-weight:1000;color:#6d42a9;font-size:13px;margin-bottom:2px}
+.tabla-inmultirii .map-legend-item{border:0;border-radius:8px;background:var(--node-color);color:#fff;font-weight:900;font-size:11px;padding:3px 6px;box-shadow:inset 0 -3px #0002;cursor:pointer}
+.tabla-inmultirii .map-start{position:absolute;left:44%;top:84%;transform:translate(-50%,-50%);border:4px solid #fff;border-radius:22px;background:linear-gradient(180deg,#ffd23f,#ff9f1c);color:#7a3d00;font-weight:1000;font-size:clamp(15px,2vw,22px);padding:10px 22px;box-shadow:0 7px 0 #c46a00,0 10px 18px #0003;z-index:3;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.15;white-space:nowrap;animation:tabla-mapStartBounce 2s ease-in-out infinite}
+@keyframes tabla-mapStartBounce{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 4px))}}
+.tabla-inmultirii .map-start small{font-size:12px;font-weight:900;color:#9a5300}
+.tabla-inmultirii .map-start:active{box-shadow:0 3px 0 #c46a00}
+.tabla-inmultirii .map-side{position:absolute;right:-8px;top:120px;display:flex;flex-direction:column;gap:8px;z-index:4}
+.tabla-inmultirii .map-side button{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;width:88px;padding:8px 4px;border:3px solid #6b3d1c;border-radius:16px;background:linear-gradient(180deg,#b57442,#8a5129);color:#fff3dc;font-weight:900;font-size:12px;box-shadow:0 5px 0 #5a3216;cursor:pointer}
+.tabla-inmultirii .map-side button span{font-size:26px;line-height:1.1}
+.tabla-inmultirii .map-side button:hover{filter:brightness(1.1)}
+.tabla-inmultirii .map-side .level-badge{top:-8px;right:-8px}
+.tabla-inmultirii .map-back-btn{display:block;width:100%;margin:0 0 12px;border:3px solid #6b3d1c;border-radius:14px;background:linear-gradient(180deg,#b57442,#8a5129);color:#fff3dc;font-weight:1000;padding:10px;box-shadow:0 4px 0 #5a3216;cursor:pointer}
+.tabla-inmultirii .level.locked{filter:grayscale(.85);opacity:.6;cursor:not-allowed}
+.tabla-inmultirii .map-modal-btn{background:linear-gradient(180deg,#b57442,#8a5129);box-shadow:0 6px #5a3216}
+@media(max-width:900px){
+.tabla-inmultirii .map-owl-bubble{max-width:118px}
+.tabla-inmultirii .map-side{position:static;flex-direction:row;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.tabla-inmultirii .map-side button{width:auto;min-width:76px;padding:8px 10px}
+}
+
+/* ---------- Harta pe telefon (verticală) ---------- */
+.tabla-inmultirii .map-mobile-owl{display:flex;align-items:flex-end;gap:6px;margin:4px 0 8px}
+.tabla-inmultirii .map-mobile-owl .map-owl-emoji{font-size:54px}
+.tabla-inmultirii .map-mobile-owl .map-owl-bubble{max-width:none;min-width:0;flex:1;font-size:14px!important;margin:0 0 10px}
+.tabla-inmultirii .map-mobile-owl .map-owl-bubble::after{left:-9px;top:auto;bottom:12px;border:8px solid transparent;border-right-color:#6b3d1c}
+.tabla-inmultirii .map-mobile-frame{border-radius:24px;border:5px solid #fff;box-shadow:0 8px 0 #2e69a8;overflow:hidden;background-color:#2ea0e0;background-image:radial-gradient(#ffffff26 2px,transparent 2px),linear-gradient(180deg,#4cc3f1,#1f8fd8 60%,#1b7fc4);background-size:34px 34px,100% 100%}
+.tabla-inmultirii .map-mobile{position:relative;width:100%}
+.tabla-inmultirii .map-mobile-path{position:absolute;inset:0;width:100%;height:100%}
+.tabla-inmultirii .map-mobile-island{position:absolute;transform:translate(-50%,-50%);width:min(56vw,230px);display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.tabla-inmultirii .map-mobile-island-svg{width:100%;height:auto;display:block}
+.tabla-inmultirii .map-mobile-island-name{font-size:12px;font-weight:1000;color:#24304a;text-transform:uppercase;letter-spacing:.3px;background:#ffffffd9;border-radius:8px;padding:1px 8px;margin-bottom:-6px;position:relative;z-index:1;white-space:nowrap}
+.tabla-inmultirii .map-mobile .map-node-circle{width:54px;height:54px;font-size:24px}
+.tabla-inmultirii .map-mobile .map-node-label{font-size:12px}
+.tabla-inmultirii .map-mobile .map-node-here{bottom:auto;top:15px;left:calc(50% + 34px)}
+.tabla-inmultirii .map-mobile .map-node-here::after{left:-9px;top:50%;transform:translateY(-50%);border-top-color:transparent;border-right-color:#e8264d}
+.tabla-inmultirii .map-start-mobile{position:sticky;bottom:12px;z-index:5;display:flex;flex-direction:column;align-items:center;width:100%;margin:14px 0 0;border:4px solid #fff;border-radius:22px;background:linear-gradient(180deg,#ffd23f,#ff9f1c);color:#7a3d00;font-weight:1000;font-size:20px;padding:10px 16px;box-shadow:0 6px 0 #c46a00,0 10px 18px #0004;cursor:pointer;line-height:1.15}
+.tabla-inmultirii .map-start-mobile small{font-size:12px;color:#9a5300}
+@media(max-width:700px){
+.tabla-inmultirii .app{padding:10px}
+.tabla-inmultirii header{padding:8px 10px;gap:8px;border-width:3px;border-radius:16px}
+.tabla-inmultirii .logo{font-size:22px;gap:8px;letter-spacing:-1px}
+.tabla-inmultirii .logo-abacus{height:1.1em}
+.tabla-inmultirii .badges{gap:6px;width:100%}
+.tabla-inmultirii .badge{padding:5px 9px;font-size:13px;border-width:2px;border-radius:14px;box-shadow:0 3px 0 #5a3216}
+.tabla-inmultirii button.player-badge{max-width:100%;overflow:hidden;white-space:nowrap}
+.tabla-inmultirii .map-progress-title{font-size:12px;padding:4px 14px}
+.tabla-inmultirii .map-progress-icon{width:30px;height:30px;font-size:16px}
+.tabla-inmultirii .map-home{margin-top:10px}
+}

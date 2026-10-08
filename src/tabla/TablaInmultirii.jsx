@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import './TablaInmultirii.css';
 import { useTablaGame } from './useTablaGame';
 import { usePlayerProfile } from './usePlayerProfile';
-import { submitScore, addPlayerPoints, useMyTotalPoints } from './useLeaderboard';
+import { submitScore, addPlayerPoints, useMyTotalPoints, useMyScores } from './useLeaderboard';
+import { isLevelUnlocked } from './mapProgress';
 import Header from './components/Header';
 import LevelPanel from './components/LevelPanel';
 import GameCard from './components/GameCard';
@@ -17,12 +18,15 @@ import ResultModal from './components/ResultModal';
 import NameGate from './components/NameGate';
 import AuthGate from './components/AuthGate';
 import ProfilePanel from './components/ProfilePanel';
+import MapHome from './components/MapHome';
 
 const PAGE_TITLE = 'Tabla Înmulțirii';
 // Sub această lățime coloanele stau una sub alta (vezi .main în CSS).
 const STACKED_LAYOUT_QUERY = '(max-width: 900px)';
 
 export default function TablaInmultirii() {
+  // 'map' = prima pagină (harta aventurii); 'game' = exercițiile și panourile.
+  const [view, setView] = useState('map');
   const [openPanel, setOpenPanel] = useState(null);
   const togglePanel = key => setOpenPanel(prev => (prev === key ? null : key));
 
@@ -46,12 +50,19 @@ export default function TablaInmultirii() {
   const showAuthGate = firebaseEnabled && ready && isAnonymous;
   const showNameGate = firebaseEnabled && ready && !isAnonymous && (!name || !country);
 
-  // Jocul stă pe pauză cât timp e deschis un panou sau ecranul de cont.
+  // Jocul stă pe pauză pe hartă, cât timp e deschis un panou sau ecranul de cont.
   const {
     stats, current, time, answered, selected, hintOpen, feedback, modal, toast,
     questionsPerLevel, selectLevel, restartLevel, goToNextLevel,
     handleAnswer, toggleHint, goToNextQuestionOrFinish,
-  } = useTablaGame(1, openPanel !== null || showAuthGate || showNameGate || (firebaseEnabled && !ready));
+  } = useTablaGame(
+    1,
+    view === 'map' || openPanel !== null || showAuthGate || showNameGate || (firebaseEnabled && !ready),
+  );
+
+  // Nivelurile terminate deblochează nivelurile următoare (harta progresivă).
+  const { scores: myScores } = useMyScores(uid);
+  const canPlay = level => !firebaseEnabled || isLevelUnlocked(myScores, level);
 
   // Punctele rundei se adaugă la total abia la final (când apare rezultatul);
   // până atunci le arătăm separat, ca să nu fie numărate de două ori.
@@ -59,9 +70,17 @@ export default function TablaInmultirii() {
   const roundPoints = modal ? 0 : stats.points;
 
   const handleSelectLevel = level => {
+    if (!canPlay(level)) return;
+    setView('game');
     setOpenPanel(null);
     selectLevel(level);
     scrollToContent();
+  };
+
+  const goToMap = () => {
+    setOpenPanel(null);
+    setView('map');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const closePanel = () => {
@@ -84,12 +103,19 @@ export default function TablaInmultirii() {
   const handleTogglePanel = key => {
     // Cererea de permisiune trebuie să vină dintr-un clic al utilizatorului.
     if (key === 'chat') requestSystemNotifications();
-    togglePanel(key);
+    if (view === 'map') {
+      // De pe hartă, panoul se deschide mereu (nu se închide la al doilea clic).
+      setView('game');
+      setOpenPanel(key);
+    } else {
+      togglePanel(key);
+    }
     scrollToContent();
   };
 
   const openChatWith = peer => {
     setChatPeer(peer);
+    setView('game');
     setOpenPanel('chat');
     dismissIncoming();
     scrollToContent();
@@ -114,6 +140,7 @@ export default function TablaInmultirii() {
     setOpenPanel(null);
     setChatPeer(null);
     setContestId(null);
+    setView('map');
     await logout();
   };
 
@@ -124,10 +151,21 @@ export default function TablaInmultirii() {
           playerAvatar={avatar} accountEmail={isAnonymous ? '' : email}
           onOpenProfile={() => handleTogglePanel('profile')} profileOpen={openPanel === 'profile'} />
 
+        {view === 'map' ? (
+          <MapHome
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onPlayLevel={handleSelectLevel}
+            onOpenPanel={handleTogglePanel}
+            chatUnread={unreadCount}
+          />
+        ) : (
         <div className="main">
           <LevelPanel
             activeLevel={stats.level}
             onSelectLevel={handleSelectLevel}
+            isLocked={level => !canPlay(level)}
+            onOpenMap={goToMap}
             openPanel={openPanel}
             onTogglePanel={handleTogglePanel}
             badges={{ chat: unreadCount }}
@@ -197,9 +235,15 @@ export default function TablaInmultirii() {
             )}
           </div>
         </div>
+        )}
       </div>
 
-      <ResultModal modal={modal} onRestart={restartLevel} onNextLevel={goToNextLevel} />
+      <ResultModal
+        modal={modal}
+        onRestart={restartLevel}
+        onNextLevel={goToNextLevel}
+        onMap={() => { restartLevel(); goToMap(); }}
+      />
       {showAuthGate && (
         <AuthGate initialName={name} initialCountry={country} onRegister={register} onLogin={login}
           onResetPassword={resetPassword} />
