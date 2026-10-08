@@ -28,7 +28,6 @@ export default function TablaInmultirii() {
   // 'map' = prima pagină (harta aventurii); 'game' = exercițiile și panourile.
   const [view, setView] = useState('map');
   const [openPanel, setOpenPanel] = useState(null);
-  const togglePanel = key => setOpenPanel(prev => (prev === key ? null : key));
 
   // Pe mobil, conținutul (exercițiul sau panoul deschis) e sub lista de niveluri;
   // după fiecare alegere a utilizatorului derulăm până la el.
@@ -38,7 +37,8 @@ export default function TablaInmultirii() {
 
   useEffect(() => {
     if (scrollRequest === 0 || !window.matchMedia(STACKED_LAYOUT_QUERY).matches) return;
-    contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Instant, nu lin: pe telefoanele lente derularea lină se putea opri la jumătate.
+    contentRef.current?.scrollIntoView({ behavior: 'auto', block: 'start' });
   }, [scrollRequest]);
 
   const {
@@ -69,8 +69,13 @@ export default function TablaInmultirii() {
   const savedTotalPoints = useMyTotalPoints(uid);
   const roundPoints = modal ? 0 : stats.points;
 
+  // Ține minte dacă panoul deschis a pornit de pe hartă: atunci „înapoi”
+  // duce pe hartă, nu la un exercițiu pe care jucătorul nici nu l-a început.
+  const [panelFromMap, setPanelFromMap] = useState(false);
+
   const handleSelectLevel = level => {
     if (!canPlay(level)) return;
+    setPanelFromMap(false);
     setView('game');
     setOpenPanel(null);
     selectLevel(level);
@@ -78,12 +83,17 @@ export default function TablaInmultirii() {
   };
 
   const goToMap = () => {
+    setPanelFromMap(false);
     setOpenPanel(null);
     setView('map');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const closePanel = () => {
+    if (panelFromMap) {
+      goToMap();
+      return;
+    }
     setOpenPanel(null);
     scrollToContent();
   };
@@ -100,21 +110,25 @@ export default function TablaInmultirii() {
     startCall, acceptCall, declineCall, hangUp, toggleMute,
   } = useCall({ uid, name });
 
-  const handleTogglePanel = key => {
+  const handleOpenPanel = key => {
     // Cererea de permisiune trebuie să vină dintr-un clic al utilizatorului.
     if (key === 'chat') requestSystemNotifications();
     if (view === 'map') {
       // De pe hartă, panoul se deschide mereu (nu se închide la al doilea clic).
+      setPanelFromMap(true);
       setView('game');
       setOpenPanel(key);
-    } else {
-      togglePanel(key);
+    } else if (openPanel !== key) {
+      // Clicurile repetate pe același meniu îl lasă deschis; ieșirea se face
+      // doar din butoanele cu săgeată („Înapoi la hartă / la exercițiu”).
+      setOpenPanel(key);
     }
     scrollToContent();
   };
 
   const openChatWith = peer => {
     setChatPeer(peer);
+    if (view === 'map') setPanelFromMap(true);
     setView('game');
     setOpenPanel('chat');
     dismissIncoming();
@@ -149,14 +163,14 @@ export default function TablaInmultirii() {
       <div className="app">
         <Header totalPoints={savedTotalPoints + roundPoints} roundPoints={roundPoints} lives={stats.lives} combo={stats.combo} time={time} playerName={name} playerCountry={country}
           playerAvatar={avatar} accountEmail={isAnonymous ? '' : email}
-          onOpenProfile={() => handleTogglePanel('profile')} profileOpen={openPanel === 'profile'} />
+          onOpenProfile={() => handleOpenPanel('profile')} profileOpen={openPanel === 'profile'} />
 
         {view === 'map' ? (
           <MapHome
             name={name}
             scores={firebaseEnabled ? myScores : {}}
             onPlayLevel={handleSelectLevel}
-            onOpenPanel={handleTogglePanel}
+            onOpenPanel={handleOpenPanel}
             chatUnread={unreadCount}
           />
         ) : (
@@ -167,7 +181,7 @@ export default function TablaInmultirii() {
             isLocked={level => !canPlay(level)}
             onOpenMap={goToMap}
             openPanel={openPanel}
-            onTogglePanel={handleTogglePanel}
+            onTogglePanel={handleOpenPanel}
             badges={{ chat: unreadCount }}
           />
 
@@ -217,7 +231,9 @@ export default function TablaInmultirii() {
                     callBusy={Boolean(call)}
                   />
                 )}
-                <button className="bigbtn" onClick={closePanel}>▶ Înapoi la exercițiu</button>
+                <button className="bigbtn" onClick={closePanel}>
+                  {panelFromMap ? '🗺️ Înapoi la hartă' : '▶ Înapoi la exercițiu'}
+                </button>
               </div>
             ) : (
               <GameCard
