@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import './TablaInmultirii.css';
-import { useTablaGame } from './useTablaGame';
+import { useTablaGame, REVIVE_COST } from './useTablaGame';
 import { usePlayerProfile } from './usePlayerProfile';
 import { submitScore, addPlayerPoints, useMyTotalPoints, useMyScores } from './useLeaderboard';
-import { isLevelUnlocked } from './mapProgress';
+import { isLevelUnlocked, isLogicLevel } from './mapProgress';
 import Header from './components/Header';
 import LevelPanel from './components/LevelPanel';
 import GameCard from './components/GameCard';
@@ -20,6 +20,7 @@ import AuthGate from './components/AuthGate';
 import ProfilePanel from './components/ProfilePanel';
 import MapHome from './components/MapHome';
 import HomeIslands from './components/HomeIslands';
+import LogicMap from './components/LogicMap';
 
 const PAGE_TITLE = 'Tabla Înmulțirii';
 // Sub această lățime coloanele stau una sub alta (vezi .main în CSS).
@@ -27,7 +28,8 @@ const STACKED_LAYOUT_QUERY = '(max-width: 900px)';
 
 export default function TablaInmultirii() {
   // 'map' = prima pagină (harta aventurii); 'game' = exercițiile și panourile.
-  // 'home' = prima pagină (Arena + Învață), 'map' = harta nivelurilor, 'game' = exercițiu/panouri.
+  // 'home' = prima pagină (Arena, Învață, Insula Isteților), 'map' = harta nivelurilor
+  // de înmulțire, 'logic' = harta Insulei Isteților, 'game' = exercițiu/panouri.
   const [view, setView] = useState('home');
   const [openPanel, setOpenPanel] = useState(null);
 
@@ -55,7 +57,7 @@ export default function TablaInmultirii() {
   // Jocul stă pe pauză pe hartă, cât timp e deschis un panou sau ecranul de cont.
   const {
     stats, current, time, answered, selected, hintOpen, feedback, modal, toast,
-    questionsPerLevel, selectLevel, restartLevel, goToNextLevel,
+    questionsPerLevel, selectLevel, restartLevel, goToNextLevel, reviveWithLife,
     handleAnswer, toggleHint, goToNextQuestionOrFinish,
   } = useTablaGame(
     1,
@@ -69,7 +71,11 @@ export default function TablaInmultirii() {
   // Punctele rundei se adaugă la total abia la final (când apare rezultatul);
   // până atunci le arătăm separat, ca să nu fie numărate de două ori.
   const savedTotalPoints = useMyTotalPoints(uid);
-  const roundPoints = modal ? 0 : stats.points;
+  // Punctele deja trecute în total din runda curentă (după o viață cumpărată
+  // runda continuă, iar la final adăugăm doar ce s-a câștigat de atunci).
+  const savedRoundRef = useRef({ roundId: null, points: 0 });
+  const alreadySaved = savedRoundRef.current.roundId === stats.roundId ? savedRoundRef.current.points : 0;
+  const roundPoints = modal ? 0 : stats.points - alreadySaved;
 
   // De unde a fost deschis panoul ('home' sau 'map'): atunci „înapoi” duce
   // acolo, nu la un exercițiu pe care jucătorul nici nu l-a început.
@@ -90,7 +96,10 @@ export default function TablaInmultirii() {
     setView(target);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  const goToMap = () => goToView('map');
+  // „Harta” din exercițiu duce pe harta insulei din care face parte nivelul.
+  const goToMap = () => goToView(isLogicLevel(stats.level) ? 'logic' : 'map');
+  const goToLearnMap = () => goToView('map');
+  const goToLogicMap = () => goToView('logic');
   const goToHome = () => goToView('home');
 
   const closePanel = () => {
@@ -145,12 +154,23 @@ export default function TablaInmultirii() {
 
   useEffect(() => {
     if (!modal || !uid || !name) return;
-    submitScore({
+    // Doar o rundă dusă până la capăt contează ca nivel terminat (deblochează
+    // nivelul următor); dacă s-au terminat viețile, păstrăm doar punctele.
+    if (!modal.outOfLives) submitScore({
       uid, name, level: stats.level,
       points: stats.points, correct: stats.correct, bestCombo: stats.bestCombo,
     });
-    addPlayerPoints({ uid, name, pointsEarned: stats.points });
-  }, [modal, uid, name, stats.level, stats.points, stats.correct, stats.bestCombo]);
+    const saved = savedRoundRef.current.roundId === stats.roundId ? savedRoundRef.current.points : 0;
+    addPlayerPoints({ uid, name, pointsEarned: stats.points - saved });
+    savedRoundRef.current = { roundId: stats.roundId, points: stats.points };
+  }, [modal, uid, name, stats.level, stats.points, stats.correct, stats.bestCombo, stats.roundId]);
+
+  // O viață costă puncte din total; runda continuă de unde a rămas.
+  const handleRevive = () => {
+    if (savedTotalPoints < REVIVE_COST) return;
+    addPlayerPoints({ uid, name, pointsEarned: -REVIVE_COST });
+    reviveWithLife();
+  };
 
   const handleLogout = async () => {
     if (!window.confirm('Sigur vrei să ieși din cont?')) return;
@@ -166,7 +186,8 @@ export default function TablaInmultirii() {
   return (
     <div className="tabla-inmultirii">
       <div className="app">
-        <Header totalPoints={savedTotalPoints + roundPoints} roundPoints={roundPoints} lives={stats.lives} combo={stats.combo} time={time} playerName={name} playerCountry={country}
+        <Header totalPoints={savedTotalPoints + roundPoints} roundPoints={roundPoints} lives={stats.lives} combo={stats.combo} time={time}
+          inGame={view === 'game' && !openPanel} playerName={name} playerCountry={country}
           playerAvatar={avatar} accountEmail={isAnonymous ? '' : email}
           onOpenProfile={() => handleOpenPanel('profile')} profileOpen={openPanel === 'profile'} />
 
@@ -174,7 +195,8 @@ export default function TablaInmultirii() {
           <HomeIslands
             name={name}
             scores={firebaseEnabled ? myScores : {}}
-            onOpenLearn={goToMap}
+            onOpenLearn={goToLearnMap}
+            onOpenLogic={goToLogicMap}
             onOpenPanel={handleOpenPanel}
             chatUnread={unreadCount}
           />
@@ -186,6 +208,14 @@ export default function TablaInmultirii() {
             onPlayLevel={handleSelectLevel}
             onOpenPanel={handleOpenPanel}
             chatUnread={unreadCount}
+            onBack={goToHome}
+          />
+        )}
+        {view === 'logic' && (
+          <LogicMap
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onPlayLevel={handleSelectLevel}
             onBack={goToHome}
           />
         )}
@@ -248,7 +278,8 @@ export default function TablaInmultirii() {
                   />
                 )}
                 <button className="bigbtn" onClick={closePanel}>
-                  {{ home: '🏝️ Înapoi la prima pagină', map: '🗺️ Înapoi la hartă' }[panelOrigin] || '▶ Înapoi la exercițiu'}
+                  {{ home: '🏝️ Înapoi la prima pagină', map: '🗺️ Înapoi la hartă', logic: '🧩 Înapoi la insulă' }[panelOrigin]
+                    || '▶ Înapoi la exercițiu'}
                 </button>
               </div>
             ) : (
@@ -276,6 +307,9 @@ export default function TablaInmultirii() {
         modal={modal}
         onRestart={restartLevel}
         onNextLevel={goToNextLevel}
+        onRevive={handleRevive}
+        reviveCost={REVIVE_COST}
+        canRevive={firebaseEnabled && savedTotalPoints >= REVIVE_COST}
         onMap={() => { restartLevel(); goToMap(); }}
       />
       {showAuthGate && (

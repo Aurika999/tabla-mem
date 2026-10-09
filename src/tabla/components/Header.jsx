@@ -1,3 +1,4 @@
+import { START_LIVES, MAX_LIVES, COMBO_FOR_LIFE } from '../useTablaGame';
 import Flag from './Flag';
 import Avatar from './Avatar';
 
@@ -26,7 +27,7 @@ function AbacusLogo() {
 }
 
 export default function Header({
-  totalPoints, roundPoints, lives, combo, time,
+  totalPoints, roundPoints, lives, combo, time, inGame,
   playerName, playerCountry, playerAvatar, accountEmail, onOpenProfile, profileOpen,
 }) {
   return (
@@ -46,9 +47,29 @@ export default function Header({
           ⭐ Puncte: <span>{totalPoints}</span>
           {roundPoints > 0 && <small className="round-points"> (+{roundPoints} acum)</small>}
         </div>
-        <div className="badge">❤️ Vieți: <span>{lives}</span></div>
-        <div className="badge">🔥 Combo: x<span>{combo}</span></div>
-        <div className="badge">⏱️ <span className={time <= 7 ? 'timer low' : ''}>{time}</span>s</div>
+        {inGame && (
+          <>
+            <div
+              className="badge lives-badge"
+              title={`Vieți: ${lives}. Un răspuns greșit sau expirat costă o viață; la 0 se termină runda. `
+                + `${COMBO_FOR_LIFE} răspunsuri corecte la rând îți dau o viață (maximum ${MAX_LIVES}).`}
+            >
+              {'❤️'.repeat(Math.max(0, lives))}{'🤍'.repeat(Math.max(0, START_LIVES - lives))}
+            </div>
+            <div
+              className={`badge combo-badge${combo >= 3 ? ' hot' : ''}`}
+              title={`Răspunsuri corecte la rând. De la 3 la rând primești bonus +5 × combo la fiecare răspuns; `
+                + `la fiecare ${COMBO_FOR_LIFE} la rând primești o viață.`}
+            >
+              🔥 x{combo}
+              {combo >= 3 && <small className="combo-bonus"> +{5 * combo}</small>}
+              {combo > 0 && combo % COMBO_FOR_LIFE !== 0 && (
+                <small className="combo-next"> · ❤️ în {COMBO_FOR_LIFE - (combo % COMBO_FOR_LIFE)}</small>
+              )}
+            </div>
+            <div className="badge">⏱️ <span className={time <= 7 ? 'timer low' : ''}>{time}</span>s</div>
+          </>
+        )}
       </div>
     </header>
   );

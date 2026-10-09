@@ -1,5 +1,5 @@
 import { LEVELS } from '../data';
-import { LEVEL_PATH, isLevelDone, currentLevel } from '../mapProgress';
+import { LEVEL_PATH, LOGIC_PATH, isLevelDone, currentLevel } from '../mapProgress';
 import { Island, Waves, useMediaQuery, PHONE_QUERY } from './MapHome';
 
 // Prima pagină: două insule mari — Arena Concursului și insula „Învață”,
@@ -10,30 +10,38 @@ const LAYOUTS = {
     H: 600,
     islands: {
       arena: {
-        cx: 280, cy: 300, rx: 195, ry: 92,
-        decor: [['🏰', 262, 262, 112], ['🚩', 130, 280, 40], ['🚩', 410, 272, 40], ['🏆', 372, 330, 36], ['🌴', 160, 330, 34]],
+        cx: 175, cy: 300, rx: 150, ry: 78,
+        decor: [['🏰', 165, 262, 88], ['🚩', 62, 285, 34], ['🚩', 282, 278, 34], ['🏆', 250, 330, 30]],
       },
       learn: {
-        cx: 720, cy: 300, rx: 205, ry: 95,
-        decor: [['🏫', 712, 258, 108], ['📚', 572, 310, 44], ['🧮', 862, 306, 42], ['🌳', 608, 250, 40], ['🌳', 838, 248, 36], ['✏️', 790, 336, 28]],
+        cx: 500, cy: 300, rx: 155, ry: 80,
+        decor: [['🏫', 495, 260, 86], ['📚', 380, 312, 38], ['🧮', 615, 308, 36], ['🌳', 410, 255, 34], ['✏️', 568, 340, 24]],
+      },
+      logic: {
+        cx: 825, cy: 300, rx: 150, ry: 78,
+        decor: [['🧩', 815, 262, 80], ['🍬', 712, 300, 34], ['🎈', 925, 280, 36], ['🪙', 900, 335, 26], ['🍎', 740, 340, 26]],
       },
     },
-    extras: [['⛵', 70, 110, 34], ['🐬', 500, 470, 50], ['🐟', 552, 512, 24], ['🐳', 935, 545, 34], ['☁️', 40, 40, 30], ['☁️', 470, 60, 26], ['🐠', 120, 540, 26]],
+    extras: [['⛵', 70, 110, 34], ['🐬', 340, 500, 42], ['🐟', 380, 535, 22], ['🐳', 940, 555, 32], ['☁️', 40, 40, 30], ['🐠', 660, 540, 24]],
   },
   phone: {
     W: 600,
-    H: 900,
+    H: 1290,
     islands: {
       arena: {
         cx: 300, cy: 200, rx: 225, ry: 100,
         decor: [['🏰', 290, 160, 120], ['🚩', 130, 180, 44], ['🚩', 455, 172, 44], ['🏆', 410, 230, 40]],
       },
       learn: {
-        cx: 300, cy: 600, rx: 235, ry: 105,
-        decor: [['🏫', 300, 555, 118], ['📚', 140, 610, 46], ['🧮', 462, 606, 44], ['🌳', 175, 545, 40], ['✏️', 400, 640, 30]],
+        cx: 300, cy: 610, rx: 235, ry: 105,
+        decor: [['🏫', 300, 565, 118], ['📚', 140, 620, 46], ['🧮', 462, 616, 44], ['🌳', 175, 555, 40], ['✏️', 400, 650, 30]],
+      },
+      logic: {
+        cx: 300, cy: 1020, rx: 230, ry: 102,
+        decor: [['🧩', 300, 975, 110], ['🍬', 140, 1010, 44], ['🎈', 455, 985, 46], ['🪙', 430, 1050, 34]],
       },
     },
-    extras: [['⛵', 40, 400, 34], ['🐬', 470, 420, 44], ['🐳', 520, 860, 32], ['☁️', 30, 40, 28]],
+    extras: [['⛵', 40, 400, 34], ['🐬', 470, 420, 44], ['🐟', 90, 820, 28], ['🐳', 520, 1250, 32], ['☁️', 30, 40, 28]],
   },
 };
 
@@ -41,12 +49,15 @@ function pct(value, total) {
   return `${(value / total) * 100}%`;
 }
 
-export default function HomeIslands({ name, scores, onOpenLearn, onOpenPanel, chatUnread }) {
+export default function HomeIslands({
+  name, scores, onOpenLearn, onOpenLogic, onOpenPanel, chatUnread,
+}) {
   const isPhone = useMediaQuery(PHONE_QUERY);
   const layout = isPhone ? LAYOUTS.phone : LAYOUTS.desktop;
   const { W, H, islands } = layout;
   const doneCount = LEVEL_PATH.filter(level => isLevelDone(scores, level)).length;
   const current = currentLevel(scores);
+  const logicDone = LOGIC_PATH.filter(level => isLevelDone(scores, level)).length;
 
   const cards = [
     {
@@ -64,6 +75,15 @@ export default function HomeIslands({ name, scores, onOpenLearn, onOpenPanel, ch
         : `⭐ ${doneCount} / ${LEVEL_PATH.length} niveluri · urmează ${LEVELS[current].label}`,
       cta: '📚 Hai să învățăm!',
       onClick: onOpenLearn,
+    },
+    {
+      key: 'logic',
+      title: 'INSULA ISTEȚILOR',
+      subtitle: logicDone === LOGIC_PATH.length
+        ? 'Ai terminat toate problemele! 🏆'
+        : `🧩 ${logicDone} / ${LOGIC_PATH.length} niveluri · probleme de gândire`,
+      cta: '🧩 Rezolvă probleme',
+      onClick: onOpenLogic,
     },
   ];
 
@@ -120,7 +140,7 @@ export default function HomeIslands({ name, scores, onOpenLearn, onOpenPanel, ch
                   aria-label={card.title}
                 />
                 <div className="home-island-sign" style={{ left: pct(island.cx, W), top: pct(island.cy + island.ry + 18, H) }}>
-                  <div className="home-island-title">{card.title}</div>
+                  <div className={`home-island-title${card.title.length > 12 ? ' long' : ''}`}>{card.title}</div>
                   <div className="home-island-subtitle">{card.subtitle}</div>
                   <button className={`home-island-cta ${card.key}`} onClick={card.onClick}>{card.cta}</button>
                 </div>

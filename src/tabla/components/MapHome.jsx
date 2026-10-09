@@ -41,10 +41,12 @@ const NODES = {
 const NODE_COLORS = {
   1: '#5fc84a', 2: '#20a8e8', 3: '#f4a623', 4: '#9258d8', 5: '#e84d8d',
   [PROBLEME_LEVEL]: '#3d9b70', [AVANSATE_LEVEL]: '#e0632c',
+  logica1: '#14a3a3', logica2: '#ef5da8', logica3: '#7c4dff', logica4: '#f08c00',
 };
 
 const NODE_LABELS = {
   1: '1', 2: '2', 3: '3', 4: '4', 5: '5', [PROBLEME_LEVEL]: '📖', [AVANSATE_LEVEL]: '🧠',
+  logica1: '1', logica2: '2', logica3: '3', logica4: '4',
 };
 
 // Poteca dintre noduri: curbe line, ca un drum de nisip.
@@ -88,8 +90,9 @@ export function Waves() {
   ));
 }
 
-function NodeButton({ level, scores, isCurrent, onSelect, style, buttonRef }) {
-  const pos = NODES[level];
+export function NodeButton({ level, scores, isCurrent, onSelect, style, buttonRef }) {
+  // Nodurile altor hărți (ex. Insula Isteților) își dau poziția prin `style`.
+  const pos = NODES[level] || { x: 0, y: 0 };
   const done = isLevelDone(scores, level);
   const unlocked = isLevelUnlocked(scores, level);
   const stars = levelStars(scores, level);

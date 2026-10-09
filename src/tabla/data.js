@@ -2,6 +2,8 @@
 
 export const PROBLEME_LEVEL = 'probleme';
 export const AVANSATE_LEVEL = 'avansate';
+// „Insula Isteților”: probleme fără înmulțire (adunări, scăderi, comparații).
+export const LOGIC_LEVELS = ['logica1', 'logica2', 'logica3', 'logica4'];
 
 export const LEVELS = {
   1: { key: 1, range: [1, 5, 1, 5], label: '1. UȘOR', hint: '1 × 1 până la 5 × 5', className: 'l1' },
@@ -11,51 +13,15 @@ export const LEVELS = {
   5: { key: 5, range: [1, 12, 1, 12], label: '5. EXPERT', hint: 'Provocări mixte', className: 'l5' },
   [PROBLEME_LEVEL]: { key: PROBLEME_LEVEL, range: [1, 10, 1, 10], label: '📖 PROBLEME', hint: 'Probleme de logică', className: 'lp' },
   [AVANSATE_LEVEL]: { key: AVANSATE_LEVEL, range: [1, 10, 1, 10], label: '🧠 PROVOCĂRI', hint: 'Probleme pentru concurs', className: 'la' },
+  logica1: { key: 'logica1', label: '🧩 1. ADUNĂRI ȘI SCĂDERI', hint: 'Probleme până la 20', className: 'lg1' },
+  logica2: { key: 'logica2', label: '🧩 2. MAI MULT, MAI PUȚIN', hint: 'Comparații, bani, vârste — până la 50', className: 'lg2' },
+  logica4: { key: 'logica4', label: '🧩 4. EXERSEZ ȘI REZOLV', hint: 'Ca în manual: înmulțiri și probleme', className: 'lg4' },
+  logica3: { key: 'logica3', label: '🧩 3. PROBLEME ISTEȚE', hint: 'În doi pași, ore, șiruri — până la 100', className: 'lg3' },
 };
 
 export const LEVEL_ORDER = [1, 2, 3, 4, 5];
 
 export const FRUITS = ['🍎', '🍐', '🍊', '🥝'];
-
-const WP_NAMES = ['Andrei', 'Mara', 'Ioana', 'Matei', 'Elena', 'David', 'Sofia', 'Alex', 'Diana', 'Bogdan'];
-const WP_OBJECTS = ['scoici', 'mere', 'baloane', 'creioane', 'bomboane', 'cărți', 'biluțe', 'ouă', 'nasturi'];
-const WP_OBJECTS_CMP = ['scoici', 'mere', 'baloane', 'creioane', 'bomboane', 'flori', 'cărți', 'biluțe', 'ouă'];
-
-function pickTwoNames() {
-  const n1 = WP_NAMES[Math.floor(Math.random() * WP_NAMES.length)];
-  let n2 = WP_NAMES[Math.floor(Math.random() * WP_NAMES.length)];
-  while (n2 === n1) n2 = WP_NAMES[Math.floor(Math.random() * WP_NAMES.length)];
-  return [n1, n2];
-}
-
-export function buildWordProblem(a, b) {
-  const obj = WP_OBJECTS[Math.floor(Math.random() * WP_OBJECTS.length)];
-  const objCmp = WP_OBJECTS_CMP[Math.floor(Math.random() * WP_OBJECTS_CMP.length)];
-  const [n1, n2] = pickTwoNames();
-  const templates = [
-    () => ({ text: `${n1} are ${a} pungi cu câte ${b} ${obj} în fiecare pungă. Câte ${obj} are ${n1} în total?`, answer: a * b, isMult: true }),
-    () => ({ text: `În grădină sunt ${a} rânduri cu câte ${b} flori pe fiecare rând. Câte flori sunt în total?`, answer: a * b, isMult: true }),
-    () => ({ text: `${n1} are ${a} cutii cu câte ${b} ${obj} în fiecare cutie. Câte ${obj} are ${n1}?`, answer: a * b, isMult: true }),
-    () => ({
-      text: `${n1} are ${a} ${objCmp}, iar ${n2} are cu ${b} mai multe. Câte ${objCmp} are ${n2}?`,
-      answer: a + b, isMult: false,
-      explanation: `${n2} are cu ${b} mai multe decât ${n1}, deci adunăm: ${a} + ${b} = ${a + b}.`,
-    }),
-    () => {
-      const hi = Math.max(a, b), lo = Math.min(a, b);
-      const diff = hi > lo ? hi - lo : (hi > 1 ? 1 : 0);
-      return {
-        text: `${n1} are ${hi} ${objCmp}, iar ${n2} are cu ${diff} mai puține. Câte ${objCmp} are ${n2}?`,
-        answer: hi - diff, isMult: false,
-        explanation: `${n2} are cu ${diff} mai puține decât ${n1}, deci scădem: ${hi} - ${diff} = ${hi - diff}.`,
-      };
-    },
-  ];
-  if (b >= 2) {
-    templates.push(() => ({ text: `${n1} are ${a} ${objCmp}. ${n2} are de ${b} ori mai multe ${objCmp} decât ${n1}. Câte ${objCmp} are ${n2}?`, answer: a * b, isMult: true }));
-  }
-  return templates[Math.floor(Math.random() * templates.length)]();
-}
 
 export function buildBreakdownText(a, b) {
   return Array(a).fill(b).join(' + ');

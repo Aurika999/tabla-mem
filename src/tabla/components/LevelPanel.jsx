@@ -1,4 +1,4 @@
-import { LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL } from '../data';
+import { LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS } from '../data';
 
 const MODE_KEYS = [PROBLEME_LEVEL, AVANSATE_LEVEL];
 
@@ -11,12 +11,16 @@ const INFO_PANELS = [
 export default function LevelPanel({
   activeLevel, onSelectLevel, isLocked = () => false, onOpenMap, openPanel, onTogglePanel, badges = {},
 }) {
+  // În timpul unei probleme de pe Insula Isteților arătăm nivelurile acelei insule.
+  const isLogic = LOGIC_LEVELS.includes(activeLevel);
   return (
     <section className="panel level-panel">
-      {onOpenMap && <button className="map-back-btn" onClick={onOpenMap}>🗺️ HARTA AVENTURII</button>}
-      <h2>🏆 NIVELURI</h2>
+      {onOpenMap && (
+        <button className="map-back-btn" onClick={onOpenMap}>{isLogic ? '🧩 HARTA INSULEI' : '🗺️ HARTA AVENTURII'}</button>
+      )}
+      <h2>{isLogic ? '🧩 ISTEȚI' : '🏆 NIVELURI'}</h2>
       <div id="levels">
-        {LEVEL_ORDER.map(key => {
+        {(isLogic ? LOGIC_LEVELS : LEVEL_ORDER).map(key => {
           const level = LEVELS[key];
           return (
             <button
@@ -33,23 +37,25 @@ export default function LevelPanel({
         })}
       </div>
 
-      <div id="modes">
-        {MODE_KEYS.map(key => {
-          const mode = LEVELS[key];
-          return (
-            <button
-              key={key}
-              className={`level ${mode.className}${activeLevel === key ? ' active' : ''}${isLocked(key) ? ' locked' : ''}`}
-              onClick={() => onSelectLevel(key)}
-              disabled={isLocked(key)}
-              title={isLocked(key) ? 'Termină nivelul dinainte ca să-l deblochezi' : undefined}
-            >
-              {isLocked(key) && '🔒 '}{mode.label}
-              <small>{mode.hint}</small>
-            </button>
-          );
-        })}
-      </div>
+      {!isLogic && (
+        <div id="modes">
+          {MODE_KEYS.map(key => {
+            const mode = LEVELS[key];
+            return (
+              <button
+                key={key}
+                className={`level ${mode.className}${activeLevel === key ? ' active' : ''}${isLocked(key) ? ' locked' : ''}`}
+                onClick={() => onSelectLevel(key)}
+                disabled={isLocked(key)}
+                title={isLocked(key) ? 'Termină nivelul dinainte ca să-l deblochezi' : undefined}
+              >
+                {isLocked(key) && '🔒 '}{mode.label}
+                <small>{mode.hint}</small>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       <div id="info-panels">
         {INFO_PANELS.map(panel => (
