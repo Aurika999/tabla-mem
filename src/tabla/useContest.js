@@ -12,7 +12,7 @@ export const MAX_PLAYERS = 10;
 export const MAX_TITLE_LENGTH = 40;
 export const MIN_PLAYERS = 2;
 export const CONTEST_QUESTIONS = 10;
-export const QUESTION_SECONDS = 20;
+export const QUESTION_SECONDS = 35;
 export const COUNTDOWN_SECONDS = 3;
 // Premii adăugate la punctajul total din clasament.
 export const PRIZE_POINTS = [50, 30, 10];
