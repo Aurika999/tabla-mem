@@ -25,8 +25,6 @@ const ISLANDS = [
     decor: [['🏛️', 928, 338, 36], ['📚', 790, 358, 26], ['🌳', 952, 372, 24]] },
   { key: 'volcano', cx: 712, cy: 488, rx: 122, ry: 58, label: 'Vulcanul Provocărilor', lx: 712, ly: 572,
     decor: [['🌋', 628, 474, 46], ['🌴', 810, 476, 32], ['💎', 780, 508, 18]] },
-  { key: 'arena', cx: 130, cy: 100, rx: 88, ry: 40, label: 'Arena Concursului', lx: 130, ly: 166,
-    decor: [['🏰', 92, 90, 36], ['🚩', 205, 96, 22]] },
 ];
 
 // Poziția fiecărui nod de nivel pe hartă (în coordonatele desenului).
@@ -39,7 +37,6 @@ const NODES = {
   [PROBLEME_LEVEL]: { x: 852, y: 322 },
   [AVANSATE_LEVEL]: { x: 718, y: 456 },
 };
-const ARENA_NODE = { x: 150, y: 88 };
 
 const NODE_COLORS = {
   1: '#5fc84a', 2: '#20a8e8', 3: '#f4a623', 4: '#9258d8', 5: '#e84d8d',
@@ -66,7 +63,7 @@ function pathThroughNodes() {
   return d;
 }
 
-function Island({ cx, cy, rx, ry }) {
+export function Island({ cx, cy, rx, ry }) {
   return (
     <g>
       <ellipse cx={cx} cy={cy + ry * 0.45} rx={rx * 1.12} ry={ry * 0.9} fill="#2ea7d8" opacity="0.55" />
@@ -80,7 +77,7 @@ function Island({ cx, cy, rx, ry }) {
   );
 }
 
-function Waves() {
+export function Waves() {
   const waves = [
     [460, 300], [560, 330], [420, 420], [600, 400], [250, 230], [760, 250], [80, 300],
     [950, 470], [540, 560], [330, 560], [960, 260], [690, 320], [40, 560], [250, 60], [740, 40],
@@ -120,7 +117,7 @@ function NodeButton({ level, scores, isCurrent, onSelect, style, buttonRef }) {
 }
 
 
-function useMediaQuery(queryText) {
+export function useMediaQuery(queryText) {
   const [matches, setMatches] = useState(() => window.matchMedia(queryText).matches);
   useEffect(() => {
     const mq = window.matchMedia(queryText);
@@ -132,7 +129,7 @@ function useMediaQuery(queryText) {
 }
 
 // Pe telefon harta e verticală: insulele vin una sub alta, în zigzag.
-const PHONE_QUERY = '(max-width: 700px)';
+export const PHONE_QUERY = '(max-width: 700px)';
 const ROW_H = 140;
 const MOBILE_TOP = 20;
 const LEVEL_ISLAND = {
@@ -140,8 +137,8 @@ const LEVEL_ISLAND = {
   [PROBLEME_LEVEL]: 'library', [AVANSATE_LEVEL]: 'volcano',
 };
 
-function MobileMap({ scores, current, onSelect, onOpenPanel }) {
-  const rows = [...LEVEL_PATH, 'arena'];
+function MobileMap({ scores, current, onSelect }) {
+  const rows = LEVEL_PATH;
   const height = MOBILE_TOP + rows.length * ROW_H;
   const points = rows.map((_, i) => ({ x: i % 2 === 0 ? 30 : 70, y: MOBILE_TOP + i * ROW_H + ROW_H / 2 }));
   const currentRef = useRef(null);
@@ -168,7 +165,7 @@ function MobileMap({ scores, current, onSelect, onOpenPanel }) {
           vectorEffect="non-scaling-stroke" />
       </svg>
       {rows.map((row, i) => {
-        const island = ISLANDS.find(item => item.key === (row === 'arena' ? 'arena' : LEVEL_ISLAND[row]));
+        const island = ISLANDS.find(item => item.key === LEVEL_ISLAND[row]);
         const p = points[i];
         const [first, second] = island.decor;
         return (
@@ -193,20 +190,12 @@ function MobileMap({ scores, current, onSelect, onOpenPanel }) {
           style={{ left: `${points[i].x}%`, top: points[i].y + 6 }}
         />
       ))}
-      <button
-        className="map-node arena"
-        style={{ left: `${points[rows.length - 1].x}%`, top: points[rows.length - 1].y + 6, '--node-color': '#ff7a18' }}
-        onClick={() => onOpenPanel('contest')}
-      >
-        <span className="map-node-circle">🏁</span>
-        <span className="map-node-label">CONCURS<small>cu alți jucători</small></span>
-      </button>
     </div>
   );
 }
 
 export default function MapHome({
-  name, scores, onPlayLevel, onOpenPanel, chatUnread,
+  name, scores, onPlayLevel, onOpenPanel, chatUnread, onBack,
 }) {
   const [owlMessage, setOwlMessage] = useState(null);
   const isPhone = useMediaQuery(PHONE_QUERY);
@@ -227,8 +216,13 @@ export default function MapHome({
       ? `Bravo, ${name || 'campionule'}! Ai terminat toată harta! 🏆`
       : `Bine ai venit${name ? `, ${name}` : ''}! Hai la aventură! 🚀`);
 
+  const backButton = (
+    <button className="map-home-back" onClick={onBack}>← Prima pagină</button>
+  );
+
   const sideButtons = (
     <nav className="map-side">
+      {isPhone && backButton}
       <button onClick={() => onOpenPanel('leaderboard')}><span>🏆</span>Clasament</button>
       <button onClick={() => onOpenPanel('chat')}>
         <span>💬</span>Chat
@@ -247,7 +241,7 @@ export default function MapHome({
           </div>
           <div className="map-mobile-frame">
             {sideButtons}
-            <MobileMap scores={scores} current={current} onSelect={handleSelect} onOpenPanel={onOpenPanel} />
+            <MobileMap scores={scores} current={current} onSelect={handleSelect} />
           </div>
           <button className="map-start-mobile" onClick={() => onPlayLevel(current)}>
             {doneCount === 0 ? 'ÎNCEPE AVENTURA!' : 'CONTINUĂ AVENTURA!'}
@@ -288,19 +282,11 @@ export default function MapHome({
           </svg>
 
           {sideButtons}
+          {backButton}
 
           {LEVEL_PATH.map(level => (
             <NodeButton key={level} level={level} scores={scores} isCurrent={level === current} onSelect={handleSelect} />
           ))}
-
-          <button
-            className="map-node arena"
-            style={{ left: `${(ARENA_NODE.x / W) * 100}%`, top: `${(ARENA_NODE.y / H) * 100}%`, '--node-color': '#ff7a18' }}
-            onClick={() => onOpenPanel('contest')}
-            title="Concurs test cu alți jucători"
-          >
-            <span className="map-node-circle">🏁</span>
-          </button>
 
           <div className="map-owl">
             <div className="map-owl-bubble">{greeting}</div>

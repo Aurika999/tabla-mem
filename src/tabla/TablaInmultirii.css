@@ -359,3 +359,27 @@
 .tabla-inmultirii .map-start::after,.tabla-inmultirii .map-start-mobile::after{right:-17px}
 .tabla-inmultirii .map-start-mobile{position:sticky;width:calc(100% - 40px);margin:16px 20px 0}
 .tabla-inmultirii .map-side button{padding:6px 14px;font-size:14px;border-width:2px;box-shadow:0 4px 0 #5a3216}
+
+/* ---------- Prima pagină: Arena + Învață ---------- */
+.tabla-inmultirii .home-frame{overflow:hidden}
+.tabla-inmultirii .map-canvas.home-canvas{min-width:0}
+.tabla-inmultirii .home-island-hit{position:absolute;transform:translate(-50%,-55%);border:0;background:none;border-radius:50%;cursor:pointer;z-index:1;transition:background .2s}
+.tabla-inmultirii .home-island-hit:hover{background:radial-gradient(ellipse,#ffffff38 0%,#ffffff00 70%)}
+.tabla-inmultirii .home-island-sign{position:absolute;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2;text-align:center;width:max-content;max-width:46%}
+.tabla-inmultirii .home-island-title{font-size:clamp(20px,3vw,34px);font-weight:1000;color:#fff;letter-spacing:1px;-webkit-text-stroke:2px #24304a;paint-order:stroke fill;text-shadow:0 4px 0 #24304a}
+.tabla-inmultirii .home-island-subtitle{background:#fff8e6;border:2px solid #8a5a2b;border-radius:12px;padding:3px 10px;font-size:clamp(11px,1.3vw,14px);font-weight:800;color:#5a3216}
+.tabla-inmultirii .home-island-cta{border:4px solid #fff3c4;border-radius:18px;padding:8px 22px;font-weight:1000;font-size:clamp(14px,1.8vw,20px);cursor:pointer;color:#7a3d00;background:linear-gradient(180deg,#ffe066 0%,#ffc21a 45%,#ff9f1c 100%);box-shadow:0 0 0 3px #b8860b,0 6px 0 3px #7a4e00,0 10px 18px #0005;margin-top:4px}
+.tabla-inmultirii .home-island-cta.arena{color:#fff;background:linear-gradient(180deg,#ff8a3d 0%,#f05a28 55%,#d13b1a 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .home-island-cta:hover{filter:brightness(1.08)}
+.tabla-inmultirii .home-island-cta:active{transform:translateY(3px)}
+.tabla-inmultirii .map-owl.home-owl{left:50%;top:4%;transform:translateX(-50%);align-items:center;pointer-events:none}
+.tabla-inmultirii .home-owl .map-owl-bubble{max-width:260px;min-width:0;margin:0;font-size:14px!important}
+.tabla-inmultirii .home-owl .map-owl-bubble::after{left:50%;transform:translateX(-50%)}
+.tabla-inmultirii .home-owl .map-owl-emoji{font-size:46px}
+.tabla-inmultirii .map-home-back{position:absolute;top:14px;left:14px;z-index:4;padding:6px 14px;border:2px solid #6b3d1c;border-radius:16px;background:linear-gradient(180deg,#b57442,#8a5129);color:#fff3dc;font-weight:900;font-size:14px;box-shadow:0 4px 0 #5a3216;cursor:pointer}
+.tabla-inmultirii .map-home-back:hover{filter:brightness(1.1)}
+@media(max-width:700px){
+.tabla-inmultirii .home-frame .map-side{position:absolute;top:10px;right:10px;left:10px;padding:0}
+.tabla-inmultirii .home-island-sign{max-width:90%}
+.tabla-inmultirii .map-side .map-home-back{position:static;flex:1;padding:7px 8px}
+}

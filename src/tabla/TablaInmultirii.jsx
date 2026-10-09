@@ -19,6 +19,7 @@ import NameGate from './components/NameGate';
 import AuthGate from './components/AuthGate';
 import ProfilePanel from './components/ProfilePanel';
 import MapHome from './components/MapHome';
+import HomeIslands from './components/HomeIslands';
 
 const PAGE_TITLE = 'Tabla Înmulțirii';
 // Sub această lățime coloanele stau una sub alta (vezi .main în CSS).
@@ -26,7 +27,8 @@ const STACKED_LAYOUT_QUERY = '(max-width: 900px)';
 
 export default function TablaInmultirii() {
   // 'map' = prima pagină (harta aventurii); 'game' = exercițiile și panourile.
-  const [view, setView] = useState('map');
+  // 'home' = prima pagină (Arena + Învață), 'map' = harta nivelurilor, 'game' = exercițiu/panouri.
+  const [view, setView] = useState('home');
   const [openPanel, setOpenPanel] = useState(null);
 
   // Pe mobil, conținutul (exercițiul sau panoul deschis) e sub lista de niveluri;
@@ -57,7 +59,7 @@ export default function TablaInmultirii() {
     handleAnswer, toggleHint, goToNextQuestionOrFinish,
   } = useTablaGame(
     1,
-    view === 'map' || openPanel !== null || showAuthGate || showNameGate || (firebaseEnabled && !ready),
+    view !== 'game' || openPanel !== null || showAuthGate || showNameGate || (firebaseEnabled && !ready),
   );
 
   // Nivelurile terminate deblochează nivelurile următoare (harta progresivă).
@@ -69,29 +71,31 @@ export default function TablaInmultirii() {
   const savedTotalPoints = useMyTotalPoints(uid);
   const roundPoints = modal ? 0 : stats.points;
 
-  // Ține minte dacă panoul deschis a pornit de pe hartă: atunci „înapoi”
-  // duce pe hartă, nu la un exercițiu pe care jucătorul nici nu l-a început.
-  const [panelFromMap, setPanelFromMap] = useState(false);
+  // De unde a fost deschis panoul ('home' sau 'map'): atunci „înapoi” duce
+  // acolo, nu la un exercițiu pe care jucătorul nici nu l-a început.
+  const [panelOrigin, setPanelOrigin] = useState(null);
 
   const handleSelectLevel = level => {
     if (!canPlay(level)) return;
-    setPanelFromMap(false);
+    setPanelOrigin(null);
     setView('game');
     setOpenPanel(null);
     selectLevel(level);
     scrollToContent();
   };
 
-  const goToMap = () => {
-    setPanelFromMap(false);
+  const goToView = target => {
+    setPanelOrigin(null);
     setOpenPanel(null);
-    setView('map');
+    setView(target);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  const goToMap = () => goToView('map');
+  const goToHome = () => goToView('home');
 
   const closePanel = () => {
-    if (panelFromMap) {
-      goToMap();
+    if (panelOrigin) {
+      goToView(panelOrigin);
       return;
     }
     setOpenPanel(null);
@@ -113,9 +117,9 @@ export default function TablaInmultirii() {
   const handleOpenPanel = key => {
     // Cererea de permisiune trebuie să vină dintr-un clic al utilizatorului.
     if (key === 'chat') requestSystemNotifications();
-    if (view === 'map') {
-      // De pe hartă, panoul se deschide mereu (nu se închide la al doilea clic).
-      setPanelFromMap(true);
+    if (view !== 'game') {
+      // De pe prima pagină sau de pe hartă, panoul se deschide mereu.
+      setPanelOrigin(view);
       setView('game');
       setOpenPanel(key);
     } else if (openPanel !== key) {
@@ -128,7 +132,7 @@ export default function TablaInmultirii() {
 
   const openChatWith = peer => {
     setChatPeer(peer);
-    if (view === 'map') setPanelFromMap(true);
+    if (view !== 'game') setPanelOrigin(view);
     setView('game');
     setOpenPanel('chat');
     dismissIncoming();
@@ -154,7 +158,8 @@ export default function TablaInmultirii() {
     setOpenPanel(null);
     setChatPeer(null);
     setContestId(null);
-    setView('map');
+    setPanelOrigin(null);
+    setView('home');
     await logout();
   };
 
@@ -165,15 +170,26 @@ export default function TablaInmultirii() {
           playerAvatar={avatar} accountEmail={isAnonymous ? '' : email}
           onOpenProfile={() => handleOpenPanel('profile')} profileOpen={openPanel === 'profile'} />
 
-        {view === 'map' ? (
+        {view === 'home' && (
+          <HomeIslands
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onOpenLearn={goToMap}
+            onOpenPanel={handleOpenPanel}
+            chatUnread={unreadCount}
+          />
+        )}
+        {view === 'map' && (
           <MapHome
             name={name}
             scores={firebaseEnabled ? myScores : {}}
             onPlayLevel={handleSelectLevel}
             onOpenPanel={handleOpenPanel}
             chatUnread={unreadCount}
+            onBack={goToHome}
           />
-        ) : (
+        )}
+        {view === 'game' && (
         <div className="main">
           <LevelPanel
             activeLevel={stats.level}
@@ -232,7 +248,7 @@ export default function TablaInmultirii() {
                   />
                 )}
                 <button className="bigbtn" onClick={closePanel}>
-                  {panelFromMap ? '🗺️ Înapoi la hartă' : '▶ Înapoi la exercițiu'}
+                  {{ home: '🏝️ Înapoi la prima pagină', map: '🗺️ Înapoi la hartă' }[panelOrigin] || '▶ Înapoi la exercițiu'}
                 </button>
               </div>
             ) : (
