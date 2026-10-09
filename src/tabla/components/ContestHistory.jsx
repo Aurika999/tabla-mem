@@ -1,4 +1,6 @@
-import { useContestHistory, contestTitle, CONTEST_QUESTIONS } from '../useContest';
+import {
+  useContestHistory, contestTitle, contestLevelLabel, contestLevelOf, CONTEST_QUESTIONS,
+} from '../useContest';
 import Flag from './Flag';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
@@ -33,6 +35,7 @@ export default function ContestHistory({ uid }) {
           return (
             <div key={contest.id} className="contest-history-card">
               <div className="contest-history-title">🏁 {contestTitle(contest)}</div>
+              <div className="contest-level-tag small">{contestLevelLabel(contestLevelOf(contest))}</div>
               <div className="contest-history-head">
                 <span>📅 {formatDate(contest.finishedAt)}</span>
                 <span>👥 {ranking.length} jucători</span>

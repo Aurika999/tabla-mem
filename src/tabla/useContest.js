@@ -4,7 +4,7 @@ import {
 } from 'firebase/firestore';
 import { db, firebaseEnabled } from '../firebase';
 import { generateQuestion } from './useTablaGame';
-import { PROBLEME_LEVEL, AVANSATE_LEVEL } from './data';
+import { LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS } from './data';
 
 const CONTESTS_COLLECTION = 'contests';
 
@@ -22,7 +22,29 @@ const OPEN_CONTEST_MAX_AGE_MS = 15 * 60 * 1000;
 const FINISH_GRACE_MS = 10000;
 
 // Întrebări din toate nivelurile, de la ușor la greu.
-const CONTEST_LEVELS = [1, 2, 3, 3, 4, 4, 5, 5, PROBLEME_LEVEL, AVANSATE_LEVEL];
+const MIX_LEVELS = [1, 2, 3, 3, 4, 4, 5, 5, PROBLEME_LEVEL, AVANSATE_LEVEL];
+
+// Concursurile se fac pe niveluri; „mix” = întrebări din toate nivelurile.
+export const MIX_LEVEL = 'mix';
+export const CONTEST_LEVEL_GROUPS = [
+  { title: 'Tabla înmulțirii', levels: [MIX_LEVEL, ...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL] },
+  { title: 'Insula Isteților', levels: LOGIC_LEVELS },
+];
+
+export function contestLevelLabel(level) {
+  if (!level || level === MIX_LEVEL) return '🎲 AMESTEC';
+  return LEVELS[level]?.label || String(level);
+}
+
+// Concursurile vechi n-au câmpul `level`: au fost cu întrebări amestecate.
+export function contestLevelOf(contest) {
+  return contest?.level ?? MIX_LEVEL;
+}
+
+function questionsFor(level) {
+  if (level === MIX_LEVEL) return MIX_LEVELS.map(l => generateQuestion(l));
+  return Array.from({ length: CONTEST_QUESTIONS }, () => generateQuestion(level));
+}
 
 export function contestDeadline(contest, seenRunningAt) {
   const startedAt = contest?.startedAt?.toMillis() ?? seenRunningAt;
@@ -98,16 +120,18 @@ export function useContest(contestId) {
   return { contest, results, loaded: contestLoaded && resultsLoaded, contestLoaded };
 }
 
-export async function createContest({ uid, name, country, title }) {
+export async function createContest({ uid, name, country, title, level = MIX_LEVEL }) {
   const ref = doc(collection(db, CONTESTS_COLLECTION));
-  const cleanTitle = (title || '').trim().slice(0, MAX_TITLE_LENGTH) || `Concursul lui ${name}`;
+  const levelName = contestLevelLabel(level).replace(/^[^\p{L}]+/u, '');
+  const cleanTitle = (title || '').trim().slice(0, MAX_TITLE_LENGTH) || `Concurs ${levelName}`.slice(0, MAX_TITLE_LENGTH);
   await setDoc(ref, {
     host: uid,
     hostName: name,
     title: cleanTitle,
     status: 'waiting',
     players: { [uid]: { name, country: country || '', joinedAt: serverTimestamp() } },
-    questions: CONTEST_LEVELS.map(level => generateQuestion(level)),
+    level,
+    questions: questionsFor(level),
     createdAt: serverTimestamp(),
   });
   return ref.id;

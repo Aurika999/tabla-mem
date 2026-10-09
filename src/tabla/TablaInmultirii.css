@@ -409,3 +409,14 @@
 .tabla-inmultirii .logic-title{top:56px;font-size:20px}
 .tabla-inmultirii .logic-back{top:10px;left:10px}
 }
+
+/* ---------- Concursuri pe niveluri ---------- */
+.tabla-inmultirii .contest-level-group{max-width:760px;margin:0 auto 10px}
+.tabla-inmultirii .contest-level-group-title{font-size:12px;font-weight:900;color:#6a7590;text-transform:uppercase;margin:0 0 6px;text-align:center}
+.tabla-inmultirii .contest-levels{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.tabla-inmultirii .contest-level-chip{position:relative;border:2px solid #e6eefc;background:#f7f9fd;border-radius:12px;padding:7px 12px;font-weight:900;font-size:13px;color:#24304a;cursor:pointer}
+.tabla-inmultirii .contest-level-chip:hover{border-color:#ff9f1c}
+.tabla-inmultirii .contest-level-chip.active{background:linear-gradient(180deg,#ff8a3d,#e8562a);border-color:#d13b1a;color:#fff}
+.tabla-inmultirii .contest-level-count{position:absolute;top:-8px;right:-8px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#25d366;color:#fff;font-size:11px;line-height:20px;border:2px solid #fff}
+.tabla-inmultirii .contest-level-tag{display:block;width:max-content;margin:-4px auto 10px;background:#fff3c4;border:2px solid #ffd83d;border-radius:12px;padding:3px 12px;font-weight:900;font-size:13px;color:#7a5b00}
+.tabla-inmultirii .contest-level-tag.small{margin:2px 0 4px;font-size:11px;padding:1px 8px}

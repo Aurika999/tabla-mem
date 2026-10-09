@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   useOpenContests, useContest, createContest, joinContest, leaveContest, startContest, recordContestResult,
   saveContestProgress, rankResults, contestDeadline, contestTitle, MAX_TITLE_LENGTH,
+  CONTEST_LEVEL_GROUPS, MIX_LEVEL, contestLevelLabel, contestLevelOf,
   MAX_PLAYERS, MIN_PLAYERS, CONTEST_QUESTIONS, QUESTION_SECONDS, COUNTDOWN_SECONDS, PRIZE_POINTS,
 } from '../useContest';
 import { addPlayerPoints } from '../useLeaderboard';
@@ -70,10 +71,19 @@ function Standings({ rows, uid, final }) {
 }
 
 function Lobby({ uid, name, country, onEnter }) {
-  const contests = useOpenContests();
+  const allContests = useOpenContests();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
+  const [level, setLevel] = useState(MIX_LEVEL);
+  // Fiecare nivel are concursurile lui; numărăm câte așteaptă jucători pe fiecare.
+  const openByLevel = allContests.reduce((acc, c) => {
+    const key = String(contestLevelOf(c));
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
+  const contests = allContests.filter(c => String(contestLevelOf(c)) === String(level));
+  const levelName = contestLevelLabel(level);
 
   const run = async (action) => {
     setBusy(true);
@@ -88,7 +98,7 @@ function Lobby({ uid, name, country, onEnter }) {
   };
 
   const handleCreate = () => run(async () => {
-    const id = await createContest({ uid, name, country, title });
+    const id = await createContest({ uid, name, country, title, level });
     onEnter(id);
   });
 
@@ -100,10 +110,29 @@ function Lobby({ uid, name, country, onEnter }) {
   return (
     <>
       <p className="contest-intro">
-        Concurează cu alți jucători (minimum 2, maximum {MAX_PLAYERS}): <b>{CONTEST_QUESTIONS} întrebări</b> din toate nivelurile,
+        Concurează cu alți jucători (minimum 2, maximum {MAX_PLAYERS}): <b>{CONTEST_QUESTIONS} întrebări</b> din nivelul ales,
         {' '}<b>{QUESTION_SECONDS} secunde</b> pe întrebare. Câștigă cine are cele mai multe răspunsuri corecte;
         la egalitate, cel mai rapid. Premii: 🥇 +{PRIZE_POINTS[0]}, 🥈 +{PRIZE_POINTS[1]}, 🥉 +{PRIZE_POINTS[2]} puncte.
       </p>
+      {CONTEST_LEVEL_GROUPS.map(group => (
+        <div key={group.title} className="contest-level-group">
+          <div className="contest-level-group-title">{group.title}</div>
+          <div className="contest-levels">
+            {group.levels.map(key => (
+              <button
+                key={key}
+                type="button"
+                className={`contest-level-chip${String(key) === String(level) ? ' active' : ''}`}
+                onClick={() => setLevel(key)}
+              >
+                {contestLevelLabel(key)}
+                {openByLevel[String(key)] > 0 && <b className="contest-level-count">{openByLevel[String(key)]}</b>}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+
       <form
         className="contest-create"
         onSubmit={(e) => { e.preventDefault(); if (!busy && name) handleCreate(); }}
@@ -113,16 +142,16 @@ function Lobby({ uid, name, country, onEnter }) {
           value={title}
           onChange={e => setTitle(e.target.value)}
           maxLength={MAX_TITLE_LENGTH}
-          placeholder={`Numele concursului (ex. Campionii clasei a III-a)`}
+          placeholder={`Numele concursului (opțional) — ex. Campionii clasei a III-a`}
           aria-label="Numele concursului"
         />
-        <button className="bigbtn" type="submit" disabled={busy || !name}>➕ Creează concursul</button>
+        <button className="bigbtn" type="submit" disabled={busy || !name}>➕ Creează concurs: {levelName}</button>
       </form>
       {error && <p className="chat-error">{error}</p>}
 
-      <h3 className="contest-subtitle">Concursuri care așteaptă jucători</h3>
+      <h3 className="contest-subtitle">Concursuri {levelName} care așteaptă jucători</h3>
       {contests.length === 0 && (
-        <p className="leaderboard-empty">Niciun concurs deschis. Creează tu unul și cheamă-ți prietenii! 🚀</p>
+        <p className="leaderboard-empty">Niciun concurs deschis la acest nivel. Creează tu unul și cheamă-ți prietenii! 🚀</p>
       )}
       <ol className="leaderboard-list">
         {contests.map(contest => {
@@ -172,6 +201,7 @@ function WaitingRoom({ contest, uid, onLeave }) {
   return (
     <>
       <h3 className="contest-subtitle">🏁 {contestTitle(contest)}</h3>
+      <div className="contest-level-tag">{contestLevelLabel(contestLevelOf(contest))}</div>
       <p className="contest-intro">
         {players.length} {players.length === 1 ? 'jucător' : 'jucători'} · mai pot intra {MAX_PLAYERS - players.length}
       </p>
@@ -288,6 +318,7 @@ function Play({ contest, uid, name, country, myResult, startAt, standings }) {
   return (
     <div className="contest-play">
       <div className="contest-play-main">
+        <div className="contest-level-tag">{contestLevelLabel(contestLevelOf(contest))}</div>
         <div className="ribbon">ÎNTREBAREA {index + 1} / {questions.length}</div>
         <div className={`contest-timer${secondsLeft <= 5 ? ' low' : ''}`}>⏱️ {secondsLeft}s</div>
         <div className="contest-timer-bar">
