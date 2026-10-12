@@ -1,4 +1,7 @@
-import { LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS } from '../data';
+import {
+  LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS,
+  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, EVAL_LEVELS,
+} from '../data';
 
 const MODE_KEYS = [PROBLEME_LEVEL, AVANSATE_LEVEL];
 
@@ -11,16 +14,23 @@ const INFO_PANELS = [
 export default function LevelPanel({
   activeLevel, onSelectLevel, isLocked = () => false, onOpenMap, openPanel, onTogglePanel, badges = {},
 }) {
-  // În timpul unei probleme de pe Insula Isteților arătăm nivelurile acelei insule.
-  const isLogic = LOGIC_LEVELS.includes(activeLevel);
+  // Pe Insula Isteților sau pe „Înmulțirea cu 5” arătăm nivelurile acelei insule.
+  const island = [
+    [LOGIC_LEVELS, '🧩', 'ISTEȚI'], [EVAL_LEVELS, '📝', 'EVALUARE'], [TWO_LEVELS, '🛷', 'CU 2'], [THREE_LEVELS, '⛄', 'CU 3'], [FOUR_LEVELS, '🐻‍❄️', 'CU 4'], [FIVE_LEVELS, '🖐️', 'CU 5'], [SIX_LEVELS, '🔋', 'CU 6'], [SEVEN_LEVELS, '🪙', 'CU 7'],
+    [EIGHT_LEVELS, '🐙', 'CU 8'], [NINE_LEVELS, '🎈', 'CU 9'],
+  ].find(([levels]) => levels.includes(activeLevel));
+  const islandLevels = island ? island[0] : null;
+  const isLogic = Boolean(island);
+  const islandIcon = island ? island[1] : '';
+  const islandTitle = island ? `${island[1]} ${island[2]}` : '';
   return (
     <section className="panel level-panel">
       {onOpenMap && (
-        <button className="map-back-btn" onClick={onOpenMap}>{isLogic ? '🧩 HARTA INSULEI' : '🗺️ HARTA AVENTURII'}</button>
+        <button className="map-back-btn" onClick={onOpenMap}>{isLogic ? `${islandIcon} HARTA INSULEI` : '🗺️ HARTA AVENTURII'}</button>
       )}
-      <h2>{isLogic ? '🧩 ISTEȚI' : '🏆 NIVELURI'}</h2>
+      <h2>{isLogic ? islandTitle : '🏆 NIVELURI'}</h2>
       <div id="levels">
-        {(isLogic ? LOGIC_LEVELS : LEVEL_ORDER).map(key => {
+        {(islandLevels || LEVEL_ORDER).map(key => {
           const level = LEVELS[key];
           return (
             <button

@@ -2,8 +2,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { FRUITS, LEVELS, PROBLEME_LEVEL, AVANSATE_LEVEL, makeAnswers, rangeForLevel } from './data';
 import { buildWordProblem } from './multiplicationProblems';
 import { buildAdvancedProblem } from './advancedProblems';
-import { starsForCorrect, isLogicLevel, nextLevelInPath } from './mapProgress';
+import { starsForCorrect, isLogicLevel, isFiveLevel, nextLevelInPath } from './mapProgress';
+import { buildFiveProblem } from './fiveProblems';
+import { buildLessonProblem, lessonFactorOf } from './lessonProblems';
 import { buildLogicProblem } from './logicProblems';
+import { buildEvalProblem, isEvalLevel, gradeFor } from './evaluationProblems';
 
 const QUESTIONS_PER_LEVEL = 10;
 export const START_LIVES = 3;
@@ -16,6 +19,34 @@ const QUESTION_TIME = 30;
 
 export function generateQuestion(level) {
   const fruit = FRUITS[Math.floor(Math.random() * FRUITS.length)];
+
+  if (isEvalLevel(level)) {
+    const q = buildEvalProblem(level);
+    const base = {
+      a: null, b: null, isWordProblem: true, isMultOp: false,
+      problemText: q.text, explanation: q.explanation || null, fruit, badge: '📝 Evaluare',
+    };
+    // Problemă pe pași: întrebarea curentă e pasul `stepIndex`.
+    if (q.steps) {
+      return { ...base, steps: q.steps, stepIndex: 0, correct: q.steps[0].answer, answers: q.steps[0].choices };
+    }
+    return { ...base, correct: q.answer, answers: q.choices };
+  }
+
+  if (isFiveLevel(level) || lessonFactorOf(level)) {
+    const q = isFiveLevel(level) ? buildFiveProblem(level) : buildLessonProblem(level);
+    if (q.kind === 'mult') {
+      return {
+        a: q.a, b: q.b, isWordProblem: false, isMultOp: true, problemText: null, explanation: null,
+        correct: q.a * q.b, answers: makeAnswers(q.a * q.b), fruit, badge: q.badge,
+      };
+    }
+    return {
+      a: null, b: null, isWordProblem: true, isMultOp: false,
+      problemText: q.text, explanation: q.explanation || null,
+      correct: q.answer, answers: q.choices, fruit, badge: q.badge,
+    };
+  }
 
   if (level === AVANSATE_LEVEL || isLogicLevel(level)) {
     const problem = isLogicLevel(level) ? buildLogicProblem(level) : buildAdvancedProblem();
@@ -110,9 +141,26 @@ export function useTablaGame(initialLevel = 1, paused = false) {
 
   const handleAnswer = useCallback((value) => {
     if (answered) return;
+    const isCorrect = value === current.correct;
+
+    // Problemă pe pași: un pas corect (care nu e ultimul) duce la pasul următor,
+    // fără puncte; punctele se dau doar când toată problema e rezolvată.
+    if (current.steps && isCorrect && current.stepIndex < current.steps.length - 1) {
+      const next = current.stepIndex + 1;
+      setCurrent(prev => ({
+        ...prev,
+        stepIndex: next,
+        correct: prev.steps[next].answer,
+        answers: prev.steps[next].choices,
+      }));
+      setSelected(null);
+      setTime(QUESTION_TIME);
+      setFeedback({ text: `✅ Pasul ${next} e corect! Acum pasul ${next + 1}.`, color: '#159632' });
+      return;
+    }
+
     setAnswered(true);
     setSelected(value);
-    const isCorrect = value === current.correct;
 
     setStats(prev => {
       if (isCorrect) {
@@ -153,7 +201,12 @@ export function useTablaGame(initialLevel = 1, paused = false) {
         showToast('🔥 Ai primit bonus de combo!');
       }
     } else {
-      setFeedback({ text: `💡 Răspunsul era ${current.correct}. Mai încearcă!`, color: '#dc263e' });
+      setFeedback({
+        text: current.steps
+          ? `💡 La pasul ${current.stepIndex + 1} răspunsul era ${current.correct}. Deschide rezolvarea!`
+          : `💡 Răspunsul era ${current.correct}. Mai încearcă!`,
+        color: '#dc263e',
+      });
     }
   }, [answered, current, stats.combo, stats.lives, showToast]);
 
@@ -185,6 +238,11 @@ export function useTablaGame(initialLevel = 1, paused = false) {
         const pct = Math.round(stats.correct / QUESTIONS_PER_LEVEL * 100);
         // Aceleași stele ca pe harta nivelurilor (vezi mapProgress.js).
         const stars = starsForCorrect(stats.correct);
+        // La evaluare arătăm și calificativul, ca la școală.
+        const grade = isEvalLevel(stats.level) ? gradeFor(stats.correct) : null;
+        const gradeLine = grade
+          ? `<br><br><span class="modal-grade">${grade.emoji} Calificativ: <b>${grade.label} (${grade.short})</b></span>`
+          : '';
         const nextStarHint = stars < 3
           ? `<br><small>Pentru ${stars + 1} stele ai nevoie de cel puțin ${stars === 1 ? 6 : 9} răspunsuri corecte.</small>`
           : '';
@@ -194,7 +252,8 @@ export function useTablaGame(initialLevel = 1, paused = false) {
             + `<br><br><span class="modal-stars">${'⭐'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>`
             + `<br>Ai câștigat <b>${stars} ${stars === 1 ? 'stea' : 'stele'}</b> la acest nivel, pe harta aventurii!`
             + '<br><small>Pe hartă rămâne cel mai bun rezultat al tău.</small>'
-            + nextStarHint,
+            + nextStarHint
+            + gradeLine,
           showNext: Boolean(nextLevelInPath(stats.level)),
         });
       }, 500);

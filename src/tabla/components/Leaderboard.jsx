@@ -1,12 +1,18 @@
 import { useState } from 'react';
-import { LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS } from '../data';
+import {
+  LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS,
+  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, EVAL_LEVELS,
+} from '../data';
 import { useGlobalLeaderboard, useMyScores } from '../useLeaderboard';
 import Flag from './Flag';
 import Avatar from './Avatar';
 import ContestHistory from './ContestHistory';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
-const ALL_LEVELS = [...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, ...LOGIC_LEVELS];
+const ALL_LEVELS = [
+  ...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, ...TWO_LEVELS, ...THREE_LEVELS, ...FOUR_LEVELS, ...FIVE_LEVELS, ...SIX_LEVELS, ...SEVEN_LEVELS,
+  ...EIGHT_LEVELS, ...NINE_LEVELS, ...EVAL_LEVELS, ...LOGIC_LEVELS,
+];
 
 function MyScoresList({ scores, loading }) {
   if (loading) return <p className="leaderboard-empty">Se încarcă…</p>;

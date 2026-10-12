@@ -3,7 +3,7 @@ import './TablaInmultirii.css';
 import { useTablaGame, REVIVE_COST } from './useTablaGame';
 import { usePlayerProfile } from './usePlayerProfile';
 import { submitScore, addPlayerPoints, useMyTotalPoints, useMyScores } from './useLeaderboard';
-import { isLevelUnlocked, isLogicLevel } from './mapProgress';
+import { isLevelUnlocked, mapViewOf } from './mapProgress';
 import Header from './components/Header';
 import LevelPanel from './components/LevelPanel';
 import GameCard from './components/GameCard';
@@ -21,6 +21,8 @@ import ProfilePanel from './components/ProfilePanel';
 import MapHome from './components/MapHome';
 import HomeIslands from './components/HomeIslands';
 import LogicMap from './components/LogicMap';
+import EvalMap from './components/EvalMap';
+import LessonMap from './components/LessonMap';
 
 const PAGE_TITLE = 'Tabla Înmulțirii';
 // Sub această lățime coloanele stau una sub alta (vezi .main în CSS).
@@ -97,9 +99,14 @@ export default function TablaInmultirii() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   // „Harta” din exercițiu duce pe harta insulei din care face parte nivelul.
-  const goToMap = () => goToView(isLogicLevel(stats.level) ? 'logic' : 'map');
+  const goToMap = () => goToView(mapViewOf(stats.level));
   const goToLearnMap = () => goToView('map');
   const goToLogicMap = () => goToView('logic');
+  const goToEvalMap = () => goToView('eval');
+  const goToLesson = factor => goToView(`lesson${factor}`);
+  const goToLessonsHub = () => goToView('lessons');
+  const goToSchool = () => goToView('school');
+  const lessonFactor = view.startsWith('lesson') ? Number(view.slice(6)) : null;
   const goToHome = () => goToView('home');
 
   const closePanel = () => {
@@ -195,9 +202,22 @@ export default function TablaInmultirii() {
           <HomeIslands
             name={name}
             scores={firebaseEnabled ? myScores : {}}
+            onOpenSchool={goToSchool}
+            onOpenPanel={handleOpenPanel}
+            chatUnread={unreadCount}
+          />
+        )}
+        {view === 'school' && (
+          <HomeIslands
+            mode="school"
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
             onOpenLearn={goToLearnMap}
             onOpenLogic={goToLogicMap}
+            onOpenEval={goToEvalMap}
+            onOpenLessons={goToLessonsHub}
             onOpenPanel={handleOpenPanel}
+            onBack={goToHome}
             chatUnread={unreadCount}
           />
         )}
@@ -208,7 +228,26 @@ export default function TablaInmultirii() {
             onPlayLevel={handleSelectLevel}
             onOpenPanel={handleOpenPanel}
             chatUnread={unreadCount}
-            onBack={goToHome}
+            onBack={goToSchool}
+          />
+        )}
+        {view === 'lessons' && (
+          <HomeIslands
+            mode="lessons"
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onOpenLesson={goToLesson}
+            onOpenPanel={handleOpenPanel}
+            onBack={goToSchool}
+            chatUnread={unreadCount}
+          />
+        )}
+        {view === 'eval' && (
+          <EvalMap
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onPlayLevel={handleSelectLevel}
+            onBack={goToSchool}
           />
         )}
         {view === 'logic' && (
@@ -216,7 +255,17 @@ export default function TablaInmultirii() {
             name={name}
             scores={firebaseEnabled ? myScores : {}}
             onPlayLevel={handleSelectLevel}
-            onBack={goToHome}
+            onBack={goToSchool}
+          />
+        )}
+        {lessonFactor && (
+          <LessonMap
+            key={lessonFactor}
+            factor={lessonFactor}
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onPlayLevel={handleSelectLevel}
+            onBack={goToLessonsHub}
           />
         )}
         {view === 'game' && (
@@ -278,7 +327,10 @@ export default function TablaInmultirii() {
                   />
                 )}
                 <button className="bigbtn" onClick={closePanel}>
-                  {{ home: '🏝️ Înapoi la prima pagină', map: '🗺️ Înapoi la hartă', logic: '🧩 Înapoi la insulă' }[panelOrigin]
+                  {{
+                    home: '🏝️ Înapoi la prima pagină', map: '🗺️ Înapoi la hartă', logic: '🧩 Înapoi la insulă', eval: '📝 Înapoi la insulă',
+                    lessons: '📘 Înapoi la lecții', school: '🎒 Înapoi la Insula Învățării',
+                  }[panelOrigin] || (panelOrigin?.startsWith('lesson') && '📖 Înapoi la insulă')
                     || '▶ Înapoi la exercițiu'}
                 </button>
               </div>

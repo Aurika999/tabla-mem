@@ -420,3 +420,85 @@
 .tabla-inmultirii .contest-level-count{position:absolute;top:-8px;right:-8px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#25d366;color:#fff;font-size:11px;line-height:20px;border:2px solid #fff}
 .tabla-inmultirii .contest-level-tag{display:block;width:max-content;margin:-4px auto 10px;background:#fff3c4;border:2px solid #ffd83d;border-radius:12px;padding:3px 12px;font-weight:900;font-size:13px;color:#7a5b00}
 .tabla-inmultirii .contest-level-tag.small{margin:2px 0 4px;font-size:11px;padding:1px 8px}
+
+/* ---------- Înmulțirea cu 5 ---------- */
+.tabla-inmultirii .lf1{background:#e8264d}.tabla-inmultirii .lf2{background:#2f9e44}.tabla-inmultirii .lf3{background:#1c7ed6}.tabla-inmultirii .lf4{background:#ae3ec9}
+.tabla-inmultirii .home-island-cta.five{color:#fff;background:linear-gradient(180deg,#ff6b8a 0%,#e8264d 55%,#b8123a 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .home-islands .home-island-title{font-size:clamp(16px,2.2vw,26px)}
+.tabla-inmultirii .home-islands .home-island-cta{font-size:clamp(12px,1.4vw,17px);padding:7px 14px}
+.tabla-inmultirii .home-islands .home-island-subtitle{font-size:clamp(10px,1.1vw,13px)}
+.tabla-inmultirii .five-rule{text-align:center;font-size:18px;font-weight:800;color:#24304a;background:#e7f5ff;border:2px solid #74c0fc;border-radius:14px;padding:10px 14px;margin:0 auto 12px;max-width:700px}
+.tabla-inmultirii .five-example{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin:0 0 14px;font-size:17px;color:#24304a}
+.tabla-inmultirii .five-stars{display:grid;grid-template-columns:repeat(5,auto);gap:2px 8px;font-size:14px;line-height:1.1}
+.tabla-inmultirii .five-arrow{margin:0 10px;color:#e8264d;font-weight:900}
+.tabla-inmultirii .five-tips{list-style:none;padding:0;margin:0 auto;max-width:720px;display:flex;flex-direction:column;gap:6px;font-weight:700;color:#4a5570}
+.tabla-inmultirii .five-tips li{background:#f7f9fd;border-radius:10px;padding:8px 12px}
+@media(max-width:700px){
+.tabla-inmultirii .home-islands .home-island-sign{max-width:90%}
+.tabla-inmultirii .home-islands .home-island-title{font-size:24px}
+.tabla-inmultirii .home-islands .home-island-cta{font-size:16px}
+.tabla-inmultirii .five-rule{font-size:15px}
+}
+
+/* Lecția „Reține” — buton în colțul hărții și fereastră peste hartă. */
+.tabla-inmultirii .map-corner{position:absolute;top:14px;right:14px;z-index:4}
+.tabla-inmultirii .lesson-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px 6px 8px;border:3px solid #fff3c4;border-radius:16px;background:linear-gradient(180deg,#ff6b8a,#e8264d);color:#fff;font-weight:1000;font-size:15px;box-shadow:0 0 0 2px #b8123a,0 5px 0 2px #8a0e2c;cursor:pointer;animation:tabla-lessonPulse 2.4s ease-in-out infinite}
+.tabla-inmultirii .lesson-btn span{font-size:24px;line-height:1}
+.tabla-inmultirii .lesson-btn:hover{filter:brightness(1.08)}
+@keyframes tabla-lessonPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.tabla-inmultirii .lesson-overlay{z-index:20;padding:16px}
+.tabla-inmultirii .lesson-modal{position:relative;max-width:760px;max-height:calc(100vh - 32px);overflow-y:auto;text-align:center;padding:22px 22px 16px}
+.tabla-inmultirii .lesson-modal h2{font-size:28px;color:#6d42a9;margin:0 0 10px}
+.tabla-inmultirii .lesson-close{position:absolute;top:10px;right:12px;width:38px;height:38px;border:0;border-radius:50%;background:#f1f3f5;color:#4a5570;font-size:18px;font-weight:900;cursor:pointer}
+.tabla-inmultirii .lesson-close:hover{background:#e9ecef}
+.tabla-inmultirii .five-example-text{line-height:1.6}
+.tabla-inmultirii .five-table{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:0 auto 12px}
+.tabla-inmultirii .five-cell{padding:8px 4px;border-radius:10px;background:#fff3c4;border:2px solid #ffd83d;font-weight:800;color:#24304a;font-size:16px;white-space:nowrap}
+.tabla-inmultirii .five-cell b{color:#c2410c;font-size:18px}
+.tabla-inmultirii .five-tips{text-align:left}
+.tabla-inmultirii .lesson-ok{margin-top:12px}
+@media(max-width:700px){
+.tabla-inmultirii .map-corner{top:10px;right:10px}
+.tabla-inmultirii .lesson-btn{font-size:13px;padding:4px 10px 4px 6px}
+.tabla-inmultirii .lesson-btn span{font-size:20px}
+.tabla-inmultirii .lesson-overlay{padding:0;align-items:stretch}
+.tabla-inmultirii .lesson-modal{max-height:100vh;height:100%;border-radius:0;padding:18px 12px 14px;box-shadow:none}
+.tabla-inmultirii .lesson-modal h2{font-size:24px}
+.tabla-inmultirii .five-table{grid-template-columns:repeat(2,1fr)}
+.tabla-inmultirii .five-cell{font-size:17px}
+.tabla-inmultirii .five-example{font-size:15px;gap:8px}
+.tabla-inmultirii .five-stars{font-size:12px}
+.tabla-inmultirii .five-tips li{font-size:14px}
+}
+
+.tabla-inmultirii .home-island-cta.six{color:#fff;background:linear-gradient(180deg,#63e6be 0%,#20c997 55%,#0ca678 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .home-island-cta.seven{color:#fff;background:linear-gradient(180deg,#b197fc 0%,#845ef7 55%,#6741d9 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .five-stars span{white-space:nowrap}
+@media(max-width:700px){.tabla-inmultirii .five-stars{display:flex!important;flex-wrap:wrap;justify-content:center;gap:4px 10px;max-width:100%}.tabla-inmultirii .lesson-modal{overflow-x:hidden}}
+
+/* Un număr impar de variante (ex. <, >, =): ultimul buton stă centrat, nu lasă gol. */
+.tabla-inmultirii .answers .answer:last-child:nth-child(odd){grid-column:1 / -1;justify-self:center;width:calc(50% - 7px)}
+
+.tabla-inmultirii .home-island-cta.eight{color:#fff;background:linear-gradient(180deg,#74c0fc 0%,#339af0 55%,#1971c2 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .home-island-cta.nine{color:#fff;background:linear-gradient(180deg,#ffa8a8 0%,#f06595 55%,#c2255c 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .five-stars{display:flex!important;flex-wrap:wrap;justify-content:center;gap:4px 12px;max-width:100%}.tabla-inmultirii .lesson-modal{overflow-x:hidden}
+
+.tabla-inmultirii .home-island-cta.four{color:#fff;background:linear-gradient(180deg,#a5d8ff 0%,#4dabf7 55%,#1c7ed6 100%);text-shadow:0 2px 0 #0004}
+
+.tabla-inmultirii .home-island-cta.three{color:#fff;background:linear-gradient(180deg,#99e9f2 0%,#22b8cf 55%,#0c8599 100%);text-shadow:0 2px 0 #0004}
+
+.tabla-inmultirii .home-island-cta.two{color:#fff;background:linear-gradient(180deg,#d0bfff 0%,#9775fa 55%,#6741d9 100%);text-shadow:0 2px 0 #0004}
+
+/* ---------- Evaluare: probleme pe pași și calificativ ---------- */
+.tabla-inmultirii .home-island-cta.eval{color:#fff;background:linear-gradient(180deg,#ffc078 0%,#ff922b 55%,#e8590c 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .question-steps{list-style:none;padding:0;margin:12px auto 0;display:flex;flex-direction:column;gap:6px;max-width:620px;text-align:left}
+.tabla-inmultirii .question-steps li{font-size:clamp(15px,2.2vw,19px);border-radius:12px;padding:8px 12px;border:2px solid #e6eefc;background:#f7f9fd}
+.tabla-inmultirii .question-steps li.done{background:#e9f9ee;border-color:#9fe0b2;color:#2b8a3e}
+.tabla-inmultirii .question-steps li.current{background:#fff3c4;border-color:#ffd83d;box-shadow:0 3px 0 #e0b400;animation:tabla-badgePop .35s ease-out}
+.tabla-inmultirii .question-step-answer{font-weight:1000;white-space:nowrap}
+.tabla-inmultirii .modal-grade{display:inline-block;background:#e7f5ff;border:2px solid #74c0fc;border-radius:12px;padding:6px 14px;font-size:18px}
+
+.tabla-inmultirii .home-island-cta.lessons{color:#fff;background:linear-gradient(180deg,#91a7ff 0%,#5c7cfa 55%,#3b5bdb 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .lessons-hub .home-owl{top:6%}
+
+.tabla-inmultirii .home-island-cta.school{color:#fff;background:linear-gradient(180deg,#8ce99a 0%,#40c057 55%,#2b8a3e 100%);text-shadow:0 2px 0 #0004}

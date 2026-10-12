@@ -4,7 +4,10 @@ import {
 } from 'firebase/firestore';
 import { db, firebaseEnabled } from '../firebase';
 import { generateQuestion } from './useTablaGame';
-import { LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS } from './data';
+import {
+  LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS,
+  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS,
+} from './data';
 
 const CONTESTS_COLLECTION = 'contests';
 
@@ -28,6 +31,14 @@ const MIX_LEVELS = [1, 2, 3, 3, 4, 4, 5, 5, PROBLEME_LEVEL, AVANSATE_LEVEL];
 export const MIX_LEVEL = 'mix';
 export const CONTEST_LEVEL_GROUPS = [
   { title: 'Tabla înmulțirii', levels: [MIX_LEVEL, ...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL] },
+  { title: 'Înmulțirea cu 2', levels: TWO_LEVELS },
+  { title: 'Înmulțirea cu 3', levels: THREE_LEVELS },
+  { title: 'Înmulțirea cu 4', levels: FOUR_LEVELS },
+  { title: 'Înmulțirea cu 5', levels: FIVE_LEVELS },
+  { title: 'Înmulțirea cu 6', levels: SIX_LEVELS },
+  { title: 'Înmulțirea cu 7', levels: SEVEN_LEVELS },
+  { title: 'Înmulțirea cu 8', levels: EIGHT_LEVELS },
+  { title: 'Înmulțirea cu 9', levels: NINE_LEVELS },
   { title: 'Insula Isteților', levels: LOGIC_LEVELS },
 ];
 
