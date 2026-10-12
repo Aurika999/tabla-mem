@@ -6,7 +6,7 @@ export const AVANSATE_LEVEL = 'avansate';
 export const LOGIC_LEVELS = ['logica1', 'logica2', 'logica3', 'logica4'];
 // „Înmulțirea cu 5”: lecția din manual, pe secțiuni.
 export const TWO_LEVELS = ['doi1', 'doi2', 'doi3', 'doi4'];
-export const EVAL_LEVELS = ['eval1', 'eval2', 'eval3'];
+export const EVAL_LEVELS = ['eval1', 'eval2', 'eval4', 'eval3'];
 export const THREE_LEVELS = ['trei1', 'trei2', 'trei3', 'trei4'];
 export const FOUR_LEVELS = ['patru1', 'patru2', 'patru3', 'patru4'];
 export const FIVE_LEVELS = ['cinci1', 'cinci2', 'cinci3', 'cinci4'];
@@ -59,7 +59,8 @@ export const LEVELS = {
   doi4: { key: 'doi4', label: '🛷 4. REZOLV PROBLEME', hint: 'Probleme cu înmulțirea cu 2', className: 'lf4' },
   eval1: { key: 'eval1', label: '📝 1. CALCULEZ', hint: 'Rezultate, factori lipsă, dublu, triplu', className: 'lf1' },
   eval2: { key: 'eval2', label: '📝 2. PROBLEME PE PAȘI', hint: 'Rezolvă problema pas cu pas', className: 'lf2' },
-  eval3: { key: 'eval3', label: '📝 3. TESTUL FINAL', hint: 'Primești calificativ: FB, B, S', className: 'lf4' },
+  eval4: { key: 'eval4', label: '📝 3. EXERSEZ ȘI REZOLV', hint: 'Factori, produse, probleme pe pași', className: 'lf3' },
+  eval3: { key: 'eval3', label: '📝 4. TESTUL FINAL', hint: 'Primești calificativ: FB, B, S', className: 'lf4' },
   logica4: { key: 'logica4', label: '🧩 4. EXERSEZ ȘI REZOLV', hint: 'Ca în manual: înmulțiri și probleme', className: 'lg4' },
   logica3: { key: 'logica3', label: '🧩 3. PROBLEME ISTEȚE', hint: 'În doi pași, ore, șiruri — până la 100', className: 'lg3' },
 };

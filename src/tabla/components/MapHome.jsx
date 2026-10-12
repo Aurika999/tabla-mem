@@ -42,7 +42,7 @@ const NODE_COLORS = {
   1: '#5fc84a', 2: '#20a8e8', 3: '#f4a623', 4: '#9258d8', 5: '#e84d8d',
   [PROBLEME_LEVEL]: '#3d9b70', [AVANSATE_LEVEL]: '#e0632c',
   logica1: '#14a3a3', logica2: '#ef5da8', logica3: '#7c4dff', logica4: '#f08c00',
-  eval1: '#1c7ed6', eval2: '#2f9e44', eval3: '#e8264d',
+  eval1: '#1c7ed6', eval2: '#2f9e44', eval4: '#ae3ec9', eval3: '#e8264d',
   doi1: '#e8264d', doi2: '#2f9e44', doi3: '#1c7ed6', doi4: '#ae3ec9',
   trei1: '#e8264d', trei2: '#2f9e44', trei3: '#1c7ed6', trei4: '#ae3ec9',
   patru1: '#e8264d', patru2: '#2f9e44', patru3: '#1c7ed6', patru4: '#ae3ec9',
@@ -56,7 +56,7 @@ const NODE_COLORS = {
 const NODE_LABELS = {
   1: '1', 2: '2', 3: '3', 4: '4', 5: '5', [PROBLEME_LEVEL]: '📖', [AVANSATE_LEVEL]: '🧠',
   logica1: '1', logica2: '2', logica3: '3', logica4: '4',
-  eval1: '🧮', eval2: '🪜', eval3: '🏆',
+  eval1: '🧮', eval2: '🪜', eval4: '🤖', eval3: '🏆',
   doi1: '🔍', doi2: '✏️', doi3: '⭐', doi4: '🧩',
   trei1: '🔍', trei2: '✏️', trei3: '⭐', trei4: '🧩',
   patru1: '🔍', patru2: '✏️', patru3: '⭐', patru4: '🧩',
