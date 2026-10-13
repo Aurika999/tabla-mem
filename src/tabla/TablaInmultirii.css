@@ -542,3 +542,14 @@
 .tabla-inmultirii .home-island-cta.six{color:#fff;background:linear-gradient(180deg,#fcc2d7 0%,#e64980 55%,#a61e4d 100%);text-shadow:0 2px 0 #0004}
 .tabla-inmultirii .home-island-cta.eight{color:#fff;background:linear-gradient(180deg,#a5d8ff 0%,#4c6ef5 55%,#364fc7 100%);text-shadow:0 2px 0 #0004}
 .tabla-inmultirii .home-island-cta.nine{color:#fff;background:linear-gradient(180deg,#ffec99 0%,#fab005 55%,#e67700 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .lesson-subtitle{margin:18px 0 6px;font-size:20px;color:#5f3dc4;text-align:center}
+.tabla-inmultirii .contest-toc{max-width:760px;margin:0 auto 12px}
+.tabla-inmultirii .contest-toc-levels-list{padding:10px 8px;justify-content:center}
+.tabla-inmultirii .contest-toc-waiting{background:#25d366;color:#fff;border-radius:999px;padding:3px 10px;font-size:13px;white-space:nowrap;animation:contest-pulse 1.6s ease-in-out infinite}
+.tabla-inmultirii .contest-chosen{text-align:center;margin:6px 0 10px;color:#24304a}
+.tabla-inmultirii .contest-alert{max-width:760px;margin:0 auto 14px;border:3px solid #25d366;background:#ebfbee;border-radius:16px;padding:10px 12px;animation:contest-pulse 1.6s ease-in-out 3}
+.tabla-inmultirii .contest-alert-title{font-weight:900;font-size:18px;color:#2b8a3e;text-align:center;margin-bottom:6px}
+.tabla-inmultirii .contest-alert-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.tabla-inmultirii .contest-alert-list li{display:flex;align-items:center;gap:10px;justify-content:space-between;background:#fff;border-radius:12px;padding:8px 10px;text-align:left}
+.tabla-inmultirii .contest-alert-list small{display:block;color:#5c677d;font-weight:700;margin-top:2px}
+@keyframes contest-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}

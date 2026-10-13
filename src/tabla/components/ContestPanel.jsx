@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   useOpenContests, useContest, createContest, joinContest, leaveContest, startContest, recordContestResult,
   saveContestProgress, rankResults, contestDeadline, contestTitle, MAX_TITLE_LENGTH,
-  CONTEST_LEVEL_GROUPS, MIX_LEVEL, contestLevelLabel, contestLevelOf,
+  CONTEST_LEVEL_GROUPS, MIX_LEVEL, contestLevelLabel, contestLevelOf, contestGroupOf,
   MAX_PLAYERS, MIN_PLAYERS, CONTEST_QUESTIONS, QUESTION_SECONDS, COUNTDOWN_SECONDS, PRIZE_POINTS,
 } from '../useContest';
 import { addPlayerPoints } from '../useLeaderboard';
@@ -70,6 +70,38 @@ function Standings({ rows, uid, final }) {
   );
 }
 
+// O insulă din cuprinsul concursurilor: se deschide la clic și arată nivelurile ei.
+function ContestGroup({ group, level, openByLevel, open, onToggle, onPick }) {
+  const waiting = group.levels.reduce((sum, key) => sum + (openByLevel[String(key)] || 0), 0);
+  return (
+    <li className={`score-group contest-toc-group${open ? ' open' : ''}`}>
+      <button type="button" className="score-group-head" onClick={onToggle} aria-expanded={open}>
+        <span className="score-group-arrow" aria-hidden="true">{open ? '▾' : '▸'}</span>
+        <span className="score-group-icon" aria-hidden="true">{group.icon}</span>
+        <span className="score-group-name">{group.title}</span>
+        {waiting > 0
+          ? <span className="contest-toc-waiting">🔔 {waiting} {waiting === 1 ? 'concurs' : 'concursuri'}</span>
+          : <span className="score-group-summary contest-toc-levels">{group.levels.length} niveluri</span>}
+      </button>
+      {open && (
+        <div className="contest-levels contest-toc-levels-list">
+          {group.levels.map(key => (
+            <button
+              key={key}
+              type="button"
+              className={`contest-level-chip${String(key) === String(level) ? ' active' : ''}`}
+              onClick={() => onPick(key)}
+            >
+              {contestLevelLabel(key)}
+              {openByLevel[String(key)] > 0 && <b className="contest-level-count">{openByLevel[String(key)]}</b>}
+            </button>
+          ))}
+        </div>
+      )}
+    </li>
+  );
+}
+
 function Lobby({ uid, name, country, onEnter }) {
   const allContests = useOpenContests();
   const [busy, setBusy] = useState(false);
@@ -84,6 +116,25 @@ function Lobby({ uid, name, country, onEnter }) {
   }, {});
   const contests = allContests.filter(c => String(contestLevelOf(c)) === String(level));
   const levelName = contestLevelLabel(level);
+  // Concursurile pornite de alți jucători: le anunțăm sus, cu insula și nivelul lor.
+  const invitations = allContests.filter(c => c.host !== uid);
+  // În cuprins, insulele pornesc închise; se deschide cea cu nivelul ales.
+  const [openGroups, setOpenGroups] = useState(() => new Set([contestGroupOf(MIX_LEVEL).title]));
+  const listRef = useRef(null);
+
+  const toggleGroup = (title) => setOpenGroups((prev) => {
+    const next = new Set(prev);
+    if (next.has(title)) next.delete(title); else next.add(title);
+    return next;
+  });
+
+  // Din anunț: alegem nivelul concursului, deschidem insula lui și coborâm la listă.
+  const goToContest = (contest) => {
+    const contestLevel = contestLevelOf(contest);
+    setLevel(contestLevel);
+    setOpenGroups(prev => new Set(prev).add(contestGroupOf(contestLevel).title));
+    setTimeout(() => listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+  };
 
   const run = async (action) => {
     setBusy(true);
@@ -114,24 +165,49 @@ function Lobby({ uid, name, country, onEnter }) {
         {' '}<b>{QUESTION_SECONDS} secunde</b> pe întrebare. Câștigă cine are cele mai multe răspunsuri corecte;
         la egalitate, cel mai rapid. Premii: 🥇 +{PRIZE_POINTS[0]}, 🥈 +{PRIZE_POINTS[1]}, 🥉 +{PRIZE_POINTS[2]} puncte.
       </p>
-      {CONTEST_LEVEL_GROUPS.map(group => (
-        <div key={group.title} className="contest-level-group">
-          <div className="contest-level-group-title">{group.title}</div>
-          <div className="contest-levels">
-            {group.levels.map(key => (
-              <button
-                key={key}
-                type="button"
-                className={`contest-level-chip${String(key) === String(level) ? ' active' : ''}`}
-                onClick={() => setLevel(key)}
-              >
-                {contestLevelLabel(key)}
-                {openByLevel[String(key)] > 0 && <b className="contest-level-count">{openByLevel[String(key)]}</b>}
-              </button>
-            ))}
+      {invitations.length > 0 && (
+        <div className="contest-alert" role="status">
+          <div className="contest-alert-title">
+            🔔 {invitations.length === 1 ? 'Cineva a inițiat un concurs!' : `${invitations.length} concursuri te așteaptă!`}
           </div>
+          <ul className="contest-alert-list">
+            {invitations.map((contest) => {
+              const contestLevel = contestLevelOf(contest);
+              const group = contestGroupOf(contestLevel);
+              const players = Object.keys(contest.players || {}).length;
+              return (
+                <li key={contest.id}>
+                  <span>
+                    <b>👑 {contest.hostName}</b> a inițiat <b>„{contestTitle(contest)}”</b>
+                    <small>
+                      📍 {group.icon} {group.title} · {contestLevelLabel(contestLevel)} · {players}/{MAX_PLAYERS} jucători
+                    </small>
+                  </span>
+                  <button type="button" className="chat-call-btn" onClick={() => goToContest(contest)}>Vezi</button>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-      ))}
+      )}
+
+      <h3 className="contest-subtitle">📚 Cuprins: alege insula și nivelul</h3>
+      <ol className="score-groups contest-toc">
+        {CONTEST_LEVEL_GROUPS.map(group => (
+          <ContestGroup
+            key={group.title}
+            group={group}
+            level={level}
+            openByLevel={openByLevel}
+            open={openGroups.has(group.title)}
+            onToggle={() => toggleGroup(group.title)}
+            onPick={setLevel}
+          />
+        ))}
+      </ol>
+      <p className="contest-chosen">
+        Ai ales: <b>{contestGroupOf(level).icon} {contestGroupOf(level).title} · {levelName}</b>
+      </p>
 
       <form
         className="contest-create"
@@ -149,7 +225,7 @@ function Lobby({ uid, name, country, onEnter }) {
       </form>
       {error && <p className="chat-error">{error}</p>}
 
-      <h3 className="contest-subtitle">Concursuri {levelName} care așteaptă jucători</h3>
+      <h3 className="contest-subtitle" ref={listRef}>Concursuri {levelName} care așteaptă jucători</h3>
       {contests.length === 0 && (
         <p className="leaderboard-empty">Niciun concurs deschis la acest nivel. Creează tu unul și cheamă-ți prietenii! 🚀</p>
       )}

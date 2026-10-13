@@ -8,7 +8,7 @@ export const LOGIC_LEVELS = ['logica1', 'logica2', 'logica3', 'logica4'];
 export const TWO_LEVELS = ['doi1', 'doi2', 'doi3', 'doi4'];
 export const EVAL_LEVELS = ['eval1', 'eval2', 'eval4', 'eval3'];
 // „Tabla împărțirii”: lecția „Împărțirea” (scădere repetată, operația inversă înmulțirii).
-export const DIVISION_LEVELS = ['imp1', 'imp2', 'imp3', 'imp4'];
+export const DIVISION_LEVELS = ['imp1', 'imp2', 'imp3', 'imp4', 'imp5', 'imp6', 'imp7', 'imp8'];
 // „Împărțirea la 2” (tot în Tabla împărțirii).
 export const HALF_LEVELS = ['impd1', 'impd2', 'impd3', 'impd4'];
 // „Împărțirea la 3” (tot în Tabla împărțirii).
@@ -81,6 +81,10 @@ export const LEVELS = {
   imp2: { key: 'imp2', label: '➗ 2. APLIC', hint: 'Scăderi repetate și împărțiri', className: 'lf2' },
   imp3: { key: 'imp3', label: '➗ 3. EXERSEZ', hint: 'Câtul, operația inversă înmulțirii', className: 'lf3' },
   imp4: { key: 'imp4', label: '➗ 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea', className: 'lf4' },
+  imp5: { key: 'imp5', label: '➗ 5. ÎMPĂRȚIREA LA 10', hint: 'De 10 ori mai mic, cifra unităților 0', className: 'lf1' },
+  imp6: { key: 'imp6', label: '➗ 6. CAZURI SPECIALE', hint: 'La el însuși, la 1, împărțirea lui 0', className: 'lf2' },
+  imp7: { key: 'imp7', label: '➗ 7. PROBA', hint: 'Proba înmulțirii și a împărțirii', className: 'lf3' },
+  imp8: { key: 'imp8', label: '➗ 8. REZOLV ȘI VERIFIC', hint: 'Probleme verificate prin proba', className: 'lf4' },
   impd1: { key: 'impd1', label: '✌️ 1. DESCOPĂR', hint: 'Jumătatea unui număr', className: 'lf1' },
   impd2: { key: 'impd2', label: '✌️ 2. APLIC', hint: 'De 2 ori mai mic, jumătatea', className: 'lf2' },
   impd3: { key: 'impd3', label: '✌️ 3. EXERSEZ', hint: 'Câtul, numere pare, cu 2 / de 2 ori', className: 'lf3' },

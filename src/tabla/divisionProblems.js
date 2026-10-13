@@ -4,7 +4,7 @@
 import { makeAnswers } from './data';
 
 // Lecțiile din „Tabla împărțirii”: „Împărțirea” (imp1–4) și „Împărțirea la 2” (impd1–4).
-export const DIVISION_LEVELS = ['imp1', 'imp2', 'imp3', 'imp4'];
+export const DIVISION_LEVELS = ['imp1', 'imp2', 'imp3', 'imp4', 'imp5', 'imp6', 'imp7', 'imp8'];
 export const HALF_LEVELS = ['impd1', 'impd2', 'impd3', 'impd4'];
 export const THIRD_LEVELS = ['impt1', 'impt2', 'impt3', 'impt4'];
 export const QUARTER_LEVELS = ['impq1', 'impq2', 'impq3', 'impq4'];
@@ -15,6 +15,7 @@ export const DIV8_LEVELS = ['impo1', 'impo2', 'impo3', 'impo4'];
 export const DIV9_LEVELS = ['impn1', 'impn2', 'impn3', 'impn4'];
 const BADGES = {
   imp1: '🔍 Descopăr', imp2: '✏️ Aplic', imp3: '⭐ Exersez', imp4: '🧩 Rezolv probleme',
+  imp5: '🔟 Împărțirea la 10', imp6: '☝️ Cazuri speciale', imp7: '✅ Proba', imp8: '🧩 Rezolv și verific',
   impd1: '🔍 Descopăr', impd2: '✏️ Aplic', impd3: '⭐ Exersez', impd4: '🧩 Rezolv probleme',
   impt1: '🔍 Descopăr', impt2: '✏️ Aplic', impt3: '⭐ Exersez', impt4: '🧩 Rezolv probleme',
   impq1: '🔍 Descopăr', impq2: '✏️ Aplic', impq3: '⭐ Exersez', impq4: '🧩 Rezolv probleme',
@@ -1299,8 +1300,176 @@ const SEVEN_LESSON = divisorLesson(7);
 const EIGHT_LESSON = divisorLesson(8);
 const NINE_LESSON = divisorLesson(9);
 
+// ================= „Împărțirea”: cazuri speciale și proba =================
+// 🔟 Împărțirea la 10.
+const BY_TEN = [
+  // Marius a plătit 60 de lei pe mingi; o minge costă 10 lei.
+  () => {
+    const k = randInt(2, 9); const n = 10 * k;
+    return problem(`Marius a cumpărat un set de mingi și a plătit ${count(n, 'lei')}. Câte mingi a cumpărat, dacă o minge costă 10 lei?`, k,
+      `${n} : 10 = ${k} mingi, pentru că ${k} × 10 = ${n}.`, [k + 1, n - 10, k - 1]);
+  },
+  // Pornind de la tabla înmulțirii cu 10, află câturile.
+  () => {
+    const k = randInt(1, 10); const n = 10 * k;
+    return problem(`Află câtul: ${n} : 10 = ?`, k, `${n} : 10 = ${k}, pentru că ${k} × 10 = ${n}.`, [k + 1, n - 10, k + 10]);
+  },
+  () => {
+    const k = randInt(2, 10); const n = 10 * k;
+    return problem(`Află numărul de 10 ori mai mic decât ${n}.`, k,
+      `„De 10 ori mai mic” înseamnă împărțire la 10: ${n} : 10 = ${k}.`, [n - 10, k + 1, k - 1]);
+  },
+  // Numerele care se împart exact la 10 au cifra unităților 0.
+  () => {
+    const answer = 10 * randInt(2, 9);
+    const others = shuffle([25, 47, 52, 33, 65, 18, 71, 99, 46, 85]).slice(0, 3);
+    return {
+      text: 'Care dintre aceste numere se împarte exact la 10?',
+      answer,
+      explanation: `${answer} : 10 = ${answer / 10}. Numerele care se împart exact la 10 au cifra unităților 0.`,
+      choices: shuffle([answer, ...others]),
+    };
+  },
+  () => {
+    const k = randInt(2, 10);
+    return problem(`Ce număr, împărțit la 10, dă ${k}?`, 10 * k,
+      `Verificăm cu înmulțirea: ${k} × 10 = ${10 * k}, deci ${10 * k} : 10 = ${k}.`, [k + 10, 10 * k + 10, k * 2]);
+  },
+];
+
+// ☝️ Împărțirea la el însuși, la 1 și împărțirea lui 0.
+const SPECIAL_CASES = [
+  // Albă-ca-Zăpada are 7 nuci și le împarte celor 7 pitici.
+  () => {
+    const n = pick([7, 7, 5, 6, 8, 9]);
+    const text = n === 7
+      ? 'Albă-ca-Zăpada are 7 nuci. Ea le împarte în mod egal celor 7 pitici. Câte nuci primește fiecare dintre ei?'
+      : `Albă-ca-Zăpada are ${n} mere. Ea le împarte în mod egal celor ${n} prieteni ai ei. Câte mere primește fiecare?`;
+    return problem(text, 1, `${n} : ${n} = 1. Dacă împărțim un număr la el însuși, obținem câtul 1.`, [0, n, 2]);
+  },
+  () => {
+    const n = randInt(2, 10);
+    return problem(`${n} : ${n} = ?`, 1, `Dacă împărțim un număr la el însuși, obținem câtul 1: ${n} : ${n} = 1.`, [0, n, 2]);
+  },
+  // Cristi are 5 coifuri și dăruiește fiecărui prieten câte un coif.
+  () => {
+    const n = randInt(3, 9);
+    return problem(`Cristi are ${n} coifuri. La petrecere, el a dăruit fiecărui prieten câte un coif. Câți prieteni au venit la petrecerea lui Cristi?`, n,
+      `${n} : 1 = ${n} prieteni. Când împărțim un număr la 1, obținem câtul egal cu acel număr.`, [1, n - 1, n + 1]);
+  },
+  // 0 împărțit la orice număr dă câtul 0.
+  () => {
+    const n = randInt(2, 10);
+    return problem(`0 : ${n} = ?`, 0, `0 împărțit la orice număr dă câtul 0: 0 : ${n} = 0.`, [1, n, 10]);
+  },
+  // Transcrie doar împărțirile al căror cât este egal cu 1.
+  () => {
+    const answer = pick(['9 : 9', '6 : 6', '10 : 10', '2 : 2', '8 : 8', '5 : 5']);
+    const others = shuffle(['9 : 3', '90 : 9', '100 : 10', '12 : 2', '8 : 1', '0 : 4']).slice(0, 3);
+    return {
+      text: 'Care împărțire are câtul egal cu 1?',
+      answer,
+      explanation: `${answer} = 1. Dacă împărțim un număr la el însuși, obținem câtul 1.`,
+      choices: shuffle([answer, ...others]),
+    };
+  },
+  // Împărțirea la 0 nu are sens.
+  () => {
+    const n = randInt(2, 9);
+    return {
+      text: 'Care dintre aceste împărțiri nu are sens?',
+      answer: `${n} : 0`,
+      explanation: `0 : ${n} = 0, dar ${n} : 0 nu are sens — împărțirea la 0 nu are sens!`,
+      choices: shuffle([`${n} : 0`, `0 : ${n}`, `${n} : 1`, `${n} : ${n}`]),
+    };
+  },
+];
+
+// ✅ Proba înmulțirii și a împărțirii.
+const PROOF = [
+  // Teodora a cumpărat 8 cutii cu câte 7 brioșe: calcul și proba prin împărțire.
+  () => {
+    const a = randInt(3, 9); const b = randInt(3, 9); const p = a * b;
+    return stepped(`Pentru o petrecere, Teodora a cumpărat ${a} cutii cu câte ${b} brioșe fiecare. Câte brioșe sunt în total? Fă și proba prin împărțire.`, [
+      [`Câte brioșe în total? ${a} × ${b} = ?`, p, [p + 1, p - 1, a + b]],
+      [`Proba prin împărțire: ${p} : ${a} = ?`, b, [b + 1, b - 1, a]],
+    ], `${a} × ${b} = ${p} brioșe. Proba: ${p} : ${a} = ${b} (sau ${p} : ${b} = ${a}).`);
+  },
+  // Teodora împarte în mod egal 56 de brioșe pe 8 farfurii: calcul și proba prin înmulțire.
+  () => {
+    const d = randInt(3, 9); const q = randInt(3, 9); const n = d * q;
+    return stepped(`Teodora împarte în mod egal ${count(n, 'brioșe')} pe ${d} farfurii. Câte brioșe pune pe o farfurie? Fă și proba prin înmulțire.`, [
+      [`Câte brioșe pe o farfurie? ${n} : ${d} = ?`, q, [q + 1, q - 1, d]],
+      [`Proba prin înmulțire: ${q} × ${d} = ?`, n, [n + 1, n - d, n + d]],
+    ], `${n} : ${d} = ${q} brioșe. Proba: ${q} × ${d} = ${n}.`);
+  },
+  // Calculează, apoi efectuează proba: 24 : 3 = ?, proba 8 × 3.
+  () => {
+    const [n, d] = pick([[24, 3], [72, 9], [42, 6], [35, 5], [48, 8], [63, 7], [36, 4]]);
+    const q = n / d;
+    return stepped(`Calculează, apoi efectuează proba: ${n} : ${d} = ?`, [
+      [`${n} : ${d} = ?`, q, [q + 1, q - 1, d]],
+      [`Proba: ${q} × ${d} = ?`, n, [n + 1, n - 1, n + d]],
+    ], `${n} : ${d} = ${q}. Proba: ${q} × ${d} = ${n} ✅`);
+  },
+  // Scrie toate operațiile folosind numerele de pe pălării: 3, 9, 27.
+  () => {
+    const [a, b] = pick([[3, 9], [5, 8], [7, 9], [8, 6], [4, 6], [6, 7]]); const p = a * b;
+    const [x, y] = Math.random() < 0.5 ? [a, b] : [b, a];
+    return problem(`Pe o pălărie sunt numerele ${a}, ${b} și ${p}. Știm că ${a} × ${b} = ${p}. Cât este ${p} : ${x}?`, y,
+      `Din ${a} × ${b} = ${p} scriem și împărțirile: ${p} : ${a} = ${b} și ${p} : ${b} = ${a}.`, [y + 1, x, y - 1]);
+  },
+  // Care este proba împărțirii?
+  () => {
+    const [n, d] = pick([[42, 6], [56, 8], [27, 3], [45, 5], [63, 9], [28, 7], [32, 4]]); const q = n / d;
+    return {
+      text: `Care este proba prin înmulțire pentru împărțirea ${n} : ${d} = ${q}?`,
+      answer: `${q} × ${d} = ${n}`,
+      explanation: `Proba împărțirii se face prin înmulțire: câtul × împărțitorul = deîmpărțitul, adică ${q} × ${d} = ${n}.`,
+      choices: shuffle([`${q} × ${d} = ${n}`, `${q} + ${d} = ${q + d}`, `${n} − ${d} = ${n - d}`, `${n} + ${q} = ${n + q}`]),
+    };
+  },
+];
+
+// 🧩 Probleme rezolvate și verificate prin proba.
+const PROOF_SOLVE = [
+  // Pentru 5 ascuțitori voi plăti 15 lei: cât costă o ascuțitoare? (pe pași, cu proba)
+  () => {
+    const k = randInt(2, 6); const many = pick([3, 4, 5]); const total = k * many;
+    return stepped(`Adela spune: „Pentru ${many} ascuțitori voi plăti ${count(total, 'lei')}.” Cât costă o ascuțitoare? Verifică apoi prin proba înmulțirii.`, [
+      [`Cât costă o ascuțitoare? ${total} : ${many} = ?`, k, [k + 1, total - many, k - 1]],
+      [`Proba: ${k} × ${many} = ?`, total, [total + 1, total - 1, k + many]],
+    ], `${total} : ${many} = ${k} lei. Proba: ${k} × ${many} = ${total} ✅`);
+  },
+  // Dacă Alex și-ar tripla suma, ar avea 27 de lei. Câți lei are?
+  () => {
+    const k = randInt(3, 9); const total = 3 * k;
+    return stepped(`Dacă Alex și-ar tripla suma din pușculiță, ar avea ${count(total, 'lei')}. Câți lei are băiatul în pușculiță?`, [
+      [`A tripla înseamnă a înmulți cu 3, deci căutăm: ${total} : 3 = ?`, k, [k + 1, total - 3, k + 3]],
+      [`Proba: ${k} × 3 = ?`, total, [total + 1, total - 3, k + 3]],
+    ], `${total} : 3 = ${k} lei. Proba: ${k} × 3 = ${total} ✅`);
+  },
+  // Într-o cutie sunt 7 creioane. Câte creioane sunt în 5 cutii? (cu proba prin împărțire)
+  () => {
+    const per = randInt(4, 9); const boxes = randInt(3, 6); const total = per * boxes;
+    return stepped(`Într-o cutie sunt ${per} creioane. Câte creioane sunt în ${boxes} cutii de același fel? Verifică prin operația inversă.`, [
+      [`${per} × ${boxes} = ?`, total, [total + 1, total - 1, per + boxes]],
+      [`Proba: ${total} : ${boxes} = ?`, per, [per + 1, per - 1, boxes]],
+    ], `${per} × ${boxes} = ${total} creioane. Proba: ${total} : ${boxes} = ${per} ✅`);
+  },
+  // Bunica a împărțit 32 de cireșe, în mod egal, celor 4 nepoți. (cu proba prin înmulțire)
+  () => {
+    const kids = pick([2, 3, 4, 5]); const each = randInt(4, 9); const total = kids * each;
+    return stepped(`Bunica a împărțit ${count(total, 'cireșe')}, în mod egal, celor ${kids} nepoți. Câte cireșe a primit fiecare? Verifică prin operația inversă.`, [
+      [`${total} : ${kids} = ?`, each, [each + 1, each - 1, total - kids]],
+      [`Proba: ${each} × ${kids} = ?`, total, [total + 1, total - 1, each + kids]],
+    ], `${total} : ${kids} = ${each} cireșe. Proba: ${each} × ${kids} = ${total} ✅`);
+  },
+];
+
 const BY_LEVEL = {
   imp1: DISCOVER, imp2: APPLY, imp3: PRACTICE, imp4: SOLVE,
+  imp5: BY_TEN, imp6: SPECIAL_CASES, imp7: PROOF, imp8: PROOF_SOLVE,
   impd1: HALF_DISCOVER, impd2: HALF_APPLY, impd3: HALF_PRACTICE, impd4: HALF_SOLVE,
   impt1: THIRD_DISCOVER, impt2: THIRD_APPLY, impt3: THIRD_PRACTICE, impt4: THIRD_SOLVE,
   impq1: QUARTER_DISCOVER, impq2: QUARTER_APPLY, impq3: QUARTER_PRACTICE, impq4: QUARTER_SOLVE,

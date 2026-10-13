@@ -247,7 +247,7 @@ export default function HomeIslands({
       title: 'ÎMPĂRȚIREA',
       subtitle: lessonOnlyDone === DIVISION_PATH.length
         ? 'Știi ce este împărțirea! 🏆'
-        : `➗ ${lessonOnlyDone} / ${DIVISION_PATH.length} · scădere repetată, inversa înmulțirii`,
+        : `➗ ${lessonOnlyDone} / ${DIVISION_PATH.length} · cazuri speciale, proba`,
       cta: '➗ Începe lecția',
       onClick: onOpenDivisionLesson,
     },

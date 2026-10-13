@@ -30,26 +30,31 @@ const MIX_LEVELS = [1, 2, 3, 3, 4, 4, 5, 5, PROBLEME_LEVEL, AVANSATE_LEVEL];
 // Concursurile se fac pe niveluri; „mix” = întrebări din toate nivelurile.
 export const MIX_LEVEL = 'mix';
 export const CONTEST_LEVEL_GROUPS = [
-  { title: 'Tabla înmulțirii', levels: [MIX_LEVEL, ...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL] },
-  { title: 'Înmulțirea cu 2', levels: TWO_LEVELS },
-  { title: 'Înmulțirea cu 3', levels: THREE_LEVELS },
-  { title: 'Înmulțirea cu 4', levels: FOUR_LEVELS },
-  { title: 'Înmulțirea cu 5', levels: FIVE_LEVELS },
-  { title: 'Înmulțirea cu 6', levels: SIX_LEVELS },
-  { title: 'Înmulțirea cu 7', levels: SEVEN_LEVELS },
-  { title: 'Înmulțirea cu 8', levels: EIGHT_LEVELS },
-  { title: 'Înmulțirea cu 9', levels: NINE_LEVELS },
-  { title: 'Împărțirea', levels: DIVISION_LEVELS },
-  { title: 'Împărțirea la 2', levels: HALF_LEVELS },
-  { title: 'Împărțirea la 3', levels: THIRD_LEVELS },
-  { title: 'Împărțirea la 4', levels: QUARTER_LEVELS },
-  { title: 'Împărțirea la 5', levels: FIFTH_LEVELS },
-  { title: 'Împărțirea la 6', levels: DIV6_LEVELS },
-  { title: 'Împărțirea la 7', levels: DIV7_LEVELS },
-  { title: 'Împărțirea la 8', levels: DIV8_LEVELS },
-  { title: 'Împărțirea la 9', levels: DIV9_LEVELS },
-  { title: 'Insula Isteților', levels: LOGIC_LEVELS },
+  { icon: '🏫', title: 'Tabla înmulțirii', levels: [MIX_LEVEL, ...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL] },
+  { icon: '🛷', title: 'Înmulțirea cu 2', levels: TWO_LEVELS },
+  { icon: '⛄', title: 'Înmulțirea cu 3', levels: THREE_LEVELS },
+  { icon: '🐻‍❄️', title: 'Înmulțirea cu 4', levels: FOUR_LEVELS },
+  { icon: '🖐️', title: 'Înmulțirea cu 5', levels: FIVE_LEVELS },
+  { icon: '🔋', title: 'Înmulțirea cu 6', levels: SIX_LEVELS },
+  { icon: '🪙', title: 'Înmulțirea cu 7', levels: SEVEN_LEVELS },
+  { icon: '🐙', title: 'Înmulțirea cu 8', levels: EIGHT_LEVELS },
+  { icon: '🎈', title: 'Înmulțirea cu 9', levels: NINE_LEVELS },
+  { icon: '➗', title: 'Împărțirea', levels: DIVISION_LEVELS },
+  { icon: '✌️', title: 'Împărțirea la 2', levels: HALF_LEVELS },
+  { icon: '🐦', title: 'Împărțirea la 3', levels: THIRD_LEVELS },
+  { icon: '🍀', title: 'Împărțirea la 4', levels: QUARTER_LEVELS },
+  { icon: '🏮', title: 'Împărțirea la 5', levels: FIFTH_LEVELS },
+  { icon: '🍬', title: 'Împărțirea la 6', levels: DIV6_LEVELS },
+  { icon: '📅', title: 'Împărțirea la 7', levels: DIV7_LEVELS },
+  { icon: '🐙', title: 'Împărțirea la 8', levels: DIV8_LEVELS },
+  { icon: '🎯', title: 'Împărțirea la 9', levels: DIV9_LEVELS },
+  { icon: '🧩', title: 'Insula Isteților', levels: LOGIC_LEVELS },
 ];
+
+// Insula (grupul din cuprins) în care se află un nivel.
+export function contestGroupOf(level) {
+  return CONTEST_LEVEL_GROUPS.find(g => g.levels.some(l => String(l) === String(level))) || CONTEST_LEVEL_GROUPS[0];
+}
 
 export function contestLevelLabel(level) {
   if (!level || level === MIX_LEVEL) return '🎲 AMESTEC';
