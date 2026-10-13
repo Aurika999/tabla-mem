@@ -17,6 +17,12 @@ export const THIRD_LEVELS = ['impt1', 'impt2', 'impt3', 'impt4'];
 export const QUARTER_LEVELS = ['impq1', 'impq2', 'impq3', 'impq4'];
 // „Împărțirea la 5” (tot în Tabla împărțirii).
 export const FIFTH_LEVELS = ['impc1', 'impc2', 'impc3', 'impc4'];
+// „Împărțirea la 6” și „Împărțirea la 7” (tot în Tabla împărțirii).
+export const DIV6_LEVELS = ['impsa1', 'impsa2', 'impsa3', 'impsa4'];
+export const DIV7_LEVELS = ['impse1', 'impse2', 'impse3', 'impse4'];
+// „Împărțirea la 8” și „Împărțirea la 9”.
+export const DIV8_LEVELS = ['impo1', 'impo2', 'impo3', 'impo4'];
+export const DIV9_LEVELS = ['impn1', 'impn2', 'impn3', 'impn4'];
 export const THREE_LEVELS = ['trei1', 'trei2', 'trei3', 'trei4'];
 export const FOUR_LEVELS = ['patru1', 'patru2', 'patru3', 'patru4'];
 export const FIVE_LEVELS = ['cinci1', 'cinci2', 'cinci3', 'cinci4'];
@@ -91,6 +97,22 @@ export const LEVELS = {
   impc2: { key: 'impc2', label: '🏮 2. APLIC', hint: 'De 5 ori mai mic, numere care se împart la 5', className: 'lf2' },
   impc3: { key: 'impc3', label: '🏮 3. EXERSEZ', hint: 'Câtul, compară, ordinea operațiilor', className: 'lf3' },
   impc4: { key: 'impc4', label: '🏮 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea la 5', className: 'lf4' },
+  impsa1: { key: 'impsa1', label: '🍬 1. DESCOPĂR', hint: 'Pagini și bomboane: împărțim la 6', className: 'lf1' },
+  impsa2: { key: 'impsa2', label: '🍬 2. APLIC', hint: 'De 6 ori mai mic, verificarea', className: 'lf2' },
+  impsa3: { key: 'impsa3', label: '🍬 3. EXERSEZ', hint: 'Compară, ordinea operațiilor', className: 'lf3' },
+  impsa4: { key: 'impsa4', label: '🍬 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea la 6', className: 'lf4' },
+  impse1: { key: 'impse1', label: '📅 1. DESCOPĂR', hint: 'Zilele săptămânii: împărțim la 7', className: 'lf1' },
+  impse2: { key: 'impse2', label: '📅 2. APLIC', hint: 'De 7 ori mai mic, verificarea', className: 'lf2' },
+  impse3: { key: 'impse3', label: '📅 3. EXERSEZ', hint: 'Compară, ordinea operațiilor', className: 'lf3' },
+  impse4: { key: 'impse4', label: '📅 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea la 7', className: 'lf4' },
+  impo1: { key: 'impo1', label: '🐙 1. DESCOPĂR', hint: 'Caracatițe și bomboane: împărțim la 8', className: 'lf1' },
+  impo2: { key: 'impo2', label: '🐙 2. APLIC', hint: 'De 8 ori mai mic, verificarea', className: 'lf2' },
+  impo3: { key: 'impo3', label: '🐙 3. EXERSEZ', hint: 'Compară, ordinea operațiilor', className: 'lf3' },
+  impo4: { key: 'impo4', label: '🐙 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea la 8', className: 'lf4' },
+  impn1: { key: 'impn1', label: '🎯 1. DESCOPĂR', hint: 'Cireșe și fotografii: împărțim la 9', className: 'lf1' },
+  impn2: { key: 'impn2', label: '🎯 2. APLIC', hint: 'De 9 ori mai mic, verificarea', className: 'lf2' },
+  impn3: { key: 'impn3', label: '🎯 3. EXERSEZ', hint: 'Compară, ordinea operațiilor', className: 'lf3' },
+  impn4: { key: 'impn4', label: '🎯 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea la 9', className: 'lf4' },
   logica4: { key: 'logica4', label: '🧩 4. EXERSEZ ȘI REZOLV', hint: 'Ca în manual: înmulțiri și probleme', className: 'lg4' },
   logica3: { key: 'logica3', label: '🧩 3. PROBLEME ISTEȚE', hint: 'În doi pași, ore, șiruri — până la 100', className: 'lg3' },
 };

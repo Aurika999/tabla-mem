@@ -6,7 +6,7 @@ import { db, firebaseEnabled } from '../firebase';
 import { freshQuestion } from './useTablaGame';
 import {
   LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS,
-  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS,
+  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, DIV6_LEVELS, DIV7_LEVELS, DIV8_LEVELS, DIV9_LEVELS,
 } from './data';
 
 const CONTESTS_COLLECTION = 'contests';
@@ -44,6 +44,10 @@ export const CONTEST_LEVEL_GROUPS = [
   { title: 'Împărțirea la 3', levels: THIRD_LEVELS },
   { title: 'Împărțirea la 4', levels: QUARTER_LEVELS },
   { title: 'Împărțirea la 5', levels: FIFTH_LEVELS },
+  { title: 'Împărțirea la 6', levels: DIV6_LEVELS },
+  { title: 'Împărțirea la 7', levels: DIV7_LEVELS },
+  { title: 'Împărțirea la 8', levels: DIV8_LEVELS },
+  { title: 'Împărțirea la 9', levels: DIV9_LEVELS },
   { title: 'Insula Isteților', levels: LOGIC_LEVELS },
 ];
 

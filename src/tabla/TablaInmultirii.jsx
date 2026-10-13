@@ -27,6 +27,7 @@ import HalfMap from './components/HalfMap';
 import ThirdMap from './components/ThirdMap';
 import QuarterMap from './components/QuarterMap';
 import FifthMap from './components/FifthMap';
+import { SixMap, SevenMap, EightMap, NineMap } from './components/DivisorMaps';
 import LessonMap from './components/LessonMap';
 
 const PAGE_TITLE = 'Tabla Înmulțirii';
@@ -117,6 +118,10 @@ export default function TablaInmultirii() {
   const goToThirdLesson = () => goToView('thirdlesson');
   const goToQuarterLesson = () => goToView('quarterlesson');
   const goToFifthLesson = () => goToView('fifthlesson');
+  const goToSixLesson = () => goToView('sixlesson');
+  const goToSevenLesson = () => goToView('sevenlesson');
+  const goToEightLesson = () => goToView('eightlesson');
+  const goToNineLesson = () => goToView('ninelesson');
   const lessonFactor = view.startsWith('lesson') ? Number(view.slice(6)) : null;
   const goToHome = () => goToView('home');
 
@@ -264,6 +269,10 @@ export default function TablaInmultirii() {
             onOpenThirdLesson={goToThirdLesson}
             onOpenQuarterLesson={goToQuarterLesson}
             onOpenFifthLesson={goToFifthLesson}
+            onOpenSixLesson={goToSixLesson}
+            onOpenSevenLesson={goToSevenLesson}
+            onOpenEightLesson={goToEightLesson}
+            onOpenNineLesson={goToNineLesson}
             onOpenPanel={handleOpenPanel}
             onBack={goToSchool}
             chatUnread={unreadCount}
@@ -303,6 +312,38 @@ export default function TablaInmultirii() {
         )}
         {view === 'fifthlesson' && (
           <FifthMap
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onPlayLevel={handleSelectLevel}
+            onBack={goToDivisionHub}
+          />
+        )}
+        {view === 'sixlesson' && (
+          <SixMap
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onPlayLevel={handleSelectLevel}
+            onBack={goToDivisionHub}
+          />
+        )}
+        {view === 'sevenlesson' && (
+          <SevenMap
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onPlayLevel={handleSelectLevel}
+            onBack={goToDivisionHub}
+          />
+        )}
+        {view === 'eightlesson' && (
+          <EightMap
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onPlayLevel={handleSelectLevel}
+            onBack={goToDivisionHub}
+          />
+        )}
+        {view === 'ninelesson' && (
+          <NineMap
             name={name}
             scores={firebaseEnabled ? myScores : {}}
             onPlayLevel={handleSelectLevel}
@@ -397,7 +438,7 @@ export default function TablaInmultirii() {
                   {{
                     home: '🏝️ Înapoi la prima pagină', map: '🗺️ Înapoi la hartă', logic: '🧩 Înapoi la insulă', eval: '📝 Înapoi la insulă',
                     lessons: '📘 Înapoi la lecții', school: '🎒 Înapoi la Insula Învățării',
-                    division: '➗ Înapoi la Tabla împărțirii', divlesson: '➗ Înapoi la insulă', halflesson: '✌️ Înapoi la insulă', thirdlesson: '🐦 Înapoi la insulă', quarterlesson: '🍀 Înapoi la insulă', fifthlesson: '🏮 Înapoi la insulă',
+                    division: '➗ Înapoi la Tabla împărțirii', divlesson: '➗ Înapoi la insulă', halflesson: '✌️ Înapoi la insulă', thirdlesson: '🐦 Înapoi la insulă', quarterlesson: '🍀 Înapoi la insulă', fifthlesson: '🏮 Înapoi la insulă', sixlesson: '🍬 Înapoi la insulă', sevenlesson: '📅 Înapoi la insulă', eightlesson: '🐙 Înapoi la insulă', ninelesson: '🎯 Înapoi la insulă',
                   }[panelOrigin] || (panelOrigin?.startsWith('lesson') && '📖 Înapoi la insulă')
                     || '▶ Înapoi la exercițiu'}
                 </button>

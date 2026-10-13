@@ -538,3 +538,7 @@
 .tabla-inmultirii .question-picture-items{display:grid;gap:2px;font-size:clamp(20px,3.4vw,28px);line-height:1.15}
 .tabla-inmultirii .question-picture-holder{font-size:clamp(26px,4.4vw,36px);line-height:1;margin-top:2px}
 .tabla-inmultirii .home-island-cta.fifth{color:#fff;background:linear-gradient(180deg,#ffa8a8 0%,#fa5252 55%,#c92a2a 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .home-island-cta.seven{color:#fff;background:linear-gradient(180deg,#96f2d7 0%,#20c997 55%,#087f5b 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .home-island-cta.six{color:#fff;background:linear-gradient(180deg,#fcc2d7 0%,#e64980 55%,#a61e4d 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .home-island-cta.eight{color:#fff;background:linear-gradient(180deg,#a5d8ff 0%,#4c6ef5 55%,#364fc7 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .home-island-cta.nine{color:#fff;background:linear-gradient(180deg,#ffec99 0%,#fab005 55%,#e67700 100%);text-shadow:0 2px 0 #0004}

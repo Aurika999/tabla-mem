@@ -1,5 +1,5 @@
 import {
-  PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, EVAL_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, TWO_LEVELS, THREE_LEVELS, FOUR_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS, EIGHT_LEVELS,
+  PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, EVAL_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, DIV6_LEVELS, DIV7_LEVELS, DIV8_LEVELS, DIV9_LEVELS, TWO_LEVELS, THREE_LEVELS, FOUR_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS, EIGHT_LEVELS,
   NINE_LEVELS,
 } from './data';
 
@@ -32,6 +32,11 @@ export const THIRD_PATH = THIRD_LEVELS;
 export const QUARTER_PATH = QUARTER_LEVELS;
 // Drumul lecției „Împărțirea la 5”.
 export const FIFTH_PATH = FIFTH_LEVELS;
+// Drumurile lecțiilor „Împărțirea la 6” și „Împărțirea la 7”.
+export const DIV6_PATH = DIV6_LEVELS;
+export const DIV7_PATH = DIV7_LEVELS;
+export const DIV8_PATH = DIV8_LEVELS;
+export const DIV9_PATH = DIV9_LEVELS;
 
 export function isLogicLevel(level) {
   return LOGIC_PATH.includes(level);
@@ -50,6 +55,10 @@ export function mapViewOf(level) {
   if (THIRD_PATH.includes(level)) return 'thirdlesson';
   if (QUARTER_PATH.includes(level)) return 'quarterlesson';
   if (FIFTH_PATH.includes(level)) return 'fifthlesson';
+  if (DIV6_PATH.includes(level)) return 'sixlesson';
+  if (DIV7_PATH.includes(level)) return 'sevenlesson';
+  if (DIV8_PATH.includes(level)) return 'eightlesson';
+  if (DIV9_PATH.includes(level)) return 'ninelesson';
   const factor = lessonFactorOfLevel(level);
   if (factor) return `lesson${factor}`;
   return 'map';
@@ -63,6 +72,10 @@ function pathOf(level) {
   if (THIRD_PATH.includes(level)) return THIRD_PATH;
   if (QUARTER_PATH.includes(level)) return QUARTER_PATH;
   if (FIFTH_PATH.includes(level)) return FIFTH_PATH;
+  if (DIV6_PATH.includes(level)) return DIV6_PATH;
+  if (DIV7_PATH.includes(level)) return DIV7_PATH;
+  if (DIV8_PATH.includes(level)) return DIV8_PATH;
+  if (DIV9_PATH.includes(level)) return DIV9_PATH;
   const factor = lessonFactorOfLevel(level);
   if (factor) return LESSON_PATHS[factor];
   return LEVEL_PATH;

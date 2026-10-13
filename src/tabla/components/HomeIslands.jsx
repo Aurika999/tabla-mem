@@ -1,6 +1,6 @@
 import { LEVELS } from '../data';
 import {
-  LEVEL_PATH, LOGIC_PATH, LESSON_PATHS, EVAL_PATH, DIVISION_PATH, HALF_PATH, THIRD_PATH, QUARTER_PATH, FIFTH_PATH, isLevelDone, currentLevel,
+  LEVEL_PATH, LOGIC_PATH, LESSON_PATHS, EVAL_PATH, DIVISION_PATH, HALF_PATH, THIRD_PATH, QUARTER_PATH, FIFTH_PATH, DIV6_PATH, DIV7_PATH, DIV8_PATH, DIV9_PATH, isLevelDone, currentLevel,
 } from '../mapProgress';
 import { Island, Waves, useMediaQuery, PHONE_QUERY } from './MapHome';
 
@@ -15,6 +15,10 @@ const DECOR = {
   logic: [['🧩', -4, -40, 78], ['🍬', -95, 0, 30], ['🎈', 95, -20, 32], ['🍎', -80, 26, 26]],
   lessons: [['📘', -4, -40, 78], ['🛷', -100, 0, 30], ['🐙', 95, -10, 30], ['🎈', 80, 24, 26], ['⛄', -80, 26, 24]],
   division: [['➗', -4, -40, 78], ['🌼', -95, 0, 30], ['🐞', 95, -6, 28], ['🐛', 80, 26, 24]],
+  div9: [['🎯', -4, -40, 78], ['🍒', -95, 0, 30], ['📸', 95, -6, 28], ['⚽', 80, 26, 26]],
+  div8: [['🐙', -4, -40, 78], ['🕷️', -95, 0, 30], ['🐚', 95, -6, 28], ['🐠', 80, 26, 26]],
+  div7: [['📅', -4, -40, 78], ['📖', -95, 0, 30], ['🧸', 95, -6, 28], ['🐔', 80, 26, 26]],
+  div6: [['🍬', -4, -40, 78], ['📚', -95, 0, 30], ['🎁', 95, -6, 28], ['🐱', 80, 26, 26]],
   div5: [['🏮', -4, -40, 78], ['🌷', -95, 0, 30], ['🎈', 95, -6, 28], ['🍊', 80, 26, 26]],
   div4: [['🍀', -4, -40, 78], ['🚗', -95, 0, 30], ['🐝', 95, -6, 28], ['🧺', 80, 26, 26]],
   div3: [['🐦', -4, -40, 78], ['🏠', -95, 0, 30], ['🍫', 95, -6, 28], ['🐥', 80, 26, 26]],
@@ -34,7 +38,7 @@ const DECOR = {
 const HOME_KEYS = ['arena', 'school'];
 const SCHOOL_KEYS = ['learn', 'logic', 'lessons', 'division', 'eval'];
 // Lecțiile de împărțire (deocamdată una; se pot adăuga altele).
-const DIVISION_KEYS = ['div1', 'div2', 'div3', 'div4', 'div5'];
+const DIVISION_KEYS = ['div1', 'div2', 'div3', 'div4', 'div5', 'div6', 'div7', 'div8', 'div9'];
 const LESSON_FACTORS = [2, 3, 4, 5, 6, 7, 8, 9];
 const LESSON_KEYS = LESSON_FACTORS.map(f => `lesson${f}`);
 
@@ -137,7 +141,7 @@ function pct(value, total) {
 
 export default function HomeIslands({
   mode = 'home', name, scores, onOpenLearn, onOpenLogic, onOpenLessons, onOpenLesson, onOpenEval, onOpenSchool,
-  onOpenDivision, onOpenDivisionLesson, onOpenHalfLesson, onOpenThirdLesson, onOpenQuarterLesson, onOpenFifthLesson,
+  onOpenDivision, onOpenDivisionLesson, onOpenHalfLesson, onOpenThirdLesson, onOpenQuarterLesson, onOpenFifthLesson, onOpenSixLesson, onOpenSevenLesson, onOpenEightLesson, onOpenNineLesson,
   onOpenPanel, onBack, chatUnread,
 }) {
   const isPhone = useMediaQuery(PHONE_QUERY);
@@ -167,9 +171,14 @@ export default function HomeIslands({
   const thirdDone = THIRD_PATH.filter(level => isLevelDone(scores, level)).length;
   const quarterDone = QUARTER_PATH.filter(level => isLevelDone(scores, level)).length;
   const fifthDone = FIFTH_PATH.filter(level => isLevelDone(scores, level)).length;
-  const divisionDone = lessonOnlyDone + halfDone + thirdDone + quarterDone + fifthDone;
+  const sixDone = DIV6_PATH.filter(level => isLevelDone(scores, level)).length;
+  const sevenDone = DIV7_PATH.filter(level => isLevelDone(scores, level)).length;
+  const eightDone = DIV8_PATH.filter(level => isLevelDone(scores, level)).length;
+  const nineDone = DIV9_PATH.filter(level => isLevelDone(scores, level)).length;
+  const divisionDone = lessonOnlyDone + halfDone + thirdDone + quarterDone + fifthDone + sixDone + sevenDone
+    + eightDone + nineDone;
   const divisionTotal = DIVISION_PATH.length + HALF_PATH.length + THIRD_PATH.length + QUARTER_PATH.length
-    + FIFTH_PATH.length;
+    + FIFTH_PATH.length + DIV6_PATH.length + DIV7_PATH.length + DIV8_PATH.length + DIV9_PATH.length;
   const schoolDone = doneCount + logicDone + evalDone + divisionDone
     + LESSON_FACTORS.reduce((sum, f) => sum + lessonDone(f), 0);
   const schoolTotal = LEVEL_PATH.length + LOGIC_PATH.length + EVAL_PATH.length + divisionTotal
@@ -281,6 +290,46 @@ export default function HomeIslands({
         : `🏮 ${fifthDone} / ${FIFTH_PATH.length} · de 5 ori mai mic`,
       cta: '🏮 Începe lecția',
       onClick: onOpenFifthLesson,
+    },
+    {
+      key: 'div6',
+      ctaClass: 'six',
+      title: 'ÎMPĂRȚIREA LA 6',
+      subtitle: sixDone === DIV6_PATH.length
+        ? 'Știi împărțirea la 6! 🏆'
+        : `🍬 ${sixDone} / ${DIV6_PATH.length} · de 6 ori mai mic`,
+      cta: '🍬 Începe lecția',
+      onClick: onOpenSixLesson,
+    },
+    {
+      key: 'div7',
+      ctaClass: 'seven',
+      title: 'ÎMPĂRȚIREA LA 7',
+      subtitle: sevenDone === DIV7_PATH.length
+        ? 'Știi împărțirea la 7! 🏆'
+        : `📅 ${sevenDone} / ${DIV7_PATH.length} · de 7 ori mai mic`,
+      cta: '📅 Începe lecția',
+      onClick: onOpenSevenLesson,
+    },
+    {
+      key: 'div8',
+      ctaClass: 'eight',
+      title: 'ÎMPĂRȚIREA LA 8',
+      subtitle: eightDone === DIV8_PATH.length
+        ? 'Știi împărțirea la 8! 🏆'
+        : `🐙 ${eightDone} / ${DIV8_PATH.length} · de 8 ori mai mic`,
+      cta: '🐙 Începe lecția',
+      onClick: onOpenEightLesson,
+    },
+    {
+      key: 'div9',
+      ctaClass: 'nine',
+      title: 'ÎMPĂRȚIREA LA 9',
+      subtitle: nineDone === DIV9_PATH.length
+        ? 'Știi împărțirea la 9! 🏆'
+        : `🎯 ${nineDone} / ${DIV9_PATH.length} · de 9 ori mai mic`,
+      cta: '🎯 Începe lecția',
+      onClick: onOpenNineLesson,
     },
     {
       key: 'eval',

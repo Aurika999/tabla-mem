@@ -9,12 +9,20 @@ export const HALF_LEVELS = ['impd1', 'impd2', 'impd3', 'impd4'];
 export const THIRD_LEVELS = ['impt1', 'impt2', 'impt3', 'impt4'];
 export const QUARTER_LEVELS = ['impq1', 'impq2', 'impq3', 'impq4'];
 export const FIFTH_LEVELS = ['impc1', 'impc2', 'impc3', 'impc4'];
+export const DIV6_LEVELS = ['impsa1', 'impsa2', 'impsa3', 'impsa4'];
+export const DIV7_LEVELS = ['impse1', 'impse2', 'impse3', 'impse4'];
+export const DIV8_LEVELS = ['impo1', 'impo2', 'impo3', 'impo4'];
+export const DIV9_LEVELS = ['impn1', 'impn2', 'impn3', 'impn4'];
 const BADGES = {
   imp1: '🔍 Descopăr', imp2: '✏️ Aplic', imp3: '⭐ Exersez', imp4: '🧩 Rezolv probleme',
   impd1: '🔍 Descopăr', impd2: '✏️ Aplic', impd3: '⭐ Exersez', impd4: '🧩 Rezolv probleme',
   impt1: '🔍 Descopăr', impt2: '✏️ Aplic', impt3: '⭐ Exersez', impt4: '🧩 Rezolv probleme',
   impq1: '🔍 Descopăr', impq2: '✏️ Aplic', impq3: '⭐ Exersez', impq4: '🧩 Rezolv probleme',
   impc1: '🔍 Descopăr', impc2: '✏️ Aplic', impc3: '⭐ Exersez', impc4: '🧩 Rezolv probleme',
+  impsa1: '🔍 Descopăr', impsa2: '✏️ Aplic', impsa3: '⭐ Exersez', impsa4: '🧩 Rezolv probleme',
+  impse1: '🔍 Descopăr', impse2: '✏️ Aplic', impse3: '⭐ Exersez', impse4: '🧩 Rezolv probleme',
+  impo1: '🔍 Descopăr', impo2: '✏️ Aplic', impo3: '⭐ Exersez', impo4: '🧩 Rezolv probleme',
+  impn1: '🔍 Descopăr', impn2: '✏️ Aplic', impn3: '⭐ Exersez', impn4: '🧩 Rezolv probleme',
 };
 const GIRLS = ['Mara', 'Ioana', 'Sofia', 'Ana', 'Elena', 'Diana'];
 
@@ -950,17 +958,364 @@ const FIFTH_SOLVE = [
   },
 ];
 
+// ================= „Împărțirea la 6”, „la 7”, „la 8” și „la 9” =================
+// Datele din manual, separate pe împărțitor: fiecare insulă folosește doar „: 6” sau doar „: 7”.
+const BY_DIVISOR = {
+  6: {
+    stories: [
+      k => [`Delia vrea să citească o carte cu ${count(6 * k, 'pagini')} în 6 zile, același număr de pagini în fiecare zi. Câte pagini trebuie să citească în fiecare zi?`, 'pagini'],
+      k => [`În 6 cutii identice sunt ${count(6 * k, 'bomboane')}. Câte bomboane sunt într-o cutie?`, 'bomboane'],
+    ],
+    model: [[42, 7], [48, 8], [54, 9], [36, 6].slice(0, 0), [30, 5], [24, 4], [18, 3]].filter(x => x.length),
+    smaller: [36, 54, 48, 6, 60, 42, 24, 30],
+    verify: [[6, 4], [3, 6], [6, 7], [6, 8], [5, 6], [6, 9], [2, 6]],
+    compare: [['54 : 6', 9, '8', 8], ['42 : 6', 7, '7', 7], ['6', 6, '36 : 6', 6], ['30 : 6', 5, '4', 4],
+      ['48 : 6', 8, '60 : 6', 10], ['18 : 6', 3, '24 : 6', 4], ['12 : 6', 2, '3', 3]],
+    hidden: [['3 × 3 = 📖 : 6', 54], ['2 × 4 = 📖 : 6', 48], ['2 × 3 = 📖 : 6', 36], ['5 + 2 = 📖 : 6', 42], ['10 - 5 = 📖 : 6', 30]],
+    order: [[9, '×', 4, ':', 6], [3, '×', 8, ':', 6], [42, ':', 6, '×', 5], [36, ':', 6, '×', 7], [5, '×', 6, ':', 6], [54, ':', 6, '×', 2]],
+    sums: [[25, 23], [30, 12], [17, 19], [40, 14], [22, 8], [35, 25]],
+    shelves: [[80, 4, 8], [70, 4, 7], [60, 3, 8], [90, 6, 6]],
+  },
+  7: {
+    stories: [
+      k => [`Radu vrea să citească într-o săptămână o carte cu ${count(7 * k, 'pagini')}. El va citi în fiecare zi același număr de pagini. Câte pagini va citi într-o zi?`, 'pagini'],
+      k => [`Mihnea vrea să-și aranjeze cele ${count(7 * k, 'cuburi')} în 7 cutii, punând același număr de cuburi în fiecare cutie. Câte cuburi pune într-o cutie?`, 'cuburi'],
+    ],
+    model: [[56, 8], [63, 9], [42, 6], [28, 4], [35, 5], [21, 3]],
+    smaller: [28, 56, 21, 63, 70, 49, 35, 42],
+    verify: [[7, 4], [5, 7], [2, 7], [7, 3], [7, 9], [7, 8], [6, 7]],
+    compare: [['14 : 7', 2, '3', 3], ['9', 9, '49 : 7', 7], ['4', 4, '21 : 7', 3], ['63 : 7', 9, '8', 8],
+      ['35 : 7', 5, '28 : 7', 4], ['70 : 7', 10, '9', 9], ['56 : 7', 8, '8', 8]],
+    hidden: [['2 × 4 = 📖 : 7', 56], ['3 × 3 = 📖 : 7', 63], ['2 × 3 = 📖 : 7', 42], ['2 × 2 = 📖 : 7', 28], ['10 - 5 = 📖 : 7', 35]],
+    order: [[49, ':', 7, ':', 7], [21, ':', 7, '×', 9], [7, '×', 6, ':', 7], [56, ':', 7, '×', 3], [35, ':', 7, '×', 8], [3, '×', 7, ':', 7]],
+    sums: [[24, 25], [30, 12], [16, 19], [40, 16], [33, 30], [20, 8]],
+    shelves: [[70, 4, 7], [90, 6, 8], [80, 4, 6]],
+  },
+  8: {
+    stories: [
+      k => [`Ioana are ${count(8 * k, 'cartonașe')} cu personaje din povești. Vrea să le așeze într-un album cu 8 file, punând pe fiecare filă același număr de cartonașe. Câte cartonașe va avea pe fiecare filă?`, 'cartonașe'],
+      k => [`Caracatițele din acvariu au în total ${count(8 * k, 'brațe')}. O caracatiță are 8 brațe. Câte caracatițe sunt în acvariu?`, 'caracatițe'],
+    ],
+    model: [[24, 3], [32, 4], [40, 5], [48, 6], [56, 7], [72, 9], [16, 2]],
+    smaller: [64, 56, 48, 16, 72, 80, 24, 40],
+    verify: [[8, 4], [8, 7], [3, 8], [8, 6], [8, 9], [5, 8]],
+    compare: [['24 : 8', 3, '4', 4], ['9', 9, '72 : 8', 9], ['40 : 8', 5, '6', 6], ['64 : 8', 8, '56 : 8', 7],
+      ['80 : 8', 10, '9', 9], ['16 : 8', 2, '2', 2], ['48 : 8', 6, '32 : 8', 4]],
+    hidden: [['2 × 4 = 🐰 : 8', 32], ['3 × 3 = 🐰 : 8', 72], ['2 × 3 = 🐰 : 8', 48], ['10 - 5 = 🐰 : 8', 40], ['2 + 5 = 🐰 : 8', 56]],
+    order: [[64, ':', 8, ':', 2], [24, ':', 8, '×', 9], [8, '×', 5, ':', 8], [72, ':', 8, '×', 3], [6, '×', 4, ':', 8], [40, ':', 8, '×', 7]],
+    sums: [[24, 16], [30, 18], [25, 15], [40, 16], [33, 31], [50, 22]],
+    divisors: [[16, 2], [64, 8], [72, 9], [32, 4], [48, 6], [24, 3], [40, 5]],
+    table: [[40, 5], [64, 8], [24, 3], [56, 7], [72, 9]],
+    chains: [[48, ':', 8, '×', 4, '+', 8, ':', 8], [32, ':', 8, '×', 6, '+', 8, ':', 8], [16, ':', 8, '×', 9, '+', 6, ':', 8]],
+    shelves: [[80, 4, 4], [90, 5, 2], [70, 3, 2], [60, 2, 6]],
+  },
+  9: {
+    stories: [
+      k => [`David are ${count(9 * k, 'cartonașe')} cu personaje din povești. Vrea să așeze câte 9 cartonașe pe fiecare filă a unui album. Pentru câte file îi vor ajunge cartonașele?`, 'file'],
+      k => [`9 copii împart în mod egal ${count(9 * k, 'cireșe')}. Câte cireșe primește fiecare copil?`, 'cireșe'],
+    ],
+    model: [[27, 3], [36, 4], [45, 5], [54, 6], [63, 7], [72, 8], [18, 2]],
+    smaller: [27, 54, 36, 63, 9, 81, 45, 72],
+    verify: [[6, 9], [5, 9], [9, 4], [9, 3], [9, 8], [7, 9]],
+    compare: [['27 : 9', 3, '4', 4], ['8', 8, '72 : 9', 8], ['45 : 9', 5, '6', 6], ['81 : 9', 9, '63 : 9', 7],
+      ['90 : 9', 10, '9', 9], ['18 : 9', 2, '2', 2], ['54 : 9', 6, '36 : 9', 4]],
+    hidden: [['2 × 4 = 🐰 : 9', 72], ['3 × 3 = 🐰 : 9', 81], ['2 × 3 = 🐰 : 9', 54], ['10 - 5 = 🐰 : 9', 45], ['2 + 5 = 🐰 : 9', 63]],
+    divisors: [[54, 6], [90, 10], [18, 2], [63, 7], [45, 5], [27, 3], [36, 4]],
+    table: [[45, 5], [27, 3], [63, 7], [36, 4], [81, 9]],
+    chains: [[63, ':', 9, '×', 6, '+', 3, ':', 9], [54, ':', 9, '×', 4, '+', 12, ':', 9], [27, ':', 9, '×', 8, '+', 3, ':', 9]],
+    order: [[81, ':', 9, ':', 3], [27, ':', 9, '×', 8], [9, '×', 5, ':', 9], [72, ':', 9, '×', 3], [6, '×', 3, ':', 9], [45, ':', 9, '×', 7]],
+    sums: [[20, 16], [30, 15], [25, 29], [40, 23], [33, 39], [50, 31]],
+    shelves: [[80, 4, 2], [90, 3, 3], [70, 2, 8], [60, 3, 5]],
+  },
+};
+
+function divisorLesson(d) {
+  const data = BY_DIVISOR[d];
+  const discover = [
+    ...data.stories.map(story => () => {
+      const k = randInt(3, 9); const n = d * k; const [text, unit] = story(k);
+      return problem(text, k, `${n} : ${d} = ${k} ${unit}, pentru că ${k} × ${d} = ${n}.`, [k + 1, n - d, k - 1]);
+    }),
+    () => {
+      const k = randInt(1, 10); const n = d * k;
+      return problem(`${n} : ${d} = ?  (Gândește-te: ce număr înmulțit cu ${d} dă ${n}?)`, k,
+        `${n} : ${d} = ${k}, deoarece ${k} × ${d} = ${n}.`, [k + 1, n - d, k + d]);
+    },
+    () => {
+      const k = randInt(2, 10);
+      return problem(`Ce număr, împărțit la ${d}, dă ${k}?`, d * k,
+        `Verificăm cu înmulțirea: ${k} × ${d} = ${d * k}, deci ${d * k} : ${d} = ${k}.`, [k + d, 2 * k, d * k + d]);
+    },
+  ];
+
+  const apply = [
+    // A. Calculează, apoi află numărul ascuns: 42 : 7 = 6, deci 42 : 🍎 = 7 (pe pași).
+    () => {
+      const [n, other] = pick(data.model); const q = n / d; const box = pick(HIDERS);
+      return stepped(`Calculează ${n} : ${d}, apoi află numărul ascuns: ${n} : ${box} = ${d}`, [
+        [`${n} : ${d} = ?`, q, [q + 1, q - 1, n - d]],
+        [`${n} : ${box} = ${d}`, other, [other + 1, d, other - 1]],
+      ], `${n} : ${d} = ${q}, deci și ${n} : ${q} = ${d}, pentru că ${q} × ${d} = ${n}.`);
+    },
+    // B. Află numerele de d ori mai mici.
+    () => {
+      const n = pick(data.smaller);
+      return problem(`Află numărul de ${d} ori mai mic decât ${n}.`, n / d,
+        `„De ${d} ori mai mic” înseamnă împărțire la ${d}: ${n} : ${d} = ${n / d}.`, [n - d, n / d + 1, n / d - 1]);
+    },
+    // C. Micșorează de d ori.
+    () => {
+      const n = pick(data.smaller);
+      return problem(`Micșorează de ${d} ori numărul ${n}.`, n / d,
+        `A micșora de ${d} ori înseamnă a împărți la ${d}: ${n} : ${d} = ${n / d}.`, [n - d, n / d + 1, n / d - 1]);
+    },
+    // D. Calculează și verifică prin operația inversă (pe pași).
+    () => {
+      const [a, b] = pick(data.verify); const p = a * b; const other = a === d ? b : a;
+      return stepped(`Calculează și verifică prin împărțire (model: ${d} × 4 = ${d * 4}, deci ${d * 4} : ${d} = 4): ${a} × ${b} = ?`, [
+        [`${a} × ${b} = ?`, p, [p + 1, p - 1, a + b]],
+        [`Verificare: ${p} : ${d} = ?`, other, [other + 1, d === other ? other + 2 : d, other - 1]],
+      ], `${a} × ${b} = ${p}. Verificăm: ${p} : ${d} = ${other}.`);
+    },
+  ];
+
+  const practice = [
+    // 1. Calculează.
+    () => {
+      const k = randInt(2, 10); const n = d * k;
+      return problem(`Calculează: ${n} : ${d} = ?`, k, `${n} : ${d} = ${k}, pentru că ${k} × ${d} = ${n}.`, [k + 1, k - 1, n - d]);
+    },
+    // 2. Calculează și compară.
+    () => {
+      const [left, lv, right, rv] = pick(data.compare);
+      const sign = lv < rv ? '<' : lv > rv ? '>' : '=';
+      return {
+        text: `Calculează și compară: ${left} ○ ${right}`,
+        answer: sign,
+        explanation: `${left} = ${lv} și ${right} = ${rv}, deci ${lv} ${sign} ${rv}.`,
+        choices: SIGNS,
+      };
+    },
+    // 3. Ce număr se ascunde sub carte? 3 × 3 = 📖 : 6.
+    () => {
+      const [text, answer] = pick(data.hidden);
+      return problem(`Ce număr se ascunde sub ${text.includes('🐰') ? 'iepuraș' : 'carte'}? ${text}`, answer,
+        `Partea din stânga dă ${answer / d}, deci căutăm numărul care împărțit la ${d} dă ${answer / d}: ${answer / d} × ${d} = ${answer}.`,
+        [answer + d, answer - d, answer / d]);
+    },
+    // 4. Calculează, efectuând operațiile în ordinea în care sunt date (pe pași).
+    () => {
+      const [a, op1, b, op2, c] = pick(data.order);
+      const calc = (x, op, y) => (op === ':' ? x / y : x * y);
+      const first = calc(a, op1, b); const result = calc(first, op2, c);
+      return stepped(`Calculează, efectuând operațiile în ordinea în care sunt date: ${a} ${op1} ${b} ${op2} ${c} = ?`, [
+        [`${a} ${op1} ${b} = ?`, first, [first + 1, first - 1, a]],
+        [`${first} ${op2} ${c} = ?`, result, [result + 1, result - 1, first]],
+      ], `Întâi ${a} ${op1} ${b} = ${first}, apoi ${first} ${op2} ${c} = ${result}.`);
+    },
+    // 5. Află de câte ori este mai mare.
+    () => {
+      const k = randInt(4, 10); const n = d * k;
+      return problem(`De câte ori este mai mare ${n} decât ${d}?`, k,
+        `„De câte ori mai mare” se află prin împărțire: ${n} : ${d} = ${k}.`, [n - d, k + 1, k - 1]);
+    },
+    // 6. Micșorează de d ori suma a două numere (pe pași).
+    () => {
+      const [a, b] = pick(data.sums); const sum = a + b;
+      return stepped(`Micșorează de ${d} ori suma numerelor ${a} și ${b}.`, [
+        [`Cât este suma? ${a} + ${b} = ?`, sum, [sum + 1, sum - 1, sum + 10]],
+        [`Micșorează de ${d} ori: ${sum} : ${d} = ?`, sum / d, [sum - d, sum / d + 1, sum / d - 1]],
+      ], `Suma: ${a} + ${b} = ${sum}. De ${d} ori mai mic: ${sum} : ${d} = ${sum / d}.`);
+    },
+  ];
+
+  // Scrie împărțitorul: 72 : 🍎 = 9.
+  if (data.divisors) {
+    practice.push(() => {
+      const [n, q] = pick(data.divisors); const box = pick(HIDERS);
+      return problem(`Scrie împărțitorul: ${n} : ${box} = ${q}`, d,
+        `Împărțitorul se află prin împărțire: ${n} : ${q} = ${d}. Verificare: ${n} : ${d} = ${q}.`, [d + 1, d - 1, q]);
+    });
+  }
+  // Tabelul cu a, b și a : b: află numărul care lipsește.
+  if (data.table) {
+    practice.push(() => {
+      const [a, q] = pick(data.table);
+      return Math.random() < 0.5
+        ? problem(`În tabel: a = ${a}, b = ${d}. Cât este a : b?`, q, `${a} : ${d} = ${q}.`, [q + 1, q - 1, a - d])
+        : problem(`În tabel: b = ${d}, iar a : b = ${q}. Cât este a?`, a, `a = ${q} × ${d} = ${a}. Verificare: ${a} : ${d} = ${q}.`, [a + d, a - d, q + d]);
+    });
+  }
+  // Schițe: 48 → : 8 → × 4 → + 8 → : 8 (pe pași).
+  if (data.chains) {
+    practice.push(() => {
+      const [start, ...ops] = pick(data.chains);
+      const calc = (x, op, y) => (op === ':' ? x / y : op === '×' ? x * y : x + y);
+      const steps = []; let v = start; let chain = `${start}`;
+      for (let i = 0; i < ops.length; i += 2) {
+        const next = calc(v, ops[i], ops[i + 1]);
+        steps.push([`${v} ${ops[i]} ${ops[i + 1]} = ?`, next, [next + 1, next - 1, next + 2]]);
+        chain += ` → ${ops[i]} ${ops[i + 1]}`;
+        v = next;
+      }
+      return stepped(`Completează schița, căsuță cu căsuță: ${chain}`, steps,
+        `Pornim de la ${start}: ${steps.map(([q, a]) => q.replace('?', a)).join(', ')}.`);
+    });
+  }
+
+  const solve = [
+    // Rafturile Mirunei: primele rafturi câte ..., restul în mod egal pe d rafturi (pe pași).
+    () => {
+      const [total, shelves, per] = pick(data.shelves); const first = shelves * per; const rest = total - first;
+      return stepped(`Miruna are în bibliotecă ${count(total, 'cărți')}. Ea așază pe primele ${shelves} rafturi câte ${per} cărți, iar restul, în mod egal, pe ${d} rafturi. Câte cărți vor fi pe fiecare din cele ${d} rafturi?`, [
+        [`Câte cărți pe primele ${shelves} rafturi? ${shelves} × ${per} = ?`, first, [first + per, first - 1, shelves + per]],
+        [`Câte cărți au rămas? ${total} - ${first} = ?`, rest, [rest + 1, rest - 10, total]],
+        [`Câte pe un raft? ${rest} : ${d} = ?`, rest / d, [rest / d + 1, rest - d, rest / d - 1]],
+      ], `${shelves} × ${per} = ${first}. Rămase: ${total} - ${first} = ${rest}. Pe fiecare raft: ${rest} : ${d} = ${rest / d} cărți.`);
+    },
+    // d obiecte de același fel costă ... lei.
+    () => {
+      const k = randInt(2, 9); const total = d * k;
+      const [item, items] = pick([['caiet', 'caiete'], ['pix', 'pixuri'], ['bilet', 'bilete']]);
+      return problem(`${d} ${items} de același fel costă ${count(total, 'lei')}. Cât costă un ${item}?`, k,
+        `${total} : ${d} = ${k} lei.`, [k + d, total - d, k + 1]);
+    },
+  ];
+
+  if (d === 6) {
+    solve.push(
+      // În 6 cutii identice sunt 54 de bomboane: câte într-o cutie? Dar în 3 cutii? (pe pași)
+      () => {
+        const k = pick([7, 8, 9]); const n = 6 * k;
+        return stepped(`În 6 cutii identice sunt ${count(n, 'bomboane')}. Câte bomboane sunt într-o cutie? Dar în 3 cutii?`, [
+          [`Într-o cutie: ${n} : 6 = ?`, k, [k + 1, n - 6, k - 1]],
+          [`În 3 cutii: ${k} × 3 = ?`, 3 * k, [3 * k + 3, 3 * k + 1, 3 * k - 1]],
+        ], `Într-o cutie: ${n} : 6 = ${k}. În 3 cutii: ${k} × 3 = ${3 * k} bomboane.`);
+      },
+      // Andreea a avut 5 cutii și dăruiește 2 bunicilor (pe pași).
+      () => {
+        const k = pick([6, 7, 8, 9]); const n = 6 * k;
+        return stepped(`În 6 cutii identice sunt ${count(n, 'bomboane')}. Andreea a avut 5 astfel de cutii și dăruiește celor doi bunici câte o cutie. Câte bomboane i-au rămas?`, [
+          [`Câte bomboane sunt într-o cutie? ${n} : 6 = ?`, k, [k + 1, n - 6, k - 1]],
+          ['Câte cutii i-au rămas? 5 - 2 = ?', 3, [2, 4, 7]],
+          [`Câte bomboane i-au rămas? 3 × ${k} = ?`, 3 * k, [3 * k + 3, 5 * k, 3 * k - 1]],
+        ], `Într-o cutie: ${n} : 6 = ${k}. Cutii rămase: 5 - 2 = 3. Bomboane rămase: 3 × ${k} = ${3 * k}. Al doilea mod: ${5 * k} - ${2 * k} = ${3 * k}.`);
+      },
+      // Echipe egale de copii.
+      () => {
+        const k = randInt(3, 9); const n = 6 * k;
+        return problem(`La serbare, ${count(n, 'copii')} formează 6 echipe cu același număr de copii. Câți copii are fiecare echipă?`, k,
+          `${n} : 6 = ${k} copii.`, [k + 1, n - 6, k - 1]);
+      },
+    );
+  } else if (d === 7) {
+    solve.push(
+      // Dănuț: găini, rațe cu 7 mai puține, gâște de 7 ori mai puține (pe pași).
+      () => {
+        const hens = pick([21, 28, 35, 42, 49]); const ducks = hens - 7; const geese = hens / 7;
+        return stepped(`Dănuț are ${count(hens, 'găini')}, cu 7 mai puține rațe, iar gâște de 7 ori mai puține decât găini. Câte păsări are băiatul în total?`, [
+          [`Câte rațe are? ${hens} - 7 = ?`, ducks, [geese, ducks + 1, hens + 7]],
+          [`Câte gâște are? ${hens} : 7 = ?`, geese, [geese + 1, geese + 2, geese === 2 ? 4 : geese - 1]],
+          [`Câte păsări în total? ${hens} + ${ducks} + ${geese} = ?`, hens + ducks + geese, [hens + ducks, hens + ducks + geese + 1, hens + geese]],
+        ], `Rațe: ${hens} - 7 = ${ducks} („cu 7 mai puține” = scădere). Gâște: ${hens} : 7 = ${geese} („de 7 ori mai puține” = împărțire). În total: ${hens + ducks + geese}.`);
+      },
+      // Câte săptămâni?
+      () => {
+        const k = randInt(2, 9); const n = 7 * k;
+        return problem(`O tabără a durat ${count(n, 'zile')}. Câte săptămâni a durat tabăra? (o săptămână are 7 zile)`, k,
+          `${n} : 7 = ${k} săptămâni.`, [k + 1, n - 7, k - 1]);
+      },
+    );
+  } else if (d === 8) {
+    solve.push(
+      // Olivia: 48 de abțibilduri cu animale și 24 cu flori, câte 8 într-un plic (pe pași).
+      () => {
+        const [a, b] = pick([[48, 24], [40, 16], [32, 24], [56, 16]]);
+        return stepped(`Olivia are ${count(a, 'abțibilduri')} cu animale și ${count(b, 'abțibilduri')} cu flori. Ea pune câte 8 abțibilduri într-un plic. În câte plicuri au fost puse abțibildurile?`, [
+          [`Câte abțibilduri are în total? ${a} + ${b} = ?`, a + b, [a + b + 10, a + b - 1, a - b]],
+          [`Câte plicuri? ${a + b} : 8 = ?`, (a + b) / 8, [(a + b) / 8 + 1, (a + b) / 8 - 1, a / 8]],
+        ], `În total: ${a} + ${b} = ${a + b}. Plicuri: ${a + b} : 8 = ${(a + b) / 8}.`);
+      },
+      // Picioarele păianjenilor.
+      () => {
+        const k = randInt(2, 9); const n = 8 * k;
+        return problem(`Un păianjen are 8 picioare. Câți păianjeni au împreună ${count(n, 'picioare')}?`, k,
+          `${n} : 8 = ${k} păianjeni, pentru că ${k} × 8 = ${n}.`, [k + 1, n - 8, k - 1]);
+      },
+      // Caracatițe și scoici: de 8 ori mai puține (pe pași).
+      () => {
+        const shells = pick([16, 24, 32, 40, 48]); const octo = shells / 8;
+        return stepped(`În acvariu sunt ${count(shells, 'scoici')}, iar caracatițe de 8 ori mai puține. Câte viețuitoare sunt în total în acvariu?`, [
+          [`Câte caracatițe sunt? ${shells} : 8 = ?`, octo, [shells - 8, octo + 1, octo + 2]],
+          [`Câte în total? ${shells} + ${octo} = ?`, shells + octo, [shells, shells + octo + 1, shells - octo]],
+        ], `Caracatițe: ${shells} : 8 = ${octo}. În total: ${shells} + ${octo} = ${shells + octo}.`);
+      },
+    );
+  } else {
+    solve.push(
+      // Pe teren sunt 81 de copii care se așază în mod egal în 9 echipe.
+      () => {
+        const k = randInt(3, 9); const n = 9 * k;
+        return problem(`Pe teren sunt ${count(n, 'copii')} care trebuie să se așeze, în mod egal, în 9 echipe. Câți copii vor fi în fiecare echipă?`, k,
+          `${n} : 9 = ${k} copii, pentru că ${k} × 9 = ${n}.`, [k + 1, n - 9, k - 1]);
+      },
+      // Pavel: un buchet cu 9 trandafiri costă 63 de lei; Adina ia 7 trandafiri (pe pași).
+      () => {
+        const price = pick([5, 6, 7, 8]); const total = 9 * price; const roses = pick([4, 6, 7]);
+        return stepped(`Pentru un buchet cu 9 trandafiri, Pavel a plătit ${count(total, 'lei')}. Cât plătește Adina pentru un buchet cu ${roses} trandafiri de același fel?`, [
+          [`Cât costă un trandafir? ${total} : 9 = ?`, price, [price + 1, total - 9, price - 1]],
+          [`Cât costă ${roses} trandafiri? ${roses} × ${price} = ?`, roses * price, [roses * price + price, roses + price, roses * price - 1]],
+        ], `Un trandafir: ${total} : 9 = ${price} lei. ${roses} trandafiri: ${roses} × ${price} = ${roses * price} lei.`);
+      },
+      // Mădălina: bile colorate, 9 pentru un colier, restul brățări cu câte 9 mărgele (pe pași).
+      () => {
+        const total = pick([36, 45, 54, 63]); const rest = total - 9;
+        return stepped(`Mădălina are ${count(total, 'bile')} colorate. Folosește 9 bile pentru un colier, iar din rest face brățări cu câte 9 mărgele. Câte brățări a făcut fetița?`, [
+          [`Câte bile au rămas? ${total} - 9 = ?`, rest, [rest + 1, total, rest - 9]],
+          [`Câte brățări? ${rest} : 9 = ?`, rest / 9, [rest / 9 + 1, rest - 9, rest / 9 - 1]],
+        ], `Rămase: ${total} - 9 = ${rest}. Brățări: ${rest} : 9 = ${rest / 9}.`);
+      },
+      // Echipe de câte 9 jucători.
+      () => {
+        const k = randInt(2, 9); const n = 9 * k;
+        return problem(`La un turneu au venit ${count(n, 'jucători')}. O echipă are 9 jucători. Câte echipe s-au format?`, k,
+          `${n} : 9 = ${k} echipe, pentru că ${k} × 9 = ${n}.`, [k + 1, n - 9, k - 1]);
+      },
+      // Mere și pere: pere de 9 ori mai puține (pe pași).
+      () => {
+        const apples = pick([18, 27, 36, 45, 54]); const pears = apples / 9;
+        return stepped(`Bunica are ${count(apples, 'mere')}, iar pere de 9 ori mai puține. Câte fructe are bunica în total?`, [
+          [`Câte pere are? ${apples} : 9 = ?`, pears, [apples - 9, pears + 1, pears + 2]],
+          [`Câte fructe în total? ${apples} + ${pears} = ?`, apples + pears, [apples, apples + pears + 1, apples - pears]],
+        ], `Pere: ${apples} : 9 = ${pears}. În total: ${apples} + ${pears} = ${apples + pears}.`);
+      },
+    );
+  }
+  return { discover, apply, practice, solve };
+}
+
+const SIX_LESSON = divisorLesson(6);
+const SEVEN_LESSON = divisorLesson(7);
+const EIGHT_LESSON = divisorLesson(8);
+const NINE_LESSON = divisorLesson(9);
+
 const BY_LEVEL = {
   imp1: DISCOVER, imp2: APPLY, imp3: PRACTICE, imp4: SOLVE,
   impd1: HALF_DISCOVER, impd2: HALF_APPLY, impd3: HALF_PRACTICE, impd4: HALF_SOLVE,
   impt1: THIRD_DISCOVER, impt2: THIRD_APPLY, impt3: THIRD_PRACTICE, impt4: THIRD_SOLVE,
   impq1: QUARTER_DISCOVER, impq2: QUARTER_APPLY, impq3: QUARTER_PRACTICE, impq4: QUARTER_SOLVE,
   impc1: FIFTH_DISCOVER, impc2: FIFTH_APPLY, impc3: FIFTH_PRACTICE, impc4: FIFTH_SOLVE,
+  impsa1: SIX_LESSON.discover, impsa2: SIX_LESSON.apply, impsa3: SIX_LESSON.practice, impsa4: SIX_LESSON.solve,
+  impse1: SEVEN_LESSON.discover, impse2: SEVEN_LESSON.apply, impse3: SEVEN_LESSON.practice, impse4: SEVEN_LESSON.solve,
+  impo1: EIGHT_LESSON.discover, impo2: EIGHT_LESSON.apply, impo3: EIGHT_LESSON.practice, impo4: EIGHT_LESSON.solve,
+  impn1: NINE_LESSON.discover, impn2: NINE_LESSON.apply, impn3: NINE_LESSON.practice, impn4: NINE_LESSON.solve,
 };
 
 export function isDivisionLevel(level) {
   return DIVISION_LEVELS.includes(level) || HALF_LEVELS.includes(level) || THIRD_LEVELS.includes(level)
-    || QUARTER_LEVELS.includes(level) || FIFTH_LEVELS.includes(level);
+    || QUARTER_LEVELS.includes(level) || FIFTH_LEVELS.includes(level)
+    || DIV6_LEVELS.includes(level) || DIV7_LEVELS.includes(level)
+    || DIV8_LEVELS.includes(level) || DIV9_LEVELS.includes(level);
 }
 
 export function buildDivisionProblem(level) {

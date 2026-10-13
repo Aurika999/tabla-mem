@@ -1,6 +1,6 @@
 import {
   LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS,
-  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, EVAL_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS,
+  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, EVAL_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, DIV6_LEVELS, DIV7_LEVELS, DIV8_LEVELS, DIV9_LEVELS,
 } from '../data';
 
 const MODE_KEYS = [PROBLEME_LEVEL, AVANSATE_LEVEL];
@@ -16,7 +16,7 @@ export default function LevelPanel({
 }) {
   // Pe Insula Isteților sau pe „Înmulțirea cu 5” arătăm nivelurile acelei insule.
   const island = [
-    [LOGIC_LEVELS, '🧩', 'ISTEȚI'], [EVAL_LEVELS, '📝', 'EVALUARE'], [DIVISION_LEVELS, '➗', 'ÎMPĂRȚIRE'], [HALF_LEVELS, '✌️', 'LA 2'], [THIRD_LEVELS, '🐦', 'LA 3'], [QUARTER_LEVELS, '🍀', 'LA 4'], [FIFTH_LEVELS, '🏮', 'LA 5'], [TWO_LEVELS, '🛷', 'CU 2'], [THREE_LEVELS, '⛄', 'CU 3'], [FOUR_LEVELS, '🐻‍❄️', 'CU 4'], [FIVE_LEVELS, '🖐️', 'CU 5'], [SIX_LEVELS, '🔋', 'CU 6'], [SEVEN_LEVELS, '🪙', 'CU 7'],
+    [LOGIC_LEVELS, '🧩', 'ISTEȚI'], [EVAL_LEVELS, '📝', 'EVALUARE'], [DIVISION_LEVELS, '➗', 'ÎMPĂRȚIRE'], [HALF_LEVELS, '✌️', 'LA 2'], [THIRD_LEVELS, '🐦', 'LA 3'], [QUARTER_LEVELS, '🍀', 'LA 4'], [FIFTH_LEVELS, '🏮', 'LA 5'], [DIV6_LEVELS, '🍬', 'LA 6'], [DIV7_LEVELS, '📅', 'LA 7'], [DIV8_LEVELS, '🐙', 'LA 8'], [DIV9_LEVELS, '🎯', 'LA 9'], [TWO_LEVELS, '🛷', 'CU 2'], [THREE_LEVELS, '⛄', 'CU 3'], [FOUR_LEVELS, '🐻‍❄️', 'CU 4'], [FIVE_LEVELS, '🖐️', 'CU 5'], [SIX_LEVELS, '🔋', 'CU 6'], [SEVEN_LEVELS, '🪙', 'CU 7'],
     [EIGHT_LEVELS, '🐙', 'CU 8'], [NINE_LEVELS, '🎈', 'CU 9'],
   ].find(([levels]) => levels.includes(activeLevel));
   const islandLevels = island ? island[0] : null;

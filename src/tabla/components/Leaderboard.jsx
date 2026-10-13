@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS,
-  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, EVAL_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS,
+  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, EVAL_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, DIV6_LEVELS, DIV7_LEVELS, DIV8_LEVELS, DIV9_LEVELS,
 } from '../data';
 import { useGlobalLeaderboard, useMyScores } from '../useLeaderboard';
 import Flag from './Flag';
@@ -25,6 +25,10 @@ const SCORE_GROUPS = [
   { icon: '🐦', name: 'Împărțirea la 3', levels: THIRD_LEVELS },
   { icon: '🍀', name: 'Împărțirea la 4', levels: QUARTER_LEVELS },
   { icon: '🏮', name: 'Împărțirea la 5', levels: FIFTH_LEVELS },
+  { icon: '🍬', name: 'Împărțirea la 6', levels: DIV6_LEVELS },
+  { icon: '📅', name: 'Împărțirea la 7', levels: DIV7_LEVELS },
+  { icon: '🐙', name: 'Împărțirea la 8', levels: DIV8_LEVELS },
+  { icon: '🎯', name: 'Împărțirea la 9', levels: DIV9_LEVELS },
   { icon: '🧩', name: 'Insula Isteților', levels: LOGIC_LEVELS },
   { icon: '📝', name: 'Evaluare', levels: EVAL_LEVELS },
 ];
