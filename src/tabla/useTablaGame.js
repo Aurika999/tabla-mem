@@ -26,6 +26,7 @@ export function generateQuestion(level) {
     const base = {
       a: null, b: null, isWordProblem: true, isMultOp: false,
       problemText: q.text, explanation: q.explanation || null, fruit, badge: q.badge || '📝 Evaluare',
+      picture: q.picture || null,
     };
     // Problemă pe pași: întrebarea curentă e pasul `stepIndex`.
     if (q.steps) {
@@ -92,14 +93,17 @@ export function generateQuestion(level) {
   };
 }
 
-// Ce face o întrebare „aceeași”: textul problemei sau perechea de factori.
-// 3 × 4 și 4 × 3 contează ca aceeași întrebare.
+// Ce face o întrebare „aceeași”: aceeași socoteală, chiar dacă e scrisă altfel.
+// 3 × 4 și 4 × 3 sunt aceeași întrebare; la fel „8 : 2”, „jumătatea lui 8” și
+// „de 2 ori mai mic decât 8” (același rezultat, pornind de la același număr).
 export function questionKey(q) {
-  if (q.problemText) return q.problemText;
-  return [q.a, q.b].sort((x, y) => x - y).join('×');
+  if (!q.problemText) return [q.a, q.b].sort((x, y) => x - y).join('×');
+  const answer = q.steps ? q.steps[q.steps.length - 1].answer : q.correct;
+  const numbers = (q.problemText.match(/\d+/g) || []).map(Number);
+  return numbers.length ? `${answer}|${Math.max(...numbers)}` : q.problemText;
 }
 
-const MAX_TRIES = 60;
+const MAX_TRIES = 120;
 
 // O întrebare nouă care nu a mai apărut în `used` (cheile din runda curentă).
 // Dacă nivelul are prea puține întrebări diferite, după MAX_TRIES acceptăm o repetare.

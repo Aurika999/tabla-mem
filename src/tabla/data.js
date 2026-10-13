@@ -9,6 +9,14 @@ export const TWO_LEVELS = ['doi1', 'doi2', 'doi3', 'doi4'];
 export const EVAL_LEVELS = ['eval1', 'eval2', 'eval4', 'eval3'];
 // „Tabla împărțirii”: lecția „Împărțirea” (scădere repetată, operația inversă înmulțirii).
 export const DIVISION_LEVELS = ['imp1', 'imp2', 'imp3', 'imp4'];
+// „Împărțirea la 2” (tot în Tabla împărțirii).
+export const HALF_LEVELS = ['impd1', 'impd2', 'impd3', 'impd4'];
+// „Împărțirea la 3” (tot în Tabla împărțirii).
+export const THIRD_LEVELS = ['impt1', 'impt2', 'impt3', 'impt4'];
+// „Împărțirea la 4” (tot în Tabla împărțirii).
+export const QUARTER_LEVELS = ['impq1', 'impq2', 'impq3', 'impq4'];
+// „Împărțirea la 5” (tot în Tabla împărțirii).
+export const FIFTH_LEVELS = ['impc1', 'impc2', 'impc3', 'impc4'];
 export const THREE_LEVELS = ['trei1', 'trei2', 'trei3', 'trei4'];
 export const FOUR_LEVELS = ['patru1', 'patru2', 'patru3', 'patru4'];
 export const FIVE_LEVELS = ['cinci1', 'cinci2', 'cinci3', 'cinci4'];
@@ -67,6 +75,22 @@ export const LEVELS = {
   imp2: { key: 'imp2', label: '➗ 2. APLIC', hint: 'Scăderi repetate și împărțiri', className: 'lf2' },
   imp3: { key: 'imp3', label: '➗ 3. EXERSEZ', hint: 'Câtul, operația inversă înmulțirii', className: 'lf3' },
   imp4: { key: 'imp4', label: '➗ 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea', className: 'lf4' },
+  impd1: { key: 'impd1', label: '✌️ 1. DESCOPĂR', hint: 'Jumătatea unui număr', className: 'lf1' },
+  impd2: { key: 'impd2', label: '✌️ 2. APLIC', hint: 'De 2 ori mai mic, jumătatea', className: 'lf2' },
+  impd3: { key: 'impd3', label: '✌️ 3. EXERSEZ', hint: 'Câtul, numere pare, cu 2 / de 2 ori', className: 'lf3' },
+  impd4: { key: 'impd4', label: '✌️ 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea la 2', className: 'lf4' },
+  impt1: { key: 'impt1', label: '🐦 1. DESCOPĂR', hint: 'Căsuțe și afișe: împărțim la 3', className: 'lf1' },
+  impt2: { key: 'impt2', label: '🐦 2. APLIC', hint: 'De 3 ori mai mic, numere care lipsesc', className: 'lf2' },
+  impt3: { key: 'impt3', label: '🐦 3. EXERSEZ', hint: 'Câtul, compară, micșorează de 3 ori', className: 'lf3' },
+  impt4: { key: 'impt4', label: '🐦 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea la 3', className: 'lf4' },
+  impq1: { key: 'impq1', label: '🍀 1. DESCOPĂR', hint: 'Roți și păsări: împărțim la 4', className: 'lf1' },
+  impq2: { key: 'impq2', label: '🍀 2. APLIC', hint: 'De 4 ori mai mic, jumătatea și sfertul', className: 'lf2' },
+  impq3: { key: 'impq3', label: '🍀 3. EXERSEZ', hint: 'Câtul, compară, sfertul, tabele', className: 'lf3' },
+  impq4: { key: 'impq4', label: '🍀 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea la 4', className: 'lf4' },
+  impc1: { key: 'impc1', label: '🏮 1. DESCOPĂR', hint: 'Lampioane și lalele: împărțim la 5', className: 'lf1' },
+  impc2: { key: 'impc2', label: '🏮 2. APLIC', hint: 'De 5 ori mai mic, numere care se împart la 5', className: 'lf2' },
+  impc3: { key: 'impc3', label: '🏮 3. EXERSEZ', hint: 'Câtul, compară, ordinea operațiilor', className: 'lf3' },
+  impc4: { key: 'impc4', label: '🏮 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea la 5', className: 'lf4' },
   logica4: { key: 'logica4', label: '🧩 4. EXERSEZ ȘI REZOLV', hint: 'Ca în manual: înmulțiri și probleme', className: 'lg4' },
   logica3: { key: 'logica3', label: '🧩 3. PROBLEME ISTEȚE', hint: 'În doi pași, ore, șiruri — până la 100', className: 'lg3' },
 };

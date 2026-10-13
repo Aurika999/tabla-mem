@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS,
-  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, EVAL_LEVELS, DIVISION_LEVELS,
+  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, EVAL_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS,
 } from '../data';
 import { useGlobalLeaderboard, useMyScores } from '../useLeaderboard';
 import Flag from './Flag';
@@ -9,26 +9,72 @@ import Avatar from './Avatar';
 import ContestHistory from './ContestHistory';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
-const ALL_LEVELS = [
-  ...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, ...TWO_LEVELS, ...THREE_LEVELS, ...FOUR_LEVELS, ...FIVE_LEVELS, ...SIX_LEVELS, ...SEVEN_LEVELS,
-  ...EIGHT_LEVELS, ...NINE_LEVELS, ...DIVISION_LEVELS, ...EVAL_LEVELS, ...LOGIC_LEVELS,
+// Scorurile grupate pe insule, în ordinea din joc.
+const SCORE_GROUPS = [
+  { icon: '🏫', name: 'Tabla înmulțirii', levels: [...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL] },
+  { icon: '🛷', name: 'Înmulțirea cu 2', levels: TWO_LEVELS },
+  { icon: '⛄', name: 'Înmulțirea cu 3', levels: THREE_LEVELS },
+  { icon: '🐻‍❄️', name: 'Înmulțirea cu 4', levels: FOUR_LEVELS },
+  { icon: '🖐️', name: 'Înmulțirea cu 5', levels: FIVE_LEVELS },
+  { icon: '🔋', name: 'Înmulțirea cu 6', levels: SIX_LEVELS },
+  { icon: '🪙', name: 'Înmulțirea cu 7', levels: SEVEN_LEVELS },
+  { icon: '🐙', name: 'Înmulțirea cu 8', levels: EIGHT_LEVELS },
+  { icon: '🎈', name: 'Înmulțirea cu 9', levels: NINE_LEVELS },
+  { icon: '➗', name: 'Împărțirea', levels: DIVISION_LEVELS },
+  { icon: '✌️', name: 'Împărțirea la 2', levels: HALF_LEVELS },
+  { icon: '🐦', name: 'Împărțirea la 3', levels: THIRD_LEVELS },
+  { icon: '🍀', name: 'Împărțirea la 4', levels: QUARTER_LEVELS },
+  { icon: '🏮', name: 'Împărțirea la 5', levels: FIFTH_LEVELS },
+  { icon: '🧩', name: 'Insula Isteților', levels: LOGIC_LEVELS },
+  { icon: '📝', name: 'Evaluare', levels: EVAL_LEVELS },
 ];
+
+// Eticheta nivelului fără iconița insulei de la început (ea apare deja în titlul grupului).
+function levelName(key) {
+  return LEVELS[key].label.replace(/^[^\p{L}\p{N}]+/u, '');
+}
+
+function ScoreGroup({ group, scores }) {
+  const played = group.levels.filter(key => scores[key]);
+  const points = played.reduce((sum, key) => sum + scores[key].points, 0);
+  const allDone = played.length === group.levels.length;
+  // Toate insulele pornesc închise; se deschid la clic.
+  const [open, setOpen] = useState(false);
+  return (
+    <li className={`score-group${played.length ? '' : ' empty'}${open ? ' open' : ''}`}>
+      <button className="score-group-head" onClick={() => setOpen(o => !o)} aria-expanded={open}>
+        <span className="score-group-arrow" aria-hidden="true">{open ? '▾' : '▸'}</span>
+        <span className="score-group-icon" aria-hidden="true">{group.icon}</span>
+        <span className="score-group-name">{group.name}</span>
+        <span className="score-group-summary">
+          {played.length ? `${played.length}/${group.levels.length} ${allDone ? '🏆' : '✅'} · ${points} pct` : 'neînceput'}
+        </span>
+      </button>
+      {open && (
+        <ol className="leaderboard-list score-group-levels">
+          {group.levels.map(key => {
+            const score = scores[key];
+            return (
+              <li key={key} className="leaderboard-row">
+                <span className="name">{levelName(key)}</span>
+                <span className="points">{score ? `${score.points} pct · ${score.correct}/10 ✅` : '—'}</span>
+              </li>
+            );
+          })}
+        </ol>
+      )}
+    </li>
+  );
+}
 
 function MyScoresList({ scores, loading }) {
   if (loading) return <p className="leaderboard-empty">Se încarcă…</p>;
+  // Întâi insulele în care ai jucat, apoi cele neîncepute.
+  const sorted = [...SCORE_GROUPS].sort((a, b) =>
+    Number(b.levels.some(k => scores[k])) - Number(a.levels.some(k => scores[k])));
   return (
-    <ol className="leaderboard-list">
-      {ALL_LEVELS.map(key => {
-        const score = scores[key];
-        return (
-          <li key={key} className="leaderboard-row">
-            <span className="name">{LEVELS[key].label}</span>
-            <span className="points">
-              {score ? `${score.points} pct · ${score.correct}/10 ✅` : '—'}
-            </span>
-          </li>
-        );
-      })}
+    <ol className="score-groups">
+      {sorted.map(group => <ScoreGroup key={group.name} group={group} scores={scores} />)}
     </ol>
   );
 }
