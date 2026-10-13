@@ -1,5 +1,5 @@
 import {
-  PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, EVAL_LEVELS, TWO_LEVELS, THREE_LEVELS, FOUR_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS, EIGHT_LEVELS,
+  PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, EVAL_LEVELS, DIVISION_LEVELS, TWO_LEVELS, THREE_LEVELS, FOUR_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS, EIGHT_LEVELS,
   NINE_LEVELS,
 } from './data';
 
@@ -22,6 +22,8 @@ export function lessonFactorOfLevel(level) {
 
 // Drumul de pe insula „Evaluare”.
 export const EVAL_PATH = EVAL_LEVELS;
+// Drumul lecției „Împărțirea” (din Tabla împărțirii).
+export const DIVISION_PATH = DIVISION_LEVELS;
 
 export function isLogicLevel(level) {
   return LOGIC_PATH.includes(level);
@@ -35,6 +37,7 @@ export function isFiveLevel(level) {
 export function mapViewOf(level) {
   if (isLogicLevel(level)) return 'logic';
   if (EVAL_PATH.includes(level)) return 'eval';
+  if (DIVISION_PATH.includes(level)) return 'divlesson';
   const factor = lessonFactorOfLevel(level);
   if (factor) return `lesson${factor}`;
   return 'map';
@@ -43,6 +46,7 @@ export function mapViewOf(level) {
 function pathOf(level) {
   if (isLogicLevel(level)) return LOGIC_PATH;
   if (EVAL_PATH.includes(level)) return EVAL_PATH;
+  if (DIVISION_PATH.includes(level)) return DIVISION_PATH;
   const factor = lessonFactorOfLevel(level);
   if (factor) return LESSON_PATHS[factor];
   return LEVEL_PATH;

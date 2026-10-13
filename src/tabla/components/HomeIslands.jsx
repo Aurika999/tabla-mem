@@ -1,5 +1,7 @@
 import { LEVELS } from '../data';
-import { LEVEL_PATH, LOGIC_PATH, LESSON_PATHS, EVAL_PATH, isLevelDone, currentLevel } from '../mapProgress';
+import {
+  LEVEL_PATH, LOGIC_PATH, LESSON_PATHS, EVAL_PATH, DIVISION_PATH, isLevelDone, currentLevel,
+} from '../mapProgress';
 import { Island, Waves, useMediaQuery, PHONE_QUERY } from './MapHome';
 
 // Prima pagină (Arena Concursului și Insula Învățării), pagina „Insula Învățării”
@@ -12,6 +14,8 @@ const DECOR = {
   learn: [['🏫', -4, -40, 84], ['📚', -100, 6, 36], ['🧮', 98, 4, 34], ['🌳', -80, -42, 32]],
   logic: [['🧩', -4, -40, 78], ['🍬', -95, 0, 30], ['🎈', 95, -20, 32], ['🍎', -80, 26, 26]],
   lessons: [['📘', -4, -40, 78], ['🛷', -100, 0, 30], ['🐙', 95, -10, 30], ['🎈', 80, 24, 26], ['⛄', -80, 26, 24]],
+  division: [['➗', -4, -40, 78], ['🌼', -95, 0, 30], ['🐞', 95, -6, 28], ['🐛', 80, 26, 24]],
+  div1: [['🌼', -4, -40, 78], ['🐞', -95, 0, 30], ['🐛', 95, -6, 28], ['➗', 80, 26, 26]],
   eval: [['📝', -4, -40, 78], ['🏆', -95, 0, 30], ['🪜', 95, -6, 28], ['✅', 80, 26, 24]],
   lesson2: [['🛷', -4, -40, 78], ['⛄', -95, 0, 30], ['🧤', 95, -6, 28], ['❄️', 80, 26, 24]],
   lesson3: [['⛄', -4, -40, 78], ['🎯', -95, 0, 30], ['❄️', 95, -6, 28], ['🧣', 80, 26, 24]],
@@ -24,7 +28,9 @@ const DECOR = {
 };
 
 const HOME_KEYS = ['arena', 'school'];
-const SCHOOL_KEYS = ['learn', 'logic', 'lessons', 'eval'];
+const SCHOOL_KEYS = ['learn', 'logic', 'lessons', 'division', 'eval'];
+// Lecțiile de împărțire (deocamdată una; se pot adăuga altele).
+const DIVISION_KEYS = ['div1'];
 const LESSON_FACTORS = [2, 3, 4, 5, 6, 7, 8, 9];
 const LESSON_KEYS = LESSON_FACTORS.map(f => `lesson${f}`);
 
@@ -46,7 +52,9 @@ function buildLayouts(keys, top, perRow = 3) {
   const lastX = { 1: [500], 2: [337, 663], 3: [175, 500, 825] }[keys.length - lastStart];
   const colX = i => (i >= lastStart ? lastX[i - lastStart] : [175, 500, 825][i % 3]);
   const deskH = top + rows * 380;
-  const phoneH = top + 60 + keys.length * 410;
+  // Pe telefon lăsăm loc sus pentru bara cu butoane și pentru titlu.
+  const phoneTop = top + 90;
+  const phoneH = phoneTop + 60 + keys.length * 410;
   return {
     desktop: {
       W: 1000,
@@ -58,8 +66,8 @@ function buildLayouts(keys, top, perRow = 3) {
     phone: {
       W: 600,
       H: phoneH,
-      islands: Object.fromEntries(keys.map((key, i) => [key, place(key, 300, top - 50 + i * 410, 230, 102, 1.35)])),
-      extras: [['⛵', 40, top + 150, 34], ['🐬', 470, top + 170, 44], ['🐳', 520, phoneH - 50, 32], ['☁️', 30, 40, 28]],
+      islands: Object.fromEntries(keys.map((key, i) => [key, place(key, 300, phoneTop - 50 + i * 410, 230, 102, 1.35)])),
+      extras: [['⛵', 40, phoneTop + 150, 34], ['🐬', 470, phoneTop + 170, 44], ['🐳', 520, phoneH - 50, 32], ['☁️', 30, 40, 28]],
     },
   };
 }
@@ -67,7 +75,8 @@ function buildLayouts(keys, top, perRow = 3) {
 function buildTwoColumnLayouts(keys, top) {
   const rows = Math.ceil(keys.length / 2);
   const deskH = top + rows * 380;
-  const phoneH = top + 60 + keys.length * 410;
+  const phoneTop = top + 90;
+  const phoneH = phoneTop + 60 + keys.length * 410;
   return {
     desktop: {
       W: 1000,
@@ -79,8 +88,8 @@ function buildTwoColumnLayouts(keys, top) {
     phone: {
       W: 600,
       H: phoneH,
-      islands: Object.fromEntries(keys.map((key, i) => [key, place(key, 300, top - 50 + i * 410, 230, 102, 1.35)])),
-      extras: [['⛵', 40, top + 150, 34], ['🐬', 470, top + 170, 44], ['🐳', 520, phoneH - 50, 32], ['☁️', 30, 40, 28]],
+      islands: Object.fromEntries(keys.map((key, i) => [key, place(key, 300, phoneTop - 50 + i * 410, 230, 102, 1.35)])),
+      extras: [['⛵', 40, phoneTop + 150, 34], ['🐬', 470, phoneTop + 170, 44], ['🐳', 520, phoneH - 50, 32], ['☁️', 30, 40, 28]],
     },
   };
 }
@@ -108,11 +117,13 @@ const LAYOUTS = {
   home: buildHomeLayouts(),
   school: buildLayouts(SCHOOL_KEYS, 300),
   lessons: buildLayouts(LESSON_KEYS, 300),
+  division: buildLayouts(DIVISION_KEYS, 300),
 };
 
 // Titlul de sus și butonul „înapoi” pentru paginile din interiorul insulelor.
 const SUBPAGES = {
-  school: { title: '🎒 INSULA ÎNVĂȚĂRII', back: '← Prima pagină', greeting: 'Aici înveți! Alege: tabla înmulțirii, lecțiile din manual, probleme de gândire sau evaluarea. 🎒' },
+  school: { title: '🎒 INSULA ÎNVĂȚĂRII', back: '← Prima pagină', greeting: 'Aici înveți! Alege: tabla înmulțirii, lecțiile din manual, împărțirea, probleme de gândire sau evaluarea. 🎒' },
+  division: { title: '➗ TABLA ÎMPĂRȚIRII', back: '← Insula Învățării', greeting: 'Aici înveți împărțirea! Alege lecția. ➗' },
   lessons: { title: '📘 ÎNMULȚIREA PE RÂND', back: '← Insula Învățării', greeting: 'Alege lecția! Fiecare are „📖 Reține” și exerciții din manual. 📘' },
 };
 
@@ -122,6 +133,7 @@ function pct(value, total) {
 
 export default function HomeIslands({
   mode = 'home', name, scores, onOpenLearn, onOpenLogic, onOpenLessons, onOpenLesson, onOpenEval, onOpenSchool,
+  onOpenDivision, onOpenDivisionLesson,
   onOpenPanel, onBack, chatUnread,
 }) {
   const isPhone = useMediaQuery(PHONE_QUERY);
@@ -146,9 +158,10 @@ export default function HomeIslands({
   const lessonsDone = LESSON_FACTORS.filter(f => lessonDone(f) === LESSON_PATHS[f].length).length;
 
   const evalDone = EVAL_PATH.filter(level => isLevelDone(scores, level)).length;
-  const schoolDone = doneCount + logicDone + evalDone
+  const divisionDone = DIVISION_PATH.filter(level => isLevelDone(scores, level)).length;
+  const schoolDone = doneCount + logicDone + evalDone + divisionDone
     + LESSON_FACTORS.reduce((sum, f) => sum + lessonDone(f), 0);
-  const schoolTotal = LEVEL_PATH.length + LOGIC_PATH.length + EVAL_PATH.length
+  const schoolTotal = LEVEL_PATH.length + LOGIC_PATH.length + EVAL_PATH.length + DIVISION_PATH.length
     + LESSON_FACTORS.reduce((sum, f) => sum + LESSON_PATHS[f].length, 0);
 
   const allCards = [
@@ -202,6 +215,23 @@ export default function HomeIslands({
       onClick: () => onOpenLesson(factor),
     })),
     {
+      key: 'division',
+      title: 'TABLA ÎMPĂRȚIRII',
+      subtitle: `➗ ${divisionDone} / ${DIVISION_PATH.length} niveluri · lecțiile despre împărțire`,
+      cta: '➗ Învață împărțirea',
+      onClick: onOpenDivision,
+    },
+    {
+      key: 'div1',
+      ctaClass: 'division',
+      title: 'ÎMPĂRȚIREA',
+      subtitle: divisionDone === DIVISION_PATH.length
+        ? 'Știi ce este împărțirea! 🏆'
+        : `➗ ${divisionDone} / ${DIVISION_PATH.length} · scădere repetată, inversa înmulțirii`,
+      cta: '➗ Începe lecția',
+      onClick: onOpenDivisionLesson,
+    },
+    {
       key: 'eval',
       title: 'EVALUARE',
       subtitle: `📝 ${EVAL_PATH.filter(level => isLevelDone(scores, level)).length} / ${EVAL_PATH.length} · recapitulare cu calificativ`,
@@ -209,7 +239,7 @@ export default function HomeIslands({
       onClick: onOpenEval,
     },
   ];
-  const keys = { home: HOME_KEYS, school: SCHOOL_KEYS, lessons: LESSON_KEYS }[mode];
+  const keys = { home: HOME_KEYS, school: SCHOOL_KEYS, lessons: LESSON_KEYS, division: DIVISION_KEYS }[mode];
   const cards = keys.map(key => allCards.find(card => card.key === key));
   const greeting = subpage ? subpage.greeting : `Bine ai venit${name ? `, ${name}` : ''}! Alege o insulă! 🏝️`;
 
@@ -245,11 +275,13 @@ export default function HomeIslands({
 
           {subpage && (
             <>
-              <button className="map-home-back logic-back" onClick={onBack}>{subpage.back}</button>
+              {/* Pe telefon butonul de întoarcere stă în bara de sus, lângă Clasament și Chat. */}
+              {!isPhone && <button className="map-home-back logic-back" onClick={onBack}>{subpage.back}</button>}
               <div className="logic-title lessons-title">{subpage.title}</div>
             </>
           )}
           <nav className="map-side">
+            {subpage && isPhone && <button className="map-home-back" onClick={onBack}>{subpage.back}</button>}
             <button onClick={() => onOpenPanel('leaderboard')}><span>🏆</span>Clasament</button>
             <button onClick={() => onOpenPanel('chat')}>
               <span>💬</span>Chat

@@ -502,3 +502,16 @@
 .tabla-inmultirii .lessons-hub .home-owl{top:6%}
 
 .tabla-inmultirii .home-island-cta.school{color:#fff;background:linear-gradient(180deg,#8ce99a 0%,#40c057 55%,#2b8a3e 100%);text-shadow:0 2px 0 #0004}
+
+@media(max-width:700px){.tabla-inmultirii .lessons-hub .logic-title.lessons-title{top:78px;font-size:19px;white-space:normal;text-align:center;width:90%}}
+
+/* ---------- Tabla împărțirii ---------- */
+.tabla-inmultirii .home-island-cta.division{color:#fff;background:linear-gradient(180deg,#63e6be 0%,#12b886 55%,#087f5b 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .division-parts{display:flex;align-items:flex-start;justify-content:center;gap:10px;margin:4px auto 14px}
+.tabla-inmultirii .division-parts>div{display:flex;flex-direction:column;align-items:center;gap:4px}
+.tabla-inmultirii .division-parts b{font-size:30px;background:#e6fcf5;border:2px solid #63e6be;border-radius:12px;padding:4px 14px;color:#087f5b}
+.tabla-inmultirii .division-parts span{font-size:13px;font-weight:900;color:#4a5570}
+.tabla-inmultirii .division-parts .division-sign{font-size:30px;font-weight:1000;color:#e8264d;padding-top:6px}
+.tabla-inmultirii .five-table.division-inverse{grid-template-columns:repeat(4,1fr)}
+.tabla-inmultirii .division-inverse .five-cell{white-space:normal;line-height:1.6}
+@media(max-width:700px){.tabla-inmultirii .five-table.division-inverse{grid-template-columns:repeat(2,1fr)}.tabla-inmultirii .division-parts b{font-size:24px;padding:3px 10px}}

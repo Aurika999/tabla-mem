@@ -7,6 +7,8 @@ export const LOGIC_LEVELS = ['logica1', 'logica2', 'logica3', 'logica4'];
 // „Înmulțirea cu 5”: lecția din manual, pe secțiuni.
 export const TWO_LEVELS = ['doi1', 'doi2', 'doi3', 'doi4'];
 export const EVAL_LEVELS = ['eval1', 'eval2', 'eval4', 'eval3'];
+// „Tabla împărțirii”: lecția „Împărțirea” (scădere repetată, operația inversă înmulțirii).
+export const DIVISION_LEVELS = ['imp1', 'imp2', 'imp3', 'imp4'];
 export const THREE_LEVELS = ['trei1', 'trei2', 'trei3', 'trei4'];
 export const FOUR_LEVELS = ['patru1', 'patru2', 'patru3', 'patru4'];
 export const FIVE_LEVELS = ['cinci1', 'cinci2', 'cinci3', 'cinci4'];
@@ -61,6 +63,10 @@ export const LEVELS = {
   eval2: { key: 'eval2', label: '📝 2. PROBLEME PE PAȘI', hint: 'Rezolvă problema pas cu pas', className: 'lf2' },
   eval4: { key: 'eval4', label: '📝 3. EXERSEZ ȘI REZOLV', hint: 'Factori, produse, probleme pe pași', className: 'lf3' },
   eval3: { key: 'eval3', label: '📝 4. TESTUL FINAL', hint: 'Primești calificativ: FB, B, S', className: 'lf4' },
+  imp1: { key: 'imp1', label: '➗ 1. DESCOPĂR', hint: 'Împărțirea ca scădere repetată', className: 'lf1' },
+  imp2: { key: 'imp2', label: '➗ 2. APLIC', hint: 'Scăderi repetate și împărțiri', className: 'lf2' },
+  imp3: { key: 'imp3', label: '➗ 3. EXERSEZ', hint: 'Câtul, operația inversă înmulțirii', className: 'lf3' },
+  imp4: { key: 'imp4', label: '➗ 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea', className: 'lf4' },
   logica4: { key: 'logica4', label: '🧩 4. EXERSEZ ȘI REZOLV', hint: 'Ca în manual: înmulțiri și probleme', className: 'lg4' },
   logica3: { key: 'logica3', label: '🧩 3. PROBLEME ISTEȚE', hint: 'În doi pași, ore, șiruri — până la 100', className: 'lg3' },
 };

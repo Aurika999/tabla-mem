@@ -7,6 +7,7 @@ import { buildFiveProblem } from './fiveProblems';
 import { buildLessonProblem, lessonFactorOf } from './lessonProblems';
 import { buildLogicProblem } from './logicProblems';
 import { buildEvalProblem, isEvalLevel, gradeFor } from './evaluationProblems';
+import { buildDivisionProblem, isDivisionLevel } from './divisionProblems';
 
 const QUESTIONS_PER_LEVEL = 10;
 export const START_LIVES = 3;
@@ -20,11 +21,11 @@ const QUESTION_TIME = 30;
 export function generateQuestion(level) {
   const fruit = FRUITS[Math.floor(Math.random() * FRUITS.length)];
 
-  if (isEvalLevel(level)) {
-    const q = buildEvalProblem(level);
+  if (isEvalLevel(level) || isDivisionLevel(level)) {
+    const q = isEvalLevel(level) ? buildEvalProblem(level) : buildDivisionProblem(level);
     const base = {
       a: null, b: null, isWordProblem: true, isMultOp: false,
-      problemText: q.text, explanation: q.explanation || null, fruit, badge: '📝 Evaluare',
+      problemText: q.text, explanation: q.explanation || null, fruit, badge: q.badge || '📝 Evaluare',
     };
     // Problemă pe pași: întrebarea curentă e pasul `stepIndex`.
     if (q.steps) {
@@ -91,6 +92,24 @@ export function generateQuestion(level) {
   };
 }
 
+// Ce face o întrebare „aceeași”: textul problemei sau perechea de factori.
+// 3 × 4 și 4 × 3 contează ca aceeași întrebare.
+export function questionKey(q) {
+  if (q.problemText) return q.problemText;
+  return [q.a, q.b].sort((x, y) => x - y).join('×');
+}
+
+const MAX_TRIES = 60;
+
+// O întrebare nouă care nu a mai apărut în `used` (cheile din runda curentă).
+// Dacă nivelul are prea puține întrebări diferite, după MAX_TRIES acceptăm o repetare.
+export function freshQuestion(level, used) {
+  let q = generateQuestion(level);
+  for (let i = 0; i < MAX_TRIES && used.has(questionKey(q)); i += 1) q = generateQuestion(level);
+  used.add(questionKey(q));
+  return q;
+}
+
 function createStats(level) {
   // roundId deosebește rundele, ca punctele unei runde să nu fie salvate de două ori.
   return {
@@ -101,7 +120,10 @@ function createStats(level) {
 
 export function useTablaGame(initialLevel = 1, paused = false) {
   const [stats, setStats] = useState(() => createStats(initialLevel));
-  const [current, setCurrent] = useState(() => generateQuestion(initialLevel));
+  // Întrebările deja date în runda curentă, ca să nu se repete.
+  const usedRef = useRef(null);
+  if (usedRef.current === null) usedRef.current = new Set();
+  const [current, setCurrent] = useState(() => freshQuestion(initialLevel, usedRef.current));
   const [time, setTime] = useState(QUESTION_TIME);
   const [answered, setAnswered] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -113,7 +135,8 @@ export function useTablaGame(initialLevel = 1, paused = false) {
 
   const startLevel = useCallback((level) => {
     setStats(createStats(level));
-    setCurrent(generateQuestion(level));
+    usedRef.current = new Set();
+    setCurrent(freshQuestion(level, usedRef.current));
     setTime(QUESTION_TIME);
     setAnswered(false);
     setSelected(null);
@@ -123,7 +146,7 @@ export function useTablaGame(initialLevel = 1, paused = false) {
   }, []);
 
   const nextQuestion = useCallback(() => {
-    setCurrent(generateQuestion(stats.level));
+    setCurrent(freshQuestion(stats.level, usedRef.current));
     setTime(QUESTION_TIME);
     setAnswered(false);
     setSelected(null);

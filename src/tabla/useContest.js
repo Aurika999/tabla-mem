@@ -3,10 +3,10 @@ import {
   collection, deleteField, doc, onSnapshot, query, runTransaction, serverTimestamp, setDoc, updateDoc, where,
 } from 'firebase/firestore';
 import { db, firebaseEnabled } from '../firebase';
-import { generateQuestion } from './useTablaGame';
+import { freshQuestion } from './useTablaGame';
 import {
   LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS,
-  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS,
+  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, DIVISION_LEVELS,
 } from './data';
 
 const CONTESTS_COLLECTION = 'contests';
@@ -39,6 +39,7 @@ export const CONTEST_LEVEL_GROUPS = [
   { title: 'Înmulțirea cu 7', levels: SEVEN_LEVELS },
   { title: 'Înmulțirea cu 8', levels: EIGHT_LEVELS },
   { title: 'Înmulțirea cu 9', levels: NINE_LEVELS },
+  { title: 'Împărțirea', levels: DIVISION_LEVELS },
   { title: 'Insula Isteților', levels: LOGIC_LEVELS },
 ];
 
@@ -53,8 +54,16 @@ export function contestLevelOf(contest) {
 }
 
 function questionsFor(level) {
-  if (level === MIX_LEVEL) return MIX_LEVELS.map(l => generateQuestion(l));
-  return Array.from({ length: CONTEST_QUESTIONS }, () => generateQuestion(level));
+  // Fără întrebări repetate în același concurs și fără probleme pe pași
+  // (concursul arată o singură întrebare cu un singur răspuns).
+  const used = new Set();
+  const oneStep = l => {
+    let q = freshQuestion(l, used);
+    for (let i = 0; i < 30 && q.steps; i += 1) q = freshQuestion(l, used);
+    return q;
+  };
+  if (level === MIX_LEVEL) return MIX_LEVELS.map(oneStep);
+  return Array.from({ length: CONTEST_QUESTIONS }, () => oneStep(level));
 }
 
 export function contestDeadline(contest, seenRunningAt) {

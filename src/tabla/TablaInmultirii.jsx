@@ -22,6 +22,7 @@ import MapHome from './components/MapHome';
 import HomeIslands from './components/HomeIslands';
 import LogicMap from './components/LogicMap';
 import EvalMap from './components/EvalMap';
+import DivisionMap from './components/DivisionMap';
 import LessonMap from './components/LessonMap';
 
 const PAGE_TITLE = 'Tabla Înmulțirii';
@@ -106,6 +107,8 @@ export default function TablaInmultirii() {
   const goToLesson = factor => goToView(`lesson${factor}`);
   const goToLessonsHub = () => goToView('lessons');
   const goToSchool = () => goToView('school');
+  const goToDivisionHub = () => goToView('division');
+  const goToDivisionLesson = () => goToView('divlesson');
   const lessonFactor = view.startsWith('lesson') ? Number(view.slice(6)) : null;
   const goToHome = () => goToView('home');
 
@@ -216,6 +219,7 @@ export default function TablaInmultirii() {
             onOpenLogic={goToLogicMap}
             onOpenEval={goToEvalMap}
             onOpenLessons={goToLessonsHub}
+            onOpenDivision={goToDivisionHub}
             onOpenPanel={handleOpenPanel}
             onBack={goToHome}
             chatUnread={unreadCount}
@@ -240,6 +244,25 @@ export default function TablaInmultirii() {
             onOpenPanel={handleOpenPanel}
             onBack={goToSchool}
             chatUnread={unreadCount}
+          />
+        )}
+        {view === 'division' && (
+          <HomeIslands
+            mode="division"
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onOpenDivisionLesson={goToDivisionLesson}
+            onOpenPanel={handleOpenPanel}
+            onBack={goToSchool}
+            chatUnread={unreadCount}
+          />
+        )}
+        {view === 'divlesson' && (
+          <DivisionMap
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onPlayLevel={handleSelectLevel}
+            onBack={goToDivisionHub}
           />
         )}
         {view === 'eval' && (
@@ -330,6 +353,7 @@ export default function TablaInmultirii() {
                   {{
                     home: '🏝️ Înapoi la prima pagină', map: '🗺️ Înapoi la hartă', logic: '🧩 Înapoi la insulă', eval: '📝 Înapoi la insulă',
                     lessons: '📘 Înapoi la lecții', school: '🎒 Înapoi la Insula Învățării',
+                    division: '➗ Înapoi la Tabla împărțirii', divlesson: '➗ Înapoi la insulă',
                   }[panelOrigin] || (panelOrigin?.startsWith('lesson') && '📖 Înapoi la insulă')
                     || '▶ Înapoi la exercițiu'}
                 </button>

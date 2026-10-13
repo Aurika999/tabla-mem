@@ -42,6 +42,7 @@ const NODE_COLORS = {
   1: '#5fc84a', 2: '#20a8e8', 3: '#f4a623', 4: '#9258d8', 5: '#e84d8d',
   [PROBLEME_LEVEL]: '#3d9b70', [AVANSATE_LEVEL]: '#e0632c',
   logica1: '#14a3a3', logica2: '#ef5da8', logica3: '#7c4dff', logica4: '#f08c00',
+  imp1: '#e8264d', imp2: '#2f9e44', imp3: '#1c7ed6', imp4: '#ae3ec9',
   eval1: '#1c7ed6', eval2: '#2f9e44', eval4: '#ae3ec9', eval3: '#e8264d',
   doi1: '#e8264d', doi2: '#2f9e44', doi3: '#1c7ed6', doi4: '#ae3ec9',
   trei1: '#e8264d', trei2: '#2f9e44', trei3: '#1c7ed6', trei4: '#ae3ec9',
@@ -56,6 +57,7 @@ const NODE_COLORS = {
 const NODE_LABELS = {
   1: '1', 2: '2', 3: '3', 4: '4', 5: '5', [PROBLEME_LEVEL]: '📖', [AVANSATE_LEVEL]: '🧠',
   logica1: '1', logica2: '2', logica3: '3', logica4: '4',
+  imp1: '🔍', imp2: '✏️', imp3: '⭐', imp4: '🧩',
   eval1: '🧮', eval2: '🪜', eval4: '🤖', eval3: '🏆',
   doi1: '🔍', doi2: '✏️', doi3: '⭐', doi4: '🧩',
   trei1: '🔍', trei2: '✏️', trei3: '⭐', trei4: '🧩',
