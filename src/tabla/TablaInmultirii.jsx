@@ -212,7 +212,8 @@ export default function TablaInmultirii() {
         <Header totalPoints={savedTotalPoints + roundPoints} roundPoints={roundPoints} lives={stats.lives} combo={stats.combo} time={time}
           inGame={view === 'game' && !openPanel} playerName={name} playerCountry={country}
           playerAvatar={avatar} accountEmail={isAnonymous ? '' : email}
-          onOpenProfile={() => handleOpenPanel('profile')} profileOpen={openPanel === 'profile'} />
+          onOpenProfile={() => handleOpenPanel('profile')} profileOpen={openPanel === 'profile'}
+          onHome={goToHome} />
 
         {view === 'home' && (
           <HomeIslands

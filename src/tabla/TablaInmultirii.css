@@ -435,8 +435,9 @@
 .tabla-inmultirii .five-tips li{background:#f7f9fd;border-radius:10px;padding:8px 12px}
 @media(max-width:700px){
 .tabla-inmultirii .home-islands .home-island-sign{max-width:90%}
-.tabla-inmultirii .home-islands .home-island-title{font-size:24px}
-.tabla-inmultirii .home-islands .home-island-cta{font-size:16px}
+.tabla-inmultirii .home-islands .home-island-title{font-size:21px}
+.tabla-inmultirii .home-islands .home-island-subtitle{font-size:12px}
+.tabla-inmultirii .home-islands .home-island-cta{font-size:15px;padding:6px 14px}
 .tabla-inmultirii .five-rule{font-size:15px}
 }
 
@@ -553,3 +554,6 @@
 .tabla-inmultirii .contest-alert-list li{display:flex;align-items:center;gap:10px;justify-content:space-between;background:#fff;border-radius:12px;padding:8px 10px;text-align:left}
 .tabla-inmultirii .contest-alert-list small{display:block;color:#5c677d;font-weight:700;margin-top:2px}
 @keyframes contest-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.tabla-inmultirii .logo-home{border:0;background:none;padding:0;margin:0;cursor:pointer;display:flex;align-items:center;font-size:inherit;transition:transform .15s}
+.tabla-inmultirii .logo-home:hover{transform:scale(1.08) rotate(-4deg)}
+.tabla-inmultirii .logo-home:active{transform:scale(.95)}

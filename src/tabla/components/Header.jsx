@@ -28,11 +28,17 @@ function AbacusLogo() {
 
 export default function Header({
   totalPoints, roundPoints, lives, combo, time, inGame,
-  playerName, playerCountry, playerAvatar, accountEmail, onOpenProfile, profileOpen,
+  playerName, playerCountry, playerAvatar, accountEmail, onOpenProfile, profileOpen, onHome,
 }) {
   return (
     <header>
-      <div className="logo"><AbacusLogo /> TABLA ÎNMULȚIRII</div>
+      <div className="logo">
+        {/* Socotelnița duce mereu pe prima pagină. */}
+        <button type="button" className="logo-home" onClick={onHome} title="Prima pagină" aria-label="Prima pagină">
+          <AbacusLogo />
+        </button>
+        TABLA ÎNMULȚIRII
+      </div>
       <div className="badges">
         {playerName && (
           <button

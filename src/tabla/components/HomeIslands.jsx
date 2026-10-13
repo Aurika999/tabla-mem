@@ -49,6 +49,12 @@ function place(key, cx, cy, rx, ry, scale = 1) {
   };
 }
 
+// Pe telefon insulele sunt mai mici, ca să încapă mai multe pe ecran.
+const PHONE_STEP = 370;
+function phoneIsland(key, cy) {
+  return place(key, 300, cy, 150, 66, 0.9);
+}
+
 // Calculator: rânduri de câte trei insule (ultimul rând, dacă nu e plin, centrat).
 // Telefon: una sub alta.
 function buildLayouts(keys, top, perRow = 3) {
@@ -62,7 +68,7 @@ function buildLayouts(keys, top, perRow = 3) {
   const deskH = top + rows * 380;
   // Pe telefon lăsăm loc sus pentru bara cu butoane și pentru titlu.
   const phoneTop = top + 90;
-  const phoneH = phoneTop + 60 + keys.length * 410;
+  const phoneH = phoneTop + 20 + keys.length * PHONE_STEP;
   return {
     desktop: {
       W: 1000,
@@ -74,7 +80,7 @@ function buildLayouts(keys, top, perRow = 3) {
     phone: {
       W: 600,
       H: phoneH,
-      islands: Object.fromEntries(keys.map((key, i) => [key, place(key, 300, phoneTop - 50 + i * 410, 230, 102, 1.35)])),
+      islands: Object.fromEntries(keys.map((key, i) => [key, phoneIsland(key, phoneTop - 90 + i * PHONE_STEP)])),
       extras: [['⛵', 40, phoneTop + 150, 34], ['🐬', 470, phoneTop + 170, 44], ['🐳', 520, phoneH - 50, 32], ['☁️', 30, 40, 28]],
     },
   };
@@ -84,7 +90,7 @@ function buildTwoColumnLayouts(keys, top) {
   const rows = Math.ceil(keys.length / 2);
   const deskH = top + rows * 380;
   const phoneTop = top + 90;
-  const phoneH = phoneTop + 60 + keys.length * 410;
+  const phoneH = phoneTop + 20 + keys.length * PHONE_STEP;
   return {
     desktop: {
       W: 1000,
@@ -96,7 +102,7 @@ function buildTwoColumnLayouts(keys, top) {
     phone: {
       W: 600,
       H: phoneH,
-      islands: Object.fromEntries(keys.map((key, i) => [key, place(key, 300, phoneTop - 50 + i * 410, 230, 102, 1.35)])),
+      islands: Object.fromEntries(keys.map((key, i) => [key, phoneIsland(key, phoneTop - 90 + i * PHONE_STEP)])),
       extras: [['⛵', 40, phoneTop + 150, 34], ['🐬', 470, phoneTop + 170, 44], ['🐳', 520, phoneH - 50, 32], ['☁️', 30, 40, 28]],
     },
   };
@@ -114,9 +120,9 @@ function buildHomeLayouts() {
     },
     phone: {
       W: 600,
-      H: 1000,
-      islands: { arena: place('arena', 300, 220, 230, 102, 1.4), school: place('school', 300, 700, 230, 102, 1.4) },
-      extras: [['⛵', 40, 470, 34], ['🐬', 480, 490, 44], ['🐳', 520, 960, 32], ['☁️', 30, 40, 28]],
+      H: 830,
+      islands: { arena: place('arena', 300, 190, 165, 74, 1.0), school: place('school', 300, 570, 165, 74, 1.0) },
+      extras: [['⛵', 50, 400, 34], ['🐬', 520, 410, 40], ['🐳', 530, 800, 30], ['☁️', 30, 40, 28]],
     },
   };
 }
