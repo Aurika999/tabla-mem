@@ -131,7 +131,8 @@ function buildHomeLayouts() {
       W: 600,
       // Destul loc jos pentru titlul, descrierea și butonul ultimei insule.
       H: 940,
-      islands: { arena: place('arena', 300, 130, 165, 74, 1.0), school: place('school', 300, 530, 165, 74, 1.0) },
+      // Pe telefon, Insula Învățării e prima, iar Arena Concursului sub ea.
+      islands: { school: place('school', 300, 130, 165, 74, 1.0), arena: place('arena', 300, 530, 165, 74, 1.0) },
       extras: [['⛵', 50, 360, 34], ['🐬', 520, 370, 40], ['🐳', 540, 915, 30], ['☁️', 30, 30, 28]],
     },
   };
@@ -371,9 +372,10 @@ export default function HomeIslands({
   const cards = keys.map(key => allCards.find(card => card.key === key));
   const greeting = subpage ? subpage.greeting : `Bine ai venit${name ? `, ${name}` : ''}! Alege o insulă! 🏝️`;
 
-  const navButtons = (
-    <nav className={`map-side${mode === 'home' ? ' home-nav' : ''}`}>
-      {subpage && isPhone && <button className="map-home-back" onClick={onBack}>{subpage.back}</button>}
+  // Butoanele Clasament, Chat (și pe prima pagină: Despre joc, Instalează).
+  // Pe telefon stau jos, într-un chenar separat, pe toate paginile cu insule.
+  const panelButtons = (
+    <>
       {/* Pe prima pagină: prezentarea jocului (PDF), pentru părinți și învățători. */}
       {mode === 'home' && (
         <button onClick={() => window.open(`${process.env.PUBLIC_URL}/despre-joc.pdf`, '_blank', 'noopener')}>
@@ -386,6 +388,12 @@ export default function HomeIslands({
         <span>💬</span>Chat
         {chatUnread > 0 && <b className="level-badge">{chatUnread}</b>}
       </button>
+    </>
+  );
+  const navButtons = (
+    <nav className={`map-side${mode === 'home' ? ' home-nav' : ''}`}>
+      {subpage && isPhone && <button className="map-home-back" onClick={onBack}>{subpage.back}</button>}
+      {!isPhone && panelButtons}
     </nav>
   );
 
@@ -466,8 +474,8 @@ export default function HomeIslands({
           )}
         </div>
       </div>
-      {/* Pe telefon, pe prima pagină, butoanele stau sub insule, într-un chenar separat. */}
-      {isPhone && mode === 'home' && <div className="home-phone-nav">{navButtons}</div>}
+      {/* Pe telefon, butoanele stau sub insule, într-un chenar separat, pe toate paginile. */}
+      {isPhone && <div className="home-phone-nav"><nav className="map-side home-nav">{panelButtons}</nav></div>}
     </section>
   );
 }
