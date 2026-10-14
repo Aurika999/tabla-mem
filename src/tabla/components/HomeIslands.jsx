@@ -130,10 +130,9 @@ function buildHomeLayouts() {
     phone: {
       W: 600,
       // Destul loc jos pentru titlul, descrierea și butonul ultimei insule.
-      H: 1060,
-      // Sus sunt două rânduri de butoane (Despre joc, Instalează, Clasament, Chat).
-      islands: { arena: place('arena', 300, 250, 165, 74, 1.0), school: place('school', 300, 650, 165, 74, 1.0) },
-      extras: [['⛵', 50, 480, 34], ['🐬', 520, 490, 40], ['🐳', 540, 1035, 30], ['☁️', 30, 40, 28]],
+      H: 940,
+      islands: { arena: place('arena', 300, 130, 165, 74, 1.0), school: place('school', 300, 530, 165, 74, 1.0) },
+      extras: [['⛵', 50, 360, 34], ['🐬', 520, 370, 40], ['🐳', 540, 915, 30], ['☁️', 30, 30, 28]],
     },
   };
 }
@@ -372,6 +371,24 @@ export default function HomeIslands({
   const cards = keys.map(key => allCards.find(card => card.key === key));
   const greeting = subpage ? subpage.greeting : `Bine ai venit${name ? `, ${name}` : ''}! Alege o insulă! 🏝️`;
 
+  const navButtons = (
+    <nav className={`map-side${mode === 'home' ? ' home-nav' : ''}`}>
+      {subpage && isPhone && <button className="map-home-back" onClick={onBack}>{subpage.back}</button>}
+      {/* Pe prima pagină: prezentarea jocului (PDF), pentru părinți și învățători. */}
+      {mode === 'home' && (
+        <button onClick={() => window.open(`${process.env.PUBLIC_URL}/despre-joc.pdf`, '_blank', 'noopener')}>
+          <span>📄</span>Despre joc
+        </button>
+      )}
+      {mode === 'home' && <InstallButton />}
+      <button onClick={() => onOpenPanel('leaderboard')}><span>🏆</span>Clasament</button>
+      <button onClick={() => onOpenPanel('chat')}>
+        <span>💬</span>Chat
+        {chatUnread > 0 && <b className="level-badge">{chatUnread}</b>}
+      </button>
+    </nav>
+  );
+
   return (
     <section className={`map-home home-islands${subpage ? ' lessons-hub' : ''}`}>
       {isPhone && (
@@ -380,6 +397,7 @@ export default function HomeIslands({
           <div className="map-owl-bubble">{greeting}</div>
         </div>
       )}
+      {isPhone && mode === 'home' && <div className="home-phone-nav">{navButtons}</div>}
       <div className="map-scroll home-frame">
         <div className="map-canvas home-canvas" style={{ aspectRatio: `${W} / ${H}` }}>
           <svg className="map-svg" viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
@@ -410,24 +428,13 @@ export default function HomeIslands({
           )}
           {/* Pe telefon butonul de întoarcere stă în bara de sus, lângă Clasament și Chat, iar titlul
               vine imediat sub bară, ca să nu fie acoperit când butoanele trec pe două rânduri. */}
-          <div className={isPhone ? 'phone-top' : undefined}>
-            <nav className={`map-side${mode === 'home' ? ' home-nav' : ''}`}>
-              {subpage && isPhone && <button className="map-home-back" onClick={onBack}>{subpage.back}</button>}
-              {/* Pe prima pagină: prezentarea jocului (PDF), pentru părinți și învățători. */}
-              {mode === 'home' && (
-                <button onClick={() => window.open(`${process.env.PUBLIC_URL}/despre-joc.pdf`, '_blank', 'noopener')}>
-                  <span>📄</span>Despre joc
-                </button>
-              )}
-              {mode === 'home' && <InstallButton />}
-              <button onClick={() => onOpenPanel('leaderboard')}><span>🏆</span>Clasament</button>
-              <button onClick={() => onOpenPanel('chat')}>
-                <span>💬</span>Chat
-                {chatUnread > 0 && <b className="level-badge">{chatUnread}</b>}
-              </button>
-            </nav>
-            {subpage && isPhone && <div className="logic-title lessons-title">{subpage.title}</div>}
-          </div>
+          {/* Pe telefon, pe prima pagină, butoanele stau deasupra hărții (înaintea insulelor). */}
+          {!(isPhone && mode === 'home') && (
+            <div className={isPhone ? 'phone-top' : undefined}>
+              {navButtons}
+              {subpage && isPhone && <div className="logic-title lessons-title">{subpage.title}</div>}
+            </div>
+          )}
 
           {cards.map(card => {
             const island = islands[card.key];
