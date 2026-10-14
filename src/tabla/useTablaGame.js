@@ -7,6 +7,7 @@ import { buildFiveProblem } from './fiveProblems';
 import { buildLessonProblem, lessonFactorOf } from './lessonProblems';
 import { buildLogicProblem } from './logicProblems';
 import { buildSmartProblem, isSmartLevel, GRADED_SMART_LEVELS } from './smartProblems';
+import { buildReviewProblem, isReviewLevel } from './reviewProblems';
 import {
   buildNationalItem, isNationalLevel, questionCount, nationalMaxPoints, nationalYear, nationalTheme,
 } from './nationalTest';
@@ -64,8 +65,9 @@ export function generateQuestion(level, index = 0) {
     };
   }
 
-  if (isEvalLevel(level) || isDivisionLevel(level)) {
-    const q = isEvalLevel(level) ? buildEvalProblem(level) : buildDivisionProblem(level);
+  if (isEvalLevel(level) || isDivisionLevel(level) || isReviewLevel(level)) {
+    const q = isEvalLevel(level) ? buildEvalProblem(level)
+      : isReviewLevel(level) ? buildReviewProblem() : buildDivisionProblem(level);
     const base = {
       a: null, b: null, isWordProblem: true, isMultOp: false,
       problemText: q.text, explanation: q.explanation || null, fruit, badge: q.badge || '📝 Evaluare',

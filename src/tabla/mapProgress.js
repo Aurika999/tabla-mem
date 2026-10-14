@@ -3,6 +3,7 @@ import {
   NINE_LEVELS,
 } from './data';
 import { isNationalLevel } from './nationalTest';
+import { isReviewLevel } from './reviewProblems';
 
 // Drumul de pe hartă: fiecare nivel se deblochează după ce îl termini pe cel dinainte.
 export const LEVEL_PATH = [1, 2, 3, 4, 5, PROBLEME_LEVEL, AVANSATE_LEVEL];
@@ -50,7 +51,7 @@ export function isFiveLevel(level) {
 // Pe ce hartă e nivelul: 'logic', 'lesson5/6/7' sau 'map' (tabla înmulțirii).
 export function mapViewOf(level) {
   // Testele de Evaluare Națională sunt în pagina „Evaluarea Națională”.
-  if (isNationalLevel(level)) return 'national';
+  if (isNationalLevel(level) || isReviewLevel(level)) return 'national';
   if (isLogicLevel(level)) return 'logic';
   if (EVAL_PATH.includes(level)) return 'eval';
   if (DIVISION_PATH.includes(level)) return 'divlesson';

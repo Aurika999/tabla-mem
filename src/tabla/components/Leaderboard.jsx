@@ -5,6 +5,7 @@ import {
 } from '../data';
 import { useGlobalLeaderboard, useMyScores } from '../useLeaderboard';
 import { NATIONAL_LEVELS, questionCount } from '../nationalTest';
+import { REVIEW_LEVELS } from '../reviewProblems';
 import Flag from './Flag';
 import Avatar from './Avatar';
 import ContestHistory from './ContestHistory';
@@ -32,6 +33,7 @@ const SCORE_GROUPS = [
   { icon: '🧩', name: 'Insula Isteților', levels: LOGIC_LEVELS },
   { icon: '📝', name: 'Evaluare (veche)', levels: EVAL_LEVELS, onlyIfPlayed: true },
   { icon: '🎓', name: 'Evaluarea Națională', levels: NATIONAL_LEVELS },
+  { icon: '🌳', name: 'Probleme de recapitulare', levels: REVIEW_LEVELS },
   // Nivelurile de dinainte de împărțirea pe dificultate: apar doar dacă ai jucat pe ele.
   { icon: '📦', name: 'Niveluri vechi', levels: [...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, ...OLD_LOGIC_LEVELS], onlyIfPlayed: true },
 ];
