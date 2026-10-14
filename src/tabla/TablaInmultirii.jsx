@@ -68,7 +68,8 @@ export default function TablaInmultirii() {
     questionsPerLevel, selectLevel, restartLevel, goToNextLevel, reviveWithLife, skipItem, goToItem, isExam,
     handleAnswer, toggleHint, goToNextQuestionOrFinish,
   } = useTablaGame(
-    1,
+    // Nivelul de pornire: prima insulă din Insula Isteților (nivelurile vechi 1–5 nu se mai joacă).
+    'ist1',
     view !== 'game' || openPanel !== null || showAuthGate || showNameGate || (firebaseEnabled && !ready),
   );
 

@@ -20,7 +20,9 @@ export default function LevelPanel({
   const island = [
     [LOGIC_LEVELS, '🧩', 'ISTEȚI'], [EVAL_LEVELS, '📝', 'EVALUARE'], [NATIONAL_LEVELS, '🎓', 'EVALUAREA NAȚIONALĂ'], [REVIEW_LEVELS, '🌳', 'RECAPITULARE'], [DIVISION_LEVELS, '➗', 'ÎMPĂRȚIRE'], [HALF_LEVELS, '✌️', 'LA 2'], [THIRD_LEVELS, '🐦', 'LA 3'], [QUARTER_LEVELS, '🍀', 'LA 4'], [FIFTH_LEVELS, '🏮', 'LA 5'], [DIV6_LEVELS, '🍬', 'LA 6'], [DIV7_LEVELS, '📅', 'LA 7'], [DIV8_LEVELS, '🐙', 'LA 8'], [DIV9_LEVELS, '🎯', 'LA 9'], [TWO_LEVELS, '🛷', 'CU 2'], [THREE_LEVELS, '⛄', 'CU 3'], [FOUR_LEVELS, '🐻‍❄️', 'CU 4'], [FIVE_LEVELS, '🖐️', 'CU 5'], [SIX_LEVELS, '🔋', 'CU 6'], [SEVEN_LEVELS, '🪙', 'CU 7'],
     [EIGHT_LEVELS, '🐙', 'CU 8'], [NINE_LEVELS, '🎈', 'CU 9'],
-  ].find(([levels]) => levels.includes(activeLevel));
+  ].find(([levels]) => levels.includes(activeLevel))
+    // Nivelurile vechi (1–5, Probleme, Provocări) nu se mai joacă: arătăm Insula Isteților.
+    || [LOGIC_LEVELS, '🧩', 'ISTEȚI'];
   const islandLevels = island ? island[0] : null;
   const isLogic = Boolean(island);
   const islandIcon = island ? island[1] : '';

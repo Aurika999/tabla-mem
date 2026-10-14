@@ -409,8 +409,14 @@ export default function HomeIslands({
           {/* Pe telefon butonul de întoarcere stă în bara de sus, lângă Clasament și Chat, iar titlul
               vine imediat sub bară, ca să nu fie acoperit când butoanele trec pe două rânduri. */}
           <div className={isPhone ? 'phone-top' : undefined}>
-            <nav className="map-side">
+            <nav className={`map-side${mode === 'home' ? ' home-nav' : ''}`}>
               {subpage && isPhone && <button className="map-home-back" onClick={onBack}>{subpage.back}</button>}
+              {/* Pe prima pagină: prezentarea jocului (PDF), pentru părinți și învățători. */}
+              {mode === 'home' && (
+                <button onClick={() => window.open(`${process.env.PUBLIC_URL}/despre-joc.pdf`, '_blank', 'noopener')}>
+                  <span>📄</span>Despre joc
+                </button>
+              )}
               <button onClick={() => onOpenPanel('leaderboard')}><span>🏆</span>Clasament</button>
               <button onClick={() => onOpenPanel('chat')}>
                 <span>💬</span>Chat
