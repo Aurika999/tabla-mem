@@ -397,7 +397,6 @@ export default function HomeIslands({
           <div className="map-owl-bubble">{greeting}</div>
         </div>
       )}
-      {isPhone && mode === 'home' && <div className="home-phone-nav">{navButtons}</div>}
       <div className="map-scroll home-frame">
         <div className="map-canvas home-canvas" style={{ aspectRatio: `${W} / ${H}` }}>
           <svg className="map-svg" viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
@@ -428,7 +427,7 @@ export default function HomeIslands({
           )}
           {/* Pe telefon butonul de întoarcere stă în bara de sus, lângă Clasament și Chat, iar titlul
               vine imediat sub bară, ca să nu fie acoperit când butoanele trec pe două rânduri. */}
-          {/* Pe telefon, pe prima pagină, butoanele stau deasupra hărții (înaintea insulelor). */}
+          {/* Pe telefon, pe prima pagină, butoanele stau sub hartă (după insule). */}
           {!(isPhone && mode === 'home') && (
             <div className={isPhone ? 'phone-top' : undefined}>
               {navButtons}
@@ -467,6 +466,8 @@ export default function HomeIslands({
           )}
         </div>
       </div>
+      {/* Pe telefon, pe prima pagină, butoanele stau sub insule, într-un chenar separat. */}
+      {isPhone && mode === 'home' && <div className="home-phone-nav">{navButtons}</div>}
     </section>
   );
 }

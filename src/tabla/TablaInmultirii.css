@@ -601,3 +601,6 @@
 .tabla-inmultirii .home-phone-nav .map-side.home-nav button span{font-size:20px}
 .tabla-inmultirii .home-phone-nav{border-radius:20px;border:6px solid #52a83a;box-shadow:0 0 0 3px #2d6b20,inset 0 0 0 2px #8fdc6a,0 8px 18px #0005;background:linear-gradient(180deg,#2fb6e4,#1b93cf);padding:10px 8px;margin:0 0 14px}
 .tabla-inmultirii .home-phone-nav .map-side.home-nav{margin:0}
+.tabla-inmultirii .home-phone-nav{margin:14px 0 0}
+.tabla-inmultirii .home-phone-nav .map-side.home-nav{display:flex}
+.tabla-inmultirii .home-phone-nav .map-side.home-nav button{flex:1 1 0;min-width:0}
