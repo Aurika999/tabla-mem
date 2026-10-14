@@ -557,3 +557,6 @@
 .tabla-inmultirii .logo-home{border:0;background:none;padding:0;margin:0;cursor:pointer;display:flex;align-items:center;font-size:inherit;transition:transform .15s}
 .tabla-inmultirii .logo-home:hover{transform:scale(1.08) rotate(-4deg)}
 .tabla-inmultirii .logo-home:active{transform:scale(.95)}
+.tabla-inmultirii .home-frame .phone-top{position:absolute;top:10px;left:10px;right:10px;z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px}
+.tabla-inmultirii .home-frame .phone-top .map-side{position:static;width:100%;padding:0}
+.tabla-inmultirii .home-frame .phone-top .logic-title.lessons-title{position:static;transform:none;width:100%;top:auto}

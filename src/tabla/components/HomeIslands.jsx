@@ -380,21 +380,25 @@ export default function HomeIslands({
             )))}
           </svg>
 
-          {subpage && (
+          {subpage && !isPhone && (
             <>
-              {/* Pe telefon butonul de întoarcere stă în bara de sus, lângă Clasament și Chat. */}
-              {!isPhone && <button className="map-home-back logic-back" onClick={onBack}>{subpage.back}</button>}
+              <button className="map-home-back logic-back" onClick={onBack}>{subpage.back}</button>
               <div className="logic-title lessons-title">{subpage.title}</div>
             </>
           )}
-          <nav className="map-side">
-            {subpage && isPhone && <button className="map-home-back" onClick={onBack}>{subpage.back}</button>}
-            <button onClick={() => onOpenPanel('leaderboard')}><span>🏆</span>Clasament</button>
-            <button onClick={() => onOpenPanel('chat')}>
-              <span>💬</span>Chat
-              {chatUnread > 0 && <b className="level-badge">{chatUnread}</b>}
-            </button>
-          </nav>
+          {/* Pe telefon butonul de întoarcere stă în bara de sus, lângă Clasament și Chat, iar titlul
+              vine imediat sub bară, ca să nu fie acoperit când butoanele trec pe două rânduri. */}
+          <div className={isPhone ? 'phone-top' : undefined}>
+            <nav className="map-side">
+              {subpage && isPhone && <button className="map-home-back" onClick={onBack}>{subpage.back}</button>}
+              <button onClick={() => onOpenPanel('leaderboard')}><span>🏆</span>Clasament</button>
+              <button onClick={() => onOpenPanel('chat')}>
+                <span>💬</span>Chat
+                {chatUnread > 0 && <b className="level-badge">{chatUnread}</b>}
+              </button>
+            </nav>
+            {subpage && isPhone && <div className="logic-title lessons-title">{subpage.title}</div>}
+          </div>
 
           {cards.map(card => {
             const island = islands[card.key];
