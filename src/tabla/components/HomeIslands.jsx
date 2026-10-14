@@ -3,6 +3,7 @@ import {
 } from '../mapProgress';
 import { NATIONAL_LEVELS, questionCount, nationalYear, nationalTheme } from '../nationalTest';
 import { REVIEW_LEVELS } from '../reviewProblems';
+import InstallButton from './InstallButton';
 import { Island, Waves, useMediaQuery, PHONE_QUERY } from './MapHome';
 
 // Prima pagină (Arena Concursului și Insula Învățării), pagina „Insula Învățării”
@@ -129,9 +130,10 @@ function buildHomeLayouts() {
     phone: {
       W: 600,
       // Destul loc jos pentru titlul, descrierea și butonul ultimei insule.
-      H: 1000,
-      islands: { arena: place('arena', 300, 190, 165, 74, 1.0), school: place('school', 300, 590, 165, 74, 1.0) },
-      extras: [['⛵', 50, 420, 34], ['🐬', 520, 430, 40], ['🐳', 540, 975, 30], ['☁️', 30, 40, 28]],
+      H: 1060,
+      // Sus sunt două rânduri de butoane (Despre joc, Instalează, Clasament, Chat).
+      islands: { arena: place('arena', 300, 250, 165, 74, 1.0), school: place('school', 300, 650, 165, 74, 1.0) },
+      extras: [['⛵', 50, 480, 34], ['🐬', 520, 490, 40], ['🐳', 540, 1035, 30], ['☁️', 30, 40, 28]],
     },
   };
 }
@@ -417,6 +419,7 @@ export default function HomeIslands({
                   <span>📄</span>Despre joc
                 </button>
               )}
+              {mode === 'home' && <InstallButton />}
               <button onClick={() => onOpenPanel('leaderboard')}><span>🏆</span>Clasament</button>
               <button onClick={() => onOpenPanel('chat')}>
                 <span>💬</span>Chat

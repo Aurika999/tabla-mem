@@ -1,6 +1,6 @@
 {
   "short_name": "Tabla Înmulțirii",
-  "name": "Tabla Înmulțirii",
+  "name": "Tabla Înmulțirii – joc de matematică",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,16 +10,27 @@
     {
       "src": "logo192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
       "src": "logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#39a9ff",
-  "background_color": "#ffffff"
+  "background_color": "#1b93cf",
+  "description": "Joc educativ de matematică pentru clasele a II-a și a III-a",
+  "scope": "/",
+  "orientation": "portrait",
+  "lang": "ro"
 }
