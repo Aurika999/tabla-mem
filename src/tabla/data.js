@@ -3,7 +3,12 @@
 export const PROBLEME_LEVEL = 'probleme';
 export const AVANSATE_LEVEL = 'avansate';
 // „Insula Isteților”: probleme fără înmulțire (adunări, scăderi, comparații).
-export const LOGIC_LEVELS = ['logica1', 'logica2', 'logica3', 'logica4'];
+// Insula Isteților: niveluri după dificultate (ușor → avansat).
+export const LOGIC_LEVELS = ['ist1', 'ist2', 'ist3', 'ist4', 'ist5', 'ist6', 'ist7', 'ist8', 'ist9', 'ist10', 'ist11', 'ist12', 'ist13', 'ist14'];
+// Nivelurile de dinainte (tabla înmulțirii 1–5, Probleme, Provocări și vechea Insulă a Isteților;
+// exercițiile din „Evaluare” sunt acum tot în Insula Isteților):
+// nu se mai joacă, dar scorurile obținute pe ele rămân vizibile în clasament.
+export const OLD_LOGIC_LEVELS = ['logica1', 'logica2', 'logica3', 'logica4'];
 // „Înmulțirea cu 5”: lecția din manual, pe secțiuni.
 export const TWO_LEVELS = ['doi1', 'doi2', 'doi3', 'doi4'];
 export const EVAL_LEVELS = ['eval1', 'eval2', 'eval4', 'eval3'];
@@ -117,6 +122,23 @@ export const LEVELS = {
   impn2: { key: 'impn2', label: '🎯 2. APLIC', hint: 'De 9 ori mai mic, verificarea', className: 'lf2' },
   impn3: { key: 'impn3', label: '🎯 3. EXERSEZ', hint: 'Compară, ordinea operațiilor', className: 'lf3' },
   impn4: { key: 'impn4', label: '🎯 4. REZOLV PROBLEME', hint: 'Probleme cu împărțirea la 9', className: 'lf4' },
+  ist1: { key: 'ist1', label: '➕ 1. ADUNĂRI ȘI SCĂDERI', hint: '🟢 Ușor · probleme până la 20', className: 'lg1' },
+  ist2: { key: 'ist2', label: '✖️ 2. ÎNMULȚIRI UȘOARE', hint: '🟢 Ușor · până la 5 × 5', className: 'lg2' },
+  ist3: { key: 'ist3', label: '💰 3. MAI MULT, MAI PUȚIN', hint: '🟡 Mediu · bani, vârste — până la 50', className: 'lg3' },
+  ist4: { key: 'ist4', label: '✖️ 4. TABLA PÂNĂ LA 10', hint: '🟡 Mediu · până la 10 × 10', className: 'lg4' },
+  ist5: { key: 'ist5', label: '📖 5. PROBLEME CU ÎNMULȚIRE', hint: '🟡 Mediu · grupe, pachete, rânduri', className: 'lg1' },
+  ist6: { key: 'ist6', label: '📝 6. CALCULEZ', hint: '🟡 Mediu · rezultate, factori lipsă, dublu, triplu', className: 'lg2' },
+  ist7: { key: 'ist7', label: '🧠 7. PROBLEME ÎN DOI PAȘI', hint: '🟠 Greu · ore, șiruri — până la 100', className: 'lg3' },
+  ist8: { key: 'ist8', label: '🔟 8. ÎNMULȚIRI CU 11 ȘI 12', hint: '🟠 Greu · până la 12 × 12', className: 'lg4' },
+  ist9: { key: 'ist9', label: '📒 9. EXERSEZ CA ÎN MANUAL', hint: '🟠 Greu · factori, adevărat sau fals', className: 'lg1' },
+  ist10: { key: 'ist10', label: '🪜 10. PROBLEME PE PAȘI', hint: '🟠 Greu · rezolvi problema pas cu pas', className: 'lg2' },
+  ist11: { key: 'ist11', label: '🤖 11. EXERSEZ ȘI REZOLV', hint: '🟠 Greu · factori, produse, probleme pe pași', className: 'lg3' },
+  ist12: { key: 'ist12', label: '💪 12. ÎNMULȚIRI MARI', hint: '🔴 Avansat · de la 6 × 6 la 12 × 12', className: 'lg4' },
+  ist13: { key: 'ist13', label: '🏆 13. PROVOCĂRI', hint: '🔴 Avansat · probleme cu mai mulți pași', className: 'lg1' },
+  ist14: { key: 'ist14', label: '🏔️ 14. TESTUL FINAL', hint: '🔴 Avansat · primești calificativ: FB, B, S', className: 'lg2' },
+  en2025: { key: 'en2025', label: '🎓 EVALUAREA NAȚIONALĂ 2025', hint: 'Clasa a II-a · Medii de viață', className: 'lg2' },
+  en2025b: { key: 'en2025b', label: '🎓 EVALUAREA NAȚIONALĂ 2025', hint: 'Clasa a II-a · Animale polare', className: 'lg3' },
+  en2026: { key: 'en2026', label: '🎓 EVALUAREA NAȚIONALĂ 2026', hint: 'Clasa a II-a · Animale de companie', className: 'lg1' },
   logica4: { key: 'logica4', label: '🧩 4. EXERSEZ ȘI REZOLV', hint: 'Ca în manual: înmulțiri și probleme', className: 'lg4' },
   logica3: { key: 'logica3', label: '🧩 3. PROBLEME ISTEȚE', hint: 'În doi pași, ore, șiruri — până la 100', className: 'lg3' },
 };

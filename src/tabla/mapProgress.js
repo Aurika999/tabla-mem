@@ -2,10 +2,11 @@ import {
   PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, EVAL_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, DIV6_LEVELS, DIV7_LEVELS, DIV8_LEVELS, DIV9_LEVELS, TWO_LEVELS, THREE_LEVELS, FOUR_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS, EIGHT_LEVELS,
   NINE_LEVELS,
 } from './data';
+import { isNationalLevel } from './nationalTest';
 
 // Drumul de pe hartă: fiecare nivel se deblochează după ce îl termini pe cel dinainte.
 export const LEVEL_PATH = [1, 2, 3, 4, 5, PROBLEME_LEVEL, AVANSATE_LEVEL];
-// Drumul de pe Insula Isteților (probleme fără înmulțire).
+// Drumul de pe Insula Isteților: niveluri după dificultate, de la ușor la avansat.
 export const LOGIC_PATH = LOGIC_LEVELS;
 
 // Drumurile insulelor-lecție „Înmulțirea cu 5 / 6 / 7”.
@@ -48,6 +49,8 @@ export function isFiveLevel(level) {
 
 // Pe ce hartă e nivelul: 'logic', 'lesson5/6/7' sau 'map' (tabla înmulțirii).
 export function mapViewOf(level) {
+  // Testele de Evaluare Națională sunt în pagina „Evaluarea Națională”.
+  if (isNationalLevel(level)) return 'national';
   if (isLogicLevel(level)) return 'logic';
   if (EVAL_PATH.includes(level)) return 'eval';
   if (DIVISION_PATH.includes(level)) return 'divlesson';

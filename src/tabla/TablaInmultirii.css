@@ -500,7 +500,7 @@
 .tabla-inmultirii .modal-grade{display:inline-block;background:#e7f5ff;border:2px solid #74c0fc;border-radius:12px;padding:6px 14px;font-size:18px}
 
 .tabla-inmultirii .home-island-cta.lessons{color:#fff;background:linear-gradient(180deg,#91a7ff 0%,#5c7cfa 55%,#3b5bdb 100%);text-shadow:0 2px 0 #0004}
-.tabla-inmultirii .lessons-hub .home-owl{top:6%}
+.tabla-inmultirii .lessons-hub .home-owl{top:max(6%, 64px)}
 
 .tabla-inmultirii .home-island-cta.school{color:#fff;background:linear-gradient(180deg,#8ce99a 0%,#40c057 55%,#2b8a3e 100%);text-shadow:0 2px 0 #0004}
 
@@ -560,3 +560,29 @@
 .tabla-inmultirii .home-frame .phone-top{position:absolute;top:10px;left:10px;right:10px;z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px}
 .tabla-inmultirii .home-frame .phone-top .map-side{position:static;width:100%;padding:0}
 .tabla-inmultirii .home-frame .phone-top .logic-title.lessons-title{position:static;transform:none;width:100%;top:auto}
+.tabla-inmultirii .home-island-cta.national{color:#fff;background:linear-gradient(180deg,#4dabf7 0%,#1c4fd8 55%,#0b2a8a 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .answer.text{font-size:clamp(15px,2.2vw,20px);line-height:1.25;padding:12px 10px}
+.tabla-inmultirii .exam-table{margin:12px auto 0;border-collapse:collapse;font-size:clamp(14px,2.2vw,18px);background:#fff;border-radius:10px;overflow:hidden}
+.tabla-inmultirii .exam-table caption{font-size:13px;color:#6a7590;font-weight:800;margin-bottom:4px}
+.tabla-inmultirii .exam-table th,.tabla-inmultirii .exam-table td{border:2px solid #d9c49a;padding:4px 10px;text-align:center}
+.tabla-inmultirii .exam-table th{background:#fff4d6;font-weight:900}
+.tabla-inmultirii .exam-table td{font-weight:1000;color:#24304a}
+.tabla-inmultirii .exam-poster{margin:12px auto 0;width:160px;height:210px;border:5px solid #111;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:6px 4px}
+.tabla-inmultirii .exam-poster-title{font-family:Georgia,serif;color:#e03131;font-weight:900;font-size:17px;line-height:1.1;text-align:center}
+.tabla-inmultirii .exam-poster-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 4px;font-size:26px;white-space:nowrap;line-height:1.2;width:100%;text-align:center}
+.tabla-inmultirii .exam-shapes{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center;margin:14px auto 0}
+.tabla-inmultirii .exam-shape{display:flex;align-items:center;justify-content:center;font-size:28px;border:3px solid #24304a;background:#fff}
+.tabla-inmultirii .exam-shape.circle{width:74px;height:74px;border-radius:50%}
+.tabla-inmultirii .exam-shape.rectangle{width:52px;height:80px}
+.tabla-inmultirii .exam-shape.square{width:70px;height:70px}
+.tabla-inmultirii .exam-shape.triangle{width:84px;height:74px;border:0;background:#24304a;clip-path:polygon(50% 0,100% 100%,0 100%);position:relative}
+.tabla-inmultirii .exam-shape.triangle::before{content:'';position:absolute;inset:5px 6px 3px;background:#fff;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.tabla-inmultirii .exam-shape.triangle b{position:relative;top:12px;font-size:24px}
+.tabla-inmultirii .exam-pending{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;margin:4px auto 10px;max-width:640px;font-weight:800;color:#4a5570;font-size:14px}
+.tabla-inmultirii .exam-pending-item{min-width:32px;height:32px;border-radius:10px;border:2px solid #c5b3f0;background:#f4eeff;color:#5f3dc4;font-weight:900;cursor:pointer}
+.tabla-inmultirii .exam-pending-item:hover{border-color:#7950f2}
+.tabla-inmultirii .exam-pending-item.active{background:#7950f2;border-color:#5f3dc4;color:#fff}
+.tabla-inmultirii .bigbtn.orange{background:linear-gradient(180deg,#ffa94d,#f76707);box-shadow:0 5px 0 #c2410c}
+.tabla-inmultirii .exam-poster.wide{width:250px;height:160px;justify-content:center;background:linear-gradient(180deg,#d0ebff,#d3f9d8)}
+.tabla-inmultirii .exam-poster.wide .exam-poster-grid{font-size:38px;gap:10px 30px}
+.tabla-inmultirii .exam-shape.rectangle-wide{width:96px;height:56px}

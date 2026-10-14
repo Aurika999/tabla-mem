@@ -6,10 +6,13 @@ import { starsForCorrect, isLogicLevel, isFiveLevel, nextLevelInPath } from './m
 import { buildFiveProblem } from './fiveProblems';
 import { buildLessonProblem, lessonFactorOf } from './lessonProblems';
 import { buildLogicProblem } from './logicProblems';
+import { buildSmartProblem, isSmartLevel, GRADED_SMART_LEVELS } from './smartProblems';
+import {
+  buildNationalItem, isNationalLevel, questionCount, nationalMaxPoints, nationalYear, nationalTheme,
+} from './nationalTest';
 import { buildEvalProblem, isEvalLevel, gradeFor } from './evaluationProblems';
 import { buildDivisionProblem, isDivisionLevel } from './divisionProblems';
 
-const QUESTIONS_PER_LEVEL = 10;
 export const START_LIVES = 3;
 export const MAX_LIVES = 5;
 // La fiecare atâtea răspunsuri corecte la rând, jucătorul primește o viață.
@@ -18,8 +21,48 @@ export const COMBO_FOR_LIFE = 5;
 export const REVIVE_COST = 30;
 const QUESTION_TIME = 30;
 
-export function generateQuestion(level) {
+export function generateQuestion(level, index = 0) {
   const fruit = FRUITS[Math.floor(Math.random() * FRUITS.length)];
+
+  // Evaluarea Națională: itemii testului, în ordine.
+  if (isNationalLevel(level)) {
+    const q = buildNationalItem(level, index);
+    const base = {
+      a: null, b: null, isWordProblem: true, isMultOp: false,
+      problemText: q.text, explanation: q.explanation, fruit, badge: q.badge,
+      picture: q.picture || null, visual: q.visual || null, examPoints: q.points, examIndex: index,
+    };
+    if (q.steps) {
+      return { ...base, steps: q.steps, stepIndex: 0, correct: q.steps[0].answer, answers: q.steps[0].choices };
+    }
+    return { ...base, correct: q.answer, answers: q.choices };
+  }
+
+  // Insula Isteților: înmulțiri și probleme de aceeași dificultate.
+  if (isSmartLevel(level)) {
+    const q = buildSmartProblem(level);
+    if (q.kind === 'mult') {
+      return {
+        a: q.a, b: q.b, isWordProblem: false, isMultOp: true, problemText: null, explanation: null,
+        correct: q.a * q.b, answers: makeAnswers(q.a * q.b), fruit, badge: q.badge,
+      };
+    }
+    // Problemele lungi (din recapitulare) se rezolvă pe pași.
+    if (q.steps) {
+      return {
+        a: null, b: null, isWordProblem: true, isMultOp: false,
+        problemText: q.text, explanation: q.explanation || null, fruit, badge: q.badge,
+        steps: q.steps, stepIndex: 0, correct: q.steps[0].answer, answers: q.steps[0].choices,
+      };
+    }
+    // Problemele cu înmulțire păstrează factorii, pentru explicația pe grupe.
+    const [a, b] = q.factors || [null, null];
+    return {
+      a, b, isWordProblem: true, isMultOp: Boolean(q.factors),
+      problemText: q.text, explanation: q.explanation || null,
+      correct: q.answer, answers: q.choices, fruit, badge: q.badge,
+    };
+  }
 
   if (isEvalLevel(level) || isDivisionLevel(level)) {
     const q = isEvalLevel(level) ? buildEvalProblem(level) : buildDivisionProblem(level);
@@ -107,7 +150,9 @@ const MAX_TRIES = 120;
 
 // O întrebare nouă care nu a mai apărut în `used` (cheile din runda curentă).
 // Dacă nivelul are prea puține întrebări diferite, după MAX_TRIES acceptăm o repetare.
-export function freshQuestion(level, used) {
+export function freshQuestion(level, used, index = 0) {
+  // Testul are itemii lui, mereu în aceeași ordine.
+  if (isNationalLevel(level)) return generateQuestion(level, index);
   let q = generateQuestion(level);
   for (let i = 0; i < MAX_TRIES && used.has(questionKey(q)); i += 1) q = generateQuestion(level);
   used.add(questionKey(q));
@@ -117,7 +162,9 @@ export function freshQuestion(level, used) {
 function createStats(level) {
   // roundId deosebește rundele, ca punctele unei runde să nu fie salvate de două ori.
   return {
-    level, points: 0, lives: START_LIVES, combo: 0, bestCombo: 0, correct: 0, wrong: 0, q: 0,
+    level, points: 0, lives: START_LIVES, combo: 0, bestCombo: 0, correct: 0, wrong: 0, q: 0, examPoints: 0,
+    // La Evaluarea Națională: itemii încă nerezolvați; cei săriți trec la coadă.
+    pending: isNationalLevel(level) ? Array.from({ length: questionCount(level) }, (_, i) => i) : [],
     roundId: Date.now(),
   };
 }
@@ -150,8 +197,19 @@ export function useTablaGame(initialLevel = 1, paused = false) {
   }, []);
 
   const nextQuestion = useCallback(() => {
-    setCurrent(freshQuestion(stats.level, usedRef.current));
+    const index = isNationalLevel(stats.level) ? (stats.pending[0] ?? 0) : stats.q;
+    setCurrent(freshQuestion(stats.level, usedRef.current, index));
     setTime(QUESTION_TIME);
+    setAnswered(false);
+    setSelected(null);
+    setHintOpen(false);
+    setFeedback({ text: 'Alege răspunsul corect! 😊', color: '' });
+  }, [stats.level, stats.q, stats.pending]);
+
+  // Evaluarea Națională: deschide itemii în ordinea dată (primul e cel afișat acum).
+  const showItems = useCallback((order) => {
+    setStats(prev => ({ ...prev, pending: order }));
+    setCurrent(generateQuestion(stats.level, order[0]));
     setAnswered(false);
     setSelected(null);
     setHintOpen(false);
@@ -202,14 +260,18 @@ export function useTablaGame(initialLevel = 1, paused = false) {
           bestCombo: Math.max(prev.bestCombo, combo),
           points: prev.points + gained,
           q: prev.q + 1,
+          examPoints: prev.examPoints + (current.examPoints || 0),
+          pending: prev.pending.filter(i => i !== current.examIndex),
         };
       }
       return {
         ...prev,
         wrong: prev.wrong + 1,
-        lives: prev.lives - 1,
+        // La Evaluarea Națională nu se pierd vieți: testul se dă până la capăt.
+        lives: isNationalLevel(prev.level) ? prev.lives : prev.lives - 1,
         combo: 0,
         q: prev.q + 1,
+        pending: prev.pending.filter(i => i !== current.examIndex),
       };
     });
 
@@ -238,14 +300,14 @@ export function useTablaGame(initialLevel = 1, paused = false) {
   }, [answered, current, stats.combo, stats.lives, showToast]);
 
   useEffect(() => {
-    if (answered || paused) return;
+    if (answered || paused || isNationalLevel(stats.level)) return;
     if (time <= 0) {
       handleAnswer(null);
       return;
     }
     const id = setTimeout(() => setTime(t => t - 1), 1000);
     return () => clearTimeout(id);
-  }, [time, answered, paused, handleAnswer]);
+  }, [time, answered, paused, handleAnswer, stats.level]);
 
   useEffect(() => {
     if (!answered) return;
@@ -260,13 +322,29 @@ export function useTablaGame(initialLevel = 1, paused = false) {
       }, 400);
       return () => clearTimeout(id);
     }
-    if (stats.q >= QUESTIONS_PER_LEVEL) {
+    const total = questionCount(stats.level);
+    if (stats.q >= total && isNationalLevel(stats.level)) {
       const id = setTimeout(() => {
-        const pct = Math.round(stats.correct / QUESTIONS_PER_LEVEL * 100);
+        const max = nationalMaxPoints(stats.level);
+        const pct = stats.examPoints / max;
+        setModal({
+          title: pct >= 0.9 ? '🏆 Excelent!' : pct >= 0.7 ? '🌟 Foarte bine!' : pct >= 0.5 ? '👏 Bravo!' : '💪 Mai exersează!',
+          text: `Ai terminat <b>Evaluarea Națională ${nationalYear(stats.level)} — „${nationalTheme(stats.level)}”</b>: <b>${stats.correct}/${total}</b> itemi rezolvați corect.`
+            + `<br><br><span class="modal-grade">📝 Punctaj: <b>${stats.examPoints} din ${max} de puncte</b></span>`
+            + `<br><br>Ai adunat și <b>${stats.points}</b> puncte în joc.`
+            + '<br><small>Apasă „Cum se rezolvă?” la fiecare item, ca să vezi rezolvarea.</small>',
+          showNext: false,
+        });
+      }, 500);
+      return () => clearTimeout(id);
+    }
+    if (stats.q >= total) {
+      const id = setTimeout(() => {
+        const pct = Math.round(stats.correct / total * 100);
         // Aceleași stele ca pe harta nivelurilor (vezi mapProgress.js).
         const stars = starsForCorrect(stats.correct);
         // La evaluare arătăm și calificativul, ca la școală.
-        const grade = isEvalLevel(stats.level) ? gradeFor(stats.correct) : null;
+        const grade = isEvalLevel(stats.level) || GRADED_SMART_LEVELS.includes(stats.level) ? gradeFor(stats.correct) : null;
         const gradeLine = grade
           ? `<br><br><span class="modal-grade">${grade.emoji} Calificativ: <b>${grade.label} (${grade.short})</b></span>`
           : '';
@@ -275,7 +353,7 @@ export function useTablaGame(initialLevel = 1, paused = false) {
           : '';
         setModal({
           title: pct >= 80 ? '🌟 Extraordinar!' : pct >= 50 ? '👏 Bravo!' : '💪 Continuă să exersezi!',
-          text: `Ai terminat <b>${LEVELS[stats.level].label.replace(/^\d+\.\s*/, '')}</b> cu <b>${stats.correct}/10</b> răspunsuri corecte și <b>${stats.points}</b> puncte.`
+          text: `Ai terminat <b>${LEVELS[stats.level].label.replace(/^\d+\.\s*/, '')}</b> cu <b>${stats.correct}/${total}</b> răspunsuri corecte și <b>${stats.points}</b> puncte.`
             + `<br><br><span class="modal-stars">${'⭐'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>`
             + `<br>Ai câștigat <b>${stars} ${stars === 1 ? 'stea' : 'stele'}</b> la acest nivel, pe harta aventurii!`
             + '<br><small>Pe hartă rămâne cel mai bun rezultat al tău.</small>'
@@ -286,23 +364,45 @@ export function useTablaGame(initialLevel = 1, paused = false) {
       }, 500);
       return () => clearTimeout(id);
     }
-  }, [answered, stats.lives, stats.q, stats.correct, stats.points, stats.level]);
+  }, [answered, stats.lives, stats.q, stats.correct, stats.points, stats.level, stats.examPoints]);
 
   const goToNextQuestionOrFinish = useCallback(() => {
     if (!answered) {
       showToast('Alege mai întâi un răspuns! 😊');
       return;
     }
-    if (stats.q >= QUESTIONS_PER_LEVEL) return;
+    if (stats.q >= questionCount(stats.level)) return;
     nextQuestion();
-  }, [answered, stats.q, nextQuestion, showToast]);
+  }, [answered, stats.q, stats.level, nextQuestion, showToast]);
+
+  // Evaluarea Națională: sari peste itemul curent; revine la final.
+  const skipItem = useCallback(() => {
+    if (!isNationalLevel(stats.level)) return;
+    if (answered) {
+      if (stats.pending.length) nextQuestion();
+      return;
+    }
+    const rest = stats.pending.filter(i => i !== current.examIndex);
+    if (rest.length === 0) {
+      showToast('E ultimul item rămas — încearcă-l! 😊');
+      return;
+    }
+    showItems([...rest, current.examIndex]);
+    showToast(`⏭ Revii la itemul ${current.examIndex + 1} mai târziu`);
+  }, [answered, current, stats.level, stats.pending, nextQuestion, showItems, showToast]);
+
+  // Evaluarea Națională: deschide direct un item nerezolvat.
+  const goToItem = useCallback((index) => {
+    if (!isNationalLevel(stats.level) || (!answered && index === current.examIndex)) return;
+    showItems([index, ...stats.pending.filter(i => i !== index)]);
+  }, [answered, current, stats.level, stats.pending, showItems]);
 
   // Continuă runda cu o viață (după ce jucătorul a plătit-o din puncte).
   const reviveWithLife = useCallback(() => {
     setStats(prev => ({ ...prev, lives: 1, combo: 0 }));
     setModal(null);
-    if (stats.q < QUESTIONS_PER_LEVEL) nextQuestion();
-  }, [stats.q, nextQuestion]);
+    if (stats.q < questionCount(stats.level)) nextQuestion();
+  }, [stats.q, stats.level, nextQuestion]);
 
   const selectLevel = useCallback((level) => startLevel(level), [startLevel]);
   const restartLevel = useCallback(() => startLevel(stats.level), [startLevel, stats.level]);
@@ -321,7 +421,10 @@ export function useTablaGame(initialLevel = 1, paused = false) {
     feedback,
     modal,
     toast,
-    questionsPerLevel: QUESTIONS_PER_LEVEL,
+    questionsPerLevel: questionCount(stats.level),
+    skipItem,
+    goToItem,
+    isExam: isNationalLevel(stats.level),
     selectLevel,
     restartLevel,
     goToNextLevel,

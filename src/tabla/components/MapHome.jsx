@@ -42,6 +42,7 @@ const NODE_COLORS = {
   1: '#5fc84a', 2: '#20a8e8', 3: '#f4a623', 4: '#9258d8', 5: '#e84d8d',
   [PROBLEME_LEVEL]: '#3d9b70', [AVANSATE_LEVEL]: '#e0632c',
   logica1: '#14a3a3', logica2: '#ef5da8', logica3: '#7c4dff', logica4: '#f08c00',
+  ist1: '#2f9e44', ist2: '#2f9e44', ist3: '#f59f00', ist4: '#f59f00', ist5: '#f59f00', ist6: '#f59f00', ist7: '#f76707', ist8: '#f76707', ist9: '#f76707', ist10: '#f76707', ist11: '#f76707', ist12: '#e03131', ist13: '#e03131', ist14: '#e03131',
   imp1: '#e8264d', imp2: '#2f9e44', imp3: '#1c7ed6', imp4: '#ae3ec9',
   imp5: '#f76707', imp6: '#0ca678', imp7: '#4263eb', imp8: '#d6336c',
   impd1: '#e8264d', impd2: '#2f9e44', impd3: '#1c7ed6', impd4: '#ae3ec9',
@@ -66,6 +67,7 @@ const NODE_COLORS = {
 const NODE_LABELS = {
   1: '1', 2: '2', 3: '3', 4: '4', 5: '5', [PROBLEME_LEVEL]: '📖', [AVANSATE_LEVEL]: '🧠',
   logica1: '1', logica2: '2', logica3: '3', logica4: '4',
+  ist1: '➕', ist2: '✖️', ist3: '💰', ist4: '✖️', ist5: '📖', ist6: '📝', ist7: '🧠', ist8: '🔟', ist9: '📒', ist10: '🪜', ist11: '🤖', ist12: '💪', ist13: '🏆', ist14: '🏔️',
   imp1: '🔍', imp2: '✏️', imp3: '⭐', imp4: '🧩',
   imp5: '🔟', imp6: '☝️', imp7: '✅', imp8: '🧩',
   impd1: '🔍', impd2: '✏️', impd3: '⭐', impd4: '🧩',

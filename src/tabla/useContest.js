@@ -5,7 +5,7 @@ import {
 import { db, firebaseEnabled } from '../firebase';
 import { freshQuestion } from './useTablaGame';
 import {
-  LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS,
+  LEVELS, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS,
   EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, DIV6_LEVELS, DIV7_LEVELS, DIV8_LEVELS, DIV9_LEVELS,
 } from './data';
 
@@ -30,7 +30,7 @@ const MIX_LEVELS = [1, 2, 3, 3, 4, 4, 5, 5, PROBLEME_LEVEL, AVANSATE_LEVEL];
 // Concursurile se fac pe niveluri; „mix” = întrebări din toate nivelurile.
 export const MIX_LEVEL = 'mix';
 export const CONTEST_LEVEL_GROUPS = [
-  { icon: '🏫', title: 'Tabla înmulțirii', levels: [MIX_LEVEL, ...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL] },
+  { icon: '🧩', title: 'Insula Isteților', levels: [MIX_LEVEL, ...LOGIC_LEVELS] },
   { icon: '🛷', title: 'Înmulțirea cu 2', levels: TWO_LEVELS },
   { icon: '⛄', title: 'Înmulțirea cu 3', levels: THREE_LEVELS },
   { icon: '🐻‍❄️', title: 'Înmulțirea cu 4', levels: FOUR_LEVELS },
@@ -48,7 +48,6 @@ export const CONTEST_LEVEL_GROUPS = [
   { icon: '📅', title: 'Împărțirea la 7', levels: DIV7_LEVELS },
   { icon: '🐙', title: 'Împărțirea la 8', levels: DIV8_LEVELS },
   { icon: '🎯', title: 'Împărțirea la 9', levels: DIV9_LEVELS },
-  { icon: '🧩', title: 'Insula Isteților', levels: LOGIC_LEVELS },
 ];
 
 // Insula (grupul din cuprins) în care se află un nivel.

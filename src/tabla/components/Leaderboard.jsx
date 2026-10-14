@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import {
   LEVELS, LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS,
-  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, EVAL_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, DIV6_LEVELS, DIV7_LEVELS, DIV8_LEVELS, DIV9_LEVELS,
+  EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, EVAL_LEVELS, OLD_LOGIC_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, DIV6_LEVELS, DIV7_LEVELS, DIV8_LEVELS, DIV9_LEVELS,
 } from '../data';
 import { useGlobalLeaderboard, useMyScores } from '../useLeaderboard';
+import { NATIONAL_LEVELS, questionCount } from '../nationalTest';
 import Flag from './Flag';
 import Avatar from './Avatar';
 import ContestHistory from './ContestHistory';
@@ -11,7 +12,6 @@ import ContestHistory from './ContestHistory';
 const MEDALS = ['🥇', '🥈', '🥉'];
 // Scorurile grupate pe insule, în ordinea din joc.
 const SCORE_GROUPS = [
-  { icon: '🏫', name: 'Tabla înmulțirii', levels: [...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL] },
   { icon: '🛷', name: 'Înmulțirea cu 2', levels: TWO_LEVELS },
   { icon: '⛄', name: 'Înmulțirea cu 3', levels: THREE_LEVELS },
   { icon: '🐻‍❄️', name: 'Înmulțirea cu 4', levels: FOUR_LEVELS },
@@ -30,7 +30,10 @@ const SCORE_GROUPS = [
   { icon: '🐙', name: 'Împărțirea la 8', levels: DIV8_LEVELS },
   { icon: '🎯', name: 'Împărțirea la 9', levels: DIV9_LEVELS },
   { icon: '🧩', name: 'Insula Isteților', levels: LOGIC_LEVELS },
-  { icon: '📝', name: 'Evaluare', levels: EVAL_LEVELS },
+  { icon: '📝', name: 'Evaluare (veche)', levels: EVAL_LEVELS, onlyIfPlayed: true },
+  { icon: '🎓', name: 'Evaluarea Națională', levels: NATIONAL_LEVELS },
+  // Nivelurile de dinainte de împărțirea pe dificultate: apar doar dacă ai jucat pe ele.
+  { icon: '📦', name: 'Niveluri vechi', levels: [...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, ...OLD_LOGIC_LEVELS], onlyIfPlayed: true },
 ];
 
 // Eticheta nivelului fără iconița insulei de la început (ea apare deja în titlul grupului).
@@ -61,7 +64,7 @@ function ScoreGroup({ group, scores }) {
             return (
               <li key={key} className="leaderboard-row">
                 <span className="name">{levelName(key)}</span>
-                <span className="points">{score ? `${score.points} pct · ${score.correct}/10 ✅` : '—'}</span>
+                <span className="points">{score ? `${score.points} pct · ${score.correct}/${questionCount(key)} ✅` : '—'}</span>
               </li>
             );
           })}
@@ -74,7 +77,7 @@ function ScoreGroup({ group, scores }) {
 function MyScoresList({ scores, loading }) {
   if (loading) return <p className="leaderboard-empty">Se încarcă…</p>;
   // Întâi insulele în care ai jucat, apoi cele neîncepute.
-  const sorted = [...SCORE_GROUPS].sort((a, b) =>
+  const sorted = SCORE_GROUPS.filter(g => !g.onlyIfPlayed || g.levels.some(k => scores[k])).sort((a, b) =>
     Number(b.levels.some(k => scores[k])) - Number(a.levels.some(k => scores[k])));
   return (
     <ol className="score-groups">

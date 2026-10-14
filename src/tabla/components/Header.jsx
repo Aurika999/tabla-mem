@@ -73,7 +73,7 @@ export default function Header({
                 <small className="combo-next"> · ❤️ în {COMBO_FOR_LIFE - (combo % COMBO_FOR_LIFE)}</small>
               )}
             </div>
-            <div className="badge">⏱️ <span className={time <= 7 ? 'timer low' : ''}>{time}</span>s</div>
+            {time !== null && <div className="badge">⏱️ <span className={time <= 7 ? 'timer low' : ''}>{time}</span>s</div>}
           </>
         )}
       </div>

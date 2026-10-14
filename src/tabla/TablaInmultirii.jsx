@@ -65,7 +65,7 @@ export default function TablaInmultirii() {
   // Jocul stă pe pauză pe hartă, cât timp e deschis un panou sau ecranul de cont.
   const {
     stats, current, time, answered, selected, hintOpen, feedback, modal, toast,
-    questionsPerLevel, selectLevel, restartLevel, goToNextLevel, reviveWithLife,
+    questionsPerLevel, selectLevel, restartLevel, goToNextLevel, reviveWithLife, skipItem, goToItem, isExam,
     handleAnswer, toggleHint, goToNextQuestionOrFinish,
   } = useTablaGame(
     1,
@@ -113,6 +113,7 @@ export default function TablaInmultirii() {
   const goToLessonsHub = () => goToView('lessons');
   const goToSchool = () => goToView('school');
   const goToDivisionHub = () => goToView('division');
+  const goToNationalHub = () => goToView('national');
   const goToDivisionLesson = () => goToView('divlesson');
   const goToHalfLesson = () => goToView('halflesson');
   const goToThirdLesson = () => goToView('thirdlesson');
@@ -209,7 +210,7 @@ export default function TablaInmultirii() {
   return (
     <div className="tabla-inmultirii">
       <div className="app">
-        <Header totalPoints={savedTotalPoints + roundPoints} roundPoints={roundPoints} lives={stats.lives} combo={stats.combo} time={time}
+        <Header totalPoints={savedTotalPoints + roundPoints} roundPoints={roundPoints} lives={stats.lives} combo={stats.combo} time={isExam ? null : time}
           inGame={view === 'game' && !openPanel} playerName={name} playerCountry={country}
           playerAvatar={avatar} accountEmail={isAnonymous ? '' : email}
           onOpenProfile={() => handleOpenPanel('profile')} profileOpen={openPanel === 'profile'}
@@ -227,6 +228,7 @@ export default function TablaInmultirii() {
         {view === 'school' && (
           <HomeIslands
             mode="school"
+            onOpenNationalHub={goToNationalHub}
             name={name}
             scores={firebaseEnabled ? myScores : {}}
             onOpenLearn={goToLearnMap}
@@ -255,6 +257,17 @@ export default function TablaInmultirii() {
             name={name}
             scores={firebaseEnabled ? myScores : {}}
             onOpenLesson={goToLesson}
+            onOpenPanel={handleOpenPanel}
+            onBack={goToSchool}
+            chatUnread={unreadCount}
+          />
+        )}
+        {view === 'national' && (
+          <HomeIslands
+            mode="national"
+            name={name}
+            scores={firebaseEnabled ? myScores : {}}
+            onOpenNational={level => handleSelectLevel(level)}
             onOpenPanel={handleOpenPanel}
             onBack={goToSchool}
             chatUnread={unreadCount}
@@ -438,8 +451,8 @@ export default function TablaInmultirii() {
                 <button className="bigbtn" onClick={closePanel}>
                   {{
                     home: '🏝️ Înapoi la prima pagină', map: '🗺️ Înapoi la hartă', logic: '🧩 Înapoi la insulă', eval: '📝 Înapoi la insulă',
-                    lessons: '📘 Înapoi la lecții', school: '🎒 Înapoi la Insula Învățării',
-                    division: '➗ Înapoi la Tabla împărțirii', divlesson: '➗ Înapoi la insulă', halflesson: '✌️ Înapoi la insulă', thirdlesson: '🐦 Înapoi la insulă', quarterlesson: '🍀 Înapoi la insulă', fifthlesson: '🏮 Înapoi la insulă', sixlesson: '🍬 Înapoi la insulă', sevenlesson: '📅 Înapoi la insulă', eightlesson: '🐙 Înapoi la insulă', ninelesson: '🎯 Înapoi la insulă',
+                    lessons: '📘 Înapoi la Tabla înmulțirii', school: '🎒 Înapoi la Insula Învățării',
+                    division: '➗ Înapoi la Tabla împărțirii', national: '🎓 Înapoi la Evaluarea Națională', divlesson: '➗ Înapoi la insulă', halflesson: '✌️ Înapoi la insulă', thirdlesson: '🐦 Înapoi la insulă', quarterlesson: '🍀 Înapoi la insulă', fifthlesson: '🏮 Înapoi la insulă', sixlesson: '🍬 Înapoi la insulă', sevenlesson: '📅 Înapoi la insulă', eightlesson: '🐙 Înapoi la insulă', ninelesson: '🎯 Înapoi la insulă',
                   }[panelOrigin] || (panelOrigin?.startsWith('lesson') && '📖 Înapoi la insulă')
                     || '▶ Înapoi la exercițiu'}
                 </button>
@@ -457,6 +470,9 @@ export default function TablaInmultirii() {
                 onAnswer={handleAnswer}
                 onToggleHint={toggleHint}
                 onNext={goToNextQuestionOrFinish}
+                isExam={isExam}
+                onSkip={skipItem}
+                onGoToItem={goToItem}
                 onRestart={restartLevel}
               />
             )}

@@ -238,7 +238,7 @@ export default function LessonMap({ factor, ...props }) {
       <PathIslandMap
         {...props}
         mapKey={`lesson${factor}`}
-        backLabel="← Toate lecțiile"
+        backLabel="← Tabla înmulțirii"
         title={lesson.title}
         path={LESSON_PATHS[factor]}
         layouts={layoutsFor(lesson.names, lesson.decor, LESSON_PATHS[factor])}

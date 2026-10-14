@@ -5,11 +5,43 @@ function Picture({ picture }) {
     <div className="question-picture" aria-hidden="true">
       {Array.from({ length: groups }, (_, g) => (
         <div key={g} className="question-picture-group">
-          <div className="question-picture-items" style={{ gridTemplateColumns: `repeat(${Math.min(per, 3)}, 1fr)` }}>
+          <div className="question-picture-items" style={{ gridTemplateColumns: `repeat(${per === 4 ? 2 : Math.min(per, 3)}, 1fr)` }}>
             {Array.from({ length: per }, (_, i) => <span key={i}>{icon}</span>)}
           </div>
           {holder && <div className="question-picture-holder">{holder}</div>}
         </div>
+      ))}
+    </div>
+  );
+}
+
+// Imaginile din Evaluarea Națională: tabelul cu date, afișul și plăcuțele cu forme.
+function Visual({ visual }) {
+  if (visual.type === 'table') {
+    return (
+      <table className="exam-table">
+        <caption>{visual.caption}</caption>
+        <tbody>
+          <tr>{visual.rows.map(([icon, name]) => <th key={name}><span aria-hidden="true">{icon}</span> {name}</th>)}</tr>
+          <tr>{visual.rows.map(([, name, value]) => <td key={name}>{value}</td>)}</tr>
+        </tbody>
+      </table>
+    );
+  }
+  if (visual.type === 'poster') {
+    return (
+      <div className={`exam-poster${visual.wide ? ' wide' : ''}`} aria-label="Imaginea din test">
+        {visual.title && (
+          <div className="exam-poster-title">{visual.title.map(line => <div key={line}>{line}</div>)}</div>
+        )}
+        <div className="exam-poster-grid" aria-hidden="true">{visual.cells.map((cell, i) => <span key={i}>{cell}</span>)}</div>
+      </div>
+    );
+  }
+  return (
+    <div className="exam-shapes" aria-label="Formele din test">
+      {visual.items.map(([shape, icon]) => (
+        <span key={shape} className={`exam-shape ${shape}`}>{shape === 'triangle' ? <b>{icon}</b> : icon}</span>
       ))}
     </div>
   );
@@ -36,6 +68,8 @@ export default function QuestionDisplay({ current }) {
         <span className="wp-badge">{current.badge || '📖 Problemă'} · rezolvă pe pași</span>
         <br />
         {current.problemText}
+        {current.visual && <Visual visual={current.visual} />}
+        {current.picture && <Picture picture={current.picture} />}
         <Steps current={current} />
       </div>
     );
@@ -46,6 +80,7 @@ export default function QuestionDisplay({ current }) {
         <span className="wp-badge">{current.badge || '📖 Problemă'}</span>
         <br />
         {current.problemText}
+        {current.visual && <Visual visual={current.visual} />}
         {current.picture && <Picture picture={current.picture} />}
       </div>
     );

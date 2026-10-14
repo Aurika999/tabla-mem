@@ -1,14 +1,18 @@
-import { LEVELS } from '../data';
 import {
-  LEVEL_PATH, LOGIC_PATH, LESSON_PATHS, EVAL_PATH, DIVISION_PATH, HALF_PATH, THIRD_PATH, QUARTER_PATH, FIFTH_PATH, DIV6_PATH, DIV7_PATH, DIV8_PATH, DIV9_PATH, isLevelDone, currentLevel,
+  LOGIC_PATH, LESSON_PATHS, DIVISION_PATH, HALF_PATH, THIRD_PATH, QUARTER_PATH, FIFTH_PATH, DIV6_PATH, DIV7_PATH, DIV8_PATH, DIV9_PATH, isLevelDone,
 } from '../mapProgress';
+import { NATIONAL_LEVELS, questionCount, nationalYear, nationalTheme } from '../nationalTest';
 import { Island, Waves, useMediaQuery, PHONE_QUERY } from './MapHome';
 
 // Prima pagină (Arena Concursului și Insula Învățării), pagina „Insula Învățării”
-// (Învață, Insula Isteților, Înmulțirea pe rând, Evaluare) și pagina
-// „Înmulțirea pe rând”, cu lecțiile din manual de la 2 la 9.
+// (Insula Isteților, Tabla înmulțirii, Tabla împărțirii, Evaluare) și pagina
+// „Tabla înmulțirii”, cu lecțiile din manual de la 2 la 9.
 // Decorurile fiecărei insule, relativ la centrul ei: [emoji, dx, dy, mărime].
 const DECOR = {
+  national: [['🎓', -4, -40, 84], ['📝', -100, 4, 32], ['🏅', 98, 0, 30], ['✏️', 80, 26, 26], ['📚', -82, 28, 24]],
+  en2025: [['🌍', -4, -40, 80], ['🌴', -100, 4, 32], ['🐧', 98, 0, 30], ['📝', 80, 26, 26], ['🦢', -82, 28, 24]],
+  en2025b: [['🐻‍❄️', -4, -40, 80], ['🐧', -100, 4, 32], ['🦉', 98, 0, 30], ['📝', 80, 26, 26], ['❄️', -82, 28, 24]],
+  en2026: [['🏅', -4, -40, 80], ['🐶', -100, 4, 32], ['🦜', 98, 0, 30], ['📝', 80, 26, 26], ['🐰', -82, 28, 24]],
   school: [['🎒', -4, -40, 84], ['📚', -100, 4, 34], ['✏️', 98, 0, 30], ['🧮', 80, 26, 26], ['📝', -82, 28, 24]],
   arena: [['🏰', -6, -40, 84], ['🚩', -105, -16, 32], ['🚩', 100, -22, 32], ['🏆', 70, 22, 28]],
   learn: [['🏫', -4, -40, 84], ['📚', -100, 6, 36], ['🧮', 98, 4, 34], ['🌳', -80, -42, 32]],
@@ -36,7 +40,9 @@ const DECOR = {
 };
 
 const HOME_KEYS = ['arena', 'school'];
-const SCHOOL_KEYS = ['learn', 'logic', 'lessons', 'division', 'eval'];
+// Nivelurile „Tablei înmulțirii” sunt acum în Insula Isteților, pe dificultate.
+// Exercițiile din „Evaluare” sunt acum în Insula Isteților.
+const SCHOOL_KEYS = ['logic', 'lessons', 'division', 'national'];
 // Lecțiile de împărțire (deocamdată una; se pot adăuga altele).
 const DIVISION_KEYS = ['div1', 'div2', 'div3', 'div4', 'div5', 'div6', 'div7', 'div8', 'div9'];
 const LESSON_FACTORS = [2, 3, 4, 5, 6, 7, 8, 9];
@@ -133,13 +139,15 @@ const LAYOUTS = {
   school: buildLayouts(SCHOOL_KEYS, 300),
   lessons: buildLayouts(LESSON_KEYS, 300),
   division: buildLayouts(DIVISION_KEYS, 300),
+  national: buildLayouts(NATIONAL_LEVELS, 300),
 };
 
 // Titlul de sus și butonul „înapoi” pentru paginile din interiorul insulelor.
 const SUBPAGES = {
-  school: { title: '🎒 INSULA ÎNVĂȚĂRII', back: '← Prima pagină', greeting: 'Aici înveți! Alege: tabla înmulțirii, lecțiile din manual, împărțirea, probleme de gândire sau evaluarea. 🎒' },
+  school: { title: '🎒 INSULA ÎNVĂȚĂRII', back: '← Prima pagină', greeting: 'Aici înveți! Alege: Insula Isteților, lecțiile din manual, împărțirea sau Evaluarea Națională. 🎒' },
+  national: { title: '🎓 EVALUAREA NAȚIONALĂ', back: '← Insula Învățării', greeting: 'Alege un test de la Evaluarea Națională! 🎓' },
   division: { title: '➗ TABLA ÎMPĂRȚIRII', back: '← Insula Învățării', greeting: 'Aici înveți împărțirea! Alege lecția. ➗' },
-  lessons: { title: '📘 ÎNMULȚIREA PE RÂND', back: '← Insula Învățării', greeting: 'Alege lecția! Fiecare are „📖 Reține” și exerciții din manual. 📘' },
+  lessons: { title: '📘 TABLA ÎNMULȚIRII', back: '← Insula Învățării', greeting: 'Alege lecția! Fiecare are „📖 Reține” și exerciții din manual. 📘' },
 };
 
 function pct(value, total) {
@@ -149,14 +157,12 @@ function pct(value, total) {
 export default function HomeIslands({
   mode = 'home', name, scores, onOpenLearn, onOpenLogic, onOpenLessons, onOpenLesson, onOpenEval, onOpenSchool,
   onOpenDivision, onOpenDivisionLesson, onOpenHalfLesson, onOpenThirdLesson, onOpenQuarterLesson, onOpenFifthLesson, onOpenSixLesson, onOpenSevenLesson, onOpenEightLesson, onOpenNineLesson,
-  onOpenPanel, onBack, chatUnread,
+  onOpenPanel, onBack, chatUnread, onOpenNational, onOpenNationalHub,
 }) {
   const isPhone = useMediaQuery(PHONE_QUERY);
   const subpage = SUBPAGES[mode];
   const layout = isPhone ? LAYOUTS[mode].phone : LAYOUTS[mode].desktop;
   const { W, H, islands } = layout;
-  const doneCount = LEVEL_PATH.filter(level => isLevelDone(scores, level)).length;
-  const current = currentLevel(scores);
   const logicDone = LOGIC_PATH.filter(level => isLevelDone(scores, level)).length;
   const lessonDone = factor => LESSON_PATHS[factor].filter(level => isLevelDone(scores, level)).length;
   const LESSON_CARDS = {
@@ -172,7 +178,6 @@ export default function HomeIslands({
 
   const lessonsDone = LESSON_FACTORS.filter(f => lessonDone(f) === LESSON_PATHS[f].length).length;
 
-  const evalDone = EVAL_PATH.filter(level => isLevelDone(scores, level)).length;
   const lessonOnlyDone = DIVISION_PATH.filter(level => isLevelDone(scores, level)).length;
   const halfDone = HALF_PATH.filter(level => isLevelDone(scores, level)).length;
   const thirdDone = THIRD_PATH.filter(level => isLevelDone(scores, level)).length;
@@ -186,16 +191,16 @@ export default function HomeIslands({
     + eightDone + nineDone;
   const divisionTotal = DIVISION_PATH.length + HALF_PATH.length + THIRD_PATH.length + QUARTER_PATH.length
     + FIFTH_PATH.length + DIV6_PATH.length + DIV7_PATH.length + DIV8_PATH.length + DIV9_PATH.length;
-  const schoolDone = doneCount + logicDone + evalDone + divisionDone
+  const schoolDone = logicDone + divisionDone
     + LESSON_FACTORS.reduce((sum, f) => sum + lessonDone(f), 0);
-  const schoolTotal = LEVEL_PATH.length + LOGIC_PATH.length + EVAL_PATH.length + divisionTotal
+  const schoolTotal = LOGIC_PATH.length + divisionTotal
     + LESSON_FACTORS.reduce((sum, f) => sum + LESSON_PATHS[f].length, 0);
 
   const allCards = [
     {
       key: 'school',
       title: 'INSULA ÎNVĂȚĂRII',
-      subtitle: `🎒 ${schoolDone} / ${schoolTotal} niveluri · tabla înmulțirii, lecții, probleme, evaluare`,
+      subtitle: `🎒 ${schoolDone} / ${schoolTotal} niveluri · isteți, lecții, împărțire, evaluare`,
       cta: '🎒 Hai să învățăm!',
       onClick: onOpenSchool,
     },
@@ -207,26 +212,36 @@ export default function HomeIslands({
       onClick: () => onOpenPanel('contest'),
     },
     {
-      key: 'learn',
-      title: 'TABLA ÎNMULȚIRII',
-      subtitle: doneCount === LEVEL_PATH.length
-        ? 'Ai terminat toate nivelurile! 🏆'
-        : `⭐ ${doneCount} / ${LEVEL_PATH.length} niveluri · urmează ${LEVELS[current].label}`,
-      cta: '📚 Exersează',
-      onClick: onOpenLearn,
+      key: 'national',
+      ctaClass: 'national',
+      title: 'EVALUAREA NAȚIONALĂ',
+      subtitle: `🎓 ${NATIONAL_LEVELS.filter(level => scores[level]).length} / ${NATIONAL_LEVELS.length} teste date · clasa a II-a`,
+      cta: '🎓 Alege testul',
+      onClick: onOpenNationalHub,
     },
+    // Câte o insulă pentru fiecare test de Evaluare Națională (în pagina „Evaluarea Națională”).
+    ...NATIONAL_LEVELS.map(level => ({
+      key: level,
+      ctaClass: 'national',
+      title: `EVALUAREA NAȚIONALĂ ${nationalYear(level)}`,
+      subtitle: scores[level]
+        ? `🎓 ${nationalTheme(level)} · cel mai bun: ${scores[level].correct} / ${questionCount(level)}`
+        : `🎓 ${nationalTheme(level)} · ${questionCount(level)} itemi`,
+      cta: '🎓 Începe testul',
+      onClick: () => onOpenNational(level),
+    })),
     {
       key: 'logic',
       title: 'INSULA ISTEȚILOR',
       subtitle: logicDone === LOGIC_PATH.length
         ? 'Ai terminat toate problemele! 🏆'
-        : `🧩 ${logicDone} / ${LOGIC_PATH.length} niveluri · probleme de gândire`,
+        : `🧩 ${logicDone} / ${LOGIC_PATH.length} niveluri · de la ușor la avansat`,
       cta: '🧩 Rezolvă probleme',
       onClick: onOpenLogic,
     },
     {
       key: 'lessons',
-      title: 'ÎNMULȚIREA PE RÂND',
+      title: 'TABLA ÎNMULȚIRII',
       subtitle: `📘 ${lessonsDone} / ${LESSON_FACTORS.length} lecții terminate · de la 2 la 9`,
       cta: '📘 Alege lecția',
       onClick: onOpenLessons,
@@ -338,15 +353,8 @@ export default function HomeIslands({
       cta: '🎯 Începe lecția',
       onClick: onOpenNineLesson,
     },
-    {
-      key: 'eval',
-      title: 'EVALUARE',
-      subtitle: `📝 ${EVAL_PATH.filter(level => isLevelDone(scores, level)).length} / ${EVAL_PATH.length} · recapitulare cu calificativ`,
-      cta: '📝 Dă evaluarea',
-      onClick: onOpenEval,
-    },
   ];
-  const keys = { home: HOME_KEYS, school: SCHOOL_KEYS, lessons: LESSON_KEYS, division: DIVISION_KEYS }[mode];
+  const keys = { home: HOME_KEYS, school: SCHOOL_KEYS, lessons: LESSON_KEYS, division: DIVISION_KEYS, national: NATIONAL_LEVELS }[mode];
   const cards = keys.map(key => allCards.find(card => card.key === key));
   const greeting = subpage ? subpage.greeting : `Bine ai venit${name ? `, ${name}` : ''}! Alege o insulă! 🏝️`;
 
