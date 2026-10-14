@@ -68,7 +68,7 @@ function buildLayouts(keys, top, perRow = 3) {
   const deskH = top + rows * 380;
   // Pe telefon lăsăm loc sus pentru bara cu butoane și pentru titlu.
   const phoneTop = top + 90;
-  const phoneH = phoneTop + 20 + keys.length * PHONE_STEP;
+  const phoneH = phoneTop - 60 + keys.length * PHONE_STEP;
   return {
     desktop: {
       W: 1000,
@@ -90,7 +90,7 @@ function buildTwoColumnLayouts(keys, top) {
   const rows = Math.ceil(keys.length / 2);
   const deskH = top + rows * 380;
   const phoneTop = top + 90;
-  const phoneH = phoneTop + 20 + keys.length * PHONE_STEP;
+  const phoneH = phoneTop - 60 + keys.length * PHONE_STEP;
   return {
     desktop: {
       W: 1000,
@@ -120,9 +120,10 @@ function buildHomeLayouts() {
     },
     phone: {
       W: 600,
-      H: 830,
-      islands: { arena: place('arena', 300, 190, 165, 74, 1.0), school: place('school', 300, 570, 165, 74, 1.0) },
-      extras: [['⛵', 50, 400, 34], ['🐬', 520, 410, 40], ['🐳', 530, 800, 30], ['☁️', 30, 40, 28]],
+      // Destul loc jos pentru titlul, descrierea și butonul ultimei insule.
+      H: 1000,
+      islands: { arena: place('arena', 300, 190, 165, 74, 1.0), school: place('school', 300, 590, 165, 74, 1.0) },
+      extras: [['⛵', 50, 420, 34], ['🐬', 520, 430, 40], ['🐳', 540, 975, 30], ['☁️', 30, 40, 28]],
     },
   };
 }
