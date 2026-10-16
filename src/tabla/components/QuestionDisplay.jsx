@@ -102,6 +102,7 @@ export default function QuestionDisplay({ current }) {
         {current.problemText}
         {current.visual && <Visual visual={current.visual} />}
         {current.picture && <Picture picture={current.picture} />}
+        {current.video && <div><VideoButton src={current.video} /></div>}
       </div>
     );
   }

@@ -492,9 +492,8 @@ const ITEMS_TERMS = [
   simple('b − 68 = 19', 'b', 87, [49, 77, 97], SUB_START_RULE, 'b = 19 + 68 = 87. Verificare: 87 − 68 = 19.'),
   simple('28 + c = 91', 'c', 63, [119, 73, 53], SUM_RULE, 'c = 91 − 28 = 63. Verificare: 28 + 63 = 91.'),
   simple('45 − d = 26', 'd', 19, [71, 29, 21], SUB_MINUS_RULE, 'd = 45 − 26 = 19. Verificare: 45 − 19 = 26.'),
-  // Are și un video: învățătoarea rezolvă exercițiul la tablă.
-  { ...twoStep('x − (23 + 48) = 18', 'Calculează paranteza: 23 + 48 = ?', 71, [61, 25, 81],
-    'Acum x − 71 = 18. x = ?', 89, [53, 79, 99], SUB_START_RULE, 'x = 18 + 71 = 89. Verificare: 89 − 71 = 18.'), video: 'termen-necunoscut.mp4' },
+  twoStep('x − (23 + 48) = 18', 'Calculează paranteza: 23 + 48 = ?', 71, [61, 25, 81],
+    'Acum x − 71 = 18. x = ?', 89, [53, 79, 99], SUB_START_RULE, 'x = 18 + 71 = 89. Verificare: 89 − 71 = 18.'),
   twoStep('y − (78 − 64) = 47', 'Calculează paranteza: 78 − 64 = ?', 14, [24, 142, 16],
     'Acum y − 14 = 47. y = ?', 61, [33, 51, 71], SUB_START_RULE, 'y = 47 + 14 = 61. Verificare: 61 − 14 = 47.'),
   twoStep('m + (43 − 27) = 52', 'Calculează paranteza: 43 − 27 = ?', 16, [26, 70, 14],
@@ -508,7 +507,8 @@ const ITEMS_TERMS = [
   twoStep('t − (28 − 9) = 16', 'Calculează paranteza: 28 − 9 = ?', 19, [37, 29, 21],
     'Acum t − 19 = 16. t = ?', 35, [3, 25, 45], SUB_START_RULE, 't = 16 + 19 = 35. Verificare: 35 − 19 = 16.'),
   simple('r − 37 = 26', 'r', 63, [11, 53, 73], SUB_START_RULE, 'r = 26 + 37 = 63. Verificare: 63 − 37 = 26.'),
-];
+// Fiecare exercițiu are un video: învățătoarea îl rezolvă la tablă (public/video/termeni-1…12.mp4).
+].map((item, i) => ({ ...item, video: `termeni-${i + 1}.mp4` }));
 
 const TESTS = {
   en2026: { year: 2026, theme: 'Animale de companie', items: ITEMS_2026 },
