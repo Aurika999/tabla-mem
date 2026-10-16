@@ -222,6 +222,7 @@ export default function TablaInmultirii() {
             name={name}
             scores={firebaseEnabled ? myScores : {}}
             onOpenSchool={goToSchool}
+            onOpenNational={level => handleSelectLevel(level)}
             onOpenPanel={handleOpenPanel}
             chatUnread={unreadCount}
           />

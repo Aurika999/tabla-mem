@@ -16,6 +16,7 @@ const DECOR = {
   en2025: [['🌍', -4, -40, 80], ['🌴', -100, 4, 32], ['🐧', 98, 0, 30], ['📝', 80, 26, 26], ['🦢', -82, 28, 24]],
   en2025b: [['🐻‍❄️', -4, -40, 80], ['🐧', -100, 4, 32], ['🦉', 98, 0, 30], ['📝', 80, 26, 26], ['❄️', -82, 28, 24]],
   en2026: [['🏅', -4, -40, 80], ['🐶', -100, 4, 32], ['🦜', 98, 0, 30], ['📝', 80, 26, 26], ['🐰', -82, 28, 24]],
+  termeni46: [['✏️', -4, -40, 80], ['➕', -100, 4, 32], ['➖', 98, 0, 30], ['❓', 80, 26, 26], ['📒', -82, 28, 24]],
   school: [['🎒', -4, -40, 84], ['📚', -100, 4, 34], ['✏️', 98, 0, 30], ['🧮', 80, 26, 26], ['📝', -82, 28, 24]],
   arena: [['🏰', -6, -40, 84], ['🚩', -105, -16, 32], ['🚩', 100, -22, 32], ['🏆', 70, 22, 28]],
   learn: [['🏫', -4, -40, 84], ['📚', -100, 6, 36], ['🧮', 98, 4, 34], ['🌳', -80, -42, 32]],
@@ -42,7 +43,7 @@ const DECOR = {
   lesson9: [['🎈', -4, -40, 78], ['🎉', -95, 0, 30], ['🎁', 95, -6, 28], ['⭐', 80, 26, 24]],
 };
 
-const HOME_KEYS = ['arena', 'school'];
+const HOME_KEYS = ['arena', 'school', 'termeni46'];
 // Nivelurile „Tablei înmulțirii” sunt acum în Insula Isteților, pe dificultate.
 // Exercițiile din „Evaluare” sunt acum în Insula Isteților.
 const SCHOOL_KEYS = ['logic', 'lessons', 'division', 'national'];
@@ -123,17 +124,25 @@ function buildHomeLayouts() {
     desktop: {
       W: 1000,
       H: 640,
-      islands: { arena: place('arena', 280, 320, 190, 92, 1.3), school: place('school', 720, 320, 190, 92, 1.3) },
+      islands: {
+        arena: place('arena', 175, 320, 145, 72, 1.05),
+        school: place('school', 500, 320, 145, 72, 1.05),
+        termeni46: place('termeni46', 825, 320, 145, 72, 1.05),
+      },
       extras: [['⛵', 70, 110, 34], ['🐬', 500, 520, 42], ['🐟', 545, 555, 22], ['🐳', 940, 580, 32], ['☁️', 40, 40, 30],
         ['🐠', 120, 560, 24]],
     },
     phone: {
       W: 600,
       // Destul loc jos pentru titlul, descrierea și butonul ultimei insule.
-      H: 940,
-      // Pe telefon, Insula Învățării e prima, iar Arena Concursului sub ea.
-      islands: { school: place('school', 300, 130, 165, 74, 1.0), arena: place('arena', 300, 530, 165, 74, 1.0) },
-      extras: [['⛵', 50, 360, 34], ['🐬', 520, 370, 40], ['🐳', 540, 915, 30], ['☁️', 30, 30, 28]],
+      H: 1340,
+      // Pe telefon: Insula Învățării, Arena Concursului, apoi „Află termenii necunoscuți”.
+      islands: {
+        school: place('school', 300, 130, 165, 74, 1.0),
+        arena: place('arena', 300, 530, 165, 74, 1.0),
+        termeni46: place('termeni46', 300, 930, 165, 74, 1.0),
+      },
+      extras: [['⛵', 50, 360, 34], ['🐬', 520, 370, 40], ['🐠', 70, 760, 30], ['🐳', 540, 1315, 30], ['☁️', 30, 30, 28]],
     },
   };
 }
@@ -214,6 +223,16 @@ export default function HomeIslands({
       subtitle: 'Concurează cu alți jucători',
       cta: '🏁 Intră în arenă',
       onClick: () => onOpenPanel('contest'),
+    },
+    {
+      key: 'termeni46',
+      ctaClass: 'terms',
+      title: 'TERMENII NECUNOSCUȚI',
+      subtitle: scores.termeni46
+        ? `✏️ Cel mai bun: ${scores.termeni46.correct} / ${questionCount('termeni46')} · fără cronometru`
+        : `✏️ a + 34 = 62 · ${questionCount('termeni46')} exerciții · fără cronometru`,
+      cta: '✏️ Află termenii',
+      onClick: () => onOpenNational('termeni46'),
     },
     {
       key: 'national',

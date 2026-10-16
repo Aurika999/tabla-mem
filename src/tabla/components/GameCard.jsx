@@ -15,7 +15,7 @@ export default function GameCard({
       <Toast text={toast} />
       {isExam ? (
         <>
-          <div className="ribbon">ITEMUL <span>{current.examIndex + 1}</span> / {questionsPerLevel}</div>
+          <div className="ribbon">{current.badge?.startsWith('✏️') ? 'EXERCIȚIUL' : 'ITEMUL'} <span>{current.examIndex + 1}</span> / {questionsPerLevel}</div>
           {/* Itemii nerezolvați: apeși pe oricare ca să te întorci la el. */}
           <div className="exam-pending">
             <span>✅ Rezolvați: <b>{stats.q}/{questionsPerLevel}</b> · Nerezolvați:</span>

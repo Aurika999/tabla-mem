@@ -10,6 +10,7 @@ import { buildSmartProblem, isSmartLevel, GRADED_SMART_LEVELS } from './smartPro
 import { buildReviewProblem, isReviewLevel } from './reviewProblems';
 import {
   buildNationalItem, isNationalLevel, questionCount, nationalMaxPoints, nationalYear, nationalTheme,
+  isPracticeTest, practiceTitle,
 } from './nationalTest';
 import { buildEvalProblem, isEvalLevel, gradeFor } from './evaluationProblems';
 import { buildDivisionProblem, isDivisionLevel } from './divisionProblems';
@@ -31,7 +32,7 @@ export function generateQuestion(level, index = 0) {
     const base = {
       a: null, b: null, isWordProblem: true, isMultOp: false,
       problemText: q.text, explanation: q.explanation, fruit, badge: q.badge,
-      picture: q.picture || null, visual: q.visual || null, examPoints: q.points, examIndex: index,
+      picture: q.picture || null, visual: q.visual || null, video: q.video || null, examPoints: q.points, examIndex: index,
     };
     if (q.steps) {
       return { ...base, steps: q.steps, stepIndex: 0, correct: q.steps[0].answer, answers: q.steps[0].choices };
@@ -325,6 +326,19 @@ export function useTablaGame(initialLevel = 1, paused = false) {
       return () => clearTimeout(id);
     }
     const total = questionCount(stats.level);
+    if (stats.q >= total && isPracticeTest(stats.level)) {
+      const id = setTimeout(() => {
+        const pct = stats.correct / total;
+        setModal({
+          title: pct >= 0.9 ? '🏆 Excelent!' : pct >= 0.7 ? '🌟 Foarte bine!' : pct >= 0.5 ? '👏 Bravo!' : '💪 Mai exersează!',
+          text: `Ai terminat <b>„${practiceTitle(stats.level)}”</b>: <b>${stats.correct}/${total}</b> exerciții rezolvate corect.`
+            + `<br><br>Ai adunat <b>${stats.points}</b> puncte în joc.`
+            + '<br><small>Apasă „Cum se rezolvă?” la fiecare exercițiu, ca să vezi rezolvarea și verificarea.</small>',
+          showNext: false,
+        });
+      }, 500);
+      return () => clearTimeout(id);
+    }
     if (stats.q >= total && isNationalLevel(stats.level)) {
       const id = setTimeout(() => {
         const max = nationalMaxPoints(stats.level);

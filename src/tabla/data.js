@@ -137,6 +137,7 @@ export const LEVELS = {
   ist13: { key: 'ist13', label: '🏆 13. PROVOCĂRI', hint: '🔴 Avansat · probleme cu mai mulți pași', className: 'lg1' },
   ist14: { key: 'ist14', label: '🏔️ 14. TESTUL FINAL', hint: '🔴 Avansat · primești calificativ: FB, B, S', className: 'lg2' },
   recap1: { key: 'recap1', label: '🌳 PROBLEME DE RECAPITULARE', hint: 'Urși, copaci, veverițe, postere · pe pași', className: 'lg4' },
+  termeni46: { key: 'termeni46', label: '✏️ AFLĂ TERMENII NECUNOSCUȚI', hint: 'Exercițiul 46 · fără cronometru', className: 'lg1' },
   en2025: { key: 'en2025', label: '🎓 EVALUAREA NAȚIONALĂ 2025', hint: 'Clasa a II-a · Medii de viață', className: 'lg2' },
   en2025b: { key: 'en2025b', label: '🎓 EVALUAREA NAȚIONALĂ 2025', hint: 'Clasa a II-a · Animale polare', className: 'lg3' },
   en2026: { key: 'en2026', label: '🎓 EVALUAREA NAȚIONALĂ 2026', hint: 'Clasa a II-a · Animale de companie', className: 'lg1' },

@@ -2,7 +2,7 @@ import {
   PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, EVAL_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, DIV6_LEVELS, DIV7_LEVELS, DIV8_LEVELS, DIV9_LEVELS, TWO_LEVELS, THREE_LEVELS, FOUR_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS, EIGHT_LEVELS,
   NINE_LEVELS,
 } from './data';
-import { isNationalLevel } from './nationalTest';
+import { isNationalLevel, isPracticeTest } from './nationalTest';
 import { isReviewLevel } from './reviewProblems';
 
 // Drumul de pe hartă: fiecare nivel se deblochează după ce îl termini pe cel dinainte.
@@ -51,6 +51,7 @@ export function isFiveLevel(level) {
 // Pe ce hartă e nivelul: 'logic', 'lesson5/6/7' sau 'map' (tabla înmulțirii).
 export function mapViewOf(level) {
   // Testele de Evaluare Națională sunt în pagina „Evaluarea Națională”.
+  if (isPracticeTest(level)) return 'home';
   if (isNationalLevel(level) || isReviewLevel(level)) return 'national';
   if (isLogicLevel(level)) return 'logic';
   if (EVAL_PATH.includes(level)) return 'eval';

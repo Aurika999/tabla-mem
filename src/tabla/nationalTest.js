@@ -462,14 +462,77 @@ const ITEMS_2025_POLAR = [
   },
 ];
 
+// ================= Exercițiul 46: „Află termenii necunoscuți” =================
+// Itemi simpli: [ecuația, necunoscuta, răspunsul, greșeli tipice, regula].
+// Itemi cu paranteză sau cu trei termeni: întâi calculăm ce se poate, apoi aflăm necunoscuta.
+const SUM_RULE = 'Un termen necunoscut al adunării se află scăzând din sumă termenul cunoscut.';
+const SUB_START_RULE = 'Descăzutul se află adunând diferența cu scăzătorul.';
+const SUB_MINUS_RULE = 'Scăzătorul se află scăzând diferența din descăzut.';
+
+const simple = (eq, x, answer, mistakes, rule, check) => ({
+  points: 1,
+  text: `Află termenul necunoscut: ${eq}. Cât este ${x}?`,
+  answer,
+  choices: shuffle([answer, ...mistakes]),
+  explanation: `${rule} ${check}`,
+});
+
+const twoStep = (eq, first, firstAnswer, firstMistakes, second, answer, mistakes, rule, check) => ({
+  points: 1,
+  text: `Află termenul necunoscut: ${eq}`,
+  steps: [
+    step(first, firstAnswer, [firstAnswer, ...firstMistakes]),
+    step(second, answer, [answer, ...mistakes]),
+  ],
+  explanation: `${rule} ${check}`,
+});
+
+const ITEMS_TERMS = [
+  simple('a + 34 = 62', 'a', 28, [96, 38, 18], SUM_RULE, 'a = 62 − 34 = 28. Verificare: 28 + 34 = 62.'),
+  simple('b − 68 = 19', 'b', 87, [49, 77, 97], SUB_START_RULE, 'b = 19 + 68 = 87. Verificare: 87 − 68 = 19.'),
+  simple('28 + c = 91', 'c', 63, [119, 73, 53], SUM_RULE, 'c = 91 − 28 = 63. Verificare: 28 + 63 = 91.'),
+  simple('45 − d = 26', 'd', 19, [71, 29, 21], SUB_MINUS_RULE, 'd = 45 − 26 = 19. Verificare: 45 − 19 = 26.'),
+  // Are și un video: învățătoarea rezolvă exercițiul la tablă.
+  { ...twoStep('x − (23 + 48) = 18', 'Calculează paranteza: 23 + 48 = ?', 71, [61, 25, 81],
+    'Acum x − 71 = 18. x = ?', 89, [53, 79, 99], SUB_START_RULE, 'x = 18 + 71 = 89. Verificare: 89 − 71 = 18.'), video: 'termen-necunoscut.mp4' },
+  twoStep('y − (78 − 64) = 47', 'Calculează paranteza: 78 − 64 = ?', 14, [24, 142, 16],
+    'Acum y − 14 = 47. y = ?', 61, [33, 51, 71], SUB_START_RULE, 'y = 47 + 14 = 61. Verificare: 61 − 14 = 47.'),
+  twoStep('m + (43 − 27) = 52', 'Calculează paranteza: 43 − 27 = ?', 16, [26, 70, 14],
+    'Acum m + 16 = 52. m = ?', 36, [68, 46, 26], SUM_RULE, 'm = 52 − 16 = 36. Verificare: 36 + 16 = 52.'),
+  twoStep('n − (56 − 25) = 59', 'Calculează paranteza: 56 − 25 = ?', 31, [81, 41, 21],
+    'Acum n − 31 = 59. n = ?', 90, [28, 80, 100], SUB_START_RULE, 'n = 59 + 31 = 90. Verificare: 90 − 31 = 59.'),
+  twoStep('63 − 49 + f = 71', 'Calculează întâi 63 − 49 = ?', 14, [24, 112, 16],
+    'Acum 14 + f = 71. f = ?', 57, [85, 67, 47], SUM_RULE, 'f = 71 − 14 = 57. Verificare: 63 − 49 + 57 = 14 + 57 = 71.'),
+  twoStep('91 − 36 − g = 27', 'Calculează întâi 91 − 36 = ?', 55, [65, 127, 45],
+    'Acum 55 − g = 27. g = ?', 28, [82, 38, 18], SUB_MINUS_RULE, 'g = 55 − 27 = 28. Verificare: 91 − 36 − 28 = 55 − 28 = 27.'),
+  twoStep('t − (28 − 9) = 16', 'Calculează paranteza: 28 − 9 = ?', 19, [37, 29, 21],
+    'Acum t − 19 = 16. t = ?', 35, [3, 25, 45], SUB_START_RULE, 't = 16 + 19 = 35. Verificare: 35 − 19 = 16.'),
+  simple('r − 37 = 26', 'r', 63, [11, 53, 73], SUB_START_RULE, 'r = 26 + 37 = 63. Verificare: 63 − 37 = 26.'),
+];
+
 const TESTS = {
   en2026: { year: 2026, theme: 'Animale de companie', items: ITEMS_2026 },
   en2025: { year: 2025, theme: 'Medii de viață', items: ITEMS_2025 },
   en2025b: { year: 2025, theme: 'Animale polare', items: ITEMS_2025_POLAR },
+  // Exersare fără cronometru, de pe prima pagină (nu e test de Evaluare Națională).
+  termeni46: { practice: true, title: 'Află termenii necunoscuți', items: ITEMS_TERMS },
 };
 
+// Exercițiile fără cronometru, cu itemi în ordine (testele și exersările de pe prima pagină).
+export const PRACTICE_LEVELS = ['termeni46'];
+
+// Un nivel cu itemi ficși, fără cronometru, la care poți sări peste un item și reveni la el.
 export function isNationalLevel(level) {
-  return NATIONAL_LEVELS.includes(level);
+  return Boolean(TESTS[level]);
+}
+
+// Exersare (nu test de examen): fără punctaj din 100 la final.
+export function isPracticeTest(level) {
+  return Boolean(TESTS[level]?.practice);
+}
+
+export function practiceTitle(level) {
+  return TESTS[level]?.title;
 }
 
 export function nationalYear(level) {
@@ -495,5 +558,8 @@ export function questionCount(level) {
 export function buildNationalItem(level, index) {
   const { items } = TESTS[level];
   const item = items[Math.min(index, items.length - 1)];
-  return { ...item, badge: `🎓 Itemul ${index + 1} din ${items.length} · ${item.points}p.` };
+  const badge = TESTS[level].practice
+    ? `✏️ Exercițiul ${index + 1} din ${items.length}`
+    : `🎓 Itemul ${index + 1} din ${items.length} · ${item.points}p.`;
+  return { ...item, badge };
 }
