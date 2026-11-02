@@ -8,6 +8,7 @@ import {
   LEVELS, PROBLEME_LEVEL, AVANSATE_LEVEL, LOGIC_LEVELS, FIVE_LEVELS, SIX_LEVELS, SEVEN_LEVELS,
   EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, DIV6_LEVELS, DIV7_LEVELS, DIV8_LEVELS, DIV9_LEVELS,
 } from './data';
+import { tr } from './i18n';
 
 const CONTESTS_COLLECTION = 'contests';
 
@@ -56,7 +57,7 @@ export function contestGroupOf(level) {
 }
 
 export function contestLevelLabel(level) {
-  if (!level || level === MIX_LEVEL) return '🎲 AMESTEC';
+  if (!level || level === MIX_LEVEL) return tr('🎲 AMESTEC');
   return LEVELS[level]?.label || String(level);
 }
 
@@ -91,7 +92,7 @@ export function rankResults(results) {
 
 // Concursurile vechi (dinainte de nume) primesc un nume implicit.
 export function contestTitle(contest) {
-  return contest?.title || `Concursul lui ${contest?.hostName || 'cuiva'}`;
+  return contest?.title || tr('Concursul lui {name}', { name: contest?.hostName || tr('cuiva') });
 }
 
 function contestRef(contestId) {

@@ -5,6 +5,7 @@ import {
 } from '../useChat';
 import Avatar from './Avatar';
 import Flag from './Flag';
+import { tr, getLang } from '../i18n';
 
 const EMOJIS = [
   '😀', '😃', '😄', '😁', '😆', '😂', '🤣', '😊', '🙂', '😉',
@@ -39,17 +40,28 @@ function sameDay(a, b) {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
 
+// Datele și orele, în formatul limbii alese.
+function locale() {
+  return getLang() === 'en' ? 'en-GB' : 'ro-RO';
+}
+
 function formatClock(date) {
-  return date.toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' });
+  return date.toLocaleTimeString(locale(), { hour: '2-digit', minute: '2-digit' });
+}
+
+function isToday(date) {
+  return sameDay(date, new Date());
+}
+
+function isYesterday(date) {
+  return sameDay(date, new Date(Date.now() - 86400000));
 }
 
 function dayLabel(date) {
-  const today = new Date();
-  const yesterday = new Date(today.getTime() - 86400000);
-  if (sameDay(date, today)) return 'Azi';
-  if (sameDay(date, yesterday)) return 'Ieri';
-  return date.toLocaleDateString('ro-RO', {
-    day: 'numeric', month: 'long', ...(date.getFullYear() !== today.getFullYear() ? { year: 'numeric' } : {}),
+  if (isToday(date)) return tr('Azi');
+  if (isYesterday(date)) return tr('Ieri');
+  return date.toLocaleDateString(locale(), {
+    day: 'numeric', month: 'long', ...(date.getFullYear() !== new Date().getFullYear() ? { year: 'numeric' } : {}),
   });
 }
 
@@ -57,17 +69,16 @@ function dayLabel(date) {
 function shortTime(ms) {
   if (!ms) return '';
   const date = new Date(ms);
-  const label = dayLabel(date);
-  if (label === 'Azi') return formatClock(date);
-  if (label === 'Ieri') return 'Ieri';
-  return date.toLocaleDateString('ro-RO', { day: 'numeric', month: 'numeric' });
+  if (isToday(date)) return formatClock(date);
+  if (isYesterday(date)) return tr('Ieri');
+  return date.toLocaleDateString(locale(), { day: 'numeric', month: 'numeric' });
 }
 
 function lastSeenText(ms) {
   if (!ms) return '';
   const date = new Date(ms);
-  const label = dayLabel(date);
-  return `văzut ultima dată ${label === 'Azi' || label === 'Ieri' ? label.toLowerCase() : label} la ${formatClock(date)}`;
+  const when = isToday(date) ? tr('azi') : isYesterday(date) ? tr('ieri') : dayLabel(date);
+  return tr('văzut ultima dată {when} la {time}', { when, time: formatClock(date) });
 }
 
 function isOnline(profile, now) {
@@ -76,12 +87,12 @@ function isOnline(profile, now) {
 }
 
 function Ticks({ msg, peerReadAt, isPrivate }) {
-  if (msg.pending) return <span className="chat-ticks" title="Se trimite">🕓</span>;
+  if (msg.pending) return <span className="chat-ticks" title={tr('Se trimite')}>🕓</span>;
   const created = millis(msg.createdAt);
   if (isPrivate && created !== null && peerReadAt !== null && created <= peerReadAt) {
-    return <span className="chat-ticks read" title="Citit">✓✓</span>;
+    return <span className="chat-ticks read" title={tr('Citit')}>✓✓</span>;
   }
-  return <span className="chat-ticks" title="Trimis">✓</span>;
+  return <span className="chat-ticks" title={tr('Trimis')}>✓</span>;
 }
 
 // Mesajul lăsat de un apel: pentru cine a sunat și pentru cine a fost sunat textul diferă.
@@ -92,15 +103,15 @@ function CallLogBubble({ msg, mine, date, peer, canCall, onCall }) {
   let detail = '';
   let missedForMe = false;
   if (callStatus === 'completed') {
-    title = 'Apel vocal';
+    title = tr('Apel vocal');
     detail = formatCallDuration(durationSec);
   } else if (mine) {
-    title = { missed: 'Apel fără răspuns', declined: 'Apel refuzat', busy: 'Ocupat — era în alt apel', failed: 'Apel nereușit' }[callStatus]
-      || 'Apel';
+    title = tr({ missed: 'Apel fără răspuns', declined: 'Apel refuzat', busy: 'Ocupat — era în alt apel', failed: 'Apel nereușit' }[callStatus]
+      || 'Apel');
   } else {
     missedForMe = callStatus === 'missed' || callStatus === 'busy';
-    title = { missed: 'Apel pierdut', declined: 'Ai refuzat apelul', busy: 'Apel pierdut (erai în alt apel)', failed: 'Apel nereușit' }[callStatus]
-      || 'Apel';
+    title = tr({ missed: 'Apel pierdut', declined: 'Ai refuzat apelul', busy: 'Apel pierdut (erai în alt apel)', failed: 'Apel nereușit' }[callStatus]
+      || 'Apel');
     if (missedForMe) icon = '📵';
   }
   return (
@@ -114,7 +125,7 @@ function CallLogBubble({ msg, mine, date, peer, canCall, onCall }) {
         </small>
       </span>
       {missedForMe && peer && (
-        <button className="chat-call-back" onClick={() => onCall(peer)} disabled={!canCall}>Sună înapoi</button>
+        <button className="chat-call-back" onClick={() => onCall(peer)} disabled={!canCall}>{tr('Sună înapoi')}</button>
       )}
     </div>
   );
@@ -237,7 +248,7 @@ function Conversation({
     if (!ok) {
       setText(sentText);
       setReplyTo(sentReply);
-      setError('Mesajul nu a putut fi trimis. Mai încearcă!');
+      setError(tr('Mesajul nu a putut fi trimis. Mai încearcă!'));
     }
   };
 
@@ -255,12 +266,12 @@ function Conversation({
   };
 
   const canWrite = Boolean(name && uid);
-  const emptyText = peer ? `Scrie-i primul mesaj lui ${peer.name}! 👋` : 'Niciun mesaj încă. Spune salut! 👋';
+  const emptyText = peer ? tr('Scrie-i primul mesaj lui {name}! 👋', { name: peer.name }) : tr('Niciun mesaj încă. Spune salut! 👋');
 
   let status;
-  if (!peer) status = `${playersCount} ${playersCount === 1 ? 'jucător' : 'jucători'}`;
-  else if (peerTyping) status = <span className="chat-status-typing">scrie…</span>;
-  else if (isOnline(peerProfile, now)) status = <span className="chat-status-online">online</span>;
+  if (!peer) status = `${playersCount} ${playersCount === 1 ? tr('jucător') : tr('jucători')}`;
+  else if (peerTyping) status = <span className="chat-status-typing">{tr('scrie…')}</span>;
+  else if (isOnline(peerProfile, now)) status = <span className="chat-status-online">{tr('online')}</span>;
   else status = lastSeenText(millis(peerProfile?.lastSeenAt));
 
   // Construim lista cu separatoare de zi și grupare pe expeditor.
@@ -278,7 +289,7 @@ function Conversation({
   return (
     <div className="chat-conversation">
       <div className="chat-header">
-        <button className="chat-back" onClick={onBack} aria-label="Înapoi la conversații">←</button>
+        <button className="chat-back" onClick={onBack} aria-label={tr('Înapoi la conversații')}>←</button>
         {peer ? (
           <Avatar src={peerProfile?.avatar} name={peer.name} size={40} />
         ) : (
@@ -286,7 +297,7 @@ function Conversation({
         )}
         <div className="chat-header-info">
           <div className="chat-header-name">
-            {peer ? <>{peer.name} <Flag code={peerProfile?.country} /></> : 'General — toți jucătorii'}
+            {peer ? <>{peer.name} <Flag code={peerProfile?.country} /></> : tr('General — toți jucătorii')}
           </div>
           <div className="chat-header-status">{status}</div>
         </div>
@@ -295,7 +306,7 @@ function Conversation({
             className="chat-header-call"
             onClick={() => onCall(peer)}
             disabled={!canWrite || callBusy}
-            title={callBusy ? 'Ești deja într-un apel' : `Sună-l pe ${peer.name}`}
+            title={callBusy ? tr('Ești deja într-un apel') : tr('Sună-l pe {name}', { name: peer.name })}
           >
             📞
           </button>
@@ -304,7 +315,7 @@ function Conversation({
 
       <div className="chat-wallpaper">
         <div className="chat-messages" ref={listRef} onScroll={handleScroll}>
-          {loading && <p className="chat-system">Se încarcă…</p>}
+          {loading && <p className="chat-system">{tr('Se încarcă…')}</p>}
           {!loading && messages.length === 0 && <p className="chat-system">{emptyText}</p>}
           {rows.map(row => {
             if (row.type === 'day') return <div key={row.key} className="chat-day"><span>{row.label}</span></div>;
@@ -354,7 +365,7 @@ function Conversation({
                   </span>
                 </div>
                 {canWrite && (
-                  <button className="chat-reply-btn" onClick={() => startReply(msg)} title="Răspunde" aria-label="Răspunde">
+                  <button className="chat-reply-btn" onClick={() => startReply(msg)} title={tr('Răspunde')} aria-label={tr('Răspunde')}>
                     ↩
                   </button>
                 )}
@@ -368,7 +379,7 @@ function Conversation({
           )}
         </div>
         {!nearBottom && (
-          <button className="chat-jump" onClick={() => scrollToBottom(true)} aria-label="Mergi la ultimele mesaje">
+          <button className="chat-jump" onClick={() => scrollToBottom(true)} aria-label={tr('Mergi la ultimele mesaje')}>
             {newCount > 0 && <span className="chat-jump-count">{newCount}</span>}⌄
           </button>
         )}
@@ -387,7 +398,7 @@ function Conversation({
             <b>{replyTo.uid === uid ? 'Tu' : replyTo.name}</b>
             <span>{replyTo.text}</span>
           </div>
-          <button onClick={() => setReplyTo(null)} aria-label="Anulează răspunsul">✕</button>
+          <button onClick={() => setReplyTo(null)} aria-label={tr('Anulează răspunsul')}>✕</button>
         </div>
       )}
       <form className="chat-input-bar" onSubmit={handleSubmit}>
@@ -397,7 +408,7 @@ function Conversation({
             className={`chat-emoji-toggle${showEmojis ? ' active' : ''}`}
             onClick={() => setShowEmojis(v => !v)}
             disabled={!canWrite}
-            title="Emoticoane"
+            title={tr('Emoticoane')}
           >
             😊
           </button>
@@ -406,11 +417,11 @@ function Conversation({
             value={text}
             onChange={e => handleChange(e.target.value)}
             maxLength={MAX_MESSAGE_LENGTH}
-            placeholder={name ? 'Mesaj' : 'Alege-ți un nume ca să scrii'}
+            placeholder={name ? tr('Mesaj') : tr('Alege-ți un nume ca să scrii')}
             disabled={!canWrite}
           />
         </div>
-        <button type="submit" className="chat-send" disabled={!canWrite || !text.trim()} aria-label="Trimite">➤</button>
+        <button type="submit" className="chat-send" disabled={!canWrite || !text.trim()} aria-label={tr('Trimite')}>➤</button>
       </form>
       {error && <p className="chat-error">{error}</p>}
     </div>
@@ -431,8 +442,8 @@ export default function Chat({
   if (!firebaseEnabled) {
     return (
       <aside className="panel chat">
-        <h2>💬 CHAT</h2>
-        <p className="leaderboard-empty">Chatul are nevoie de Firebase configurat.</p>
+        <h2>{tr('💬 CHAT')}</h2>
+        <p className="leaderboard-empty">{tr('Chatul are nevoie de Firebase configurat.')}</p>
       </aside>
     );
   }
@@ -454,23 +465,23 @@ export default function Chat({
 
   return (
     <aside className="panel chat">
-      <h2>💬 CHAT</h2>
+      <h2>{tr('💬 CHAT')}</h2>
       <div className={`chat-layout view-${mobileView}`}>
         <div className="chat-sidebar">
           <input
             className="chat-search"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="🔍 Caută un jucător"
+            placeholder={tr('🔍 Caută un jucător')}
           />
           <button className={`chat-contact${!peer ? ' active' : ''}`} onClick={() => select(null)}>
             <span className="chat-header-icon small">🌍</span>
             <span className="chat-contact-body">
-              <span className="chat-contact-name">General</span>
-              <small>Camera tuturor jucătorilor</small>
+              <span className="chat-contact-name">{tr('General')}</span>
+              <small>{tr('Camera tuturor jucătorilor')}</small>
             </span>
           </button>
-          {shownConversations.length > 0 && <div className="chat-section">Conversațiile mele</div>}
+          {shownConversations.length > 0 && <div className="chat-section">{tr('Conversațiile mele')}</div>}
           {shownConversations.map(conv => {
             const other = peerOf(conv, uid);
             const profile = profiles[other.uid];
@@ -496,13 +507,13 @@ export default function Chat({
                     <small className={isTyping ? 'chat-status-typing' : ''}>
                       {isTyping ? 'scrie…' : `${conv.lastSender === uid ? 'Tu: ' : ''}${conv.lastMessage || ''}`}
                     </small>
-                    {unread && <span className="chat-unread" title="Mesaj nou" />}
+                    {unread && <span className="chat-unread" title={tr('Mesaj nou')} />}
                   </span>
                 </span>
               </button>
             );
           })}
-          {otherPlayers.length > 0 && <div className="chat-section">Jucători</div>}
+          {otherPlayers.length > 0 && <div className="chat-section">{tr('Jucători')}</div>}
           {otherPlayers.map(p => (
             <button
               key={p.uid}
@@ -515,12 +526,12 @@ export default function Chat({
               </span>
               <span className="chat-contact-body">
                 <span className="chat-contact-name">{p.name} <Flag code={p.country} /></span>
-                <small>{isOnline(p, now) ? 'online' : 'Apasă ca să-i scrii'}</small>
+                <small>{isOnline(p, now) ? tr('online') : tr('Apasă ca să-i scrii')}</small>
               </span>
             </button>
           ))}
           {shownConversations.length === 0 && otherPlayers.length === 0 && (
-            <p className="leaderboard-empty">{term ? 'Niciun jucător găsit.' : 'Încă nu sunt alți jucători.'}</p>
+            <p className="leaderboard-empty">{term ? tr('Niciun jucător găsit.') : tr('Încă nu sunt alți jucători.')}</p>
           )}
         </div>
         <Conversation

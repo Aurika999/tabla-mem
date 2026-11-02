@@ -4,6 +4,7 @@ import {
 } from 'firebase/firestore';
 import { db, firebaseEnabled } from '../firebase';
 import { notifySystem, logCallInChat } from './useChat';
+import { tr } from './i18n';
 
 // Apeluri audio WebRTC. Firestore e folosit doar pentru „semnalizare”
 // (ofertă/răspuns/candidați ICE); sunetul merge direct între jucători.
@@ -185,15 +186,15 @@ export function useCall({ uid, name }) {
           flushCandidates();
           updateCall(prev => (prev && prev.status === 'ringing' ? { ...prev, status: 'connecting' } : prev));
         }
-        if (data.status === 'declined') finish(`${peer.name} a refuzat apelul.`, null, 'declined');
-        else if (data.status === 'busy') finish(`${peer.name} e într-un alt apel.`, null, 'busy');
+        if (data.status === 'declined') finish(tr('{name} a refuzat apelul.', { name: peer.name }), null, 'declined');
+        else if (data.status === 'busy') finish(tr('{name} e într-un alt apel.', { name: peer.name }), null, 'busy');
         else if (data.status === 'ended') finish('Apel încheiat.', null, 'ended');
       });
       unsubsRef.current.push(unsub);
 
       const timeoutId = setTimeout(() => {
         if (callRef.current?.id === callDoc.id && callRef.current.status === 'ringing') {
-          finish(`${peer.name} nu a răspuns.`, 'missed', 'missed');
+          finish(tr('{name} nu a răspuns.', { name: peer.name }), 'missed', 'missed');
         }
       }, RING_TIMEOUT_MS);
       timersRef.current.push(timeoutId);
@@ -296,7 +297,7 @@ export function useCall({ uid, name }) {
         }
         const peer = { uid: data.caller, name: data.callerName || 'Jucător' };
         setIncoming({ id: change.doc.id, peer });
-        notifySystem(`📞 ${peer.name} te sună`, 'Deschide jocul ca să răspunzi.', 'tabla-call');
+        notifySystem(tr('📞 {name} te sună', { name: peer.name }), tr('Deschide jocul ca să răspunzi.'), 'tabla-call');
       });
     }, (err) => {
       console.error('Nu am putut asculta apelurile', err);

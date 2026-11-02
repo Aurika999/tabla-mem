@@ -1,7 +1,8 @@
+import { tr } from '../i18n';
 export default function FeedbackMessage({ feedback }) {
   return (
     <div className="feedback" style={{ color: feedback.color || undefined }}>
-      {feedback.text}
+      {tr(feedback.text)}
     </div>
   );
 }

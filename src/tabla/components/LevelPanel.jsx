@@ -4,6 +4,7 @@ import {
 } from '../data';
 import { NATIONAL_LEVELS, PRACTICE_LEVELS } from '../nationalTest';
 import { REVIEW_LEVELS } from '../reviewProblems';
+import { tr } from '../i18n';
 
 const MODE_KEYS = [PROBLEME_LEVEL, AVANSATE_LEVEL];
 
@@ -26,13 +27,13 @@ export default function LevelPanel({
   const islandLevels = island ? island[0] : null;
   const isLogic = Boolean(island);
   const islandIcon = island ? island[1] : '';
-  const islandTitle = island ? `${island[1]} ${island[2]}` : '';
+  const islandTitle = island ? `${island[1]} ${tr(island[2])}` : '';
   return (
     <section className="panel level-panel">
       {onOpenMap && (
-        <button className="map-back-btn" onClick={onOpenMap}>{isLogic ? `${islandIcon} HARTA INSULEI` : '🗺️ HARTA AVENTURII'}</button>
+        <button className="map-back-btn" onClick={onOpenMap}>{isLogic ? `${islandIcon} ${tr('HARTA INSULEI')}` : `🗺️ ${tr('HARTA AVENTURII')}`}</button>
       )}
-      <h2>{isLogic ? islandTitle : '🏆 NIVELURI'}</h2>
+      <h2>{isLogic ? islandTitle : tr('🏆 NIVELURI')}</h2>
       <div id="levels">
         {(islandLevels || LEVEL_ORDER).map(key => {
           const level = LEVELS[key];
@@ -42,7 +43,7 @@ export default function LevelPanel({
               className={`level ${level.className}${activeLevel === key ? ' active' : ''}${isLocked(key) ? ' locked' : ''}`}
               onClick={() => onSelectLevel(key)}
               disabled={isLocked(key)}
-              title={isLocked(key) ? 'Termină nivelul dinainte ca să-l deblochezi' : undefined}
+              title={isLocked(key) ? tr('Termină nivelul dinainte ca să-l deblochezi') : undefined}
             >
               {isLocked(key) && '🔒 '}{level.label}
               <small>{level.hint}</small>
@@ -61,7 +62,7 @@ export default function LevelPanel({
                 className={`level ${mode.className}${activeLevel === key ? ' active' : ''}${isLocked(key) ? ' locked' : ''}`}
                 onClick={() => onSelectLevel(key)}
                 disabled={isLocked(key)}
-                title={isLocked(key) ? 'Termină nivelul dinainte ca să-l deblochezi' : undefined}
+                title={isLocked(key) ? tr('Termină nivelul dinainte ca să-l deblochezi') : undefined}
               >
                 {isLocked(key) && '🔒 '}{mode.label}
                 <small>{mode.hint}</small>
@@ -78,9 +79,9 @@ export default function LevelPanel({
             className={`level ${panel.className}${openPanel === panel.key ? ' active' : ''}`}
             onClick={() => onTogglePanel(panel.key)}
           >
-            {panel.label}
+            {tr(panel.label)}
             {badges[panel.key] > 0 && <span className="level-badge">{badges[panel.key]}</span>}
-            <small>{panel.hint}</small>
+            <small>{tr(panel.hint)}</small>
           </button>
         ))}
       </div>

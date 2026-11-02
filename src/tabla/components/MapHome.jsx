@@ -3,6 +3,7 @@ import { LEVELS, PROBLEME_LEVEL, AVANSATE_LEVEL } from '../data';
 import {
   LEVEL_PATH, isLevelDone, isLevelUnlocked, levelStars, currentLevel, previousLevel,
 } from '../mapProgress';
+import { tr } from '../i18n';
 
 // Harta e desenată într-un sistem de coordonate 1000 × 600; nodurile HTML
 // sunt poziționate în procente peste desen, ca să se scaleze împreună.
@@ -146,7 +147,7 @@ export function NodeButton({ level, scores, isCurrent, onSelect, style, buttonRe
         left: `${(pos.x / W) * 100}%`, top: `${(pos.y / H) * 100}%`, ...style, '--node-color': NODE_COLORS[level],
       }}
       onClick={() => onSelect(level)}
-      title={unlocked ? `${info.label} — ${info.hint}` : 'Nivel blocat'}
+      title={unlocked ? `${info.label} — ${info.hint}` : tr('Nivel blocat')}
     >
       <span className="map-node-circle">{unlocked ? NODE_LABELS[level] : '🔒'}</span>
       {done && <span className="map-node-stars">{'⭐'.repeat(stars)}{'☆'.repeat(3 - stars)}</span>}
@@ -154,7 +155,7 @@ export function NodeButton({ level, scores, isCurrent, onSelect, style, buttonRe
         {name}
         <small>{info.hint}</small>
       </span>
-      {isCurrent && <span className="map-node-here">Ești aici!</span>}
+      {isCurrent && <span className="map-node-here">{tr('Ești aici!')}</span>}
     </button>
   );
 }
@@ -248,7 +249,7 @@ export default function MapHome({
   const handleSelect = (level) => {
     if (!isLevelUnlocked(scores, level)) {
       const prev = LEVELS[previousLevel(level)];
-      setOwlMessage(`Termină întâi „${prev.label.replace(/^\d+\.\s*/, '')}” ca să deblochezi acest nivel! 🔒`);
+      setOwlMessage(tr('Termină întâi „{level}” ca să deblochezi acest nivel! 🔒', { level: prev.label.replace(/^\d+\.\s*/, '') }));
       return;
     }
     onPlayLevel(level);
@@ -256,11 +257,11 @@ export default function MapHome({
 
   const greeting = owlMessage
     || (doneCount === LEVEL_PATH.length
-      ? `Bravo, ${name || 'campionule'}! Ai terminat toată harta! 🏆`
-      : `Bine ai venit${name ? `, ${name}` : ''}! Hai la aventură! 🚀`);
+      ? tr('Bravo, {name}! Ai terminat toată harta! 🏆', { name: name || tr('campionule') })
+      : (name ? tr('Bine ai venit, {name}! Hai la aventură! 🚀', { name }) : tr('Bine ai venit! Hai la aventură! 🚀')));
 
   const backButton = (
-    <button className="map-home-back" onClick={onBack}>← Insula Învățării</button>
+    <button className="map-home-back" onClick={onBack}>{tr('← Insula Învățării')}</button>
   );
 
   const sideButtons = (
@@ -287,7 +288,7 @@ export default function MapHome({
             <MobileMap scores={scores} current={current} onSelect={handleSelect} />
           </div>
           <button className="map-start-mobile" onClick={() => onPlayLevel(current)}>
-            {doneCount === 0 ? 'ÎNCEPE AVENTURA!' : 'CONTINUĂ AVENTURA!'}
+            {doneCount === 0 ? tr('ÎNCEPE AVENTURA!') : tr('CONTINUĂ AVENTURA!')}
             <small>{LEVELS[current].label}</small>
           </button>
         </>
@@ -337,7 +338,7 @@ export default function MapHome({
           </div>
 
           <button className="map-start" onClick={() => onPlayLevel(current)}>
-            {doneCount === 0 ? 'ÎNCEPE AVENTURA!' : 'CONTINUĂ AVENTURA!'}
+            {doneCount === 0 ? tr('ÎNCEPE AVENTURA!') : tr('CONTINUĂ AVENTURA!')}
             <small>{LEVELS[current].label}</small>
           </button>
         </div>

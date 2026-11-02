@@ -1,3 +1,4 @@
+import { tr } from './i18n';
 // Date statice folosite de joc: niveluri, cuvinte pentru probleme, fructe pentru indicii.
 
 export const PROBLEME_LEVEL = 'probleme';
@@ -144,6 +145,13 @@ export const LEVELS = {
   logica4: { key: 'logica4', label: '🧩 4. EXERSEZ ȘI REZOLV', hint: 'Ca în manual: înmulțiri și probleme', className: 'lg4' },
   logica3: { key: 'logica3', label: '🧩 3. PROBLEME ISTEȚE', hint: 'În doi pași, ore, șiruri — până la 100', className: 'lg3' },
 };
+
+// Eticheta și indiciul fiecărui nivel apar în limba aleasă (vezi i18n.js).
+Object.values(LEVELS).forEach((level) => {
+  const { label, hint } = level;
+  Object.defineProperty(level, 'label', { get: () => tr(label), enumerable: true });
+  Object.defineProperty(level, 'hint', { get: () => tr(hint), enumerable: true });
+});
 
 export const LEVEL_ORDER = [1, 2, 3, 4, 5];
 

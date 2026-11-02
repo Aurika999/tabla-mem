@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { HALF_PATH } from '../mapProgress';
 import PathIslandMap from './PathIslandMap';
+import { tr } from '../i18n';
 
 // Lecția „Împărțirea la 2”: jumătatea unui număr, tabla împărțirii la 2 și
 // numerele pare, cu caseta „Reține” deschisă din colțul hărții.
@@ -97,8 +98,8 @@ export default function HalfMap(props) {
         intro="Apasă pe „📖 Reține” din colț ca să afli ce este jumătatea, apoi descoperă, aplică, exersează și rezolvă! ✌️"
         doneText="Știi împărțirea la 2! 🏆"
         corner={(
-          <button className="lesson-btn" onClick={() => setLessonOpen(true)} title="Lecția: împărțirea la 2">
-            <span aria-hidden="true">📖</span>Reține
+          <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={tr('Lecția: împărțirea la 2')}>
+            <span aria-hidden="true">📖</span>{tr('Reține')}
           </button>
         )}
       />

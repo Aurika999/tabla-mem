@@ -6,6 +6,7 @@ import {
 } from '../firebase';
 import { loadPlayer, savePlayerAvatar, touchPlayer } from './useChat';
 import { isValidCountry } from './countries';
+import { tr } from './i18n';
 
 const NAME_STORAGE_KEY = 'tabla-inmultirii:playerName';
 const COUNTRY_STORAGE_KEY = 'tabla-inmultirii:playerCountry';
@@ -22,7 +23,7 @@ export function normalizeEmail(email) {
 const AUTH_ERRORS = {
   'auth/email-already-in-use': 'Există deja un cont cu acest email. Alege „Am deja cont”.',
   'auth/credential-already-in-use': 'Există deja un cont cu acest email. Alege „Am deja cont”.',
-  'auth/weak-password': `Parola trebuie să aibă cel puțin ${MIN_PASSWORD_LENGTH} caractere.`,
+  'auth/weak-password': 'Parola trebuie să aibă cel puțin {n} caractere.',
   'auth/invalid-credential': 'Email sau parolă greșită.',
   'auth/wrong-password': 'Email sau parolă greșită.',
   'auth/user-not-found': 'Email sau parolă greșită.',
@@ -35,7 +36,7 @@ const AUTH_ERRORS = {
 };
 
 export function authErrorMessage(err) {
-  return AUTH_ERRORS[err?.code] || 'Ceva n-a mers. Mai încearcă!';
+  return tr(AUTH_ERRORS[err?.code] || 'Ceva n-a mers. Mai încearcă!', { n: MIN_PASSWORD_LENGTH });
 }
 
 function readStorage(key) {

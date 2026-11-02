@@ -1,5 +1,6 @@
 // Probleme de nivel avansat (tip fișă de concurs), cu mai multe tipuri de exerciții.
 import { makeAnswers } from './data';
+import { tr } from './i18n';
 
 const AVANSATE_NAMES = ['Rița-Veverița', 'Andrei', 'Mara', 'Ioana', 'Matei', 'Elena', 'David', 'Sofia'];
 
@@ -29,10 +30,10 @@ function digitCountProblem() {
   const n = randInt(15, 45);
   const digits = n <= 9 ? n : 9 + (n - 9) * 2;
   return {
-    text: `Pe o stradă sunt ${n} case, numerotate de la 1 la ${n}. Câte cifre sunt necesare pentru a scrie numerele tuturor caselor?`,
+    text: tr('Pe o stradă sunt {n} case, numerotate de la 1 la {v0}. Câte cifre sunt necesare pentru a scrie numerele tuturor caselor?', { n, v0: n }),
     answer: digits,
     choices: buildChoices(digits, [n, digits - 1, digits + 1, digits + n]),
-    explanation: `Numerele 1-9 au 1 cifră: 9 numere → 9 cifre. Numerele 10-${n} au 2 cifre: ${n - 9} numere → ${(n - 9) * 2} cifre. Total: 9 + ${(n - 9) * 2} = ${digits}.`,
+    explanation: tr('Numerele 1-9 au 1 cifră: 9 numere → 9 cifre. Numerele 10-{n} au 2 cifre: {v0} numere → {v1} cifre. Total: 9 + {v2} = {digits}.', { n, v0: n - 9, v1: (n - 9) * 2, v2: (n - 9) * 2, digits }),
   };
 }
 
@@ -41,10 +42,10 @@ function plantingRowsProblem() {
   const rows = randInt(4, 12);
   const total = perRow * rows;
   return {
-    text: `Într-o livadă s-au adus ${total} pomi pentru a fi plantați. Câte rânduri s-au format, dacă pe fiecare rând erau câte ${perRow} pomi?`,
+    text: tr('Într-o livadă s-au adus {total} pomi pentru a fi plantați. Câte rânduri s-au format, dacă pe fiecare rând erau câte {perRow} pomi?', { total, perRow }),
     answer: rows,
     choices: buildChoices(rows, [rows - 1, rows + 1, perRow, total]),
-    explanation: `Împărțim totalul de pomi la câți sunt pe un rând: ${total} : ${perRow} = ${rows} rânduri.`,
+    explanation: tr('Împărțim totalul de pomi la câți sunt pe un rând: {total} : {perRow} = {rows} rânduri.', { total, perRow, rows }),
   };
 }
 
@@ -59,7 +60,7 @@ function expressionProblem() {
       text: `${a} - ${b} × ${c} =`,
       answer,
       choices: buildChoices(answer, [commonMistake, answer - c, answer + b]),
-      explanation: `Întâi înmulțirea (are prioritate): ${b} × ${c} = ${b * c}. Apoi scădem: ${a} - ${b * c} = ${answer}.`,
+      explanation: tr('Întâi înmulțirea (are prioritate): {b} × {c} = {v0}. Apoi scădem: {a} - {v1} = {answer}.', { b, c, v0: b * c, a, v1: b * c, answer }),
     };
   }
   if (variant === 2) {
@@ -71,7 +72,7 @@ function expressionProblem() {
       text: `${a} × ${b} + ${c} =`,
       answer,
       choices: buildChoices(answer, [commonMistake, answer - a, answer + b]),
-      explanation: `Întâi înmulțirea (are prioritate): ${a} × ${b} = ${a * b}. Apoi adunăm: ${a * b} + ${c} = ${answer}.`,
+      explanation: tr('Întâi înmulțirea (are prioritate): {a} × {b} = {v0}. Apoi adunăm: {v1} + {c} = {answer}.', { a, b, v0: a * b, v1: a * b, c, answer }),
     };
   }
   const b = randInt(2, 9), q = randInt(2, 12);
@@ -83,7 +84,7 @@ function expressionProblem() {
     text: `${a} : ${b} + ${c} =`,
     answer,
     choices: buildChoices(answer, [Math.round(commonMistake), answer - 1, answer + 1]),
-    explanation: `Întâi împărțirea (are prioritate): ${a} : ${b} = ${q}. Apoi adunăm: ${q} + ${c} = ${answer}.`,
+    explanation: tr('Întâi împărțirea (are prioritate): {a} : {b} = {q}. Apoi adunăm: {v0} + {c} = {answer}.', { a, b, q, v0: q, c, answer }),
   };
 }
 
@@ -92,10 +93,10 @@ function fractionAgeProblem() {
   const n = randInt(4, 12) * 4;
   const answer = n / 2;
   return {
-    text: `${name} are vârsta egală cu dublul sfertului numărului ${n}. Câți ani are ${name}?`,
+    text: tr('{name} are vârsta egală cu dublul sfertului numărului {n}. Câți ani are {v0}?', { name, n, v0: name }),
     answer,
     choices: buildChoices(answer, [n / 4, n, answer - 2, answer + 2]),
-    explanation: `Sfertul lui ${n} este ${n} : 4 = ${n / 4}. Dublul lui ${n / 4} este ${n / 4} × 2 = ${answer}.`,
+    explanation: tr('Sfertul lui {n} este {v0} : 4 = {v1}. Dublul lui {v2} este {v3} × 2 = {answer}.', { n, v0: n, v1: n / 4, v2: n / 4, v3: n / 4, answer }),
   };
 }
 
@@ -106,10 +107,10 @@ function rabbitJumpProblem() {
   const jumpLength = length * times;
   const answer = jumpLength * jumps + jumpLength / 2;
   return {
-    text: `Un iepuraș are lungimea de ${length} cm. El poate face un salt de ${times} ori mai mare decât lungimea lui. Ce distanță parcurge (în cm) după ${jumps} salturi și jumătate?`,
+    text: tr('Un iepuraș are lungimea de {length} cm. El poate face un salt de {times} ori mai mare decât lungimea lui. Ce distanță parcurge (în cm) după {jumps} salturi și jumătate?', { length, times, jumps }),
     answer,
     choices: buildChoices(answer, [jumpLength * jumps, answer - jumpLength, answer + jumpLength]),
-    explanation: `Un salt are ${length} × ${times} = ${jumpLength} cm. Pentru ${jumps} salturi întregi: ${jumpLength} × ${jumps} = ${jumpLength * jumps} cm. Jumătate de salt: ${jumpLength} : 2 = ${jumpLength / 2} cm. Total: ${jumpLength * jumps} + ${jumpLength / 2} = ${answer} cm.`,
+    explanation: tr('Un salt are {length} × {times} = {jumpLength} cm. Pentru {jumps} salturi întregi: {v0} × {v1} = {v2} cm. Jumătate de salt: {v3} : 2 = {v4} cm. Total: {v5} + {v6} = {answer} cm.', { length, times, jumpLength, jumps, v0: jumpLength, v1: jumps, v2: jumpLength * jumps, v3: jumpLength, v4: jumpLength / 2, v5: jumpLength * jumps, v6: jumpLength / 2, answer }),
   };
 }
 
@@ -121,10 +122,10 @@ function tripMultiStepProblem() {
   const ahead = times * base;
   const answer = behind + ahead + 1;
   return {
-    text: `${name} merge într-o excursie împreună cu colegii de clasă. În urma lui sunt ${behind} colegi, iar înaintea lui sunt de ${times} ori mai mulți copii decât ${base}. Câți copii merg în total la excursie (inclusiv ${name})?`,
+    text: tr('{name} merge într-o excursie împreună cu colegii de clasă. În urma lui sunt {behind} colegi, iar înaintea lui sunt de {times} ori mai mulți copii decât {base}. Câți copii merg în total la excursie (inclusiv {v0})?', { name, behind, times, base, v0: name }),
     answer,
     choices: buildChoices(answer, [behind + ahead, ahead + 1, answer - times]),
-    explanation: `Înaintea lui ${name}: ${times} × ${base} = ${ahead} copii. Total: ${behind} (în urmă) + ${ahead} (înainte) + 1 (${name}) = ${answer}.`,
+    explanation: tr('Înaintea lui {name}: {times} × {base} = {ahead} copii. Total: {behind} (în urmă) + {v0} (înainte) + 1 ({v1}) = {answer}.', { name, times, base, ahead, behind, v0: ahead, v1: name, answer }),
   };
 }
 

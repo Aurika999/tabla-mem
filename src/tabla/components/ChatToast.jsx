@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { tr } from '../i18n';
 
 const VISIBLE_MS = 7000;
 
@@ -14,11 +15,11 @@ export default function ChatToast({ incoming, onOpen, onDismiss }) {
   return (
     <div className="chat-toast" role="status">
       <button className="chat-toast-body" onClick={() => onOpen(incoming.peer)}>
-        <b>💬 {incoming.peer.name} ți-a scris</b>
+        <b>💬 {tr('{name} ți-a scris', { name: incoming.peer.name })}</b>
         <span>{incoming.text}</span>
-        <small>Apasă ca să răspunzi</small>
+        <small>{tr('Apasă ca să răspunzi')}</small>
       </button>
-      <button className="chat-toast-close" onClick={onDismiss} aria-label="Închide">×</button>
+      <button className="chat-toast-close" onClick={onDismiss} aria-label={tr('Închide')}>×</button>
     </div>
   );
 }

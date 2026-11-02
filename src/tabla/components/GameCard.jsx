@@ -5,6 +5,7 @@ import FeedbackMessage from './FeedbackMessage';
 import ProgressBar from './ProgressBar';
 import GameControls from './GameControls';
 import Toast from './Toast';
+import { tr } from '../i18n';
 
 export default function GameCard({
   current, stats, questionsPerLevel, answered, selected, hintOpen, feedback, toast,
@@ -15,10 +16,10 @@ export default function GameCard({
       <Toast text={toast} />
       {isExam ? (
         <>
-          <div className="ribbon">{current.badge?.startsWith('✏️') ? 'EXERCIȚIUL' : 'ITEMUL'} <span>{current.examIndex + 1}</span> / {questionsPerLevel}</div>
+          <div className="ribbon">{current.badge?.startsWith('✏️') ? tr('EXERCIȚIUL') : tr('ITEMUL')} <span>{current.examIndex + 1}</span> / {questionsPerLevel}</div>
           {/* Itemii nerezolvați: apeși pe oricare ca să te întorci la el. */}
           <div className="exam-pending">
-            <span>✅ Rezolvați: <b>{stats.q}/{questionsPerLevel}</b> · Nerezolvați:</span>
+            <span>✅ {tr('Rezolvați:')} <b>{stats.q}/{questionsPerLevel}</b> · {tr('Nerezolvați:')}</span>
             {[...stats.pending].sort((x, y) => x - y).map(i => (
               <button
                 key={i}
@@ -32,7 +33,7 @@ export default function GameCard({
           </div>
         </>
       ) : (
-        <div className="ribbon">ÎNTREBAREA <span>{Math.min(stats.q + 1, questionsPerLevel)}</span> / {questionsPerLevel}</div>
+        <div className="ribbon">{tr('ÎNTREBAREA')} <span>{Math.min(stats.q + 1, questionsPerLevel)}</span> / {questionsPerLevel}</div>
       )}
       <QuestionDisplay current={current} />
       <HintPanel current={current} hintOpen={hintOpen} onToggle={onToggleHint} />

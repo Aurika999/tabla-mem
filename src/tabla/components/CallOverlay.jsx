@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { tr } from '../i18n';
 
 // Sonerie generată din browser (fără fișier audio): două tonuri scurte la fiecare 2 secunde.
 function useRingtone(active) {
@@ -62,10 +63,10 @@ export default function CallOverlay({
           <div className="modal call-modal">
             <div className="reward call-ringing">📞</div>
             <h2>{incoming.peer.name}</h2>
-            <p>te sună…</p>
+            <p>{tr('te sună…')}</p>
             <div className="call-actions">
-              <button className="call-btn accept" onClick={onAccept}>📞 Răspunde</button>
-              <button className="call-btn decline" onClick={onDecline}>✖ Refuză</button>
+              <button className="call-btn accept" onClick={onAccept}>{tr('📞 Răspunde')}</button>
+              <button className="call-btn decline" onClick={onDecline}>{tr('✖ Refuză')}</button>
             </div>
           </div>
         </div>
@@ -75,20 +76,20 @@ export default function CallOverlay({
         <div className="call-bar" role="status">
           <div className="call-bar-info">
             <b>📞 {call.peer.name}</b>
-            <span>{call.status === 'connected' ? `În apel · ${elapsed}` : STATUS_TEXT[call.status]}</span>
+            <span>{call.status === 'connected' ? `${tr('În apel')} · ${elapsed}` : tr(STATUS_TEXT[call.status])}</span>
           </div>
           <button
             className={`call-btn mute${muted ? ' active' : ''}`}
             onClick={onToggleMute}
-            title={muted ? 'Pornește microfonul' : 'Oprește microfonul'}
+            title={muted ? tr('Pornește microfonul') : tr('Oprește microfonul')}
           >
             {muted ? '🔇' : '🎤'}
           </button>
-          <button className="call-btn decline" onClick={onHangUp}>Închide</button>
+          <button className="call-btn decline" onClick={onHangUp}>{tr('Închide')}</button>
         </div>
       )}
 
-      {notice && !call && <div className="call-notice" role="status">{notice}</div>}
+      {notice && !call && <div className="call-notice" role="status">{tr(notice)}</div>}
     </>
   );
 }

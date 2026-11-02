@@ -14,6 +14,7 @@ import {
 } from './nationalTest';
 import { buildEvalProblem, isEvalLevel, gradeFor } from './evaluationProblems';
 import { buildDivisionProblem, isDivisionLevel } from './divisionProblems';
+import { tr } from './i18n';
 
 export const START_LIVES = 3;
 export const MAX_LIVES = 5;
@@ -243,7 +244,7 @@ export function useTablaGame(initialLevel = 1, paused = false) {
       }));
       setSelected(null);
       setTime(QUESTION_TIME);
-      setFeedback({ text: `✅ Pasul ${next} e corect! Acum pasul ${next + 1}.`, color: '#159632' });
+      setFeedback({ text: tr('✅ Pasul {a} e corect! Acum pasul {b}.', { a: next, b: next + 1 }), color: '#159632' });
       return;
     }
 
@@ -282,21 +283,21 @@ export function useTablaGame(initialLevel = 1, paused = false) {
       const combo = stats.combo + 1;
       const gained = 10 + (combo >= 3 ? 5 * combo : 0);
       setFeedback({
-        text: `🎉 Corect! +${gained} puncte! ${combo >= 3 ? '🔥 SUPER COMBO!' : ''}`,
+        text: `${tr('🎉 Corect! +{n} puncte!', { n: gained })} ${combo >= 3 ? tr('🔥 SUPER COMBO!') : ''}`,
         color: '#159632',
       });
       if (combo % COMBO_FOR_LIFE === 0) {
         showToast(stats.lives < MAX_LIVES
-          ? `❤️ ${combo} la rând — ai câștigat o viață!`
-          : `🔥 ${combo} la rând! Ai deja ${MAX_LIVES} vieți.`);
+          ? tr('❤️ {n} la rând — ai câștigat o viață!', { n: combo })
+          : tr('🔥 {n} la rând! Ai deja {max} vieți.', { n: combo, max: MAX_LIVES }));
       } else if (combo === 3) {
-        showToast('🔥 Ai primit bonus de combo!');
+        showToast(tr('🔥 Ai primit bonus de combo!'));
       }
     } else {
       setFeedback({
         text: current.steps
-          ? `💡 La pasul ${current.stepIndex + 1} răspunsul era ${current.correct}. Deschide rezolvarea!`
-          : `💡 Răspunsul era ${current.correct}. Mai încearcă!`,
+          ? tr('💡 La pasul {step} răspunsul era {answer}. Deschide rezolvarea!', { step: current.stepIndex + 1, answer: tr(String(current.correct)) })
+          : tr('💡 Răspunsul era {answer}. Mai încearcă!', { answer: tr(String(current.correct)) }),
         color: '#dc263e',
       });
     }
@@ -317,8 +318,8 @@ export function useTablaGame(initialLevel = 1, paused = false) {
     if (stats.lives <= 0) {
       const id = setTimeout(() => {
         setModal({
-          title: '❤️ S-au terminat viețile!',
-          text: `Ai obținut <b>${stats.points}</b> puncte. Nu-i nimic — mai încearcă! 😊`,
+          title: tr('❤️ S-au terminat viețile!'),
+          text: tr('Ai obținut <b>{n}</b> puncte. Nu-i nimic — mai încearcă! 😊', { n: stats.points }),
           showNext: false,
           outOfLives: true,
         });
@@ -330,10 +331,10 @@ export function useTablaGame(initialLevel = 1, paused = false) {
       const id = setTimeout(() => {
         const pct = stats.correct / total;
         setModal({
-          title: pct >= 0.9 ? '🏆 Excelent!' : pct >= 0.7 ? '🌟 Foarte bine!' : pct >= 0.5 ? '👏 Bravo!' : '💪 Mai exersează!',
-          text: `Ai terminat <b>„${practiceTitle(stats.level)}”</b>: <b>${stats.correct}/${total}</b> exerciții rezolvate corect.`
-            + `<br><br>Ai adunat <b>${stats.points}</b> puncte în joc.`
-            + '<br><small>Apasă „Cum se rezolvă?” la fiecare exercițiu, ca să vezi rezolvarea și verificarea.</small>',
+          title: pct >= 0.9 ? tr('🏆 Excelent!') : pct >= 0.7 ? tr('🌟 Foarte bine!') : pct >= 0.5 ? tr('👏 Bravo!') : tr('💪 Mai exersează!'),
+          text: tr('Ai terminat <b>„{title}”</b>: <b>{correct}/{total}</b> exerciții rezolvate corect.', { title: tr(practiceTitle(stats.level)), correct: stats.correct, total })
+            + tr('<br><br>Ai adunat <b>{n}</b> puncte în joc.', { n: stats.points })
+            + tr('<br><small>Apasă „Cum se rezolvă?” la fiecare exercițiu, ca să vezi rezolvarea și verificarea.</small>'),
           showNext: false,
         });
       }, 500);
@@ -344,11 +345,12 @@ export function useTablaGame(initialLevel = 1, paused = false) {
         const max = nationalMaxPoints(stats.level);
         const pct = stats.examPoints / max;
         setModal({
-          title: pct >= 0.9 ? '🏆 Excelent!' : pct >= 0.7 ? '🌟 Foarte bine!' : pct >= 0.5 ? '👏 Bravo!' : '💪 Mai exersează!',
-          text: `Ai terminat <b>Evaluarea Națională ${nationalYear(stats.level)} — „${nationalTheme(stats.level)}”</b>: <b>${stats.correct}/${total}</b> itemi rezolvați corect.`
-            + `<br><br><span class="modal-grade">📝 Punctaj: <b>${stats.examPoints} din ${max} de puncte</b></span>`
-            + `<br><br>Ai adunat și <b>${stats.points}</b> puncte în joc.`
-            + '<br><small>Apasă „Cum se rezolvă?” la fiecare item, ca să vezi rezolvarea.</small>',
+          title: pct >= 0.9 ? tr('🏆 Excelent!') : pct >= 0.7 ? tr('🌟 Foarte bine!') : pct >= 0.5 ? tr('👏 Bravo!') : tr('💪 Mai exersează!'),
+          text: tr('Ai terminat <b>Evaluarea Națională {year} — „{theme}”</b>: <b>{correct}/{total}</b> itemi rezolvați corect.',
+            { year: nationalYear(stats.level), theme: tr(nationalTheme(stats.level)), correct: stats.correct, total })
+            + tr('<br><br><span class="modal-grade">📝 Punctaj: <b>{got} din {max} de puncte</b></span>', { got: stats.examPoints, max })
+            + tr('<br><br>Ai adunat și <b>{n}</b> puncte în joc.', { n: stats.points })
+            + tr('<br><small>Apasă „Cum se rezolvă?” la fiecare item, ca să vezi rezolvarea.</small>'),
           showNext: false,
         });
       }, 500);
@@ -362,17 +364,19 @@ export function useTablaGame(initialLevel = 1, paused = false) {
         // La evaluare arătăm și calificativul, ca la școală.
         const grade = isEvalLevel(stats.level) || GRADED_SMART_LEVELS.includes(stats.level) ? gradeFor(stats.correct) : null;
         const gradeLine = grade
-          ? `<br><br><span class="modal-grade">${grade.emoji} Calificativ: <b>${grade.label} (${grade.short})</b></span>`
+          ? tr('<br><br><span class="modal-grade">{emoji} Calificativ: <b>{label} ({short})</b></span>', { emoji: grade.emoji, label: tr(grade.label), short: grade.short })
           : '';
         const nextStarHint = stars < 3
-          ? `<br><small>Pentru ${stars + 1} stele ai nevoie de cel puțin ${stars === 1 ? 6 : 9} răspunsuri corecte.</small>`
+          ? tr('<br><small>Pentru {stars} stele ai nevoie de cel puțin {n} răspunsuri corecte.</small>', { stars: stars + 1, n: stars === 1 ? 6 : 9 })
           : '';
         setModal({
-          title: pct >= 80 ? '🌟 Extraordinar!' : pct >= 50 ? '👏 Bravo!' : '💪 Continuă să exersezi!',
-          text: `Ai terminat <b>${LEVELS[stats.level].label.replace(/^\d+\.\s*/, '')}</b> cu <b>${stats.correct}/${total}</b> răspunsuri corecte și <b>${stats.points}</b> puncte.`
+          title: pct >= 80 ? tr('🌟 Extraordinar!') : pct >= 50 ? tr('👏 Bravo!') : tr('💪 Continuă să exersezi!'),
+          text: tr('Ai terminat <b>{level}</b> cu <b>{correct}/{total}</b> răspunsuri corecte și <b>{points}</b> puncte.',
+            { level: LEVELS[stats.level].label.replace(/^\d+\.\s*/, ''), correct: stats.correct, total, points: stats.points })
             + `<br><br><span class="modal-stars">${'⭐'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>`
-            + `<br>Ai câștigat <b>${stars} ${stars === 1 ? 'stea' : 'stele'}</b> la acest nivel, pe harta aventurii!`
-            + '<br><small>Pe hartă rămâne cel mai bun rezultat al tău.</small>'
+            + (stars === 1 ? tr('<br>Ai câștigat <b>1 stea</b> la acest nivel, pe harta aventurii!')
+              : tr('<br>Ai câștigat <b>{n} stele</b> la acest nivel, pe harta aventurii!', { n: stars }))
+            + tr('<br><small>Pe hartă rămâne cel mai bun rezultat al tău.</small>')
             + nextStarHint
             + gradeLine,
           showNext: Boolean(nextLevelInPath(stats.level)),
@@ -384,7 +388,7 @@ export function useTablaGame(initialLevel = 1, paused = false) {
 
   const goToNextQuestionOrFinish = useCallback(() => {
     if (!answered) {
-      showToast('Alege mai întâi un răspuns! 😊');
+      showToast(tr('Alege mai întâi un răspuns! 😊'));
       return;
     }
     if (stats.q >= questionCount(stats.level)) return;
@@ -400,11 +404,11 @@ export function useTablaGame(initialLevel = 1, paused = false) {
     }
     const rest = stats.pending.filter(i => i !== current.examIndex);
     if (rest.length === 0) {
-      showToast('E ultimul item rămas — încearcă-l! 😊');
+      showToast(tr('E ultimul item rămas — încearcă-l! 😊'));
       return;
     }
     showItems([...rest, current.examIndex]);
-    showToast(`⏭ Revii la itemul ${current.examIndex + 1} mai târziu`);
+    showToast(tr('⏭ Revii la itemul {n} mai târziu', { n: current.examIndex + 1 }));
   }, [answered, current, stats.level, stats.pending, nextQuestion, showItems, showToast]);
 
   // Evaluarea Națională: deschide direct un item nerezolvat.

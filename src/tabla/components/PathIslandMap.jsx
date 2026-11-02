@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { LEVELS } from '../data';
 import { isLevelDone, isLevelUnlocked, currentLevel, previousLevel } from '../mapProgress';
 import { Island, Waves, NodeButton, useMediaQuery, PHONE_QUERY } from './MapHome';
+import { tr } from '../i18n';
 
 // Hartă cu câteva insule legate de o potecă, câte una pentru fiecare nivel
 // (folosită de Insula Isteților și de Înmulțirea cu 5).
@@ -28,14 +29,16 @@ export default function PathIslandMap({
 
   const handleSelect = (level) => {
     if (!isLevelUnlocked(scores, level)) {
-      setOwlMessage(`Termină întâi „${levelName(previousLevel(level))}” ca să deblochezi acest nivel! 🔒`);
+      setOwlMessage(tr('Termină întâi „{level}” ca să deblochezi acest nivel! 🔒', { level: levelName(previousLevel(level)) }));
       return;
     }
     onPlayLevel(level);
   };
 
   const greeting = owlMessage
-    || (doneCount === path.length ? `Bravo${name ? `, ${name}` : ''}! ${doneText}` : intro);
+    || (doneCount === path.length
+      ? `${name ? tr('Bravo, {name}!', { name }) : tr('Bravo!')} ${tr(doneText)}`
+      : tr(intro));
 
   // Poteca dintre noduri: curbe line între insule.
   const nodes = islands.map(island => ({ x: island.cx, y: island.cy - island.ry * 0.25 }));
@@ -48,7 +51,7 @@ export default function PathIslandMap({
 
   const startButton = (className) => (
     <button className={className} onClick={() => onPlayLevel(current)}>
-      {doneCount === 0 ? 'ÎNCEPE!' : 'CONTINUĂ!'}
+      {doneCount === 0 ? tr('ÎNCEPE!') : tr('CONTINUĂ!')}
       <small>{levelName(current)}</small>
     </button>
   );
@@ -85,12 +88,12 @@ export default function PathIslandMap({
             )))}
             {islands.map(island => (
               <text key={`label-${island.level}`} className="map-island-label" x={island.cx} y={island.cy + island.ry + 34}
-                textAnchor="middle">{island.name.toUpperCase()}</text>
+                textAnchor="middle">{tr(island.name).toUpperCase()}</text>
             ))}
           </svg>
 
-          <button className="map-home-back logic-back" onClick={onBack}>{backLabel}</button>
-          <div className="logic-title">{title}</div>
+          <button className="map-home-back logic-back" onClick={onBack}>{tr(backLabel)}</button>
+          <div className="logic-title">{tr(title)}</div>
           {corner && <div className="map-corner">{corner}</div>}
 
           {islands.map((island, i) => (

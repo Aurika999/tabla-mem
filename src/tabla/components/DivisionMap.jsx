@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { DIVISION_PATH } from '../mapProgress';
 import PathIslandMap from './PathIslandMap';
+import { tr } from '../i18n';
 
 // Lecția „Împărțirea”: împărțirea ca scădere repetată și ca operație inversă
 // înmulțirii, cu caseta „Reține” deschisă din colțul hărții.
@@ -141,8 +142,8 @@ export default function DivisionMap(props) {
         intro="Apasă pe „📖 Reține” din colț ca să citești lecția despre împărțire, apoi descoperă, aplică, exersează și rezolvă! Mai jos te așteaptă cazurile speciale și proba. ➗"
         doneText="Știi ce este împărțirea! 🏆"
         corner={(
-          <button className="lesson-btn" onClick={() => setLessonOpen(true)} title="Lecția: împărțirea">
-            <span aria-hidden="true">📖</span>Reține
+          <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={tr('Lecția: împărțirea')}>
+            <span aria-hidden="true">📖</span>{tr('Reține')}
           </button>
         )}
       />

@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { buildBreakdownText } from '../data';
+import { tr } from '../i18n';
 
 function MultiplicationHint({ current, hintOpen, onToggle }) {
   const { a, b, fruit } = current;
@@ -8,7 +9,7 @@ function MultiplicationHint({ current, hintOpen, onToggle }) {
   return (
     <>
       <button className="hint-toggle" onClick={onToggle}>
-        {hintOpen ? '🙈 Ascunde explicația' : '👀 Arată explicația'}
+        {hintOpen ? tr('🙈 Ascunde explicația') : tr('👀 Arată explicația')}
       </button>
       {hintOpen && (
         <div className="breakdown">{a} × {b}  =  {buildBreakdownText(a, b)}</div>
@@ -35,9 +36,9 @@ function SolutionHint({ explanation, hintOpen, onToggle }) {
   return (
     <>
       <button className="hint-toggle" onClick={onToggle}>
-        {hintOpen ? '🙈 Ascunde rezolvarea' : '💡 Cum se rezolvă?'}
+        {hintOpen ? tr('🙈 Ascunde rezolvarea') : tr('💡 Cum se rezolvă?')}
       </button>
-      {hintOpen && <div className="breakdown solution-text">{explanation}</div>}
+      {hintOpen && <div className="breakdown solution-text">{tr(explanation)}</div>}
     </>
   );
 }

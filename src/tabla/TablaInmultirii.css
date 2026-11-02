@@ -608,3 +608,6 @@
 .tabla-inmultirii .video-btn{margin:10px auto 2px;border:0;border-radius:14px;padding:8px 16px;font-weight:900;font-size:15px;color:#fff;background:linear-gradient(180deg,#ff6b6b,#e03131);box-shadow:0 4px 0 #a51111;cursor:pointer}
 .tabla-inmultirii .video-modal{position:relative;width:min(920px,96vw);max-width:none;padding:14px;background:#111}
 .tabla-inmultirii .video-modal video{width:100%;display:block;border-radius:10px}
+.tabla-inmultirii .lang-switch{display:inline-flex;gap:2px;padding:3px}
+.tabla-inmultirii .lang-switch button{border:0;background:transparent;border-radius:10px;padding:4px 8px;font:inherit;font-weight:900;font-size:13px;color:#7a5a3a;cursor:pointer}
+.tabla-inmultirii .lang-switch button.active{background:#ff9f1c;color:#fff;box-shadow:0 2px 0 #c46d00}

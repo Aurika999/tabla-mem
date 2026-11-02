@@ -1,4 +1,6 @@
-// Coduri ISO 3166-1 alpha-2. Numele în română vin din Intl.DisplayNames.
+import { getLang } from './i18n';
+
+// Coduri ISO 3166-1 alpha-2. Numele (în limba aleasă) vin din Intl.DisplayNames.
 const CODES = [
   'AD', 'AE', 'AF', 'AG', 'AL', 'AM', 'AO', 'AR', 'AT', 'AU', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF',
   'BG', 'BH', 'BI', 'BJ', 'BN', 'BO', 'BR', 'BS', 'BT', 'BW', 'BY', 'BZ', 'CA', 'CD', 'CF', 'CG',
@@ -18,27 +20,34 @@ const CODES = [
 // Afișate primele, pentru că majoritatea jucătorilor vin de aici.
 const FEATURED = ['RO', 'MD'];
 
-const displayNames = typeof Intl !== 'undefined' && Intl.DisplayNames
-  ? new Intl.DisplayNames(['ro'], { type: 'region' })
-  : null;
+const displayNames = {};
+function namesFor(lang) {
+  if (!displayNames[lang] && typeof Intl !== 'undefined' && Intl.DisplayNames) {
+    displayNames[lang] = new Intl.DisplayNames([lang], { type: 'region' });
+  }
+  return displayNames[lang];
+}
 
 export function countryName(code) {
   if (!code) return '';
   try {
-    return displayNames?.of(code) || code;
+    return namesFor(getLang())?.of(code) || code;
   } catch {
     return code;
   }
 }
 
-const collator = new Intl.Collator('ro');
+export function featuredCountries() {
+  return FEATURED.map(code => ({ code, name: countryName(code) }));
+}
 
-export const FEATURED_COUNTRIES = FEATURED.map(code => ({ code, name: countryName(code) }));
-
-export const OTHER_COUNTRIES = CODES
-  .filter(code => !FEATURED.includes(code))
-  .map(code => ({ code, name: countryName(code) }))
-  .sort((a, b) => collator.compare(a.name, b.name));
+export function otherCountries() {
+  const collator = new Intl.Collator(getLang());
+  return CODES
+    .filter(code => !FEATURED.includes(code))
+    .map(code => ({ code, name: countryName(code) }))
+    .sort((a, b) => collator.compare(a.name, b.name));
+}
 
 export function isValidCountry(code) {
   return CODES.includes(code);

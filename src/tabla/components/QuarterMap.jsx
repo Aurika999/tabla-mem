@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { QUARTER_PATH } from '../mapProgress';
 import PathIslandMap from './PathIslandMap';
+import { tr } from '../i18n';
 
 // Lecția „Împărțirea la 4”: de 4 ori mai mic, sfertul și tabla împărțirii la 4,
 // cu caseta „Reține” deschisă din colțul hărții.
@@ -95,8 +96,8 @@ export default function QuarterMap(props) {
         intro="Apasă pe „📖 Reține” din colț ca să afli ce este sfertul, apoi descoperă, aplică, exersează și rezolvă! 🍀"
         doneText="Știi împărțirea la 4! 🏆"
         corner={(
-          <button className="lesson-btn" onClick={() => setLessonOpen(true)} title="Lecția: împărțirea la 4">
-            <span aria-hidden="true">📖</span>Reține
+          <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={tr('Lecția: împărțirea la 4')}>
+            <span aria-hidden="true">📖</span>{tr('Reține')}
           </button>
         )}
       />

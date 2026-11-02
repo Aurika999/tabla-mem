@@ -5,6 +5,7 @@ import { buildWordProblem } from './multiplicationProblems';
 import { buildAdvancedProblem } from './advancedProblems';
 import { buildEvalProblem } from './evaluationProblems';
 import { makeAnswers } from './data';
+import { getLang } from './i18n';
 
 export const SMART_LEVELS = ['ist1', 'ist2', 'ist3', 'ist4', 'ist5', 'ist6', 'ist7', 'ist8', 'ist9', 'ist10', 'ist11', 'ist12', 'ist13', 'ist14'];
 // Insula la care, la final, primești și calificativ (ca la testul de la școală).
@@ -80,6 +81,7 @@ function needsDe(n) {
   return n >= 20 && (lastTwo === 0 || lastTwo >= 20);
 }
 function addDe(text) {
+  if (getLang() === 'en') return text;
   return text.replace(/(^|[^\d:])(\d+) ([a-zăâîșț]+)/g, (match, before, num, word, offset) => (
     needsDe(Number(num)) && !NOT_NOUNS.has(word) && !/ora\s*$/.test(text.slice(0, offset + before.length))
       ? `${before}${num} de ${word}` : match

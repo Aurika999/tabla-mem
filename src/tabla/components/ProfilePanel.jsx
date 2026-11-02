@@ -8,12 +8,13 @@ import { fileToAvatar } from '../avatarImage';
 import { CountrySelect } from './AuthGate';
 import Avatar from './Avatar';
 import Flag from './Flag';
+import { tr, getLang } from '../i18n';
 
 const ALL_LEVELS = [...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL];
 
 function formatDate(date) {
   if (!date) return '—';
-  return date.toLocaleString('ro-RO', {
+  return date.toLocaleString(getLang() === 'en' ? 'en-GB' : 'ro-RO', {
     day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit',
   });
 }
@@ -26,7 +27,7 @@ function daysSince(date) {
 function InfoRow({ icon, label, value }) {
   return (
     <div className="profile-info-row">
-      <span className="profile-info-label">{icon} {label}</span>
+      <span className="profile-info-label">{icon} {tr(label)}</span>
       <span className="profile-info-value">{value}</span>
     </div>
   );
@@ -47,9 +48,9 @@ function AvatarEditor({ name, avatar, onChange }) {
       await onChange(await fileToAvatar(file));
     } catch (err) {
       console.error('Nu am putut salva avatarul', err);
-      setError(err.message === 'not-image' ? 'Alege o poză (JPG, PNG…).'
-        : err.message === 'too-big' ? 'Poza e prea mare. Alege alta.'
-          : 'Nu am putut salva poza. Mai încearcă!');
+      setError(err.message === 'not-image' ? tr('Alege o poză (JPG, PNG…).')
+        : err.message === 'too-big' ? tr('Poza e prea mare. Alege alta.')
+          : tr('Nu am putut salva poza. Mai încearcă!'));
     }
     setBusy(false);
   };
@@ -61,7 +62,7 @@ function AvatarEditor({ name, avatar, onChange }) {
       await onChange(null);
     } catch (err) {
       console.error('Nu am putut șterge avatarul', err);
-      setError('Nu am putut șterge poza. Mai încearcă!');
+      setError(tr('Nu am putut șterge poza. Mai încearcă!'));
     }
     setBusy(false);
   };
@@ -72,10 +73,10 @@ function AvatarEditor({ name, avatar, onChange }) {
       <input ref={inputRef} type="file" accept="image/*" hidden onChange={handleFile} />
       <div className="profile-avatar-actions">
         <button className="chat-call-btn" onClick={() => inputRef.current?.click()} disabled={busy}>
-          {busy ? 'Se salvează…' : avatar ? '📷 Schimbă poza' : '📷 Pune o poză'}
+          {busy ? tr('Se salvează…') : avatar ? tr('📷 Schimbă poza') : tr('📷 Pune o poză')}
         </button>
         {avatar && (
-          <button className="profile-link-btn" onClick={handleRemove} disabled={busy}>🗑️ Șterge poza</button>
+          <button className="profile-link-btn" onClick={handleRemove} disabled={busy}>{tr('🗑️ Șterge poza')}</button>
         )}
       </div>
       {error && <p className="chat-error">{error}</p>}
@@ -92,21 +93,21 @@ function DetailsForm({ name, country, onSave }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!newName.trim()) return setStatus('Scrie un nume.');
-    if (!isValidCountry(newCountry)) return setStatus('Alege țara.');
+    if (!newName.trim()) return setStatus(tr('Scrie un nume.'));
+    if (!isValidCountry(newCountry)) return setStatus(tr('Alege țara.'));
     await onSave(newName, newCountry);
-    setStatus('✅ Salvat!');
+    setStatus(tr('✅ Salvat!'));
   };
 
   return (
     <form className="auth-form" onSubmit={handleSubmit}>
-      <label>Numele din joc
+      <label>{tr('Numele din joc')}
         <input className="name-input" maxLength={20} value={newName}
           onChange={e => { setNewName(e.target.value); setStatus(''); }} />
       </label>
       <CountrySelect value={newCountry} onChange={(c) => { setNewCountry(c); setStatus(''); }} />
       {status && <p className="auth-note">{status}</p>}
-      <button className="bigbtn" type="submit" disabled={!changed}>💾 Salvează</button>
+      <button className="bigbtn" type="submit" disabled={!changed}>{tr('💾 Salvează')}</button>
     </form>
   );
 }
@@ -121,8 +122,8 @@ function PasswordForm({ onChangePassword }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (next.length < MIN_PASSWORD_LENGTH) return setError(`Parola nouă trebuie să aibă cel puțin ${MIN_PASSWORD_LENGTH} caractere.`);
-    if (next !== next2) return setError('Cele două parole noi nu sunt la fel.');
+    if (next.length < MIN_PASSWORD_LENGTH) return setError(tr('Parola nouă trebuie să aibă cel puțin {n} caractere.', { n: MIN_PASSWORD_LENGTH }));
+    if (next !== next2) return setError(tr('Cele două parole noi nu sunt la fel.'));
     setBusy(true);
     setError('');
     try {
@@ -134,7 +135,7 @@ function PasswordForm({ onChangePassword }) {
     } catch (err) {
       console.error('Schimbare parolă eșuată', err);
       setError(err?.code === 'auth/invalid-credential' || err?.code === 'auth/wrong-password'
-        ? 'Parola actuală e greșită.'
+        ? tr('Parola actuală e greșită.')
         : authErrorMessage(err));
     }
     setBusy(false);
@@ -142,22 +143,22 @@ function PasswordForm({ onChangePassword }) {
 
   return (
     <form className="auth-form" onSubmit={handleSubmit}>
-      <label>Parola actuală
+      <label>{tr('Parola actuală')}
         <input className="name-input" type="password" value={current}
           onChange={e => { setCurrent(e.target.value); setDone(false); }} autoComplete="current-password" />
       </label>
-      <label>Parola nouă
+      <label>{tr('Parola nouă')}
         <input className="name-input" type="password" value={next}
           onChange={e => setNext(e.target.value)} autoComplete="new-password" />
       </label>
-      <label>Repetă parola nouă
+      <label>{tr('Repetă parola nouă')}
         <input className="name-input" type="password" value={next2}
           onChange={e => setNext2(e.target.value)} autoComplete="new-password" />
       </label>
       {error && <p className="chat-error">{error}</p>}
-      {done && <p className="auth-success">✅ Parola a fost schimbată.</p>}
+      {done && <p className="auth-success">{tr('✅ Parola a fost schimbată.')}</p>}
       <button className="bigbtn" type="submit" disabled={busy || !current || !next}>
-        {busy ? 'Se schimbă…' : '🔒 Schimbă parola'}
+        {busy ? tr('Se schimbă…') : tr('🔒 Schimbă parola')}
       </button>
     </form>
   );
@@ -179,7 +180,7 @@ export default function ProfilePanel({
 
   return (
     <aside className="panel profile">
-      <h2>⚙️ CONTUL MEU</h2>
+      <h2>{tr('⚙️ CONTUL MEU')}</h2>
 
       <div className="profile-top">
         <AvatarEditor name={name} avatar={avatar} onChange={onUpdateAvatar} />
@@ -190,31 +191,31 @@ export default function ProfilePanel({
         </div>
       </div>
 
-      <h3 className="contest-subtitle">📋 Informații</h3>
+      <h3 className="contest-subtitle">{tr('📋 Informații')}</h3>
       <div className="profile-info">
         <InfoRow icon="📅" label="Cont creat" value={
-          <>{formatDate(account.createdAt)}{days !== null && <small> ({days === 0 ? 'azi' : `acum ${days} ${days === 1 ? 'zi' : 'zile'}`})</small>}</>
+          <>{formatDate(account.createdAt)}{days !== null && <small> ({days === 0 ? tr('azi') : days === 1 ? tr('acum 1 zi') : tr('acum {n} zile', { n: days })})</small>}</>
         } />
         <InfoRow icon="🔑" label="Ultima logare" value={formatDate(account.lastLoginAt)} />
-        <InfoRow icon="👤" label="Tip cont" value={isAnonymous ? 'Fără parolă (doar pe acest dispozitiv)' : 'Cont cu email și parolă'} />
-        <InfoRow icon="⭐" label="Puncte totale" value={`${totalPoints} pct`} />
-        <InfoRow icon="🏅" label="Locul în clasament" value={rankIndex >= 0 ? `${rankIndex + 1} din ${entries.length}` : '—'} />
-        <InfoRow icon="🎯" label="Niveluri terminate" value={`${levelsDone} din ${ALL_LEVELS.length}`} />
-        <InfoRow icon="🏁" label="Concursuri" value={`${contests.length} jucate · 🥇 ${wins} ${wins === 1 ? 'victorie' : 'victorii'}`} />
+        <InfoRow icon="👤" label="Tip cont" value={isAnonymous ? tr('Fără parolă (doar pe acest dispozitiv)') : tr('Cont cu email și parolă')} />
+        <InfoRow icon="⭐" label="Puncte totale" value={`${totalPoints} ${tr('pct')}`} />
+        <InfoRow icon="🏅" label="Locul în clasament" value={rankIndex >= 0 ? tr('{a} din {b}', { a: rankIndex + 1, b: entries.length }) : '—'} />
+        <InfoRow icon="🎯" label="Niveluri terminate" value={tr('{a} din {b}', { a: levelsDone, b: ALL_LEVELS.length })} />
+        <InfoRow icon="🏁" label="Concursuri" value={`${tr('{n} jucate', { n: contests.length })} · 🥇 ${wins} ${wins === 1 ? tr('victorie') : tr('victorii')}`} />
       </div>
 
-      <h3 className="contest-subtitle">✏️ Modifică profilul</h3>
+      <h3 className="contest-subtitle">{tr('✏️ Modifică profilul')}</h3>
       <DetailsForm key={`${name}|${country}`} name={name} country={country} onSave={onSaveDetails} />
 
       {!isAnonymous && (
         <>
-          <h3 className="contest-subtitle">🔒 Schimbă parola</h3>
+          <h3 className="contest-subtitle">{tr('🔒 Schimbă parola')}</h3>
           <PasswordForm onChangePassword={onChangePassword} />
         </>
       )}
 
       {onLogout && (
-        <button className="bigbtn blue profile-logout" onClick={onLogout}>🚪 Ieși din cont</button>
+        <button className="bigbtn blue profile-logout" onClick={onLogout}>{tr('🚪 Ieși din cont')}</button>
       )}
     </aside>
   );

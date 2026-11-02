@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { THIRD_PATH } from '../mapProgress';
 import PathIslandMap from './PathIslandMap';
+import { tr } from '../i18n';
 
 // Lecția „Împărțirea la 3”: de 3 ori mai mic și tabla împărțirii la 3,
 // cu caseta „Reține” deschisă din colțul hărții.
@@ -93,8 +94,8 @@ export default function ThirdMap(props) {
         intro="Apasă pe „📖 Reține” din colț ca să afli cum împărțim la 3, apoi descoperă, aplică, exersează și rezolvă! 🐦"
         doneText="Știi împărțirea la 3! 🏆"
         corner={(
-          <button className="lesson-btn" onClick={() => setLessonOpen(true)} title="Lecția: împărțirea la 3">
-            <span aria-hidden="true">📖</span>Reține
+          <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={tr('Lecția: împărțirea la 3')}>
+            <span aria-hidden="true">📖</span>{tr('Reține')}
           </button>
         )}
       />

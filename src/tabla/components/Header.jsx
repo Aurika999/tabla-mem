@@ -1,6 +1,7 @@
 import { START_LIVES, MAX_LIVES, COMBO_FOR_LIFE } from '../useTablaGame';
 import Flag from './Flag';
 import Avatar from './Avatar';
+import { LANGUAGES, getLang, setLang, tr } from '../i18n';
 
 const ABACUS_ROWS = [
   { y: 22, color: '#e84d8d', beads: [0, 1, 2, 6, 7] },
@@ -34,43 +35,58 @@ export default function Header({
     <header>
       <div className="logo">
         {/* Socotelnița duce mereu pe prima pagină. */}
-        <button type="button" className="logo-home" onClick={onHome} title="Prima pagină" aria-label="Prima pagină">
+        <button type="button" className="logo-home" onClick={onHome} title={tr('Prima pagină')} aria-label={tr('Prima pagină')}>
           <AbacusLogo />
         </button>
-        TABLA ÎNMULȚIRII
+        {tr('TABLA ÎNMULȚIRII')}
       </div>
       <div className="badges">
+        {/* Limba aplicației: română sau engleză. */}
+        <div className="badge lang-switch" role="group" aria-label={tr('Limba')}>
+          {LANGUAGES.map(l => (
+            <button
+              key={l.code}
+              type="button"
+              className={getLang() === l.code ? 'active' : ''}
+              onClick={() => setLang(l.code)}
+              title={l.name}
+              aria-pressed={getLang() === l.code}
+            >
+              {l.short}
+            </button>
+          ))}
+        </div>
         {playerName && (
           <button
             className={`badge player-badge${profileOpen ? ' active' : ''}`}
             onClick={onOpenProfile}
-            title={accountEmail ? `Contul meu: ${accountEmail}` : 'Contul meu'}
+            title={accountEmail ? tr('Contul meu: {email}', { email: accountEmail }) : tr('Contul meu')}
           >
             <Avatar src={playerAvatar} name={playerName} size={28} /> {playerName} <Flag code={playerCountry} /> ⚙️
           </button>
         )}
-        <div className="badge" title="Toate punctele tale, din toate jocurile">
-          ⭐ Puncte: <span>{totalPoints}</span>
-          {roundPoints > 0 && <small className="round-points"> (+{roundPoints} acum)</small>}
+        <div className="badge" title={tr('Toate punctele tale, din toate jocurile')}>
+          ⭐ {tr('Puncte:')} <span>{totalPoints}</span>
+          {roundPoints > 0 && <small className="round-points"> {tr('(+{n} acum)', { n: roundPoints })}</small>}
         </div>
         {inGame && (
           <>
             <div
               className="badge lives-badge"
-              title={`Vieți: ${lives}. Un răspuns greșit sau expirat costă o viață; la 0 se termină runda. `
-                + `${COMBO_FOR_LIFE} răspunsuri corecte la rând îți dau o viață (maximum ${MAX_LIVES}).`}
+              title={tr('Vieți: {lives}. Un răspuns greșit sau expirat costă o viață; la 0 se termină runda. {combo} răspunsuri corecte la rând îți dau o viață (maximum {max}).',
+                { lives, combo: COMBO_FOR_LIFE, max: MAX_LIVES })}
             >
               {'❤️'.repeat(Math.max(0, lives))}{'🤍'.repeat(Math.max(0, START_LIVES - lives))}
             </div>
             <div
               className={`badge combo-badge${combo >= 3 ? ' hot' : ''}`}
-              title={`Răspunsuri corecte la rând. De la 3 la rând primești bonus +5 × combo la fiecare răspuns; `
-                + `la fiecare ${COMBO_FOR_LIFE} la rând primești o viață.`}
+              title={tr('Răspunsuri corecte la rând. De la 3 la rând primești bonus +5 × combo la fiecare răspuns; la fiecare {combo} la rând primești o viață.',
+                { combo: COMBO_FOR_LIFE })}
             >
               🔥 x{combo}
               {combo >= 3 && <small className="combo-bonus"> +{5 * combo}</small>}
               {combo > 0 && combo % COMBO_FOR_LIFE !== 0 && (
-                <small className="combo-next"> · ❤️ în {COMBO_FOR_LIFE - (combo % COMBO_FOR_LIFE)}</small>
+                <small className="combo-next"> · ❤️ {tr('în {n}', { n: COMBO_FOR_LIFE - (combo % COMBO_FOR_LIFE) })}</small>
               )}
             </div>
             {time !== null && <div className="badge">⏱️ <span className={time <= 7 ? 'timer low' : ''}>{time}</span>s</div>}

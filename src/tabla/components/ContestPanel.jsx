@@ -9,6 +9,7 @@ import { addPlayerPoints } from '../useLeaderboard';
 import QuestionDisplay from './QuestionDisplay';
 import AnswerGrid from './AnswerGrid';
 import Flag from './Flag';
+import { tr } from '../i18n';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 const PRIZE_STORAGE_PREFIX = 'tabla-inmultirii:contestPrize:';
@@ -20,8 +21,8 @@ function formatSeconds(ms) {
 
 function errorText(err) {
   return err?.code === 'permission-denied'
-    ? 'Concursurile nu sunt activate încă în Firebase (regulile pentru concursuri).'
-    : 'Ceva n-a mers. Mai încearcă!';
+    ? tr('Concursurile nu sunt activate încă în Firebase (regulile pentru concursuri).')
+    : tr('Ceva n-a mers. Mai încearcă!');
 }
 
 function useNow(intervalMs, active = true) {
@@ -62,7 +63,7 @@ function Standings({ rows, uid, final }) {
           <span className="contest-progress">
             {row.finished || final
               ? `${row.correct}/${CONTEST_QUESTIONS} ✅ · ${row.answered ? formatSeconds(row.timeMs) : '—'}`
-              : `întrebarea ${Math.min(row.answered + 1, CONTEST_QUESTIONS)}/${CONTEST_QUESTIONS} · ${row.correct} ✅`}
+              : `${tr('întrebarea')} ${Math.min(row.answered + 1, CONTEST_QUESTIONS)}/${CONTEST_QUESTIONS} · ${row.correct} ✅`}
           </span>
         </li>
       ))}
@@ -78,10 +79,10 @@ function ContestGroup({ group, level, openByLevel, open, onToggle, onPick }) {
       <button type="button" className="score-group-head" onClick={onToggle} aria-expanded={open}>
         <span className="score-group-arrow" aria-hidden="true">{open ? '▾' : '▸'}</span>
         <span className="score-group-icon" aria-hidden="true">{group.icon}</span>
-        <span className="score-group-name">{group.title}</span>
+        <span className="score-group-name">{tr(group.title)}</span>
         {waiting > 0
-          ? <span className="contest-toc-waiting">🔔 {waiting} {waiting === 1 ? 'concurs' : 'concursuri'}</span>
-          : <span className="score-group-summary contest-toc-levels">{group.levels.length} niveluri</span>}
+          ? <span className="contest-toc-waiting">🔔 {waiting} {waiting === 1 ? tr('concurs') : tr('concursuri')}</span>
+          : <span className="score-group-summary contest-toc-levels">{group.levels.length} {tr('niveluri')}</span>}
       </button>
       {open && (
         <div className="contest-levels contest-toc-levels-list">
@@ -161,14 +162,13 @@ function Lobby({ uid, name, country, onEnter }) {
   return (
     <>
       <p className="contest-intro">
-        Concurează cu alți jucători (minimum 2, maximum {MAX_PLAYERS}): <b>{CONTEST_QUESTIONS} întrebări</b> din nivelul ales,
-        {' '}<b>{QUESTION_SECONDS} secunde</b> pe întrebare. Câștigă cine are cele mai multe răspunsuri corecte;
-        la egalitate, cel mai rapid. Premii: 🥇 +{PRIZE_POINTS[0]}, 🥈 +{PRIZE_POINTS[1]}, 🥉 +{PRIZE_POINTS[2]} puncte.
+        <span dangerouslySetInnerHTML={{ __html: tr('Concurează cu alți jucători (minimum 2, maximum {max}): <b>{q} întrebări</b> din nivelul ales, <b>{s} secunde</b> pe întrebare. Câștigă cine are cele mai multe răspunsuri corecte; la egalitate, cel mai rapid. Premii: 🥇 +{p1}, 🥈 +{p2}, 🥉 +{p3} puncte.',
+          { max: MAX_PLAYERS, q: CONTEST_QUESTIONS, s: QUESTION_SECONDS, p1: PRIZE_POINTS[0], p2: PRIZE_POINTS[1], p3: PRIZE_POINTS[2] }) }} />
       </p>
       {invitations.length > 0 && (
         <div className="contest-alert" role="status">
           <div className="contest-alert-title">
-            🔔 {invitations.length === 1 ? 'Cineva a inițiat un concurs!' : `${invitations.length} concursuri te așteaptă!`}
+            🔔 {invitations.length === 1 ? tr('Cineva a inițiat un concurs!') : tr('{n} concursuri te așteaptă!', { n: invitations.length })}
           </div>
           <ul className="contest-alert-list">
             {invitations.map((contest) => {
@@ -178,12 +178,12 @@ function Lobby({ uid, name, country, onEnter }) {
               return (
                 <li key={contest.id}>
                   <span>
-                    <b>👑 {contest.hostName}</b> a inițiat <b>„{contestTitle(contest)}”</b>
+                    <b>👑 {contest.hostName}</b> {tr('a inițiat')} <b>„{contestTitle(contest)}”</b>
                     <small>
-                      📍 {group.icon} {group.title} · {contestLevelLabel(contestLevel)} · {players}/{MAX_PLAYERS} jucători
+                      📍 {group.icon} {tr(group.title)} · {contestLevelLabel(contestLevel)} · {players}/{MAX_PLAYERS} {tr('jucători')}
                     </small>
                   </span>
-                  <button type="button" className="chat-call-btn" onClick={() => goToContest(contest)}>Vezi</button>
+                  <button type="button" className="chat-call-btn" onClick={() => goToContest(contest)}>{tr('Vezi')}</button>
                 </li>
               );
             })}
@@ -191,7 +191,7 @@ function Lobby({ uid, name, country, onEnter }) {
         </div>
       )}
 
-      <h3 className="contest-subtitle">📚 Cuprins: alege insula și nivelul</h3>
+      <h3 className="contest-subtitle">{tr('📚 Cuprins: alege insula și nivelul')}</h3>
       <ol className="score-groups contest-toc">
         {CONTEST_LEVEL_GROUPS.map(group => (
           <ContestGroup
@@ -218,16 +218,16 @@ function Lobby({ uid, name, country, onEnter }) {
           value={title}
           onChange={e => setTitle(e.target.value)}
           maxLength={MAX_TITLE_LENGTH}
-          placeholder={`Numele concursului (opțional) — ex. Campionii clasei a III-a`}
+          placeholder={tr('Numele concursului (opțional) — ex. Campionii clasei a III-a')}
           aria-label="Numele concursului"
         />
-        <button className="bigbtn" type="submit" disabled={busy || !name}>➕ Creează concurs: {levelName}</button>
+        <button className="bigbtn" type="submit" disabled={busy || !name}>{tr('➕ Creează concurs:')} {levelName}</button>
       </form>
       {error && <p className="chat-error">{error}</p>}
 
-      <h3 className="contest-subtitle" ref={listRef}>Concursuri {levelName} care așteaptă jucători</h3>
+      <h3 className="contest-subtitle" ref={listRef}>{tr('Concursuri {level} care așteaptă jucători', { level: levelName })}</h3>
       {contests.length === 0 && (
-        <p className="leaderboard-empty">Niciun concurs deschis la acest nivel. Creează tu unul și cheamă-ți prietenii! 🚀</p>
+        <p className="leaderboard-empty">{tr('Niciun concurs deschis la acest nivel. Creează tu unul și cheamă-ți prietenii! 🚀')}</p>
       )}
       <ol className="leaderboard-list">
         {contests.map(contest => {
@@ -246,7 +246,7 @@ function Lobby({ uid, name, country, onEnter }) {
                 onClick={() => handleJoin(contest)}
                 disabled={busy || !name || (full && !isMember)}
               >
-                {isMember ? 'Revino' : full ? 'Plin' : 'Intră'}
+                {isMember ? tr('Revino') : full ? tr('Plin') : tr('Intră')}
               </button>
             </li>
           );
@@ -279,7 +279,7 @@ function WaitingRoom({ contest, uid, onLeave }) {
       <h3 className="contest-subtitle">🏁 {contestTitle(contest)}</h3>
       <div className="contest-level-tag">{contestLevelLabel(contestLevelOf(contest))}</div>
       <p className="contest-intro">
-        {players.length} {players.length === 1 ? 'jucător' : 'jucători'} · mai pot intra {MAX_PLAYERS - players.length}
+        {players.length} {players.length === 1 ? tr('jucător') : tr('jucători')} · {tr('mai pot intra {n}', { n: MAX_PLAYERS - players.length })}
       </p>
       <ol className="leaderboard-list">
         {players.map(([playerUid, p]) => (
@@ -291,25 +291,25 @@ function WaitingRoom({ contest, uid, onLeave }) {
         {players.length < MAX_PLAYERS && (
           <li className="leaderboard-row contest-empty-slot">
             <span className="rank">⏳</span>
-            <span className="name">Se așteaptă jucători…</span>
+            <span className="name">{tr('Se așteaptă jucători…')}</span>
           </li>
         )}
       </ol>
       <p className="contest-intro">
         {isHost
           ? (players.length < MIN_PLAYERS
-            ? 'Așteptăm încă un jucător ca să poți începe…'
-            : 'Poți începe acum sau poți aștepta să mai intre jucători.')
-          : `Așteptăm ca ${contest.hostName} să înceapă concursul…`}
+            ? tr('Așteptăm încă un jucător ca să poți începe…')
+            : tr('Poți începe acum sau poți aștepta să mai intre jucători.'))
+          : tr('Așteptăm ca {name} să înceapă concursul…', { name: contest.hostName })}
       </p>
       <div className="call-actions">
         {isHost && (
           <button className="bigbtn" onClick={handleStart} disabled={busy || players.length < MIN_PLAYERS}>
-            ▶ Începe concursul
+            {tr('▶ Începe concursul')}
           </button>
         )}
         <button className="bigbtn blue" onClick={onLeave}>
-          {isHost ? '✖ Anulează concursul' : '← Ieși'}
+          {isHost ? tr('✖ Anulează concursul') : tr('← Ieși')}
         </button>
       </div>
       {error && <p className="chat-error">{error}</p>}
@@ -381,9 +381,9 @@ function Play({ contest, uid, name, country, myResult, startAt, standings }) {
   if (inCountdown) {
     return (
       <div className="contest-countdown">
-        <p>Concursul începe în</p>
+        <p>{tr('Concursul începe în')}</p>
         <div className="contest-countdown-number">{countdownLeft}</div>
-        <p>Pregătește-te! 🚀</p>
+        <p>{tr('Pregătește-te! 🚀')}</p>
       </div>
     );
   }
@@ -395,7 +395,7 @@ function Play({ contest, uid, name, country, myResult, startAt, standings }) {
     <div className="contest-play">
       <div className="contest-play-main">
         <div className="contest-level-tag">{contestLevelLabel(contestLevelOf(contest))}</div>
-        <div className="ribbon">ÎNTREBAREA {index + 1} / {questions.length}</div>
+        <div className="ribbon">{tr('ÎNTREBAREA')} {index + 1} / {questions.length}</div>
         <div className={`contest-timer${secondsLeft <= 5 ? ' low' : ''}`}>⏱️ {secondsLeft}s</div>
         <div className="contest-timer-bar">
           <span style={{ width: `${(secondsLeft / QUESTION_SECONDS) * 100}%` }} />
@@ -404,7 +404,7 @@ function Play({ contest, uid, name, country, myResult, startAt, standings }) {
         <AnswerGrid current={question} answered={answered} selected={selected} onAnswer={handleAnswer} />
       </div>
       <div className="contest-play-side">
-        <h3 className="contest-subtitle">Adversari</h3>
+        <h3 className="contest-subtitle">{tr('Adversari')}</h3>
         <Standings rows={standings} uid={uid} final={false} />
       </div>
     </div>
@@ -443,15 +443,15 @@ function Results({ contest, uid, name, standings, final, onExit }) {
         <div className="contest-final">
           <div className="reward">{myRank >= 0 && myRank < 3 ? MEDALS[myRank] : '👏'}</div>
           <h3>
-            {myRank === 0 ? 'Ai câștigat locul 1! 🏆' : myRank > 0 ? `Ai terminat pe locul ${myRank + 1}!` : 'Concurs încheiat!'}
+            {myRank === 0 ? tr('Ai câștigat locul 1! 🏆') : myRank > 0 ? tr('Ai terminat pe locul {n}!', { n: myRank + 1 }) : tr('Concurs încheiat!')}
           </h3>
-          {myRank >= 0 && myRank < PRIZE_POINTS.length && <p>Premiu: <b>+{PRIZE_POINTS[myRank]} puncte</b> în clasament ⭐</p>}
+          {myRank >= 0 && myRank < PRIZE_POINTS.length && <p dangerouslySetInnerHTML={{ __html: tr('Premiu: <b>+{n} puncte</b> în clasament ⭐', { n: PRIZE_POINTS[myRank] }) }} />}
         </div>
       ) : (
-        <p className="contest-intro">Ai terminat! ⏳ Așteptăm să termine și ceilalți…</p>
+        <p className="contest-intro">{tr('Ai terminat! ⏳ Așteptăm să termine și ceilalți…')}</p>
       )}
       <Standings rows={standings} uid={uid} final={final} />
-      {final && <button className="bigbtn" onClick={onExit}>🏁 Înapoi la concursuri</button>}
+      {final && <button className="bigbtn" onClick={onExit}>{tr('🏁 Înapoi la concursuri')}</button>}
     </>
   );
 }
@@ -484,27 +484,27 @@ export default function ContestPanel({ uid, name, country, firebaseEnabled, cont
 
   let body;
   if (!firebaseEnabled) {
-    body = <p className="leaderboard-empty">Concursul are nevoie de Firebase configurat.</p>;
+    body = <p className="leaderboard-empty">{tr('Concursul are nevoie de Firebase configurat.')}</p>;
   } else if (!uid || !name) {
-    body = <p className="leaderboard-empty">Alege-ți un nume ca să participi.</p>;
+    body = <p className="leaderboard-empty">{tr('Alege-ți un nume ca să participi.')}</p>;
   } else if (!contestId) {
     body = <Lobby uid={uid} name={name} country={country} onEnter={onContestChange} />;
   } else if (!contestLoaded || (!loaded && contest?.status !== 'waiting')) {
-    body = <p className="leaderboard-empty">Se încarcă…</p>;
+    body = <p className="leaderboard-empty">{tr('Se încarcă…')}</p>;
   } else if (!contest || contest.status === 'cancelled') {
     body = (
       <>
-        <p className="leaderboard-empty">Concursul a fost anulat.</p>
-        <button className="bigbtn" onClick={exit}>🏁 Înapoi la concursuri</button>
+        <p className="leaderboard-empty">{tr('Concursul a fost anulat.')}</p>
+        <button className="bigbtn" onClick={exit}>{tr('🏁 Înapoi la concursuri')}</button>
       </>
     );
   } else if (!contest.players?.[uid]) {
     body = (
       <>
         <p className="leaderboard-empty">
-          {contest.status === 'waiting' ? 'Nu mai ești în acest concurs.' : 'Concursul a început fără tine.'}
+          {contest.status === 'waiting' ? tr('Nu mai ești în acest concurs.') : tr('Concursul a început fără tine.')}
         </p>
-        <button className="bigbtn" onClick={exit}>🏁 Înapoi la concursuri</button>
+        <button className="bigbtn" onClick={exit}>{tr('🏁 Înapoi la concursuri')}</button>
       </>
     );
   } else if (contest.status === 'waiting') {
@@ -534,7 +534,7 @@ export default function ContestPanel({ uid, name, country, firebaseEnabled, cont
 
   return (
     <aside className="panel contest">
-      <h2>🏁 CONCURS TEST</h2>
+      <h2>{tr('🏁 CONCURS TEST')}</h2>
       {body}
     </aside>
   );

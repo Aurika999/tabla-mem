@@ -9,6 +9,7 @@ import { REVIEW_LEVELS } from '../reviewProblems';
 import Flag from './Flag';
 import Avatar from './Avatar';
 import ContestHistory from './ContestHistory';
+import { tr } from '../i18n';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 // Scorurile grupate pe insule, în ordinea din joc.
@@ -55,9 +56,9 @@ function ScoreGroup({ group, scores }) {
       <button className="score-group-head" onClick={() => setOpen(o => !o)} aria-expanded={open}>
         <span className="score-group-arrow" aria-hidden="true">{open ? '▾' : '▸'}</span>
         <span className="score-group-icon" aria-hidden="true">{group.icon}</span>
-        <span className="score-group-name">{group.name}</span>
+        <span className="score-group-name">{tr(group.name)}</span>
         <span className="score-group-summary">
-          {played.length ? `${played.length}/${group.levels.length} ${allDone ? '🏆' : '✅'} · ${points} pct` : 'neînceput'}
+          {played.length ? `${played.length}/${group.levels.length} ${allDone ? '🏆' : '✅'} · ${points} ${tr('pct')}` : tr('neînceput')}
         </span>
       </button>
       {open && (
@@ -67,7 +68,7 @@ function ScoreGroup({ group, scores }) {
             return (
               <li key={key} className="leaderboard-row">
                 <span className="name">{levelName(key)}</span>
-                <span className="points">{score ? `${score.points} pct · ${score.correct}/${questionCount(key)} ✅` : '—'}</span>
+                <span className="points">{score ? `${score.points} ${tr('pct')} · ${score.correct}/${questionCount(key)} ✅` : '—'}</span>
               </li>
             );
           })}
@@ -78,7 +79,7 @@ function ScoreGroup({ group, scores }) {
 }
 
 function MyScoresList({ scores, loading }) {
-  if (loading) return <p className="leaderboard-empty">Se încarcă…</p>;
+  if (loading) return <p className="leaderboard-empty">{tr('Se încarcă…')}</p>;
   // Întâi insulele în care ai jucat, apoi cele neîncepute.
   const sorted = SCORE_GROUPS.filter(g => !g.onlyIfPlayed || g.levels.some(k => scores[k])).sort((a, b) =>
     Number(b.levels.some(k => scores[k])) - Number(a.levels.some(k => scores[k])));
@@ -90,8 +91,8 @@ function MyScoresList({ scores, loading }) {
 }
 
 function LeaderboardList({ entries, loading, uid, pointsField, emptyText }) {
-  if (loading) return <p className="leaderboard-empty">Se încarcă…</p>;
-  if (entries.length === 0) return <p className="leaderboard-empty">{emptyText}</p>;
+  if (loading) return <p className="leaderboard-empty">{tr('Se încarcă…')}</p>;
+  if (entries.length === 0) return <p className="leaderboard-empty">{tr(emptyText)}</p>;
   return (
     <ol className="leaderboard-list">
       {entries.map((entry, i) => (
@@ -99,7 +100,7 @@ function LeaderboardList({ entries, loading, uid, pointsField, emptyText }) {
           <span className="rank">{MEDALS[i] || `${i + 1}.`}</span>
           <Avatar src={entry.avatar} name={entry.name} size={28} />
           <span className="name">{entry.name} <Flag code={entry.country} /></span>
-          <span className="points">{entry[pointsField]} pct</span>
+          <span className="points">{entry[pointsField]} {tr('pct')}</span>
         </li>
       ))}
     </ol>
@@ -114,9 +115,9 @@ export default function Leaderboard({ uid, firebaseEnabled }) {
   if (!firebaseEnabled) {
     return (
       <aside className="panel leaderboard">
-        <h2>🏅 CLASAMENT</h2>
+        <h2>{tr('🏅 CLASAMENT')}</h2>
         <p className="leaderboard-empty">
-          Clasamentul online nu este configurat. Adaugă cheile Firebase în <code>.env.local</code> pentru a-l activa.
+          {tr('Clasamentul online nu este configurat.')}
         </p>
       </aside>
     );
@@ -124,31 +125,31 @@ export default function Leaderboard({ uid, firebaseEnabled }) {
 
   return (
     <aside className="panel leaderboard">
-      <h2>🏅 CLASAMENT</h2>
+      <h2>{tr('🏅 CLASAMENT')}</h2>
       <div className="leaderboard-tabs">
         <button
           className={`leaderboard-tab${tab === 'mine' ? ' active' : ''}`}
           onClick={() => setTab('mine')}
         >
-          ⭐ Scorurile mele
+          {tr('⭐ Scorurile mele')}
         </button>
         <button
           className={`leaderboard-tab${tab === 'global' ? ' active' : ''}`}
           onClick={() => setTab('global')}
         >
-          🌍 Toți jucătorii
+          {tr('🌍 Toți jucătorii')}
         </button>
         <button
           className={`leaderboard-tab${tab === 'contests' ? ' active' : ''}`}
           onClick={() => setTab('contests')}
         >
-          🏁 Concursurile mele
+          {tr('🏁 Concursurile mele')}
         </button>
       </div>
 
       {tab === 'mine' ? (
         <>
-          <p className="leaderboard-sub">Cel mai bun scor al tău pe fiecare nivel</p>
+          <p className="leaderboard-sub">{tr('Cel mai bun scor al tău pe fiecare nivel')}</p>
           <MyScoresList scores={myScores} loading={myLoading} />
         </>
       ) : tab === 'contests' ? (
@@ -157,10 +158,10 @@ export default function Leaderboard({ uid, firebaseEnabled }) {
         <>
           {!globalLoading && (
             <p className="leaderboard-count">
-              👥 {globalEntries.length} {globalEntries.length === 1 ? 'jucător înregistrat' : 'jucători înregistrați'}
+              👥 {globalEntries.length} {globalEntries.length === 1 ? tr('jucător înregistrat') : tr('jucători înregistrați')}
             </p>
           )}
-          <p className="leaderboard-sub">Punctaj total, toate nivelurile</p>
+          <p className="leaderboard-sub">{tr('Punctaj total, toate nivelurile')}</p>
           <LeaderboardList
             entries={globalEntries}
             loading={globalLoading}

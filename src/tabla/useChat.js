@@ -5,6 +5,7 @@ import {
   setDoc, where, writeBatch,
 } from 'firebase/firestore';
 import { db, firebaseEnabled } from '../firebase';
+import { tr } from './i18n';
 
 const GENERAL_COLLECTION = 'messages';
 const CHATS_COLLECTION = 'chats';
@@ -130,7 +131,7 @@ export function notifySystem(title, body, tag) {
 }
 
 function showSystemNotification(sender, text) {
-  notifySystem(`💬 ${sender} ți-a scris`, text, 'tabla-chat');
+  notifySystem(`💬 ${tr('{name} ți-a scris', { name: sender })}`, text, 'tabla-chat');
 }
 
 // Conversațiile private ale jucătorului, ce e necitit și notificarea pentru
@@ -256,7 +257,7 @@ export function setChatTyping(chatId, uid, on) {
 }
 
 export function formatCallDuration(seconds) {
-  if (seconds < 60) return `${seconds} s`;
+  if (seconds < 60) return `${seconds} s`;  // „s” și „min” sunt la fel în română și engleză
   const minutes = Math.floor(seconds / 60);
   const rest = seconds % 60;
   return rest ? `${minutes} min ${rest} s` : `${minutes} min`;

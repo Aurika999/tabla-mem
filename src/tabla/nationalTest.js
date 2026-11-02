@@ -1,3 +1,4 @@
+import { tr } from './i18n';
 // Testele „Evaluarea Națională la finalul clasei a II-a” la Matematică și Explorarea mediului:
 // 2026 („Animale de companie”, 18 itemi) și cele două din 2025 („Medii de viață” și „Animale polare”),
 // fiecare cu toți itemii,
@@ -471,20 +472,20 @@ const SUB_MINUS_RULE = 'Scăzătorul se află scăzând diferența din descăzut
 
 const simple = (eq, x, answer, mistakes, rule, check) => ({
   points: 1,
-  text: `Află termenul necunoscut: ${eq}. Cât este ${x}?`,
+  get text() { return tr('Află termenul necunoscut: {eq}. Cât este {x}?', { eq, x }); },
   answer,
   choices: shuffle([answer, ...mistakes]),
-  explanation: `${rule} ${check}`,
+  get explanation() { return `${tr(rule)} ${tr(check)}`; },
 });
 
 const twoStep = (eq, first, firstAnswer, firstMistakes, second, answer, mistakes, rule, check) => ({
   points: 1,
-  text: `Află termenul necunoscut: ${eq}`,
+  get text() { return tr('Află termenul necunoscut: {eq}', { eq }); },
   steps: [
     step(first, firstAnswer, [firstAnswer, ...firstMistakes]),
     step(second, answer, [answer, ...mistakes]),
   ],
-  explanation: `${rule} ${check}`,
+  get explanation() { return `${tr(rule)} ${tr(check)}`; },
 });
 
 const ITEMS_TERMS = [
@@ -508,7 +509,7 @@ const ITEMS_TERMS = [
     'Acum t − 19 = 16. t = ?', 35, [3, 25, 45], SUB_START_RULE, 't = 16 + 19 = 35. Verificare: 35 − 19 = 16.'),
   simple('r − 37 = 26', 'r', 63, [11, 53, 73], SUB_START_RULE, 'r = 26 + 37 = 63. Verificare: 63 − 37 = 26.'),
 // Fiecare exercițiu are un video: învățătoarea îl rezolvă la tablă (public/video/termeni-1…12.mp4).
-].map((item, i) => ({ ...item, video: `termeni-${i + 1}.mp4` }));
+].map((item, i) => ({ ...item, video: tr('termeni-{v0}.mp4', { v0: i + 1 }) }));
 
 const TESTS = {
   en2026: { year: 2026, theme: 'Animale de companie', items: ITEMS_2026 },
@@ -541,7 +542,7 @@ export function nationalYear(level) {
 
 // Tema testului, ca să deosebim testele din același an.
 export function nationalTheme(level) {
-  return TESTS[level]?.theme;
+  return TESTS[level]?.theme ? tr(TESTS[level].theme) : undefined;
 }
 
 // Punctajul maxim al testului (100 de puncte, ca la examen).
@@ -559,7 +560,7 @@ export function buildNationalItem(level, index) {
   const { items } = TESTS[level];
   const item = items[Math.min(index, items.length - 1)];
   const badge = TESTS[level].practice
-    ? `✏️ Exercițiul ${index + 1} din ${items.length}`
-    : `🎓 Itemul ${index + 1} din ${items.length} · ${item.points}p.`;
+    ? tr('✏️ Exercițiul {i} din {n}', { i: index + 1, n: items.length })
+    : tr('🎓 Itemul {i} din {n} · {p}p.', { i: index + 1, n: items.length, p: item.points });
   return { ...item, badge };
 }

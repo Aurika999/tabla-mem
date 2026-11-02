@@ -29,12 +29,15 @@ import QuarterMap from './components/QuarterMap';
 import FifthMap from './components/FifthMap';
 import { SixMap, SevenMap, EightMap, NineMap } from './components/DivisorMaps';
 import LessonMap from './components/LessonMap';
+import { tr, useLang } from './i18n';
 
 const PAGE_TITLE = 'Tabla Înmulțirii';
 // Sub această lățime coloanele stau una sub alta (vezi .main în CSS).
 const STACKED_LAYOUT_QUERY = '(max-width: 900px)';
 
 export default function TablaInmultirii() {
+  // Limba aleasă: când se schimbă, se redesenează toată aplicația.
+  const lang = useLang();
   // 'map' = prima pagină (harta aventurii); 'game' = exercițiile și panourile.
   // 'home' = prima pagină (Arena, Învață, Insula Isteților), 'map' = harta nivelurilor
   // de înmulțire, 'logic' = harta Insulei Isteților, 'game' = exercițiu/panouri.
@@ -174,8 +177,8 @@ export default function TablaInmultirii() {
   };
 
   useEffect(() => {
-    document.title = unreadCount > 0 ? `(${unreadCount}) ${PAGE_TITLE}` : PAGE_TITLE;
-  }, [unreadCount]);
+    document.title = unreadCount > 0 ? `(${unreadCount}) ${tr(PAGE_TITLE)}` : tr(PAGE_TITLE);
+  }, [unreadCount, lang]);
 
   useEffect(() => {
     if (!modal || !uid || !name) return;
@@ -198,7 +201,7 @@ export default function TablaInmultirii() {
   };
 
   const handleLogout = async () => {
-    if (!window.confirm('Sigur vrei să ieși din cont?')) return;
+    if (!window.confirm(tr('Sigur vrei să ieși din cont?'))) return;
     hangUp();
     setOpenPanel(null);
     setChatPeer(null);
@@ -406,7 +409,7 @@ export default function TablaInmultirii() {
 
           <div className="main-content" ref={contentRef}>
             {/* Pe telefon lista de niveluri e ascunsă (nivelurile se aleg de pe hartă). */}
-            <button className="map-back-btn phone-only" onClick={goToMap}>🗺️ HARTA AVENTURII</button>
+            <button className="map-back-btn phone-only" onClick={goToMap}>🗺️ {tr('HARTA AVENTURII')}</button>
             {openPanel ? (
               <div className="info-view">
                 {openPanel === 'leaderboard' && (
@@ -451,12 +454,12 @@ export default function TablaInmultirii() {
                   />
                 )}
                 <button className="bigbtn" onClick={closePanel}>
-                  {{
+                  {tr({
                     home: '🏝️ Înapoi la prima pagină', map: '🗺️ Înapoi la hartă', logic: '🧩 Înapoi la insulă', eval: '📝 Înapoi la insulă',
                     lessons: '📘 Înapoi la Tabla înmulțirii', school: '🎒 Înapoi la Insula Învățării',
                     division: '➗ Înapoi la Tabla împărțirii', national: '🎓 Înapoi la Evaluarea Națională', divlesson: '➗ Înapoi la insulă', halflesson: '✌️ Înapoi la insulă', thirdlesson: '🐦 Înapoi la insulă', quarterlesson: '🍀 Înapoi la insulă', fifthlesson: '🏮 Înapoi la insulă', sixlesson: '🍬 Înapoi la insulă', sevenlesson: '📅 Înapoi la insulă', eightlesson: '🐙 Înapoi la insulă', ninelesson: '🎯 Înapoi la insulă',
                   }[panelOrigin] || (panelOrigin?.startsWith('lesson') && '📖 Înapoi la insulă')
-                    || '▶ Înapoi la exercițiu'}
+                    || '▶ Înapoi la exercițiu')}
                 </button>
               </div>
             ) : (

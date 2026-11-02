@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { tr } from '../i18n';
 // Imaginea unei întrebări: grupe egale de obiecte (ex. 18 flori în 3 grupe).
 function Picture({ picture }) {
   const { icon, groups, per, holder } = picture;
@@ -21,10 +22,10 @@ function Visual({ visual }) {
   if (visual.type === 'table') {
     return (
       <table className="exam-table">
-        <caption>{visual.caption}</caption>
+        <caption>{tr(visual.caption)}</caption>
         <tbody>
-          <tr>{visual.rows.map(([icon, name]) => <th key={name}><span aria-hidden="true">{icon}</span> {name}</th>)}</tr>
-          <tr>{visual.rows.map(([, name, value]) => <td key={name}>{value}</td>)}</tr>
+          <tr>{visual.rows.map(([icon, name]) => <th key={name}><span aria-hidden="true">{icon}</span> {tr(name)}</th>)}</tr>
+          <tr>{visual.rows.map(([, name, value]) => <td key={name}>{typeof value === 'string' ? tr(value) : value}</td>)}</tr>
         </tbody>
       </table>
     );
@@ -33,7 +34,7 @@ function Visual({ visual }) {
     return (
       <div className={`exam-poster${visual.wide ? ' wide' : ''}`} aria-label="Imaginea din test">
         {visual.title && (
-          <div className="exam-poster-title">{visual.title.map(line => <div key={line}>{line}</div>)}</div>
+          <div className="exam-poster-title">{visual.title.map(line => <div key={line}>{tr(line)}</div>)}</div>
         )}
         <div className="exam-poster-grid" aria-hidden="true">{visual.cells.map((cell, i) => <span key={i}>{cell}</span>)}</div>
       </div>
@@ -54,7 +55,7 @@ function Steps({ current }) {
     <ol className="question-steps">
       {current.steps.slice(0, current.stepIndex + 1).map((step, i) => (
         <li key={i} className={i < current.stepIndex ? 'done' : 'current'}>
-          <b>Pasul {i + 1} din {current.steps.length}:</b> {step.question}
+          <b>{tr('Pasul {i} din {n}:', { i: i + 1, n: current.steps.length })}</b> {tr(step.question)}
           {i < current.stepIndex && <span className="question-step-answer"> ✅ {step.answer}</span>}
         </li>
       ))}
@@ -67,11 +68,11 @@ function VideoButton({ src }) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button type="button" className="video-btn" onClick={() => setOpen(true)}>▶️ Vezi cum se rezolvă (video)</button>
+      <button type="button" className="video-btn" onClick={() => setOpen(true)}>{tr('▶️ Vezi cum se rezolvă (video)')}</button>
       {open && (
         <div className="overlay lesson-overlay" onClick={() => setOpen(false)} role="dialog" aria-modal="true" aria-label="Video">
           <div className="modal video-modal" onClick={e => e.stopPropagation()}>
-            <button className="lesson-close" onClick={() => setOpen(false)} aria-label="Închide">✕</button>
+            <button className="lesson-close" onClick={() => setOpen(false)} aria-label={tr('Închide')}>✕</button>
             <video src={`${process.env.PUBLIC_URL}/video/${src}`} controls autoPlay playsInline />
           </div>
         </div>
@@ -84,9 +85,9 @@ export default function QuestionDisplay({ current }) {
   if (current.steps) {
     return (
       <div className="question-word">
-        <span className="wp-badge">{current.badge || '📖 Problemă'} · rezolvă pe pași</span>
+        <span className="wp-badge">{tr(current.badge || '📖 Problemă')} · {tr('rezolvă pe pași')}</span>
         <br />
-        {current.problemText}
+        {tr(current.problemText)}
         {current.visual && <Visual visual={current.visual} />}
         {current.picture && <Picture picture={current.picture} />}
         {current.video && <div><VideoButton src={current.video} /></div>}
@@ -97,9 +98,9 @@ export default function QuestionDisplay({ current }) {
   if (current.isWordProblem) {
     return (
       <div className="question-word">
-        <span className="wp-badge">{current.badge || '📖 Problemă'}</span>
+        <span className="wp-badge">{tr(current.badge || '📖 Problemă')}</span>
         <br />
-        {current.problemText}
+        {tr(current.problemText)}
         {current.visual && <Visual visual={current.visual} />}
         {current.picture && <Picture picture={current.picture} />}
         {current.video && <div><VideoButton src={current.video} /></div>}
@@ -108,7 +109,7 @@ export default function QuestionDisplay({ current }) {
   }
   return (
     <>
-      {current.badge && <div><span className="wp-badge">{current.badge}</span></div>}
+      {current.badge && <div><span className="wp-badge">{tr(current.badge)}</span></div>}
       <div className="question">{current.a} × {current.b} = ?</div>
     </>
   );

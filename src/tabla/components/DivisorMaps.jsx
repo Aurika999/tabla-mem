@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { DIV6_PATH, DIV7_PATH, DIV8_PATH, DIV9_PATH } from '../mapProgress';
 import PathIslandMap from './PathIslandMap';
+import { tr } from '../i18n';
 
 // Lecțiile „Împărțirea la 6”, „la 7”, „la 8” și „la 9”: aceeași hartă, cu insulele și caseta
 // „Reține” proprii fiecărui împărțitor.
@@ -123,16 +124,16 @@ function DivisorMap({ d, ...props }) {
       <PathIslandMap
         {...props}
         mapKey={lesson.mapKey}
-        title={`${lesson.icon} ÎMPĂRȚIREA LA ${d}`}
+        title={tr('{icon} ÎMPĂRȚIREA LA {d}', { icon: lesson.icon, d })}
         path={lesson.path}
         layouts={lesson.layouts}
         ocean={lesson.ocean}
         backLabel="← Tabla împărțirii"
-        intro={`Apasă pe „📖 Reține” din colț ca să afli cum împărțim la ${d}, apoi descoperă, aplică, exersează și rezolvă! ${lesson.icon}`}
-        doneText={`Știi împărțirea la ${d}! 🏆`}
+        intro={tr('Apasă pe „📖 Reține” din colț ca să afli cum împărțim la {d}, apoi descoperă, aplică, exersează și rezolvă! {icon}', { d, icon: lesson.icon })}
+        doneText={tr('Știi împărțirea la {d}! 🏆', { d })}
         corner={(
-          <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={`Lecția: împărțirea la ${d}`}>
-            <span aria-hidden="true">📖</span>Reține
+          <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={tr('Lecția: împărțirea la {d}', { d })}>
+            <span aria-hidden="true">📖</span>{tr('Reține')}
           </button>
         )}
       />

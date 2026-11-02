@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 export default function AnswerGrid({ current, answered, selected, onAnswer }) {
   return (
     <div className="answers">
@@ -13,7 +14,7 @@ export default function AnswerGrid({ current, answered, selected, onAnswer }) {
             disabled={answered}
             onClick={() => onAnswer(value)}
           >
-            {value}
+            {typeof value === 'string' ? tr(value) : value}
           </button>
         );
       })}

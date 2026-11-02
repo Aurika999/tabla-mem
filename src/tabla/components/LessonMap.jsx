@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { LESSON_PATHS } from '../mapProgress';
 import PathIslandMap from './PathIslandMap';
+import { tr } from '../i18n';
 
 // Insulele „Înmulțirea cu 5 / 6 / 7”: câte o insulă pentru fiecare secțiune a
 // lecției din manual (Descopăr, Aplic, Exersez, Rezolv probleme) și caseta
@@ -243,11 +244,11 @@ export default function LessonMap({ factor, ...props }) {
         path={LESSON_PATHS[factor]}
         layouts={layoutsFor(lesson.names, lesson.decor, LESSON_PATHS[factor])}
         ocean={lesson.ocean}
-        intro={`Apasă pe „📖 Reține” din colț ca să citești lecția, apoi descoperă, aplică, exersează și rezolvă! ${lesson.title.split(' ')[0]}`}
-        doneText={`Știi înmulțirea cu ${factor}! 🏆`}
+        intro={tr('Apasă pe „📖 Reține” din colț ca să citești lecția, apoi descoperă, aplică, exersează și rezolvă! {icon}', { icon: lesson.title.split(' ')[0] })}
+        doneText={tr('Știi înmulțirea cu {factor}! 🏆', { factor })}
         corner={(
-          <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={`Lecția: înmulțirea cu ${factor}`}>
-            <span aria-hidden="true">📖</span>Reține
+          <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={tr('Lecția: înmulțirea cu {factor}', { factor })}>
+            <span aria-hidden="true">📖</span>{tr('Reține')}
           </button>
         )}
       />

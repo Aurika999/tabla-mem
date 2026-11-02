@@ -5,6 +5,7 @@ import { NATIONAL_LEVELS, questionCount, nationalYear, nationalTheme } from '../
 import { REVIEW_LEVELS } from '../reviewProblems';
 import InstallButton from './InstallButton';
 import { Island, Waves, useMediaQuery, PHONE_QUERY } from './MapHome';
+import { tr } from '../i18n';
 
 // Prima pagină (Arena Concursului și Insula Învățării), pagina „Insula Învățării”
 // (Insula Isteților, Tabla înmulțirii, Tabla împărțirii, Evaluare) și pagina
@@ -212,184 +213,185 @@ export default function HomeIslands({
   const allCards = [
     {
       key: 'school',
-      title: 'INSULA ÎNVĂȚĂRII',
-      subtitle: `🎒 ${schoolDone} / ${schoolTotal} niveluri · isteți, lecții, împărțire, evaluare`,
-      cta: '🎒 Hai să învățăm!',
+      title: tr('INSULA ÎNVĂȚĂRII'),
+      subtitle: tr('🎒 {schoolDone} / {schoolTotal} niveluri · isteți, lecții, împărțire, evaluare', { schoolDone, schoolTotal }),
+      cta: tr('🎒 Hai să învățăm!'),
       onClick: onOpenSchool,
     },
     {
       key: 'arena',
-      title: 'ARENA CONCURSULUI',
-      subtitle: 'Concurează cu alți jucători',
-      cta: '🏁 Intră în arenă',
+      title: tr('ARENA CONCURSULUI'),
+      subtitle: tr('Concurează cu alți jucători'),
+      cta: tr('🏁 Intră în arenă'),
       onClick: () => onOpenPanel('contest'),
     },
     {
       key: 'termeni46',
       ctaClass: 'terms',
-      title: 'TERMENII NECUNOSCUȚI',
+      title: tr('TERMENII NECUNOSCUȚI'),
       subtitle: scores.termeni46
-        ? `✏️ Cel mai bun: ${scores.termeni46.correct} / ${questionCount('termeni46')} · fără cronometru`
-        : `✏️ a + 34 = 62 · ${questionCount('termeni46')} exerciții · fără cronometru`,
-      cta: '✏️ Află termenii',
+        ? tr('✏️ Cel mai bun: {v0} / {v1} · fără cronometru', { v0: scores.termeni46.correct, v1: questionCount('termeni46') })
+        : tr('✏️ a + 34 = 62 · {v0} exerciții · fără cronometru', { v0: questionCount('termeni46') }),
+      cta: tr('✏️ Află termenii'),
       onClick: () => onOpenNational('termeni46'),
     },
     {
       key: 'national',
       ctaClass: 'national',
-      title: 'EVALUAREA NAȚIONALĂ',
-      subtitle: `🎓 ${NATIONAL_LEVELS.filter(level => scores[level]).length} / ${NATIONAL_LEVELS.length} teste date · clasa a II-a`,
-      cta: '🎓 Alege testul',
+      title: tr('EVALUAREA NAȚIONALĂ'),
+      subtitle: tr('🎓 {v0} / {v1} teste date · clasa a II-a', { v0: NATIONAL_LEVELS.filter(level => scores[level]).length, v1: NATIONAL_LEVELS.length }),
+      cta: tr('🎓 Alege testul'),
       onClick: onOpenNationalHub,
     },
     {
       key: 'recap1',
       ctaClass: 'recap',
-      title: 'PROBLEME DE RECAPITULARE',
+      title: tr('PROBLEME DE RECAPITULARE'),
       subtitle: scores.recap1
-        ? `🌳 Cel mai bun: ${scores.recap1.correct} / 10 · probleme pe pași`
-        : '🌳 Urși, copaci, veverițe, postere · pe pași',
-      cta: '🌳 Rezolvă problemele',
+        ? tr('🌳 Cel mai bun: {v0} / 10 · probleme pe pași', { v0: scores.recap1.correct })
+        : tr('🌳 Urși, copaci, veverițe, postere · pe pași'),
+      cta: tr('🌳 Rezolvă problemele'),
       onClick: () => onOpenNational('recap1'),
     },
     // Câte o insulă pentru fiecare test de Evaluare Națională (în pagina „Evaluarea Națională”).
     ...NATIONAL_LEVELS.map(level => ({
       key: level,
       ctaClass: 'national',
-      title: `EVALUAREA NAȚIONALĂ ${nationalYear(level)}`,
+      title: tr('EVALUAREA NAȚIONALĂ {v0}', { v0: nationalYear(level) }),
       subtitle: scores[level]
-        ? `🎓 ${nationalTheme(level)} · cel mai bun: ${scores[level].correct} / ${questionCount(level)}`
-        : `🎓 ${nationalTheme(level)} · ${questionCount(level)} itemi`,
-      cta: '🎓 Începe testul',
+        ? tr('🎓 {v0} · cel mai bun: {v1} / {v2}', { v0: nationalTheme(level), v1: scores[level].correct, v2: questionCount(level) })
+        : tr('🎓 {v0} · {v1} itemi', { v0: nationalTheme(level), v1: questionCount(level) }),
+      cta: tr('🎓 Începe testul'),
       onClick: () => onOpenNational(level),
     })),
     {
       key: 'logic',
-      title: 'INSULA ISTEȚILOR',
+      title: tr('INSULA ISTEȚILOR'),
       subtitle: logicDone === LOGIC_PATH.length
-        ? 'Ai terminat toate problemele! 🏆'
-        : `🧩 ${logicDone} / ${LOGIC_PATH.length} niveluri · de la ușor la avansat`,
-      cta: '🧩 Rezolvă probleme',
+        ? tr('Ai terminat toate problemele! 🏆')
+        : tr('🧩 {logicDone} / {v1} niveluri · de la ușor la avansat', { logicDone, v1: LOGIC_PATH.length }),
+      cta: tr('🧩 Rezolvă probleme'),
       onClick: onOpenLogic,
     },
     {
       key: 'lessons',
-      title: 'TABLA ÎNMULȚIRII',
-      subtitle: `📘 ${lessonsDone} / ${LESSON_FACTORS.length} lecții terminate · de la 2 la 9`,
-      cta: '📘 Alege lecția',
+      title: tr('TABLA ÎNMULȚIRII'),
+      subtitle: tr('📘 {lessonsDone} / {v1} lecții terminate · de la 2 la 9', { lessonsDone, v1: LESSON_FACTORS.length }),
+      cta: tr('📘 Alege lecția'),
       onClick: onOpenLessons,
     },
     ...LESSON_FACTORS.map(factor => ({
       key: `lesson${factor}`,
       ctaClass: LESSON_CARDS[factor].cta,
-      title: `ÎNMULȚIREA CU ${factor}`,
+      title: tr('ÎNMULȚIREA CU {factor}', { factor }),
       subtitle: lessonDone(factor) === LESSON_PATHS[factor].length
-        ? `Știi înmulțirea cu ${factor}! 🏆`
-        : `${LESSON_CARDS[factor].icon} ${lessonDone(factor)} / ${LESSON_PATHS[factor].length} · lecția din manual`,
-      cta: `${LESSON_CARDS[factor].icon} Învață cu ${factor}`,
+        ? tr('Știi înmulțirea cu {factor}! 🏆', { factor })
+        : tr('{v0} {v1} / {v2} · lecția din manual', { v0: LESSON_CARDS[factor].icon, v1: lessonDone(factor), v2: LESSON_PATHS[factor].length }),
+      cta: tr('{v0} Învață cu {factor}', { v0: LESSON_CARDS[factor].icon, factor }),
       onClick: () => onOpenLesson(factor),
     })),
     {
       key: 'division',
-      title: 'TABLA ÎMPĂRȚIRII',
-      subtitle: `➗ ${divisionDone} / ${divisionTotal} niveluri · lecțiile despre împărțire`,
-      cta: '➗ Învață împărțirea',
+      title: tr('TABLA ÎMPĂRȚIRII'),
+      subtitle: tr('➗ {divisionDone} / {divisionTotal} niveluri · lecțiile despre împărțire', { divisionDone, divisionTotal }),
+      cta: tr('➗ Învață împărțirea'),
       onClick: onOpenDivision,
     },
     {
       key: 'div1',
       ctaClass: 'division',
-      title: 'ÎMPĂRȚIREA',
+      title: tr('ÎMPĂRȚIREA'),
       subtitle: lessonOnlyDone === DIVISION_PATH.length
-        ? 'Știi ce este împărțirea! 🏆'
-        : `➗ ${lessonOnlyDone} / ${DIVISION_PATH.length} · cazuri speciale, proba`,
-      cta: '➗ Începe lecția',
+        ? tr('Știi ce este împărțirea! 🏆')
+        : tr('➗ {lessonOnlyDone} / {v1} · cazuri speciale, proba', { lessonOnlyDone, v1: DIVISION_PATH.length }),
+      cta: tr('➗ Începe lecția'),
       onClick: onOpenDivisionLesson,
     },
     {
       key: 'div2',
       ctaClass: 'half',
-      title: 'ÎMPĂRȚIREA LA 2',
+      title: tr('ÎMPĂRȚIREA LA 2'),
       subtitle: halfDone === HALF_PATH.length
-        ? 'Știi împărțirea la 2! 🏆'
-        : `✌️ ${halfDone} / ${HALF_PATH.length} · jumătatea, numere pare`,
-      cta: '✌️ Începe lecția',
+        ? tr('Știi împărțirea la 2! 🏆')
+        : tr('✌️ {halfDone} / {v1} · jumătatea, numere pare', { halfDone, v1: HALF_PATH.length }),
+      cta: tr('✌️ Începe lecția'),
       onClick: onOpenHalfLesson,
     },
     {
       key: 'div3',
       ctaClass: 'third',
-      title: 'ÎMPĂRȚIREA LA 3',
+      title: tr('ÎMPĂRȚIREA LA 3'),
       subtitle: thirdDone === THIRD_PATH.length
-        ? 'Știi împărțirea la 3! 🏆'
-        : `🐦 ${thirdDone} / ${THIRD_PATH.length} · de 3 ori mai mic`,
-      cta: '🐦 Începe lecția',
+        ? tr('Știi împărțirea la 3! 🏆')
+        : tr('🐦 {thirdDone} / {v1} · de 3 ori mai mic', { thirdDone, v1: THIRD_PATH.length }),
+      cta: tr('🐦 Începe lecția'),
       onClick: onOpenThirdLesson,
     },
     {
       key: 'div4',
       ctaClass: 'quarter',
-      title: 'ÎMPĂRȚIREA LA 4',
+      title: tr('ÎMPĂRȚIREA LA 4'),
       subtitle: quarterDone === QUARTER_PATH.length
-        ? 'Știi împărțirea la 4! 🏆'
-        : `🍀 ${quarterDone} / ${QUARTER_PATH.length} · sfertul, de 4 ori mai mic`,
-      cta: '🍀 Începe lecția',
+        ? tr('Știi împărțirea la 4! 🏆')
+        : tr('🍀 {quarterDone} / {v1} · sfertul, de 4 ori mai mic', { quarterDone, v1: QUARTER_PATH.length }),
+      cta: tr('🍀 Începe lecția'),
       onClick: onOpenQuarterLesson,
     },
     {
       key: 'div5',
       ctaClass: 'fifth',
-      title: 'ÎMPĂRȚIREA LA 5',
+      title: tr('ÎMPĂRȚIREA LA 5'),
       subtitle: fifthDone === FIFTH_PATH.length
-        ? 'Știi împărțirea la 5! 🏆'
-        : `🏮 ${fifthDone} / ${FIFTH_PATH.length} · de 5 ori mai mic`,
-      cta: '🏮 Începe lecția',
+        ? tr('Știi împărțirea la 5! 🏆')
+        : tr('🏮 {fifthDone} / {v1} · de 5 ori mai mic', { fifthDone, v1: FIFTH_PATH.length }),
+      cta: tr('🏮 Începe lecția'),
       onClick: onOpenFifthLesson,
     },
     {
       key: 'div6',
       ctaClass: 'six',
-      title: 'ÎMPĂRȚIREA LA 6',
+      title: tr('ÎMPĂRȚIREA LA 6'),
       subtitle: sixDone === DIV6_PATH.length
-        ? 'Știi împărțirea la 6! 🏆'
-        : `🍬 ${sixDone} / ${DIV6_PATH.length} · de 6 ori mai mic`,
-      cta: '🍬 Începe lecția',
+        ? tr('Știi împărțirea la 6! 🏆')
+        : tr('🍬 {sixDone} / {v1} · de 6 ori mai mic', { sixDone, v1: DIV6_PATH.length }),
+      cta: tr('🍬 Începe lecția'),
       onClick: onOpenSixLesson,
     },
     {
       key: 'div7',
       ctaClass: 'seven',
-      title: 'ÎMPĂRȚIREA LA 7',
+      title: tr('ÎMPĂRȚIREA LA 7'),
       subtitle: sevenDone === DIV7_PATH.length
-        ? 'Știi împărțirea la 7! 🏆'
-        : `📅 ${sevenDone} / ${DIV7_PATH.length} · de 7 ori mai mic`,
-      cta: '📅 Începe lecția',
+        ? tr('Știi împărțirea la 7! 🏆')
+        : tr('📅 {sevenDone} / {v1} · de 7 ori mai mic', { sevenDone, v1: DIV7_PATH.length }),
+      cta: tr('📅 Începe lecția'),
       onClick: onOpenSevenLesson,
     },
     {
       key: 'div8',
       ctaClass: 'eight',
-      title: 'ÎMPĂRȚIREA LA 8',
+      title: tr('ÎMPĂRȚIREA LA 8'),
       subtitle: eightDone === DIV8_PATH.length
-        ? 'Știi împărțirea la 8! 🏆'
-        : `🐙 ${eightDone} / ${DIV8_PATH.length} · de 8 ori mai mic`,
-      cta: '🐙 Începe lecția',
+        ? tr('Știi împărțirea la 8! 🏆')
+        : tr('🐙 {eightDone} / {v1} · de 8 ori mai mic', { eightDone, v1: DIV8_PATH.length }),
+      cta: tr('🐙 Începe lecția'),
       onClick: onOpenEightLesson,
     },
     {
       key: 'div9',
       ctaClass: 'nine',
-      title: 'ÎMPĂRȚIREA LA 9',
+      title: tr('ÎMPĂRȚIREA LA 9'),
       subtitle: nineDone === DIV9_PATH.length
-        ? 'Știi împărțirea la 9! 🏆'
-        : `🎯 ${nineDone} / ${DIV9_PATH.length} · de 9 ori mai mic`,
-      cta: '🎯 Începe lecția',
+        ? tr('Știi împărțirea la 9! 🏆')
+        : tr('🎯 {nineDone} / {v1} · de 9 ori mai mic', { nineDone, v1: DIV9_PATH.length }),
+      cta: tr('🎯 Începe lecția'),
       onClick: onOpenNineLesson,
     },
   ];
   const keys = { home: HOME_KEYS, school: SCHOOL_KEYS, lessons: LESSON_KEYS, division: DIVISION_KEYS, national: [...NATIONAL_LEVELS, ...REVIEW_LEVELS] }[mode];
   const cards = keys.map(key => allCards.find(card => card.key === key));
-  const greeting = subpage ? subpage.greeting : `Bine ai venit${name ? `, ${name}` : ''}! Alege o insulă! 🏝️`;
+  const greeting = subpage ? tr(subpage.greeting)
+    : (name ? tr('Bine ai venit, {name}! Alege o insulă! 🏝️', { name }) : tr('Bine ai venit! Alege o insulă! 🏝️'));
 
   // Butoanele Clasament, Chat (și pe prima pagină: Despre joc, Instalează).
   // Pe telefon stau jos, într-un chenar separat, pe toate paginile cu insule.
@@ -398,20 +400,20 @@ export default function HomeIslands({
       {/* Pe prima pagină: prezentarea jocului (PDF), pentru părinți și învățători. */}
       {mode === 'home' && (
         <button onClick={() => window.open(`${process.env.PUBLIC_URL}/despre-joc.pdf`, '_blank', 'noopener')}>
-          <span>📄</span>Despre joc
+          <span>📄</span>{tr('Despre joc')}
         </button>
       )}
       {mode === 'home' && <InstallButton />}
-      <button onClick={() => onOpenPanel('leaderboard')}><span>🏆</span>Clasament</button>
+      <button onClick={() => onOpenPanel('leaderboard')}><span>🏆</span>{tr('Clasament')}</button>
       <button onClick={() => onOpenPanel('chat')}>
-        <span>💬</span>Chat
+        <span>💬</span>{tr('Chat')}
         {chatUnread > 0 && <b className="level-badge">{chatUnread}</b>}
       </button>
     </>
   );
   const navButtons = (
     <nav className={`map-side${mode === 'home' ? ' home-nav' : ''}`}>
-      {subpage && isPhone && <button className="map-home-back" onClick={onBack}>{subpage.back}</button>}
+      {subpage && isPhone && <button className="map-home-back" onClick={onBack}>{tr(subpage.back)}</button>}
       {!isPhone && panelButtons}
     </nav>
   );
@@ -448,8 +450,8 @@ export default function HomeIslands({
 
           {subpage && !isPhone && (
             <>
-              <button className="map-home-back logic-back" onClick={onBack}>{subpage.back}</button>
-              <div className="logic-title lessons-title">{subpage.title}</div>
+              <button className="map-home-back logic-back" onClick={onBack}>{tr(subpage.back)}</button>
+              <div className="logic-title lessons-title">{tr(subpage.title)}</div>
             </>
           )}
           {/* Pe telefon butonul de întoarcere stă în bara de sus, lângă Clasament și Chat, iar titlul
@@ -458,7 +460,7 @@ export default function HomeIslands({
           {!(isPhone && mode === 'home') && (
             <div className={isPhone ? 'phone-top' : undefined}>
               {navButtons}
-              {subpage && isPhone && <div className="logic-title lessons-title">{subpage.title}</div>}
+              {subpage && isPhone && <div className="logic-title lessons-title">{tr(subpage.title)}</div>}
             </div>
           )}
 

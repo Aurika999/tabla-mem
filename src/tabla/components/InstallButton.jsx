@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { tr } from '../i18n';
 
 // Aplicația e deja deschisă ca aplicație instalată (de pe ecranul principal)?
 function isInstalled() {
@@ -51,30 +52,34 @@ export default function InstallButton() {
   const ios = isIos();
   return (
     <>
-      <button onClick={handleClick}><span>📲</span>Instalează</button>
+      <button onClick={handleClick}><span>📲</span>{tr('Instalează')}</button>
       {guideOpen && (
-        <div className="overlay lesson-overlay" onClick={() => setGuideOpen(false)} role="dialog" aria-modal="true" aria-label="Instalează aplicația">
+        <div className="overlay lesson-overlay" onClick={() => setGuideOpen(false)} role="dialog" aria-modal="true" aria-label={tr('Instalează aplicația')}>
           <div className="modal install-modal" onClick={e => e.stopPropagation()}>
-            <button className="lesson-close" onClick={() => setGuideOpen(false)} aria-label="Închide">✕</button>
-            <h2>📲 Instalează jocul</h2>
-            <p className="install-lead">Pune <b>Tabla Înmulțirii</b> pe ecranul telefonului, ca pe o aplicație adevărată!</p>
+            <button className="lesson-close" onClick={() => setGuideOpen(false)} aria-label={tr('Închide')}>✕</button>
+            <h2>{tr('📲 Instalează jocul')}</h2>
+            <p className="install-lead" dangerouslySetInnerHTML={{ __html: tr('Pune <b>Tabla Înmulțirii</b> pe ecranul telefonului, ca pe o aplicație adevărată!') }} />
             {ios ? (
               <ol className="install-steps">
-                <li>Deschide jocul în <b>Safari</b> (browserul cu busolă 🧭).</li>
-                <li>Apasă butonul <b>Partajează</b> <span className="install-key">⬆️</span> din bara de jos.</li>
-                <li>Derulează și alege <b>„Adaugă pe ecranul principal”</b> <span className="install-key">➕</span>.</li>
-                <li>Apasă <b>„Adaugă”</b> în colțul din dreapta-sus.</li>
-                <li>Gata! Pe ecran apare iconița cu <b>socotelnița 🧮</b>. Jocul se deschide pe tot ecranul.</li>
+                {[
+                  'Deschide jocul în <b>Safari</b> (browserul cu busolă 🧭).',
+                  'Apasă butonul <b>Partajează</b> <span class="install-key">⬆️</span> din bara de jos.',
+                  'Derulează și alege <b>„Adaugă pe ecranul principal”</b> <span class="install-key">➕</span>.',
+                  'Apasă <b>„Adaugă”</b> în colțul din dreapta-sus.',
+                  'Gata! Pe ecran apare iconița cu <b>socotelnița 🧮</b>. Jocul se deschide pe tot ecranul.',
+                ].map(step => <li key={step} dangerouslySetInnerHTML={{ __html: tr(step) }} />)}
               </ol>
             ) : (
               <ol className="install-steps">
-                <li>Deschide meniul browserului <span className="install-key">⋮</span> (sus, în dreapta).</li>
-                <li>Alege <b>„Instalează aplicația”</b> sau <b>„Adaugă pe ecranul de pornire”</b>.</li>
-                <li>Confirmă cu <b>„Instalează”</b>. Pe ecran apare iconița cu <b>socotelnița 🧮</b>.</li>
+                {[
+                  'Deschide meniul browserului <span class="install-key">⋮</span> (sus, în dreapta).',
+                  'Alege <b>„Instalează aplicația”</b> sau <b>„Adaugă pe ecranul de pornire”</b>.',
+                  'Confirmă cu <b>„Instalează”</b>. Pe ecran apare iconița cu <b>socotelnița 🧮</b>.',
+                ].map(step => <li key={step} dangerouslySetInnerHTML={{ __html: tr(step) }} />)}
               </ol>
             )}
-            <p className="install-note">Progresul tău rămâne același: te conectezi cu același cont.</p>
-            <button className="bigbtn lesson-ok" onClick={() => setGuideOpen(false)}>👍 Am înțeles!</button>
+            <p className="install-note">{tr('Progresul tău rămâne același: te conectezi cu același cont.')}</p>
+            <button className="bigbtn lesson-ok" onClick={() => setGuideOpen(false)}>{tr('👍 Am înțeles!')}</button>
           </div>
         </div>
       )}
