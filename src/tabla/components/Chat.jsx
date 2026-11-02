@@ -5,6 +5,7 @@ import {
 } from '../useChat';
 import Avatar from './Avatar';
 import Flag from './Flag';
+import ChatText from './ChatText';
 import { tr, getLang } from '../i18n';
 
 const EMOJIS = [
@@ -354,11 +355,11 @@ function Conversation({
                   )}
                   {msg.replyTo && (
                     <button className="chat-quote" onClick={() => jumpTo(msg.replyTo.id)}>
-                      <b>{msg.replyTo.uid === uid ? 'Tu' : msg.replyTo.name}</b>
+                      <b>{msg.replyTo.uid === uid ? tr('Tu') : msg.replyTo.name}</b>
                       <span>{msg.replyTo.text}</span>
                     </button>
                   )}
-                  <span className="chat-text">{msg.text}</span>
+                  <ChatText text={msg.text} />
                   <span className="chat-time">
                     {formatClock(date)}
                     {mine && <Ticks msg={msg} peerReadAt={peerReadAt} isPrivate={isPrivate} />}

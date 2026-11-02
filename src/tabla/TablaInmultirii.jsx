@@ -147,8 +147,8 @@ export default function TablaInmultirii() {
   } = useChatNotifications(uid, activeChatId);
 
   const {
-    call, incoming: incomingCall, muted, notice: callNotice, remoteAudioRef,
-    startCall, acceptCall, declineCall, hangUp, toggleMute,
+    call, incoming: incomingCall, muted, notice: callNotice, remoteAudioRef, cameraOn, localStream, remoteStream, remoteTracks,
+    startCall, acceptCall, declineCall, hangUp, toggleMute, toggleCamera,
   } = useCall({ uid, name });
 
   const handleOpenPanel = key => {
@@ -511,6 +511,11 @@ export default function TablaInmultirii() {
         onDecline={declineCall}
         onHangUp={hangUp}
         onToggleMute={toggleMute}
+        cameraOn={cameraOn}
+        localStream={localStream}
+        remoteStream={remoteStream}
+        remoteTracks={remoteTracks}
+        onToggleCamera={toggleCamera}
       />
     </div>
   );

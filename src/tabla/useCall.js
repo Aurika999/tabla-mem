@@ -6,14 +6,15 @@ import { db, firebaseEnabled } from '../firebase';
 import { notifySystem, logCallInChat } from './useChat';
 import { tr } from './i18n';
 
-// Apeluri audio WebRTC. Firestore e folosit doar pentru „semnalizare”
-// (ofertă/răspuns/candidați ICE); sunetul merge direct între jucători.
+// Apeluri video WebRTC (cu cameră; doar audio dacă nu există cameră). Firestore e folosit doar pentru
+// „semnalizare” (ofertă/răspuns/candidați ICE); sunetul și imaginea merg direct între jucători.
 const CALLS_COLLECTION = 'calls';
 const ICE_SERVERS = [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }];
 const RING_TIMEOUT_MS = 30000;
 // Un apel „ringing” mai vechi de atât e considerat abandonat (ex. apelantul a închis tab-ul).
 const STALE_RING_MS = 45000;
 const NOTICE_MS = 3500;
+const CAMERA = { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } };
 
 function callDocRef(callId) {
   return doc(db, CALLS_COLLECTION, callId);
@@ -25,6 +26,11 @@ export function useCall({ uid, name }) {
   const [incoming, setIncoming] = useState(null);
   const [muted, setMuted] = useState(false);
   const [notice, setNotice] = useState('');
+  const [cameraOn, setCameraOn] = useState(false);
+  // Fluxurile pentru imagine: al nostru (previzualizarea mică) și al celuilalt.
+  const [localStream, setLocalStream] = useState(null);
+  const [remoteStream, setRemoteStream] = useState(null);
+  const [remoteTracks, setRemoteTracks] = useState(0);
 
   const callRef = useRef(null);
   const pcRef = useRef(null);
@@ -60,6 +66,10 @@ export function useCall({ uid, name }) {
     localStreamRef.current = null;
     if (remoteAudioRef.current) remoteAudioRef.current.srcObject = null;
     setMuted(false);
+    setCameraOn(false);
+    setLocalStream(null);
+    setRemoteStream(null);
+    setRemoteTracks(0);
   }, []);
 
   // Încheie apelul local; dacă status e dat, îl scrie și în Firestore ca să afle și celălalt.
@@ -92,6 +102,8 @@ export function useCall({ uid, name }) {
     localStreamRef.current.getTracks().forEach(track => pc.addTrack(track, localStreamRef.current));
 
     pc.ontrack = (event) => {
+      setRemoteStream(event.streams[0]);
+      setRemoteTracks(n => n + 1);
       if (remoteAudioRef.current) {
         remoteAudioRef.current.srcObject = event.streams[0];
         remoteAudioRef.current.play().catch(() => {});
@@ -139,13 +151,24 @@ export function useCall({ uid, name }) {
     };
   }, [finish, updateCall]);
 
+  // Microfon + cameră; fără cameră (sau fără permisiune pentru ea) apelul merge doar cu sunet.
   const getMicrophone = useCallback(async () => {
     if (!navigator.mediaDevices?.getUserMedia) {
       showNotice('Browserul tău nu permite apeluri.');
       return null;
     }
+    const ready = (stream) => {
+      setLocalStream(stream);
+      setCameraOn(stream.getVideoTracks().length > 0);
+      return stream;
+    };
     try {
-      return await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      return ready(await navigator.mediaDevices.getUserMedia({ audio: true, video: CAMERA }));
+    } catch (err) {
+      console.warn('Fără cameră, încercăm doar cu microfonul', err);
+    }
+    try {
+      return ready(await navigator.mediaDevices.getUserMedia({ audio: true, video: false }));
     } catch (err) {
       console.error('Fără acces la microfon', err);
       showNotice('🎤 Permite accesul la microfon ca să poți vorbi.');
@@ -265,6 +288,17 @@ export function useCall({ uid, name }) {
     finish('Apel încheiat.', status, 'ended');
   }, [finish]);
 
+  const toggleCamera = useCallback(() => {
+    const tracks = localStreamRef.current?.getVideoTracks() ?? [];
+    if (!tracks.length) {
+      showNotice('📷 Nu am acces la cameră.');
+      return;
+    }
+    const next = !cameraOn;
+    tracks.forEach(t => { t.enabled = next; });
+    setCameraOn(next);
+  }, [cameraOn, showNotice]);
+
   const toggleMute = useCallback(() => {
     const tracks = localStreamRef.current?.getAudioTracks() ?? [];
     const nextMuted = !muted;
@@ -327,7 +361,7 @@ export function useCall({ uid, name }) {
   }, [cleanup]);
 
   return {
-    call, incoming, muted, notice, remoteAudioRef,
-    startCall, acceptCall, declineCall, hangUp, toggleMute,
+    call, incoming, muted, notice, remoteAudioRef, cameraOn, localStream, remoteStream, remoteTracks,
+    startCall, acceptCall, declineCall, hangUp, toggleMute, toggleCamera,
   };
 }

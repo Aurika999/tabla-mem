@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { tr } from '../i18n';
 
 // Sonerie generată din browser (fără fișier audio): două tonuri scurte la fiecare 2 secunde.
@@ -42,6 +42,50 @@ function useElapsed(since) {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 }
 
+// Un <video> legat de un flux; sunetul celuilalt merge prin <audio>, deci imaginea e mereu fără sunet.
+function StreamVideo({ stream, className }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!ref.current) return;
+    ref.current.srcObject = stream || null;
+    if (stream) ref.current.play().catch(() => {});
+  }, [stream]);
+  return <video ref={ref} className={className} autoPlay playsInline muted />;
+}
+
+function CallVideo({ call, cameraOn, localStream, remoteStream, remoteTracks }) {
+  const [big, setBig] = useState(false);
+  const remoteHasVideo = Boolean(remoteTracks && remoteStream?.getVideoTracks().length);
+  const localHasVideo = Boolean(localStream?.getVideoTracks().length);
+  if (!remoteHasVideo && !localHasVideo) return null;
+  return (
+    <div className={`call-video${big ? ' big' : ''}`}>
+      {remoteHasVideo && call.status === 'connected'
+        ? <StreamVideo stream={remoteStream} className="call-video-remote" />
+        : (
+          <div className="call-video-wait">
+            <span className="call-video-initial">{(call.peer.name || '?').slice(0, 1).toUpperCase()}</span>
+            <span>{call.status === 'connected' ? call.peer.name : tr(STATUS_TEXT[call.status])}</span>
+          </div>
+        )}
+      {localHasVideo && (
+        cameraOn
+          ? <StreamVideo stream={localStream} className="call-video-local" />
+          : <div className="call-video-local off">📷</div>
+      )}
+      <button
+        type="button"
+        className="call-video-size"
+        onClick={() => setBig(b => !b)}
+        title={big ? tr('Micșorează') : tr('Mărește')}
+        aria-label={big ? tr('Micșorează') : tr('Mărește')}
+      >
+        {big ? '🗗' : '⛶'}
+      </button>
+    </div>
+  );
+}
+
 const STATUS_TEXT = {
   ringing: 'Se sună…',
   connecting: 'Se conectează…',
@@ -49,6 +93,7 @@ const STATUS_TEXT = {
 
 export default function CallOverlay({
   call, incoming, muted, notice, remoteAudioRef, onAccept, onDecline, onHangUp, onToggleMute,
+  cameraOn, localStream, remoteStream, remoteTracks, onToggleCamera,
 }) {
   useRingtone(Boolean(incoming));
   const elapsed = useElapsed(call?.status === 'connected' ? call.connectedAt : null);
@@ -73,9 +118,13 @@ export default function CallOverlay({
       )}
 
       {call && (
+        <CallVideo call={call} cameraOn={cameraOn} localStream={localStream} remoteStream={remoteStream} remoteTracks={remoteTracks} />
+      )}
+
+      {call && (
         <div className="call-bar" role="status">
           <div className="call-bar-info">
-            <b>📞 {call.peer.name}</b>
+            <b>{localStream?.getVideoTracks().length ? '📹' : '📞'} {call.peer.name}</b>
             <span>{call.status === 'connected' ? `${tr('În apel')} · ${elapsed}` : tr(STATUS_TEXT[call.status])}</span>
           </div>
           <button
@@ -85,11 +134,19 @@ export default function CallOverlay({
           >
             {muted ? '🔇' : '🎤'}
           </button>
+          <button
+            className={`call-btn mute${cameraOn ? '' : ' active'}`}
+            onClick={onToggleCamera}
+            title={cameraOn ? tr('Oprește camera') : tr('Pornește camera')}
+            aria-label={cameraOn ? tr('Oprește camera') : tr('Pornește camera')}
+          >
+            {cameraOn ? '📹' : '🚫'}
+          </button>
           <button className="call-btn decline" onClick={onHangUp}>{tr('Închide')}</button>
         </div>
       )}
 
-      {notice && !call && <div className="call-notice" role="status">{tr(notice)}</div>}
+      {notice && <div className={`call-notice${call ? ' raised' : ''}`} role="status">{tr(notice)}</div>}
     </>
   );
 }
