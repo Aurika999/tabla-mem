@@ -1,8 +1,8 @@
-# Tabla Înmulțirii: ce este aplicația și cui îi este destinată
+# Math Owl: ce este aplicația și cui îi este destinată
 
 ## Pe scurt
 
-**Tabla Înmulțirii** este un joc educativ de matematică pe care copiii îl folosesc în browser, pe calculator sau pe telefon. Cu el, copiii învață și exersează **înmulțirea, împărțirea, adunarea și scăderea** și se pregătesc pentru **Evaluarea Națională de la finalul clasei a II-a**.
+**Math Owl** este un joc educativ de matematică pe care copiii îl folosesc în browser, pe calculator sau pe telefon. Cu el, copiii învață și exersează **înmulțirea, împărțirea, adunarea și scăderea** și se pregătesc pentru **Evaluarea Națională de la finalul clasei a II-a**.
 
 Exercițiile urmează **manualul școlar**: lecțiile „Descopăr – Aplic – Exersez – Rezolv probleme”, casetele „Reține” și problemele din carte. Totul e prezentat ca o aventură pe o hartă cu insule.
 

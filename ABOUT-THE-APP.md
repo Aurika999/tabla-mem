@@ -1,8 +1,8 @@
-# Multiplication Table: what the app is and who it is for
+# Math Owl: what the app is and who it is for
 
 ## In short
 
-**Multiplication Table** (Tabla Înmulțirii) is an educational math game that children play in the browser, on a computer or a phone. With it, children learn and practise **multiplication, division, addition and subtraction** and prepare for the **Romanian National Assessment at the end of 2nd grade**.
+**Math Owl** is an educational math game that children play in the browser, on a computer or a phone. With it, children learn and practise **multiplication, division, addition and subtraction** and prepare for the **Romanian National Assessment at the end of 2nd grade**.
 
 The exercises follow the **Romanian school textbook**: the “Discover – Apply – Practice – Solve problems” lessons, the “Remember” boxes and the problems from the book. Everything is presented as an adventure on a map of islands.
 

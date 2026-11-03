@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.tablamem.app',
-  appName: 'Tabla Inmultirii',
+  appName: 'Math Owl',
   webDir: 'build'
 };
 

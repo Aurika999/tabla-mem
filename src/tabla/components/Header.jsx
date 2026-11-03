@@ -38,7 +38,10 @@ export default function Header({
         <button type="button" className="logo-home" onClick={onHome} title={tr('Prima pagină')} aria-label={tr('Prima pagină')}>
           <AbacusLogo />
         </button>
-        {tr('TABLA ÎNMULȚIRII')}
+        <span className="logo-title">
+          MATH OWL
+          <small className="logo-motto">{tr('Insula isteților la matematică')}</small>
+        </span>
       </div>
       <div className="badges">
         {/* Limba aplicației: română sau engleză. */}

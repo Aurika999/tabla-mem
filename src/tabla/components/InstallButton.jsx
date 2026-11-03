@@ -58,7 +58,7 @@ export default function InstallButton() {
           <div className="modal install-modal" onClick={e => e.stopPropagation()}>
             <button className="lesson-close" onClick={() => setGuideOpen(false)} aria-label={tr('Închide')}>✕</button>
             <h2>{tr('📲 Instalează jocul')}</h2>
-            <p className="install-lead" dangerouslySetInnerHTML={{ __html: tr('Pune <b>Tabla Înmulțirii</b> pe ecranul telefonului, ca pe o aplicație adevărată!') }} />
+            <p className="install-lead" dangerouslySetInnerHTML={{ __html: tr('Pune <b>Math Owl</b> pe ecranul telefonului, ca pe o aplicație adevărată!') }} />
             {ios ? (
               <ol className="install-steps">
                 {[

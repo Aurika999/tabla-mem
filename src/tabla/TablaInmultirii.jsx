@@ -31,7 +31,7 @@ import { SixMap, SevenMap, EightMap, NineMap } from './components/DivisorMaps';
 import LessonMap from './components/LessonMap';
 import { tr, useLang } from './i18n';
 
-const PAGE_TITLE = 'Tabla Înmulțirii';
+const PAGE_TITLE = 'Math Owl';
 // Sub această lățime coloanele stau una sub alta (vezi .main în CSS).
 const STACKED_LAYOUT_QUERY = '(max-width: 900px)';
 
