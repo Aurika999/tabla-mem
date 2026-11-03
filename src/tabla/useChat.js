@@ -273,13 +273,14 @@ const CALL_SUMMARY = {
 
 // Mesajul din conversație care rămâne după un apel (durata sau „nepreluat”).
 // Îl scrie cel care a sunat, ca să apară o singură dată.
-export async function logCallInChat({ uid, name, peer, callStatus, durationSec }) {
+export async function logCallInChat({ uid, name, peer, callStatus, durationSec, video }) {
   if (!firebaseEnabled || !uid || !name || !peer) return;
-  const text = CALL_SUMMARY[callStatus](durationSec);
+  let text = CALL_SUMMARY[callStatus](durationSec);
+  if (video) text = text.replace('📞 Apel vocal', '📹 Apel video').replace('📞', '📹');
   const chatId = privateChatId(uid, peer.uid);
   const batch = writeBatch(db);
   batch.set(doc(collection(db, messagesPath(chatId))), {
-    uid, name, text, type: 'call', callStatus, durationSec, createdAt: serverTimestamp(),
+    uid, name, text, type: 'call', callStatus, durationSec, video: Boolean(video), createdAt: serverTimestamp(),
   });
   batch.set(doc(db, CHATS_COLLECTION, chatId), {
     members: [uid, peer.uid].sort(),

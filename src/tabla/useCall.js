@@ -6,7 +6,8 @@ import { db, firebaseEnabled } from '../firebase';
 import { notifySystem, logCallInChat } from './useChat';
 import { tr } from './i18n';
 
-// Apeluri video WebRTC (cu cameră; doar audio dacă nu există cameră). Firestore e folosit doar pentru
+// Apeluri WebRTC vocale sau video (ca la WhatsApp: 📞 doar sunet, 📹 cu cameră; camera se poate porni
+// și în timpul apelului). La apelul video fără cameră, apelul merge doar cu sunet. Firestore e folosit doar pentru
 // „semnalizare” (ofertă/răspuns/candidați ICE); sunetul și imaginea merg direct între jucători.
 const CALLS_COLLECTION = 'calls';
 const ICE_SERVERS = [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }];
@@ -27,6 +28,8 @@ export function useCall({ uid, name }) {
   const [muted, setMuted] = useState(false);
   const [notice, setNotice] = useState('');
   const [cameraOn, setCameraOn] = useState(false);
+  // Celălalt are camera pornită (aflăm din documentul apelului).
+  const [peerCamera, setPeerCamera] = useState(false);
   // Fluxurile pentru imagine: al nostru (previzualizarea mică) și al celuilalt.
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
@@ -67,6 +70,7 @@ export function useCall({ uid, name }) {
     if (remoteAudioRef.current) remoteAudioRef.current.srcObject = null;
     setMuted(false);
     setCameraOn(false);
+    setPeerCamera(false);
     setLocalStream(null);
     setRemoteStream(null);
     setRemoteTracks(0);
@@ -88,7 +92,7 @@ export function useCall({ uid, name }) {
       else if (current.status === 'ringing') callStatus = 'missed';
       else callStatus = 'failed';
       const durationSec = current.connectedAt ? Math.round((Date.now() - current.connectedAt) / 1000) : 0;
-      logCallInChat({ uid, name, peer: current.peer, callStatus, durationSec })
+      logCallInChat({ uid, name, peer: current.peer, callStatus, durationSec, video: Boolean(current.video) })
         .catch(err => console.error('Nu am putut salva apelul în chat', err));
     }
     cleanup();
@@ -99,13 +103,22 @@ export function useCall({ uid, name }) {
   const createPeerConnection = useCallback((callId, ownSide, otherSide) => {
     const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
     pcRef.current = pc;
-    localStreamRef.current.getTracks().forEach(track => pc.addTrack(track, localStreamRef.current));
+    const stream = localStreamRef.current;
+    stream.getTracks().forEach(track => pc.addTrack(track, stream));
+    // Și la apelul vocal păstrăm loc pentru imagine, ca să se poată porni camera în timpul apelului
+    // fără o nouă negociere (la cel care răspunde, locul vine din oferta apelantului).
+    if (ownSide === 'callerCandidates' && !stream.getVideoTracks().length) {
+      pc.addTransceiver('video', { direction: 'sendrecv', streams: [stream] });
+    }
 
+    // Fluxul celuilalt îl construim noi: o pistă pornită mai târziu poate veni fără flux.
+    const remote = new MediaStream();
     pc.ontrack = (event) => {
-      setRemoteStream(event.streams[0]);
+      if (!remote.getTracks().includes(event.track)) remote.addTrack(event.track);
+      setRemoteStream(remote);
       setRemoteTracks(n => n + 1);
       if (remoteAudioRef.current) {
-        remoteAudioRef.current.srcObject = event.streams[0];
+        remoteAudioRef.current.srcObject = remote;
         remoteAudioRef.current.play().catch(() => {});
       }
     };
@@ -151,8 +164,8 @@ export function useCall({ uid, name }) {
     };
   }, [finish, updateCall]);
 
-  // Microfon + cameră; fără cameră (sau fără permisiune pentru ea) apelul merge doar cu sunet.
-  const getMicrophone = useCallback(async () => {
+  // Microfon (+ cameră la apelul video); fără cameră (sau fără permisiune pentru ea) apelul merge doar cu sunet.
+  const getMicrophone = useCallback(async (video) => {
     if (!navigator.mediaDevices?.getUserMedia) {
       showNotice('Browserul tău nu permite apeluri.');
       return null;
@@ -162,10 +175,13 @@ export function useCall({ uid, name }) {
       setCameraOn(stream.getVideoTracks().length > 0);
       return stream;
     };
-    try {
-      return ready(await navigator.mediaDevices.getUserMedia({ audio: true, video: CAMERA }));
-    } catch (err) {
-      console.warn('Fără cameră, încercăm doar cu microfonul', err);
+    if (video) {
+      try {
+        return ready(await navigator.mediaDevices.getUserMedia({ audio: true, video: CAMERA }));
+      } catch (err) {
+        console.warn('Fără cameră, încercăm doar cu microfonul', err);
+        showNotice('📷 Nu am acces la cameră; apelul merge doar cu sunet.');
+      }
     }
     try {
       return ready(await navigator.mediaDevices.getUserMedia({ audio: true, video: false }));
@@ -176,14 +192,15 @@ export function useCall({ uid, name }) {
     }
   }, [showNotice]);
 
-  const startCall = useCallback(async (peer) => {
+  const startCall = useCallback(async (peer, options = {}) => {
     if (!firebaseEnabled || !uid || !name || !peer || callRef.current) return;
-    const stream = await getMicrophone();
+    const video = Boolean(options.video);
+    const stream = await getMicrophone(video);
     if (!stream) return;
     localStreamRef.current = stream;
 
     const callDoc = doc(collection(db, CALLS_COLLECTION));
-    updateCall({ id: callDoc.id, role: 'caller', peer, status: 'ringing' });
+    updateCall({ id: callDoc.id, role: 'caller', peer, status: 'ringing', video });
 
     try {
       const { pc, listenForCandidates, flushCandidates } = createPeerConnection(
@@ -195,6 +212,8 @@ export function useCall({ uid, name }) {
         caller: uid, callerName: name,
         callee: peer.uid, calleeName: peer.name,
         status: 'ringing',
+        video,
+        callerCamera: stream.getVideoTracks().length > 0,
         offer: { type: offer.type, sdp: offer.sdp },
         createdAt: serverTimestamp(),
       });
@@ -204,6 +223,7 @@ export function useCall({ uid, name }) {
       const unsub = onSnapshot(callDoc, async (snap) => {
         const data = snap.data();
         if (!data || !callRef.current) return;
+        setPeerCamera(Boolean(data.calleeCamera));
         if (data.answer && !pc.currentRemoteDescription) {
           await pc.setRemoteDescription(new RTCSessionDescription(data.answer));
           flushCandidates();
@@ -233,13 +253,13 @@ export function useCall({ uid, name }) {
     const offerCall = incoming;
     if (!offerCall || callRef.current) return;
     setIncoming(null);
-    const stream = await getMicrophone();
+    const stream = await getMicrophone(offerCall.video);
     if (!stream) {
       updateDoc(callDocRef(offerCall.id), { status: 'declined' }).catch(() => {});
       return;
     }
     localStreamRef.current = stream;
-    updateCall({ id: offerCall.id, role: 'callee', peer: offerCall.peer, status: 'connecting' });
+    updateCall({ id: offerCall.id, role: 'callee', peer: offerCall.peer, status: 'connecting', video: offerCall.video });
 
     try {
       const callDoc = callDocRef(offerCall.id);
@@ -254,17 +274,24 @@ export function useCall({ uid, name }) {
       );
       listenForCandidates();
       await pc.setRemoteDescription(new RTCSessionDescription(data.offer));
+      // Locul pentru imagine primit de la apelant îl facem și de trimis (pentru camera pornită mai târziu).
+      pc.getTransceivers().forEach((t) => {
+        if (t.receiver.track?.kind === 'video' && !t.sender.track) t.direction = 'sendrecv';
+      });
       flushCandidates();
       const answer = await pc.createAnswer();
       // Răspunsul ajunge la apelant înaintea candidaților noștri ICE.
       await updateDoc(callDoc, {
         answer: { type: answer.type, sdp: answer.sdp },
         status: 'accepted',
+        calleeCamera: stream.getVideoTracks().length > 0,
         answeredAt: serverTimestamp(),
       });
       await pc.setLocalDescription(answer);
 
+      setPeerCamera(Boolean(data.callerCamera));
       const unsub = onSnapshot(callDoc, (s) => {
+        if (callRef.current) setPeerCamera(Boolean(s.data()?.callerCamera));
         if (s.data()?.status === 'ended' && callRef.current) finish('Apel încheiat.');
       });
       unsubsRef.current.push(unsub);
@@ -288,15 +315,37 @@ export function useCall({ uid, name }) {
     finish('Apel încheiat.', status, 'ended');
   }, [finish]);
 
-  const toggleCamera = useCallback(() => {
-    const tracks = localStreamRef.current?.getVideoTracks() ?? [];
-    if (!tracks.length) {
-      showNotice('📷 Nu am acces la cameră.');
-      return;
-    }
+  // Pornește/oprește camera; la un apel vocal camera se deschide abia acum, pe locul păstrat pentru imagine.
+  const toggleCamera = useCallback(async () => {
+    const stream = localStreamRef.current;
+    const current = callRef.current;
+    if (!stream || !current) return;
     const next = !cameraOn;
+    let tracks = stream.getVideoTracks();
+    if (next && !tracks.length) {
+      let track;
+      try {
+        track = (await navigator.mediaDevices.getUserMedia({ video: CAMERA })).getVideoTracks()[0];
+      } catch (err) {
+        console.warn('Fără acces la cameră', err);
+        showNotice('📷 Nu am acces la cameră.');
+        return;
+      }
+      // Apelul s-a putut încheia cât am așteptat permisiunea.
+      if (localStreamRef.current !== stream) {
+        track.stop();
+        return;
+      }
+      stream.addTrack(track);
+      const slot = pcRef.current?.getTransceivers().find(t => t.receiver.track?.kind === 'video');
+      if (slot) await slot.sender.replaceTrack(track).catch(err => console.error('Nu am putut trimite imaginea', err));
+      setLocalStream(new MediaStream(stream.getTracks()));
+      tracks = [track];
+    }
     tracks.forEach(t => { t.enabled = next; });
     setCameraOn(next);
+    updateDoc(callDocRef(current.id), { [`${current.role}Camera`]: next })
+      .catch(err => console.error('Nu am putut anunța camera', err));
   }, [cameraOn, showNotice]);
 
   const toggleMute = useCallback(() => {
@@ -330,8 +379,9 @@ export function useCall({ uid, name }) {
           return;
         }
         const peer = { uid: data.caller, name: data.callerName || 'Jucător' };
-        setIncoming({ id: change.doc.id, peer });
-        notifySystem(tr('📞 {name} te sună', { name: peer.name }), tr('Deschide jocul ca să răspunzi.'), 'tabla-call');
+        const video = Boolean(data.video);
+        setIncoming({ id: change.doc.id, peer, video });
+        notifySystem(tr(video ? '📹 {name} te sună (apel video)' : '📞 {name} te sună', { name: peer.name }), tr('Deschide jocul ca să răspunzi.'), 'tabla-call');
       });
     }, (err) => {
       console.error('Nu am putut asculta apelurile', err);
@@ -361,7 +411,7 @@ export function useCall({ uid, name }) {
   }, [cleanup]);
 
   return {
-    call, incoming, muted, notice, remoteAudioRef, cameraOn, localStream, remoteStream, remoteTracks,
+    call, incoming, muted, notice, remoteAudioRef, cameraOn, peerCamera, localStream, remoteStream, remoteTracks,
     startCall, acceptCall, declineCall, hangUp, toggleMute, toggleCamera,
   };
 }

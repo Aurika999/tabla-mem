@@ -5,7 +5,7 @@ import { NATIONAL_LEVELS, questionCount, nationalYear, nationalTheme } from '../
 import { REVIEW_LEVELS } from '../reviewProblems';
 import InstallButton from './InstallButton';
 import { Island, Waves, useMediaQuery, PHONE_QUERY } from './MapHome';
-import { tr } from '../i18n';
+import { getLang, tr } from '../i18n';
 
 // Prima pagină (Arena Concursului și Insula Învățării), pagina „Insula Învățării”
 // (Insula Isteților, Tabla înmulțirii, Tabla împărțirii, Evaluare) și pagina
@@ -397,9 +397,9 @@ export default function HomeIslands({
   // Pe telefon stau jos, într-un chenar separat, pe toate paginile cu insule.
   const panelButtons = (
     <>
-      {/* Pe prima pagină: prezentarea jocului (PDF), pentru părinți și învățători. */}
+      {/* Pe prima pagină: prezentarea jocului (PDF, în limba aleasă), pentru părinți și învățători. */}
       {mode === 'home' && (
-        <button onClick={() => window.open(`${process.env.PUBLIC_URL}/despre-joc.pdf`, '_blank', 'noopener')}>
+        <button onClick={() => window.open(`${process.env.PUBLIC_URL}/${getLang() === 'en' ? 'about-the-game.pdf' : 'despre-joc.pdf'}`, '_blank', 'noopener')}>
           <span>📄</span>{tr('Despre joc')}
         </button>
       )}

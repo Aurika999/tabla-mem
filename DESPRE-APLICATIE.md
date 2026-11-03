@@ -6,13 +6,15 @@
 
 Exercițiile urmează **manualul școlar**: lecțiile „Descopăr – Aplic – Exersez – Rezolv probleme”, casetele „Reține” și problemele din carte. Totul e prezentat ca o aventură pe o hartă cu insule.
 
+Aplicația este în **română și engleză**. Limba se schimbă oricând din bara de sus (🇷🇴 RO / 🇬🇧 EN).
+
 ## Cui îi este destinată
 
 - **Copiilor de clasa a II-a și a III-a** (aproximativ 7–9 ani), care învață tabla înmulțirii și a împărțirii.
 - **Părinților**, care pot urmări progresul copilului: nivelurile terminate, stelele, punctele și rezultatul la teste.
 - **Învățătorilor**, care pot folosi aplicația ca exercițiu suplimentar sau pentru concursuri între elevii clasei.
 
-Aplicația e în limba română și folosește termenii din manual: deîmpărțit, împărțitor, cât, „de 3 ori mai mic”, „cu 3 mai mic”, proba înmulțirii.
+Aplicația folosește termenii din manual: deîmpărțit, împărțitor, cât, „de 3 ori mai mic”, „cu 3 mai mic”, proba înmulțirii. În engleză, toate exercițiile, explicațiile și problemele sunt traduse.
 
 ## Cum arată aplicația
 
@@ -20,7 +22,8 @@ Copilul se mișcă pe o **hartă cu insule**. Fiecare insulă e o lecție sau un
 
 ```
 Prima pagină
-├── 🏁 Arena Concursului        – concursuri cu alți copii
+├── 🏁 Arena Concursului              – concursuri cu alți copii
+├── ✏️ Află termenii necunoscuți      – exercițiul 46, cu video
 └── 🎒 Insula Învățării
     ├── 🧩 Insula Isteților      – 14 insule, de la ușor la avansat
     ├── 📘 Tabla înmulțirii      – lecțiile din manual: înmulțirea cu 2 … cu 9
@@ -60,6 +63,14 @@ Câte o lecție pentru înmulțirea cu **2, 3, 4, 5, 6, 7, 8 și 9**. Fiecare le
   - proba înmulțirii și a împărțirii.
 - **Împărțirea la 2, 3, 4, 5, 6, 7, 8 și 9**: câte o insulă pentru fiecare, cu „Reține” și cele 4 niveluri. Fiecare insulă folosește doar împărțirea la numărul ei.
 
+### ✏️ Află termenii necunoscuți (exercițiul 46)
+
+- **12 exerciții** în care copilul află numărul care lipsește: a + 34 = 62, b − 68 = 19, 45 − d = 26 și altele.
+- Exercițiile cu paranteze se rezolvă **pe pași**: întâi paranteza, apoi termenul necunoscut.
+- La fiecare exercițiu, copilul vede **regula** („un termen = suma − celălalt termen”) și **verificarea**.
+- Fiecare exercițiu are **un video** în care învățătoarea explică rezolvarea.
+- **Fără cronometru**: copilul lucrează în ritmul lui și poate sări peste un exercițiu.
+
 ### 🎓 Evaluarea Națională (clasa a II-a)
 
 - **Testul din 2026**, „Animale de companie”: 18 itemi.
@@ -77,7 +88,7 @@ La teste:
 ## Cum se joacă
 
 - **Runda** are 10 întrebări, cu 4 variante de răspuns fiecare. La testele de Evaluare Națională, runda are toți itemii testului.
-- **Timpul** este de 30 de secunde pe întrebare. Testele de Evaluare Națională nu au limită de timp.
+- **Timpul** este de 30 de secunde pe întrebare. Testele de Evaluare Națională și exercițiul 46 nu au limită de timp.
 - **Viețile:** copilul pornește cu 3 vieți și poate avea cel mult 5. O greșeală costă o viață, iar la 5 răspunsuri corecte la rând primește una înapoi. Dacă rămâne fără vieți, poate „cumpăra” una cu 30 de puncte.
 - **Punctele:** 10 puncte pentru fiecare răspuns corect, plus bonus de „combo” când răspunde corect de mai multe ori la rând.
 - **Stelele:** la sfârșitul rundei primește 1–3 ⭐, după câte răspunsuri corecte a avut. Harta păstrează cel mai bun rezultat.
@@ -85,6 +96,7 @@ La teste:
 - **Problemele lungi se rezolvă pe pași.** De exemplu: întâi câți urși adulți sunt, apoi câți urși în total, apoi câte animale.
 - **Imaginile:** unele întrebări au desene, de exemplu grupe de flori, puișori în cuiburi sau palmieri.
 - **Fără repetări:** într-o rundă nu se repetă aceeași socoteală, chiar dacă e scrisă altfel.
+- **Schimbarea limbii** se poate face și în mijlocul unei runde: întrebarea de pe ecran trece imediat în cealaltă limbă.
 
 ## Partea socială
 
@@ -97,21 +109,35 @@ La teste:
   - câștigă cine are cele mai multe răspunsuri corecte (la egalitate, cel mai rapid);
   - premii în puncte: 🥇 +50, 🥈 +30, 🥉 +10;
   - un cuprins pe insule și un anunț 🔔 când alt copil a creat un concurs.
-- **💬 Chat** între jucători, cu mesaje private, emoji și notificări, și **apeluri** între utilizatori.
+- **💬 Chat** între jucători:
+  - camera generală și mesaje private, cu emoji, răspuns la un mesaj și notificări;
+  - **linkurile** din mesaje se pot deschide cu un clic;
+  - **videourile** (YouTube, Vimeo sau fișiere video) se pot vedea direct în chat.
+- **📞 Apeluri vocale și 📹 apeluri video**, ca la WhatsApp:
+  - din capul conversației alegi apel vocal (doar sunet) sau apel video (cu camera);
+  - camera se poate porni sau opri și în timpul apelului, iar microfonul se poate opri;
+  - în conversație rămâne istoricul apelurilor (durata, apel pierdut, refuzat), cu butonul „Sună înapoi”.
 - **Profilul:** nume, avatar (poză), țara (steag) și cont cu email și parolă, cu opțiunea de resetare a parolei.
 
 ## Cum se folosește
 
 1. Deschizi aplicația în browser (pe calculator sau telefon).
 2. Alegi un nume. Poți juca și fără cont, dar cu un cont cu email și parolă progresul se păstrează pe orice dispozitiv.
-3. Pe prima pagină alegi **Insula Învățării** ca să înveți sau **Arena Concursului** ca să concurezi cu alți copii.
+3. Pe prima pagină alegi **Insula Învățării** ca să înveți, **Află termenii necunoscuți** ca să exersezi exercițiul 46 sau **Arena Concursului** ca să concurezi cu alți copii.
+4. Din bara de sus alegi limba: **🇷🇴 RO** sau **🇬🇧 EN**.
+
+Pe prima pagină mai sunt două butoane:
+- **📲 Instalează**: aplicația se instalează pe telefon sau calculator și se deschide ca o aplicație obișnuită (pe iPhone apare un ghid: „Partajează” → „Adaugă pe ecranul principal”);
+- **📄 Despre joc**: acest document, în limba aleasă (română sau engleză).
 
 ## Informații tehnice (pentru cine întreține aplicația)
 
 | | |
 |---|---|
-| Interfață | React (Create React App), în limba română, adaptată pentru telefon |
-| Conturi și date | Firebase Authentication (anonim sau email și parolă) și Cloud Firestore (scoruri, jucători, chat, concursuri) |
+| Interfață | React (Create React App), adaptată pentru telefon; se poate instala ca aplicație (PWA) |
+| Limbi | română și engleză: `src/tabla/i18n.js` (funcția `tr`) și dicționarul `src/tabla/i18n.en.js` |
+| Conturi și date | Firebase Authentication (anonim sau email și parolă) și Cloud Firestore (scoruri, jucători, chat, concursuri, apeluri) |
+| Apeluri | WebRTC direct între jucători; Firestore e folosit doar pentru legătura inițială |
 | Publicare | Vercel, cu publicare automată din GitHub (`Aurika999/tabla-mem`, ramura `main`) |
 | Android | există și un proiect Capacitor (`android/`) pentru o variantă de aplicație de telefon |
 | Reguli de securitate | `firestore.rules`; după orice modificare trebuie publicate din Firebase Console |

@@ -97,6 +97,12 @@ function Ticks({ msg, peerReadAt, isPrivate }) {
 }
 
 // Mesajul lăsat de un apel: pentru cine a sunat și pentru cine a fost sunat textul diferă.
+// Ultimul mesaj din listă: rezumatul unui apel („📞 Apel vocal · 9 s”) se traduce; mesajele scrise, nu.
+function lastMessageText(text) {
+  if (!text) return '';
+  return /^(📞|📹) Apel/.test(text) ? tr(text) : text;
+}
+
 function CallLogBubble({ msg, mine, date, peer, canCall, onCall }) {
   const { callStatus, durationSec = 0 } = msg;
   let icon = mine ? '↗' : '↙';
@@ -104,7 +110,7 @@ function CallLogBubble({ msg, mine, date, peer, canCall, onCall }) {
   let detail = '';
   let missedForMe = false;
   if (callStatus === 'completed') {
-    title = tr('Apel vocal');
+    title = tr(msg.video ? 'Apel video' : 'Apel vocal');
     detail = formatCallDuration(durationSec);
   } else if (mine) {
     title = tr({ missed: 'Apel fără răspuns', declined: 'Apel refuzat', busy: 'Ocupat — era în alt apel', failed: 'Apel nereușit' }[callStatus]
@@ -117,7 +123,7 @@ function CallLogBubble({ msg, mine, date, peer, canCall, onCall }) {
   }
   return (
     <div className={`chat-bubble chat-call-log${mine ? ' me' : ''}${missedForMe ? ' missed' : ''}`}>
-      <span className="chat-call-log-icon">{callStatus === 'completed' || !missedForMe ? '📞' : icon}</span>
+      <span className="chat-call-log-icon">{callStatus === 'completed' || !missedForMe ? (msg.video ? '📹' : '📞') : icon}</span>
       <span className="chat-call-log-body">
         <b>{title}</b>
         <small>
@@ -126,7 +132,7 @@ function CallLogBubble({ msg, mine, date, peer, canCall, onCall }) {
         </small>
       </span>
       {missedForMe && peer && (
-        <button className="chat-call-back" onClick={() => onCall(peer)} disabled={!canCall}>{tr('Sună înapoi')}</button>
+        <button className="chat-call-back" onClick={() => onCall(peer, { video: Boolean(msg.video) })} disabled={!canCall}>{tr('Sună înapoi')}</button>
       )}
     </div>
   );
@@ -305,9 +311,21 @@ function Conversation({
         {peer && (
           <button
             className="chat-header-call"
+            onClick={() => onCall(peer, { video: true })}
+            disabled={!canWrite || callBusy}
+            title={callBusy ? tr('Ești deja într-un apel') : tr('Apel video cu {name}', { name: peer.name })}
+            aria-label={tr('Apel video cu {name}', { name: peer.name })}
+          >
+            📹
+          </button>
+        )}
+        {peer && (
+          <button
+            className="chat-header-call"
             onClick={() => onCall(peer)}
             disabled={!canWrite || callBusy}
             title={callBusy ? tr('Ești deja într-un apel') : tr('Sună-l pe {name}', { name: peer.name })}
+            aria-label={tr('Sună-l pe {name}', { name: peer.name })}
           >
             📞
           </button>
@@ -506,7 +524,7 @@ export default function Chat({
                   </span>
                   <span className="chat-contact-bottom">
                     <small className={isTyping ? 'chat-status-typing' : ''}>
-                      {isTyping ? 'scrie…' : `${conv.lastSender === uid ? 'Tu: ' : ''}${conv.lastMessage || ''}`}
+                      {isTyping ? tr('scrie…') : `${conv.lastSender === uid ? `${tr('Tu')}: ` : ''}${lastMessageText(conv.lastMessage)}`}
                     </small>
                     {unread && <span className="chat-unread" title={tr('Mesaj nou')} />}
                   </span>

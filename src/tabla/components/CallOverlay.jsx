@@ -53,11 +53,12 @@ function StreamVideo({ stream, className }) {
   return <video ref={ref} className={className} autoPlay playsInline muted />;
 }
 
-function CallVideo({ call, cameraOn, localStream, remoteStream, remoteTracks }) {
+// Imaginea apare cât timp măcar unul dintre jucători are camera pornită (la apelul vocal, doar sunet).
+function CallVideo({ call, cameraOn, peerCamera, localStream, remoteStream, remoteTracks }) {
   const [big, setBig] = useState(false);
-  const remoteHasVideo = Boolean(remoteTracks && remoteStream?.getVideoTracks().length);
+  const remoteHasVideo = Boolean(peerCamera && remoteTracks && remoteStream?.getVideoTracks().length);
   const localHasVideo = Boolean(localStream?.getVideoTracks().length);
-  if (!remoteHasVideo && !localHasVideo) return null;
+  if (!cameraOn && !peerCamera) return null;
   return (
     <div className={`call-video${big ? ' big' : ''}`}>
       {remoteHasVideo && call.status === 'connected'
@@ -93,7 +94,7 @@ const STATUS_TEXT = {
 
 export default function CallOverlay({
   call, incoming, muted, notice, remoteAudioRef, onAccept, onDecline, onHangUp, onToggleMute,
-  cameraOn, localStream, remoteStream, remoteTracks, onToggleCamera,
+  cameraOn, peerCamera, localStream, remoteStream, remoteTracks, onToggleCamera,
 }) {
   useRingtone(Boolean(incoming));
   const elapsed = useElapsed(call?.status === 'connected' ? call.connectedAt : null);
@@ -106,11 +107,11 @@ export default function CallOverlay({
       {incoming && !call && (
         <div className="overlay">
           <div className="modal call-modal">
-            <div className="reward call-ringing">📞</div>
+            <div className="reward call-ringing">{incoming.video ? '📹' : '📞'}</div>
             <h2>{incoming.peer.name}</h2>
-            <p>{tr('te sună…')}</p>
+            <p>{tr(incoming.video ? 'te sună (apel video)…' : 'te sună…')}</p>
             <div className="call-actions">
-              <button className="call-btn accept" onClick={onAccept}>{tr('📞 Răspunde')}</button>
+              <button className="call-btn accept" onClick={onAccept}>{tr(incoming.video ? '📹 Răspunde' : '📞 Răspunde')}</button>
               <button className="call-btn decline" onClick={onDecline}>{tr('✖ Refuză')}</button>
             </div>
           </div>
@@ -118,13 +119,13 @@ export default function CallOverlay({
       )}
 
       {call && (
-        <CallVideo call={call} cameraOn={cameraOn} localStream={localStream} remoteStream={remoteStream} remoteTracks={remoteTracks} />
+        <CallVideo call={call} cameraOn={cameraOn} peerCamera={peerCamera} localStream={localStream} remoteStream={remoteStream} remoteTracks={remoteTracks} />
       )}
 
       {call && (
         <div className="call-bar" role="status">
           <div className="call-bar-info">
-            <b>{localStream?.getVideoTracks().length ? '📹' : '📞'} {call.peer.name}</b>
+            <b>{call.video || cameraOn || peerCamera ? '📹' : '📞'} {call.peer.name}</b>
             <span>{call.status === 'connected' ? `${tr('În apel')} · ${elapsed}` : tr(STATUS_TEXT[call.status])}</span>
           </div>
           <button
