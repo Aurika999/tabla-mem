@@ -51,7 +51,7 @@ export function isFiveLevel(level) {
 // Pe ce hartă e nivelul: 'logic', 'lesson5/6/7' sau 'map' (tabla înmulțirii).
 export function mapViewOf(level) {
   // Testele de Evaluare Națională sunt în pagina „Evaluarea Națională”.
-  if (isPracticeTest(level)) return 'home';
+  if (isPracticeTest(level)) return 'school';
   if (isNationalLevel(level) || isReviewLevel(level)) return 'national';
   if (isLogicLevel(level)) return 'logic';
   if (EVAL_PATH.includes(level)) return 'eval';

@@ -18,6 +18,10 @@ const DECOR = {
   en2025b: [['🐻‍❄️', -4, -40, 80], ['🐧', -100, 4, 32], ['🦉', 98, 0, 30], ['📝', 80, 26, 26], ['❄️', -82, 28, 24]],
   en2026: [['🏅', -4, -40, 80], ['🐶', -100, 4, 32], ['🦜', 98, 0, 30], ['📝', 80, 26, 26], ['🐰', -82, 28, 24]],
   termeni46: [['✏️', -4, -40, 80], ['➕', -100, 4, 32], ['➖', 98, 0, 30], ['❓', 80, 26, 26], ['📒', -82, 28, 24]],
+  scaderi2: [['📐', -4, -40, 78], ['➖', -100, 4, 34], ['🔢', 98, 0, 30], ['✍️', 80, 26, 26], ['📓', -82, 28, 24]],
+  adunari3: [['🏗️', -4, -42, 80], ['➕', -100, 4, 34], ['💯', 98, 0, 30], ['🧮', 80, 26, 26], ['📒', -82, 28, 24]],
+  scaderi3: [['🏔️', -4, -42, 80], ['➖', -100, 4, 34], ['💯', 98, 0, 30], ['🔢', 80, 26, 26], ['📓', -82, 28, 24]],
+  adunari8: [['🐦', -4, -42, 80], ['➕', -100, 4, 34], ['🐟', 98, 0, 30], ['🔢', 80, 26, 26], ['🌊', -82, 28, 24]],
   school: [['🎒', -4, -40, 84], ['📚', -100, 4, 34], ['✏️', 98, 0, 30], ['🧮', 80, 26, 26], ['📝', -82, 28, 24]],
   arena: [['🏰', -6, -40, 84], ['🚩', -105, -16, 32], ['🚩', 100, -22, 32], ['🏆', 70, 22, 28]],
   learn: [['🏫', -4, -40, 84], ['📚', -100, 6, 36], ['🧮', 98, 4, 34], ['🌳', -80, -42, 32]],
@@ -44,10 +48,11 @@ const DECOR = {
   lesson9: [['🎈', -4, -40, 78], ['🎉', -95, 0, 30], ['🎁', 95, -6, 28], ['⭐', 80, 26, 24]],
 };
 
-const HOME_KEYS = ['arena', 'school', 'termeni46'];
+const HOME_KEYS = ['arena', 'school'];
 // Nivelurile „Tablei înmulțirii” sunt acum în Insula Isteților, pe dificultate.
 // Exercițiile din „Evaluare” sunt acum în Insula Isteților.
-const SCHOOL_KEYS = ['logic', 'lessons', 'division', 'national'];
+// Exersările fără cronometru (termenii necunoscuți, adunările și scăderile în coloană) sunt tot aici.
+const SCHOOL_KEYS = ['logic', 'lessons', 'division', 'national', 'termeni46', 'scaderi2', 'adunari8', 'scaderi3', 'adunari3'];
 // Lecțiile de împărțire (deocamdată una; se pot adăuga altele).
 const DIVISION_KEYS = ['div1', 'div2', 'div3', 'div4', 'div5', 'div6', 'div7', 'div8', 'div9'];
 const LESSON_FACTORS = [2, 3, 4, 5, 6, 7, 8, 9];
@@ -119,16 +124,15 @@ function buildTwoColumnLayouts(keys, top) {
   };
 }
 
-// Prima pagină: două insule mari, una lângă alta.
+// Prima pagină: două insule mari, una lângă alta (pe telefon, una sub alta).
 function buildHomeLayouts() {
   return {
     desktop: {
       W: 1000,
       H: 640,
       islands: {
-        arena: place('arena', 175, 320, 145, 72, 1.05),
-        school: place('school', 500, 320, 145, 72, 1.05),
-        termeni46: place('termeni46', 825, 320, 145, 72, 1.05),
+        arena: place('arena', 280, 320, 145, 72, 1.05),
+        school: place('school', 720, 320, 145, 72, 1.05),
       },
       extras: [['⛵', 70, 110, 34], ['🐬', 500, 520, 42], ['🐟', 545, 555, 22], ['🐳', 940, 580, 32], ['☁️', 40, 40, 30],
         ['🐠', 120, 560, 24]],
@@ -136,14 +140,13 @@ function buildHomeLayouts() {
     phone: {
       W: 600,
       // Destul loc jos pentru titlul, descrierea și butonul ultimei insule.
-      H: 1340,
-      // Pe telefon: Insula Învățării, Arena Concursului, apoi „Află termenii necunoscuți”.
+      H: 940,
+      // Pe telefon: întâi Insula Învățării, apoi Arena Concursului.
       islands: {
         school: place('school', 300, 130, 165, 74, 1.0),
         arena: place('arena', 300, 530, 165, 74, 1.0),
-        termeni46: place('termeni46', 300, 930, 165, 74, 1.0),
       },
-      extras: [['⛵', 50, 360, 34], ['🐬', 520, 370, 40], ['🐠', 70, 760, 30], ['🐳', 540, 1315, 30], ['☁️', 30, 30, 28]],
+      extras: [['⛵', 50, 360, 34], ['🐬', 520, 370, 40], ['🐠', 70, 760, 30], ['🐳', 540, 915, 30], ['☁️', 30, 30, 28]],
     },
   };
 }
@@ -158,7 +161,7 @@ const LAYOUTS = {
 
 // Titlul de sus și butonul „înapoi” pentru paginile din interiorul insulelor.
 const SUBPAGES = {
-  school: { title: '🎒 INSULA ÎNVĂȚĂRII', back: '← Prima pagină', greeting: 'Aici înveți! Alege: Insula Isteților, lecțiile din manual, împărțirea sau Evaluarea Națională. 🎒' },
+  school: { title: '🎒 INSULA ÎNVĂȚĂRII', back: '← Prima pagină', greeting: 'Aici înveți! Alege: Insula Isteților, lecțiile din manual, împărțirea, Evaluarea Națională sau calculele în coloană. 🎒' },
   national: { title: '🎓 EVALUAREA NAȚIONALĂ', back: '← Insula Învățării', greeting: 'Alege un test de la Evaluarea Națională! 🎓' },
   division: { title: '➗ TABLA ÎMPĂRȚIRII', back: '← Insula Învățării', greeting: 'Aici înveți împărțirea! Alege lecția. ➗' },
   lessons: { title: '📘 TABLA ÎNMULȚIRII', back: '← Insula Învățării', greeting: 'Alege lecția! Fiecare are „📖 Reține” și exerciții din manual. 📘' },
@@ -234,6 +237,46 @@ export default function HomeIslands({
         : tr('✏️ a + 34 = 62 · {v0} exerciții · fără cronometru', { v0: questionCount('termeni46') }),
       cta: tr('✏️ Află termenii'),
       onClick: () => onOpenNational('termeni46'),
+    },
+    {
+      key: 'scaderi2',
+      ctaClass: 'column',
+      title: tr('SCĂDERI ÎN COLOANĂ'),
+      subtitle: scores.scaderi2
+        ? tr('➖ Cel mai bun: {v0} corecte · descoperă animalul', { v0: scores.scaderi2.correct })
+        : tr('➖ 73 − 37 · descoperă animalul · fără cronometru'),
+      cta: tr('➖ Calculează'),
+      onClick: () => onOpenNational('scaderi2'),
+    },
+    {
+      key: 'adunari8',
+      ctaClass: 'column-sum',
+      title: tr('ADUNĂRI ÎN COLOANĂ'),
+      subtitle: scores.adunari8
+        ? tr('➕ Cel mai bun: {v0} corecte · descoperă animalul', { v0: scores.adunari8.correct })
+        : tr('➕ 39 + 15 · descoperă animalul · fără cronometru'),
+      cta: tr('➕ Adună'),
+      onClick: () => onOpenNational('adunari8'),
+    },
+    {
+      key: 'scaderi3',
+      ctaClass: 'column3',
+      title: tr('SCĂDERI CU 3 CIFRE'),
+      subtitle: scores.scaderi3
+        ? tr('🔢 Cel mai bun: {v0} / {v1} · fără cronometru', { v0: scores.scaderi3.correct, v1: questionCount('scaderi3') })
+        : tr('🔢 258 − 137 · {v0} exerciții · fără cronometru', { v0: questionCount('scaderi3') }),
+      cta: tr('🔢 Scade'),
+      onClick: () => onOpenNational('scaderi3'),
+    },
+    {
+      key: 'adunari3',
+      ctaClass: 'add3',
+      title: tr('ADUNĂRI CU 3 CIFRE'),
+      subtitle: scores.adunari3
+        ? tr('🧮 Cel mai bun: {v0} / {v1} · fără cronometru', { v0: scores.adunari3.correct, v1: questionCount('adunari3') })
+        : tr('🧮 648 + 234 · {v0} exerciții · fără cronometru', { v0: questionCount('adunari3') }),
+      cta: tr('🧮 Efectuează'),
+      onClick: () => onOpenNational('adunari3'),
     },
     {
       key: 'national',

@@ -9,7 +9,7 @@ import { buildLogicProblem } from './logicProblems';
 import { buildSmartProblem, isSmartLevel, GRADED_SMART_LEVELS } from './smartProblems';
 import { buildReviewProblem, isReviewLevel } from './reviewProblems';
 import {
-  buildNationalItem, isNationalLevel, questionCount, nationalMaxPoints, nationalYear, nationalTheme,
+  buildNationalItem, newNationalRound, isNationalLevel, questionCount, nationalMaxPoints, nationalYear, nationalTheme,
   isPracticeTest, practiceTitle,
 } from './nationalTest';
 import { buildEvalProblem, isEvalLevel, gradeFor } from './evaluationProblems';
@@ -189,6 +189,8 @@ export function useTablaGame(initialLevel = 1, paused = false) {
   const toastTimeoutRef = useRef(null);
 
   const startLevel = useCallback((level) => {
+    // Unele exersări (ex. „Adunări în coloană”) au alte exerciții la fiecare rundă.
+    newNationalRound(level);
     setStats(createStats(level));
     usedRef.current = new Set();
     setCurrent(freshQuestion(level, usedRef.current));

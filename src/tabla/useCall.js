@@ -17,6 +17,17 @@ const STALE_RING_MS = 45000;
 const NOTICE_MS = 3500;
 const CAMERA = { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } };
 
+// De ce n-a pornit camera: pe același calculator, camera o poate ține ocupată altă aplicație
+// (Zoom, Teams) sau alt browser deschis cu jocul.
+function cameraProblem(err) {
+  if (err?.name === 'NotReadableError' || err?.name === 'TrackStartError' || err?.name === 'AbortError') {
+    return '📷 Camera e folosită de altă aplicație sau de alt browser.';
+  }
+  if (err?.name === 'NotAllowedError' || err?.name === 'SecurityError') return '📷 Permite accesul la cameră din browser.';
+  if (err?.name === 'NotFoundError' || err?.name === 'OverconstrainedError') return '📷 Nu am găsit nicio cameră.';
+  return '📷 Nu am acces la cameră.';
+}
+
 function callDocRef(callId) {
   return doc(db, CALLS_COLLECTION, callId);
 }
@@ -180,7 +191,7 @@ export function useCall({ uid, name }) {
         return ready(await navigator.mediaDevices.getUserMedia({ audio: true, video: CAMERA }));
       } catch (err) {
         console.warn('Fără cameră, încercăm doar cu microfonul', err);
-        showNotice('📷 Nu am acces la cameră; apelul merge doar cu sunet.');
+        showNotice(`${tr(cameraProblem(err))} ${tr('Apelul merge doar cu sunet.')}`);
       }
     }
     try {
@@ -328,7 +339,7 @@ export function useCall({ uid, name }) {
         track = (await navigator.mediaDevices.getUserMedia({ video: CAMERA })).getVideoTracks()[0];
       } catch (err) {
         console.warn('Fără acces la cameră', err);
-        showNotice('📷 Nu am acces la cameră.');
+        showNotice(cameraProblem(err));
         return;
       }
       // Apelul s-a putut încheia cât am așteptat permisiunea.

@@ -508,8 +508,316 @@ const ITEMS_TERMS = [
   twoStep('t − (28 − 9) = 16', 'Calculează paranteza: 28 − 9 = ?', 19, [37, 29, 21],
     'Acum t − 19 = 16. t = ?', 35, [3, 25, 45], SUB_START_RULE, 't = 16 + 19 = 35. Verificare: 35 − 19 = 16.'),
   simple('r − 37 = 26', 'r', 63, [11, 53, 73], SUB_START_RULE, 'r = 26 + 37 = 63. Verificare: 63 − 37 = 26.'),
+];
+// Videourile sunt scoase deocamdată de pe site (fișierele rămân în public/video/termeni-1…12.mp4).
+// Ca să apară din nou, înlocuiește „];” de mai sus cu rândurile de mai jos:
 // Fiecare exercițiu are un video: învățătoarea îl rezolvă la tablă (public/video/termeni-1…12.mp4).
-].map((item, i) => ({ ...item, video: tr('termeni-{v0}.mp4', { v0: i + 1 }) }));
+// ].map((item, i) => ({ ...item, video: tr('termeni-{v0}.mp4', { v0: i + 1 }) }));
+
+// ================= Scăderi în coloană: „Calculează.” (exercițiul 2 din manual) =================
+// Scăderea se scrie pe verticală, ca în caiet: unitățile sub unități, zecile sub zeci.
+// Greșelile tipice: scazi cifra mică din cea mare fără să te împrumuți, sau uiți zecea împrumutată.
+function columnItem(a, b, letter) {
+  const answer = a - b;
+  const [ta, ua, tb, ub] = [Math.floor(a / 10), a % 10, Math.floor(b / 10), b % 10];
+  const borrow = ua < ub;
+  const noBorrow = Math.abs(ta - tb) * 10 + Math.abs(ua - ub);
+  const mistakes = [...new Set([noBorrow, answer + 10, answer - 10, answer + 1, answer - 1, answer + 2])]
+    .filter(n => n > 0 && n !== answer && n < 100)
+    .slice(0, 3);
+  return {
+    points: 1,
+    get text() { return tr('Calculează în coloană: {a} − {b}', { a, b }); },
+    visual: { type: 'column', a, b, op: '−', letter },
+    answer,
+    choices: shuffle([answer, ...mistakes]),
+    get explanation() {
+      const units = borrow
+        ? tr('Unitățile: {ua} − {ub} nu se poate, așa că împrumutăm o zece: {ua10} − {ub} = {ru}.', { ua, ub, ua10: ua + 10, ru: ua + 10 - ub })
+        : tr('Unitățile: {ua} − {ub} = {ru}.', { ua, ub, ru: ua - ub });
+      const tens = borrow
+        ? tr('Zecile: {ta} − 1 (zecea împrumutată) − {tb} = {rt}.', { ta, tb, rt: ta - 1 - tb })
+        : tr('Zecile: {ta} − {tb} = {rt}.', { ta, tb, rt: ta - tb });
+      return `${units} ${tens} ${tr('Rezultatul: {c}. Verificare: {c} + {b} = {a}.', { c: answer, a, b })}`;
+    },
+  };
+}
+
+
+// ================= Scăderi în coloană cu numere de 3 cifre („A. Calculează:”) =================
+// Explicația merge pe coloane, de la unități spre sute, cu împrumutul de la coloana din stânga.
+const randInt = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+const PLACES = ['Unitățile', 'Zecile', 'Sutele'];
+const FROM_PLACE = ['de la zeci', 'de la sute', 'de la mii'];
+
+function columnSubItem(a, b) {
+  const answer = a - b;
+  return {
+    points: 1,
+    get text() { return tr('Calculează în coloană: {a} − {b}', { a, b }); },
+    visual: { type: 'column', a, b, op: '−' },
+    answer,
+    choices: [answer],
+    get explanation() {
+      const steps = [];
+      let borrowed = 0;
+      for (let i = 0; i < String(a).length; i++) {
+        const x = Math.floor(a / 10 ** i) % 10;
+        const y = Math.floor(b / 10 ** i) % 10;
+        const top = x - borrowed;
+        const borrow = top < y;
+        const vars = { place: PLACES[i], x, y, x1: top, x10: top + 10, r: (borrow ? top + 10 : top) - y, next: FROM_PLACE[i] };
+        // Un 0 nu are ce da împrumut: se împrumută el însuși de la coloana din stânga (10 − 1 = 9).
+        if (borrowed && x === 0) steps.push(tr('{place}: 0 nu poate da împrumut, așa că ne împrumutăm 1 {next}: 10 − 1 (dat împrumut) = 9; 9 − {y} = {r}.', vars));
+        else if (borrowed && borrow) steps.push(tr('{place}: {x} − 1 (dat împrumut) = {x1}; {x1} − {y} nu se poate, așa că ne împrumutăm 1 {next}: {x10} − {y} = {r}.', vars));
+        else if (borrowed) steps.push(tr('{place}: {x} − 1 (dat împrumut) − {y} = {r}.', vars));
+        else if (borrow) steps.push(tr('{place}: {x} − {y} nu se poate, așa că ne împrumutăm 1 {next}: {x10} − {y} = {r}.', vars));
+        else steps.push(tr('{place}: {x} − {y} = {r}.', vars));
+        borrowed = borrow ? 1 : 0;
+      }
+      return `${steps.join(' ')} ${tr('Rezultatul: {c}. Verificare: {c} + {b} = {a}.', { c: answer, a, b })}`;
+    },
+  };
+}
+
+// Prima rundă: cele 4 scăderi din carte, apoi încă 6 noi; la fiecare rundă nouă, toate 10 sunt noi.
+const SUB3_BOOK = [[258, 137], [478, 76], [729, 717], [567, 562]];
+function randomSub3() {
+  const a = randInt(200, 999);
+  // Uneori scăzătorul are doar 2 cifre (ca 478 − 76).
+  const b = Math.random() < 0.25 ? randInt(11, 99) : randInt(100, a - 1);
+  return [a, b];
+}
+function buildSub3Round(first) {
+  const pairs = first ? [...SUB3_BOOK] : [];
+  while (pairs.length < 10) {
+    const [a, b] = randomSub3();
+    if (!pairs.some(([x, y]) => x === a && y === b)) pairs.push([a, b]);
+  }
+  return pairs.map(([a, b]) => columnSubItem(a, b));
+}
+let sub3Rounds = 0;
+let ITEMS_SUB3 = buildSub3Round(true);
+
+// ================= Adunări în coloană cu numere de 3 cifre („C. Efectuează:”) =================
+// Pe coloane, de la unități spre sute: când suma unei coloane trece de 9, scriem unitățile ei
+// și ținem minte 1 pentru coloana din stânga.
+function columnAdd3Item(a, b) {
+  const answer = a + b;
+  return {
+    points: 1,
+    get text() { return tr('Calculează în coloană: {a} + {b}', { a, b }); },
+    visual: { type: 'column', a, b, op: '+' },
+    answer,
+    choices: [answer],
+    get explanation() {
+      const steps = [];
+      let carried = 0;
+      for (let i = 0; i < String(answer).length && i < PLACES.length; i++) {
+        const x = Math.floor(a / 10 ** i) % 10;
+        const y = Math.floor(b / 10 ** i) % 10;
+        const s = x + y + carried;
+        const vars = { place: PLACES[i], x, y, s, u: s % 10 };
+        if (carried && s >= 10) steps.push(tr('{place}: {x} + {y} + 1 (ținut minte) = {s}: scriem {u} și ținem minte 1.', vars));
+        else if (carried) steps.push(tr('{place}: {x} + {y} + 1 (ținut minte) = {s}.', vars));
+        else if (s >= 10) steps.push(tr('{place}: {x} + {y} = {s}: scriem {u} și ținem minte 1.', vars));
+        else steps.push(tr('{place}: {x} + {y} = {s}.', vars));
+        carried = s >= 10 ? 1 : 0;
+      }
+      return `${steps.join(' ')} ${tr('Rezultatul: {c}. Verificare: {c} − {b} = {a}.', { c: answer, a, b })}`;
+    },
+  };
+}
+
+// Prima rundă: cele 4 adunări din carte, apoi încă 6 noi; la fiecare rundă nouă, toate 10 sunt noi.
+// Suma rămâne cel mult 999, ca rezultatul să aibă tot 3 cifre.
+const ADD3_BOOK = [[648, 234], [421, 59], [808, 8], [375, 116]];
+function randomAdd3() {
+  const a = randInt(100, 899);
+  const r = Math.random();
+  // Uneori al doilea număr are 2 cifre sau doar una (ca 421 + 59 și 808 + 8).
+  const b = r < 0.15 ? randInt(2, 9) : r < 0.35 ? randInt(11, 99) : randInt(100, 999 - a);
+  return a + b <= 999 ? [a, b] : [a, 999 - a];
+}
+function buildAdd3Round(first) {
+  const pairs = first ? [...ADD3_BOOK] : [];
+  while (pairs.length < 10) {
+    const [a, b] = randomAdd3();
+    if (b >= 1 && !pairs.some(([x, y]) => x === a && y === b)) pairs.push([a, b]);
+  }
+  return pairs.map(([a, b]) => columnAdd3Item(a, b));
+}
+let add3Rounds = 0;
+let ITEMS_ADD3 = buildAdd3Round(true);
+
+// ================= Adunări în coloană: exercițiul 8 din manual =================
+// „Calculează, apoi ordonează crescător rezultatele. Scrie literele corespunzătoare numerelor
+// pentru a descoperi o pasăre care se hrănește cu pește.” Fiecare adunare are litera ei, ca în carte.
+function columnSumItem(a, b, letter) {
+  const answer = a + b;
+  const [ta, ua, tb, ub] = [Math.floor(a / 10), a % 10, Math.floor(b / 10), b % 10];
+  const carry = ua + ub >= 10;
+  return {
+    points: 1,
+    get text() { return tr('Calculează în coloană: {a} + {b}', { a, b }); },
+    visual: { type: 'column', a, b, op: '+', letter },
+    answer,
+    choices: [answer],
+    get explanation() {
+      const units = carry
+        ? tr('Unitățile: {ua} + {ub} = {su}: scriem {u} și ținem minte o zece.', { ua, ub, su: ua + ub, u: (ua + ub) % 10 })
+        : tr('Unitățile: {ua} + {ub} = {su}.', { ua, ub, su: ua + ub });
+      const tens = carry
+        ? tr('Zecile: {ta} + {tb} + 1 (zecea ținută minte) = {st}.', { ta, tb, st: ta + tb + 1 })
+        : tr('Zecile: {ta} + {tb} = {st}.', { ta, tb, st: ta + tb });
+      return `${units} ${tens} ${tr('Rezultatul: {c}. Verificare: {c} − {b} = {a}.', { c: answer, a, b })}`;
+    },
+  };
+}
+
+// Animalele ascunse în ghicitori: numele se scrie la fel în română și în engleză,
+// ca literele să se potrivească în ambele limbi. La adunări, prima rundă e chiar exercițiul din carte (PELICAN).
+const SUM_PUZZLES = [
+  { word: 'PELICAN', clue: 'o pasăre care se hrănește cu pește',
+    pairs: [[39, 15, 'E'], [24, 48, 'I'], [58, 17, 'C'], [7, 87, 'N'], [5, 55, 'L'], [42, 39, 'A'], [26, 26, 'P']] },
+  { word: 'LEOPARD', clue: 'o felină mare, cu blana pătată' },
+  { word: 'HAMSTER', clue: 'un rozător mic, animal de companie' },
+  { word: 'JAGUAR', clue: 'o felină mare din pădurile Americii' },
+  { word: 'IGUANA', clue: 'o șopârlă mare și verde' },
+  { word: 'FLAMINGO', clue: 'o pasăre roz care stă într-un picior' },
+  { word: 'CONDOR', clue: 'o pasăre uriașă din munții Anzi' },
+  { word: 'ZEBRA', clue: 'un animal cu dungi albe și negre' },
+  { word: 'KOALA', clue: 'un animal din Australia care mănâncă frunze de eucalipt' },
+  { word: 'PANDA', clue: 'un urs alb-negru care mănâncă bambus' },
+  { word: 'PUMA', clue: 'o felină sălbatică din munții Americii' },
+  { word: 'COBRA', clue: 'un șarpe veninos care își umflă gâtul' },
+];
+
+// Ghicitoarea de la finalul rundei: rezultatele, ordonate crescător sau descrescător, dau numele animalului.
+// entries: [a, b, literă]; value: rezultatul unei intrări.
+function riddleItem(puzzle, entries, value, desc) {
+  const order = [...entries].sort((x, y) => (desc ? value(y) - value(x) : value(x) - value(y)));
+  const others = shuffle(SUM_PUZZLES.filter(p => p.word !== puzzle.word)).slice(0, 3).map(p => p.word);
+  return {
+    points: 1,
+    get text() {
+      return tr(desc
+        ? 'Rezultatele tale: {list}. Ordonează-le descrescător și citește literele. Ce animal ai descoperit? Indiciu: {clue}.'
+        : 'Rezultatele tale: {list}. Ordonează-le crescător și citește literele. Ce animal ai descoperit? Indiciu: {clue}.', {
+        list: entries.map(e => `${e[2]} = ${value(e)}`).join(', '),
+        clue: puzzle.clue,
+      });
+    },
+    answer: puzzle.word,
+    choices: shuffle([puzzle.word, ...others]),
+    get explanation() {
+      return tr(desc ? 'În ordine descrescătoare: {order}. Literele formează cuvântul {word}.'
+        : 'În ordine crescătoare: {order}. Literele formează cuvântul {word}.', {
+        order: order.map(e => `${value(e)} (${e[2]})`).join(desc ? ' > ' : ' < '),
+        word: puzzle.word,
+      });
+    },
+  };
+}
+
+// Rezultate diferite pentru literele cuvântului: crescător, a k-a literă primește al k-lea rezultat
+// (descrescător, invers); apoi exercițiile se amestecă.
+function lettersToResults(word, min, max, desc) {
+  const results = new Set();
+  while (results.size < word.length) results.add(randInt(min, max));
+  const sorted = [...results].sort((x, y) => (desc ? y - x : x - y));
+  return word.split('').map((letter, i) => [sorted[i], letter]);
+}
+
+// Două numere care adunate dau `sum`; de cele mai multe ori cu trecere peste zece, ca în carte.
+function sumPair(sum) {
+  const [t, u] = [Math.floor(sum / 10), sum % 10];
+  for (let tries = 0; tries < 30; tries++) {
+    const carry = u < 9 && Math.random() < 0.85;
+    const ub = carry ? randInt(u + 1, 9) : randInt(0, u);
+    const ua = carry ? u + 10 - ub : u - ub;
+    const tens = carry ? t - 1 : t;
+    const ta = randInt(0, tens);
+    const [a, b] = [ta * 10 + ua, (tens - ta) * 10 + ub];
+    if (a >= 2 && b >= 2) return Math.random() < 0.5 ? [a, b] : [b, a];
+  }
+  return [sum - 19, 19];
+}
+
+// O rundă: câte o adunare pentru fiecare literă a animalului, apoi ghicitoarea.
+function buildSumRound(puzzle) {
+  const entries = puzzle.pairs
+    || shuffle(lettersToResults(puzzle.word, 25, 99, false).map(([sum, letter]) => [...sumPair(sum), letter]));
+  return [
+    ...entries.map(([a, b, letter]) => columnSumItem(a, b, letter)),
+    riddleItem(puzzle, entries, ([a, b]) => a + b, false),
+  ];
+}
+
+// ---------- Scăderi în coloană (2 cifre), tot cu ghicitoare ----------
+// Prima rundă: scăderile din carte cu rezultate diferite, iar descrescător dau HAMSTER.
+const SUB2_BOOK = { word: 'HAMSTER', clue: 'un rozător mic, animal de companie', desc: true,
+  pairs: [[73, 37, 'S'], [56, 29, 'E'], [91, 47, 'A'], [85, 38, 'H'], [52, 43, 'R'], [43, 14, 'T'], [64, 25, 'M']] };
+
+// Două numere de 2 cifre a căror diferență e `diff`; de cele mai multe ori cu împrumut, ca în carte.
+function subPair(diff) {
+  for (let tries = 0; tries < 40; tries++) {
+    const b = randInt(11, 99 - diff);
+    const a = diff + b;
+    if (a % 10 < b % 10 || Math.random() < 0.15) return [a, b];
+  }
+  return [diff + 11, 11];
+}
+
+function buildSub2Round(puzzle, desc) {
+  const entries = puzzle.pairs
+    || shuffle(lettersToResults(puzzle.word, 5, 80, desc).map(([diff, letter]) => [...subPair(diff), letter]));
+  return [
+    ...entries.map(([a, b, letter]) => columnItem(a, b, letter)),
+    riddleItem(puzzle, entries, ([a, b]) => a - b, desc),
+  ];
+}
+
+let sub2Puzzle = SUB2_BOOK;
+let sub2Rounds = 0;
+let ITEMS_COLUMN = buildSub2Round(SUB2_BOOK, true);
+
+let sumPuzzle = SUM_PUZZLES[0];
+let sumRounds = 0;
+let ITEMS_COLUMN_SUM = buildSumRound(sumPuzzle);
+
+// La fiecare rundă nouă de „Adunări în coloană”: alt animal și alte adunări.
+export function newNationalRound(level) {
+  if (level === 'scaderi2') {
+    // Prima rundă e cea din carte; apoi alt animal, ordonat la întâmplare crescător sau descrescător.
+    sub2Rounds += 1;
+    if (sub2Rounds > 1) {
+      const choices = SUM_PUZZLES.filter(p => p.word !== sub2Puzzle.word);
+      sub2Puzzle = choices[Math.floor(Math.random() * choices.length)];
+      ITEMS_COLUMN = buildSub2Round({ word: sub2Puzzle.word, clue: sub2Puzzle.clue }, Math.random() < 0.5);
+    } else {
+      ITEMS_COLUMN = buildSub2Round(SUB2_BOOK, true);
+    }
+    return;
+  }
+  if (level === 'adunari3') {
+    add3Rounds += 1;
+    ITEMS_ADD3 = buildAdd3Round(add3Rounds === 1);
+    return;
+  }
+  if (level === 'scaderi3') {
+    sub3Rounds += 1;
+    ITEMS_SUB3 = buildSub3Round(sub3Rounds === 1);
+    return;
+  }
+  if (level !== 'adunari8') return;
+  sumRounds += 1;
+  if (sumRounds > 1) {
+    const choices = SUM_PUZZLES.filter(p => p !== sumPuzzle);
+    sumPuzzle = choices[Math.floor(Math.random() * choices.length)];
+  }
+  ITEMS_COLUMN_SUM = buildSumRound(sumPuzzle);
+}
 
 const TESTS = {
   en2026: { year: 2026, theme: 'Animale de companie', items: ITEMS_2026 },
@@ -517,10 +825,18 @@ const TESTS = {
   en2025b: { year: 2025, theme: 'Animale polare', items: ITEMS_2025_POLAR },
   // Exersare fără cronometru, de pe prima pagină (nu e test de Evaluare Națională).
   termeni46: { practice: true, title: 'Află termenii necunoscuți', items: ITEMS_TERMS },
+  scaderi2: { practice: true, title: 'Scăderi în coloană', get items() { return ITEMS_COLUMN; } },
+  adunari8: { practice: true, title: 'Adunări în coloană', get items() { return ITEMS_COLUMN_SUM; } },
+  scaderi3: { practice: true, title: 'Scăderi cu numere de 3 cifre', get items() { return ITEMS_SUB3; } },
+  adunari3: { practice: true, title: 'Adunări cu numere de 3 cifre', get items() { return ITEMS_ADD3; } },
 };
 
 // Exercițiile fără cronometru, cu itemi în ordine (testele și exersările de pe prima pagină).
 export const PRACTICE_LEVELS = ['termeni46'];
+export const COLUMN_LEVELS = ['scaderi2'];
+export const COLUMN_SUM_LEVELS = ['adunari8'];
+export const COLUMN3_LEVELS = ['scaderi3'];
+export const ADD3_LEVELS = ['adunari3'];
 
 // Un nivel cu itemi ficși, fără cronometru, la care poți sări peste un item și reveni la el.
 export function isNationalLevel(level) {

@@ -11,6 +11,8 @@ export default function GameCard({
   current, stats, questionsPerLevel, answered, selected, hintOpen, feedback, toast,
   onAnswer, onToggleHint, onNext, onRestart, isExam, onSkip, onGoToItem,
 }) {
+  // Scăderea în coloană: rezultatul se scrie în căsuțe, nu se alege din variante.
+  const isColumn = current.visual?.type === 'column';
   return (
     <section className="game">
       <Toast text={toast} />
@@ -19,7 +21,8 @@ export default function GameCard({
           <div className="ribbon">{current.badge?.startsWith('✏️') ? tr('EXERCIȚIUL') : tr('ITEMUL')} <span>{current.examIndex + 1}</span> / {questionsPerLevel}</div>
           {/* Itemii nerezolvați: apeși pe oricare ca să te întorci la el. */}
           <div className="exam-pending">
-            <span>✅ {tr('Rezolvați:')} <b>{stats.q}/{questionsPerLevel}</b> · {tr('Nerezolvați:')}</span>
+            {/* „exercițiile rezolvate”, dar „itemii rezolvați” */}
+            <span>✅ {current.badge?.startsWith('✏️') ? tr('Rezolvate:') : tr('Rezolvați:')} <b>{stats.q}/{questionsPerLevel}</b></span>
             {[...stats.pending].sort((x, y) => x - y).map(i => (
               <button
                 key={i}
@@ -36,9 +39,15 @@ export default function GameCard({
         <div className="ribbon">{tr('ÎNTREBAREA')} <span>{Math.min(stats.q + 1, questionsPerLevel)}</span> / {questionsPerLevel}</div>
       )}
       <QuestionDisplay current={current} />
-      <HintPanel current={current} hintOpen={hintOpen} onToggle={onToggleHint} />
+      {/* La scăderea în coloană, căsuțele pentru rezultat vin imediat sub exercițiu, apoi rezolvarea. */}
+      {!isColumn && <HintPanel current={current} hintOpen={hintOpen} onToggle={onToggleHint} />}
       <AnswerGrid current={current} answered={answered} selected={selected} onAnswer={onAnswer} />
-      <FeedbackMessage feedback={feedback} />
+      {isColumn && <HintPanel current={current} hintOpen={hintOpen} onToggle={onToggleHint} />}
+      <FeedbackMessage
+        feedback={isColumn && feedback.text === 'Alege răspunsul corect! 😊'
+          ? { ...feedback, text: 'Scrie rezultatul în căsuțe, apoi apasă „Verifică”! ✍️' }
+          : feedback}
+      />
       <ProgressBar current={stats.q} total={questionsPerLevel} />
       <GameControls onNext={onNext} onRestart={onRestart} onSkip={isExam && !answered ? onSkip : null} />
     </section>

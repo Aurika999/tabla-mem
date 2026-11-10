@@ -586,6 +586,19 @@
 .tabla-inmultirii .exam-poster{margin:12px auto 0;width:160px;height:210px;border:5px solid #111;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:6px 4px}
 .tabla-inmultirii .exam-poster-title{font-family:Georgia,serif;color:#e03131;font-weight:900;font-size:17px;line-height:1.1;text-align:center}
 .tabla-inmultirii .exam-poster-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 4px;font-size:26px;white-space:nowrap;line-height:1.2;width:100%;text-align:center}
+.tabla-inmultirii .column-answer{display:flex;flex-direction:column;align-items:center;gap:14px;margin:0 auto 14px}
+.tabla-inmultirii .column-check{border:0;border-radius:16px;padding:12px 28px;font-size:20px;font-weight:1000;color:#fff;background:linear-gradient(180deg,#5ad86f,#27c94f);box-shadow:0 5px #159632}
+.tabla-inmultirii .column-check:disabled{opacity:.5;cursor:default}
+.tabla-inmultirii input.column-box{width:100%;box-sizing:border-box;padding:0;text-align:center;color:#24304a;font-family:inherit;font-size:36px;outline:none}
+.tabla-inmultirii input.column-box:focus{border-color:#ff8a00;background:#fff7e6;box-shadow:0 0 0 3px #ffd59a}
+.tabla-inmultirii .column-op.correct input.column-box{border-color:#18b54a;background:#e6f9ec;color:#159632}
+.tabla-inmultirii .column-op.wrong input.column-box{border-color:#e62c42;background:#fdecee;color:#dc263e}
+.tabla-inmultirii .column-letter{grid-column:1/3;text-align:center;font-size:30px;font-weight:1000;color:#159632;line-height:1.1}
+.tabla-inmultirii .column-op{display:inline-grid;grid-template-columns:repeat(2,46px) 34px;gap:4px 2px;margin:14px auto 0;padding:14px 16px 14px 20px;background-color:#fff;background-image:linear-gradient(#d9e6f7 1px,#0000 1px),linear-gradient(90deg,#d9e6f7 1px,#0000 1px);background-size:16px 16px;border:3px solid #c9d6ee;border-radius:14px;font-variant-numeric:tabular-nums}
+.tabla-inmultirii .column-digit{font-size:38px;font-weight:1000;color:#24304a;text-align:center;line-height:1.15}
+.tabla-inmultirii .column-sign{font-size:34px;font-weight:1000;color:#e8264d;text-align:left;line-height:1.2;padding-left:4px}
+.tabla-inmultirii .column-line{grid-column:1/3;height:4px;background:#24304a;border-radius:2px;margin:2px 0}
+.tabla-inmultirii .column-box{height:52px;border:3px solid #7b5cff;border-radius:6px;background:#f4f1ff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:1000;color:#b9a8ff}
 .tabla-inmultirii .exam-shapes{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center;margin:14px auto 0}
 .tabla-inmultirii .exam-shape{display:flex;align-items:center;justify-content:center;font-size:28px;border:3px solid #24304a;background:#fff}
 .tabla-inmultirii .exam-shape.circle{width:74px;height:74px;border-radius:50%}
@@ -620,6 +633,10 @@
 .tabla-inmultirii .home-phone-nav{margin:14px 0 0}
 .tabla-inmultirii .home-phone-nav .map-side.home-nav{display:flex}
 .tabla-inmultirii .home-phone-nav .map-side.home-nav button{flex:1 1 0;min-width:0}
+.tabla-inmultirii .home-island-cta.add3{color:#fff;background:linear-gradient(180deg,#ffd43b 0%,#f59f00 55%,#e67700 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .home-island-cta.column3{color:#fff;background:linear-gradient(180deg,#63e6be 0%,#0ca678 55%,#087f5b 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .home-island-cta.column-sum{color:#fff;background:linear-gradient(180deg,#ffa8a8 0%,#f76707 55%,#d9480f 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .home-island-cta.column{color:#fff;background:linear-gradient(180deg,#74c0fc 0%,#1c7ed6 55%,#1864ab 100%);text-shadow:0 2px 0 #0004}
 .tabla-inmultirii .home-island-cta.terms{color:#fff;background:linear-gradient(180deg,#e599f7 0%,#ae3ec9 55%,#862e9c 100%);text-shadow:0 2px 0 #0004}
 .tabla-inmultirii .video-btn{margin:10px auto 2px;border:0;border-radius:14px;padding:8px 16px;font-weight:900;font-size:15px;color:#fff;background:linear-gradient(180deg,#ff6b6b,#e03131);box-shadow:0 4px 0 #a51111;cursor:pointer}
 .tabla-inmultirii .video-modal{position:relative;width:min(920px,96vw);max-width:none;padding:14px;background:#111}

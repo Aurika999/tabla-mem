@@ -234,6 +234,7 @@ export default function TablaInmultirii() {
           <HomeIslands
             mode="school"
             onOpenNationalHub={goToNationalHub}
+            onOpenNational={level => handleSelectLevel(level)}
             name={name}
             scores={firebaseEnabled ? myScores : {}}
             onOpenLearn={goToLearnMap}

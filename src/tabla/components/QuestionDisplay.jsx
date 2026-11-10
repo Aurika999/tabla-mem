@@ -40,6 +40,8 @@ function Visual({ visual }) {
       </div>
     );
   }
+  // Scăderea în coloană se desenează jos, cu căsuțele în care copilul scrie rezultatul (ColumnAnswer).
+  if (visual.type === 'column') return null;
   return (
     <div className="exam-shapes" aria-label="Formele din test">
       {visual.items.map(([shape, icon]) => (

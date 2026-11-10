@@ -4,7 +4,7 @@ import {
   EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, EVAL_LEVELS, OLD_LOGIC_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, DIV6_LEVELS, DIV7_LEVELS, DIV8_LEVELS, DIV9_LEVELS,
 } from '../data';
 import { useGlobalLeaderboard, useMyScores } from '../useLeaderboard';
-import { NATIONAL_LEVELS, PRACTICE_LEVELS, questionCount } from '../nationalTest';
+import { ADD3_LEVELS, COLUMN_LEVELS, COLUMN_SUM_LEVELS, COLUMN3_LEVELS, NATIONAL_LEVELS, PRACTICE_LEVELS, questionCount } from '../nationalTest';
 import { REVIEW_LEVELS } from '../reviewProblems';
 import Flag from './Flag';
 import Avatar from './Avatar';
@@ -35,6 +35,10 @@ const SCORE_GROUPS = [
   { icon: '📝', name: 'Evaluare (veche)', levels: EVAL_LEVELS, onlyIfPlayed: true },
   { icon: '🎓', name: 'Evaluarea Națională', levels: NATIONAL_LEVELS },
   { icon: '✏️', name: 'Află termenii necunoscuți', levels: PRACTICE_LEVELS },
+  { icon: '➖', name: 'Scăderi în coloană', levels: COLUMN_LEVELS },
+  { icon: '➕', name: 'Adunări în coloană', levels: COLUMN_SUM_LEVELS },
+  { icon: '🔢', name: 'Scăderi cu numere de 3 cifre', levels: COLUMN3_LEVELS },
+  { icon: '🧮', name: 'Adunări cu numere de 3 cifre', levels: ADD3_LEVELS },
   { icon: '🌳', name: 'Probleme de recapitulare', levels: REVIEW_LEVELS },
   // Nivelurile de dinainte de împărțirea pe dificultate: apar doar dacă ai jucat pe ele.
   { icon: '📦', name: 'Niveluri vechi', levels: [...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL, ...OLD_LOGIC_LEVELS], onlyIfPlayed: true },
