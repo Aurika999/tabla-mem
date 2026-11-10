@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { tr } from '../i18n';
+import FractionShape from './FractionShape';
 // Imaginea unei întrebări: grupe egale de obiecte (ex. 18 flori în 3 grupe).
 function Picture({ picture }) {
   const { icon, groups, per, holder } = picture;
@@ -42,6 +43,24 @@ function Visual({ visual }) {
   }
   // Scăderea în coloană se desenează jos, cu căsuțele în care copilul scrie rezultatul (ColumnAnswer).
   if (visual.type === 'column') return null;
+  if (visual.type === 'fraction') {
+    return (
+      <div className="fraction-visual">
+        <FractionShape shape={visual.shape} parts={visual.parts} filled={visual.filled} filledIdx={visual.filledIdx}
+          widths={visual.widths} size={130} />
+      </div>
+    );
+  }
+  // Două figuri de comparat, cu „?” între ele (ca la exercițiul 15 din manual).
+  if (visual.type === 'fractionPair') {
+    return (
+      <div className="fraction-visual fraction-pair">
+        <FractionShape {...visual.left} size={120} />
+        <span className="fraction-pair-sign">?</span>
+        <FractionShape {...visual.right} size={120} />
+      </div>
+    );
+  }
   return (
     <div className="exam-shapes" aria-label="Formele din test">
       {visual.items.map(([shape, icon]) => (

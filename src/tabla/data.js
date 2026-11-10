@@ -140,6 +140,7 @@ export const LEVELS = {
   recap1: { key: 'recap1', label: '🌳 PROBLEME DE RECAPITULARE', hint: 'Urși, copaci, veverițe, postere · pe pași', className: 'lg4' },
   termeni46: { key: 'termeni46', label: '✏️ AFLĂ TERMENII NECUNOSCUȚI', hint: 'Exercițiul 46 · fără cronometru', className: 'lg1' },
   scaderi2: { key: 'scaderi2', label: '➖ SCĂDERI ÎN COLOANĂ', hint: 'Descoperă animalul · fără cronometru', className: 'lg3' },
+  fractii: { key: 'fractii', label: '🍉 FRACȚII', hint: 'Jumătatea și sfertul · cu „Reține”', className: 'lg3' },
   adunari3: { key: 'adunari3', label: '🧮 ADUNĂRI CU 3 CIFRE', hint: 'Efectuează în coloană · fără cronometru', className: 'lg1' },
   scaderi3: { key: 'scaderi3', label: '🔢 SCĂDERI CU 3 CIFRE', hint: 'Calculează în coloană · fără cronometru', className: 'lg2' },
   adunari8: { key: 'adunari8', label: '➕ ADUNĂRI ÎN COLOANĂ', hint: 'Descoperă animalul · fără cronometru', className: 'lg4' },

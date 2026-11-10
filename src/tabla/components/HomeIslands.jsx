@@ -19,6 +19,7 @@ const DECOR = {
   en2026: [['🏅', -4, -40, 80], ['🐶', -100, 4, 32], ['🦜', 98, 0, 30], ['📝', 80, 26, 26], ['🐰', -82, 28, 24]],
   termeni46: [['✏️', -4, -40, 80], ['➕', -100, 4, 32], ['➖', 98, 0, 30], ['❓', 80, 26, 26], ['📒', -82, 28, 24]],
   scaderi2: [['📐', -4, -40, 78], ['➖', -100, 4, 34], ['🔢', 98, 0, 30], ['✍️', 80, 26, 26], ['📓', -82, 28, 24]],
+  fractii: [['🍉', -4, -42, 80], ['🍕', -100, 4, 34], ['🧁', 98, 0, 30], ['🍫', 80, 26, 26], ['🍞', -82, 28, 24]],
   adunari3: [['🏗️', -4, -42, 80], ['➕', -100, 4, 34], ['💯', 98, 0, 30], ['🧮', 80, 26, 26], ['📒', -82, 28, 24]],
   scaderi3: [['🏔️', -4, -42, 80], ['➖', -100, 4, 34], ['💯', 98, 0, 30], ['🔢', 80, 26, 26], ['📓', -82, 28, 24]],
   adunari8: [['🐦', -4, -42, 80], ['➕', -100, 4, 34], ['🐟', 98, 0, 30], ['🔢', 80, 26, 26], ['🌊', -82, 28, 24]],
@@ -52,7 +53,7 @@ const HOME_KEYS = ['arena', 'school'];
 // Nivelurile „Tablei înmulțirii” sunt acum în Insula Isteților, pe dificultate.
 // Exercițiile din „Evaluare” sunt acum în Insula Isteților.
 // Exersările fără cronometru (termenii necunoscuți, adunările și scăderile în coloană) sunt tot aici.
-const SCHOOL_KEYS = ['logic', 'lessons', 'division', 'national', 'termeni46', 'scaderi2', 'adunari8', 'scaderi3', 'adunari3'];
+const SCHOOL_KEYS = ['logic', 'lessons', 'division', 'national', 'termeni46', 'scaderi2', 'adunari8', 'scaderi3', 'adunari3', 'fractii'];
 // Lecțiile de împărțire (deocamdată una; se pot adăuga altele).
 const DIVISION_KEYS = ['div1', 'div2', 'div3', 'div4', 'div5', 'div6', 'div7', 'div8', 'div9'];
 const LESSON_FACTORS = [2, 3, 4, 5, 6, 7, 8, 9];
@@ -277,6 +278,16 @@ export default function HomeIslands({
         : tr('🧮 648 + 234 · {v0} exerciții · fără cronometru', { v0: questionCount('adunari3') }),
       cta: tr('🧮 Efectuează'),
       onClick: () => onOpenNational('adunari3'),
+    },
+    {
+      key: 'fractii',
+      ctaClass: 'fractions',
+      title: tr('FRACȚII'),
+      subtitle: scores.fractii
+        ? tr('🍉 Cel mai bun: {v0} / {v1} · jumătăți și sferturi', { v0: scores.fractii.correct, v1: questionCount('fractii') })
+        : tr('🍉 Jumătatea și sfertul · 📖 Reține + exerciții'),
+      cta: tr('🍉 Învață fracțiile'),
+      onClick: () => onOpenNational('fractii'),
     },
     {
       key: 'national',

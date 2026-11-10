@@ -633,6 +633,21 @@
 .tabla-inmultirii .home-phone-nav{margin:14px 0 0}
 .tabla-inmultirii .home-phone-nav .map-side.home-nav{display:flex}
 .tabla-inmultirii .home-phone-nav .map-side.home-nav button{flex:1 1 0;min-width:0}
+.tabla-inmultirii .home-island-cta.fractions{color:#fff;background:linear-gradient(180deg,#ff8787 0%,#e03131 55%,#b02525 100%);text-shadow:0 2px 0 #0004}
+.tabla-inmultirii .fraction-visual{display:flex;justify-content:center;margin:14px auto 4px}
+.tabla-inmultirii .fraction-shape{display:block}
+.tabla-inmultirii .fraction-pair{align-items:center;gap:18px;flex-wrap:wrap}
+.tabla-inmultirii .fraction-pair-sign{width:46px;height:46px;border:3px solid #e8264d;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:1000;color:#e8264d;background:#fff}
+.tabla-inmultirii .five-tips .fraction-shape{display:inline-block;vertical-align:middle}
+.tabla-inmultirii .game-remember{float:right;margin:0 0 6px 8px;animation:none}
+.tabla-inmultirii .frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.05;font-weight:1000;margin:0 2px}
+.tabla-inmultirii .frac-den{border-top:2px solid currentColor;padding:0 3px}
+.tabla-inmultirii .fraction-melons{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-weight:800;color:#24304a;margin:0 0 10px}
+.tabla-inmultirii .fraction-melons span{display:flex;align-items:center;gap:6px}
+.tabla-inmultirii .fraction-melons b{font-size:30px}
+.tabla-inmultirii .fraction-rule{border:2px solid #5cc9a7;background:#effaf6;border-radius:14px;padding:10px 12px;margin:0 auto 10px;max-width:680px}
+.tabla-inmultirii .fraction-rule p{margin:0 0 8px;font-size:17px;font-weight:800;color:#1f5f4e}
+.tabla-inmultirii .fraction-pictures{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap}
 .tabla-inmultirii .home-island-cta.add3{color:#fff;background:linear-gradient(180deg,#ffd43b 0%,#f59f00 55%,#e67700 100%);text-shadow:0 2px 0 #0004}
 .tabla-inmultirii .home-island-cta.column3{color:#fff;background:linear-gradient(180deg,#63e6be 0%,#0ca678 55%,#087f5b 100%);text-shadow:0 2px 0 #0004}
 .tabla-inmultirii .home-island-cta.column-sum{color:#fff;background:linear-gradient(180deg,#ffa8a8 0%,#f76707 55%,#d9480f 100%);text-shadow:0 2px 0 #0004}

@@ -5,7 +5,12 @@ import FeedbackMessage from './FeedbackMessage';
 import ProgressBar from './ProgressBar';
 import GameControls from './GameControls';
 import Toast from './Toast';
+import { useState } from 'react';
+import FractionRemember from './FractionRemember';
 import { tr } from '../i18n';
+
+// „Reține” la fracții se deschide singur o singură dată, la prima intrare din sesiune.
+let fractionRememberShown = false;
 
 export default function GameCard({
   current, stats, questionsPerLevel, answered, selected, hintOpen, feedback, toast,
@@ -13,9 +18,21 @@ export default function GameCard({
 }) {
   // Scăderea în coloană: rezultatul se scrie în căsuțe, nu se alege din variante.
   const isColumn = current.visual?.type === 'column';
+  const isFractions = stats.level === 'fractii';
+  const [rememberOpen, setRememberOpen] = useState(() => {
+    if (!isFractions || fractionRememberShown) return false;
+    fractionRememberShown = true;
+    return true;
+  });
   return (
     <section className="game">
       <Toast text={toast} />
+      {isFractions && (
+        <button type="button" className="lesson-btn game-remember" onClick={() => setRememberOpen(true)}>
+          <span aria-hidden="true">📖</span>{tr('Reține')}
+        </button>
+      )}
+      {rememberOpen && <FractionRemember onClose={() => setRememberOpen(false)} />}
       {isExam ? (
         <>
           <div className="ribbon">{current.badge?.startsWith('✏️') ? tr('EXERCIȚIUL') : tr('ITEMUL')} <span>{current.examIndex + 1}</span> / {questionsPerLevel}</div>

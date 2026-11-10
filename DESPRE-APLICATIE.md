@@ -2,7 +2,7 @@
 
 ## Pe scurt
 
-**Math Owl** este un joc educativ de matematică pe care copiii îl folosesc în browser, pe calculator sau pe telefon. Cu el, copiii învață și exersează **înmulțirea, împărțirea, adunarea și scăderea** și se pregătesc pentru **Evaluarea Națională de la finalul clasei a II-a**.
+**Math Owl**, „Insula isteților la matematică”, este un joc educativ de matematică pe care copiii îl folosesc în browser, pe calculator sau pe telefon. Cu el, copiii învață și exersează **înmulțirea, împărțirea, adunarea și scăderea** și se pregătesc pentru **Evaluarea Națională de la finalul clasei a II-a**.
 
 Exercițiile urmează **manualul școlar**: lecțiile „Descopăr – Aplic – Exersez – Rezolv probleme”, casetele „Reține” și problemele din carte. Totul e prezentat ca o aventură pe o hartă cu insule.
 
@@ -22,13 +22,17 @@ Copilul se mișcă pe o **hartă cu insule**. Fiecare insulă e o lecție sau un
 
 ```
 Prima pagină
-├── 🏁 Arena Concursului              – concursuri cu alți copii
-├── ✏️ Află termenii necunoscuți      – exercițiul 46, cu video
+├── 🏁 Arena Concursului             – concursuri cu alți copii
 └── 🎒 Insula Învățării
-    ├── 🧩 Insula Isteților      – 14 insule, de la ușor la avansat
-    ├── 📘 Tabla înmulțirii      – lecțiile din manual: înmulțirea cu 2 … cu 9
-    ├── ➗ Tabla împărțirii      – împărțirea și lecțiile „împărțirea la 2 … la 9”
-    └── 🎓 Evaluarea Națională   – testele oficiale din 2025 și 2026 + probleme de recapitulare
+    ├── 🧩 Insula Isteților          – 14 insule, de la ușor la avansat
+    ├── 📘 Tabla înmulțirii          – lecțiile din manual: înmulțirea cu 2 … cu 9
+    ├── ➗ Tabla împărțirii          – împărțirea și lecțiile „împărțirea la 2 … la 9”
+    ├── 🎓 Evaluarea Națională       – testele oficiale din 2025 și 2026 + recapitulare
+    ├── ✏️ Termenii necunoscuți      – exercițiul 46: a + 34 = 62
+    ├── ➖ Scăderi în coloană        – 2 cifre, cu ghicitoare: descoperă animalul
+    ├── ➕ Adunări în coloană        – 2 cifre, cu ghicitoare: descoperă animalul
+    ├── 🔢 Scăderi cu 3 cifre        – 258 − 137, în coloană
+    └── 🧮 Adunări cu 3 cifre        – 648 + 234, în coloană
 ```
 
 Apăsând pe socotelnița din colțul stânga-sus, copilul se întoarce oricând pe prima pagină.
@@ -68,8 +72,25 @@ Câte o lecție pentru înmulțirea cu **2, 3, 4, 5, 6, 7, 8 și 9**. Fiecare le
 - **12 exerciții** în care copilul află numărul care lipsește: a + 34 = 62, b − 68 = 19, 45 − d = 26 și altele.
 - Exercițiile cu paranteze se rezolvă **pe pași**: întâi paranteza, apoi termenul necunoscut.
 - La fiecare exercițiu, copilul vede **regula** („un termen = suma − celălalt termen”) și **verificarea**.
-- Fiecare exercițiu are **un video** în care învățătoarea explică rezolvarea.
 - **Fără cronometru**: copilul lucrează în ritmul lui și poate sări peste un exercițiu.
+
+### ✍️ Adunări și scăderi în coloană
+
+Patru insule cu calcule scrise **pe verticală, ca în caiet**, pe hârtie cu pătrățele: unitățile sub unități, zecile sub zeci, sutele sub sute.
+
+| Insula | Ce conține |
+|---|---|
+| ➖ Scăderi în coloană | scăderi cu numere de 2 cifre, cu împrumut (73 − 37) |
+| ➕ Adunări în coloană | adunări cu numere de 2 cifre, cu trecere peste zece (39 + 15) |
+| 🔢 Scăderi cu 3 cifre | scăderi cu numere de 3 cifre (258 − 137, 478 − 76) |
+| 🧮 Adunări cu 3 cifre | adunări cu numere de 3 cifre (648 + 234, 808 + 8) |
+
+- **Rezultatul se scrie de la tastatură**, cifră cu cifră, în căsuțele de sub linie, nu se alege din variante. Ca pe hârtie, copilul începe cu unitățile (căsuța din dreapta), iar cursorul trece singur spre stânga. Pe telefon se deschide tastatura cu cifre.
+- După „✔️ Verifică”, căsuțele se fac **verzi** (corect) sau **roșii** (greșit).
+- **„💡 Cum se rezolvă?”** explică pe coloane: „Unitățile: 3 − 7 nu se poate, așa că împrumutăm o zece: 13 − 7 = 6…”, cu împrumutul, cu ce „ținem minte” și cu verificarea.
+- **Ghicitoare cu animale** (la adunările și scăderile cu 2 cifre, ca exercițiul 8 din manual): sub fiecare calcul e o literă. La final, copilul ordonează rezultatele **crescător sau descrescător** și citește literele, iar acestea formează numele unui animal (PELICAN, HAMSTER, PANDA, ZEBRA, KOALA…). Primește și un indiciu, de exemplu „un urs alb-negru care mănâncă bambus”.
+- **Prima rundă** are exercițiile din carte. **La fiecare rundă nouă**, jocul face alte calcule și alege alt animal, așa că exercițiile nu se repetă.
+- **Fără cronometru**, ca la exercițiul 46.
 
 ### 🎓 Evaluarea Națională (clasa a II-a)
 
@@ -87,8 +108,8 @@ La teste:
 
 ## Cum se joacă
 
-- **Runda** are 10 întrebări, cu 4 variante de răspuns fiecare. La testele de Evaluare Națională, runda are toți itemii testului.
-- **Timpul** este de 30 de secunde pe întrebare. Testele de Evaluare Națională și exercițiul 46 nu au limită de timp.
+- **Runda** are 10 întrebări, cu 4 variante de răspuns fiecare. La testele de Evaluare Națională, runda are toți itemii testului. La calculele în coloană, rezultatul se scrie în căsuțe.
+- **Timpul** este de 30 de secunde pe întrebare. Testele de Evaluare Națională, exercițiul 46 și calculele în coloană nu au limită de timp.
 - **Viețile:** copilul pornește cu 3 vieți și poate avea cel mult 5. O greșeală costă o viață, iar la 5 răspunsuri corecte la rând primește una înapoi. Dacă rămâne fără vieți, poate „cumpăra” una cu 30 de puncte.
 - **Punctele:** 10 puncte pentru fiecare răspuns corect, plus bonus de „combo” când răspunde corect de mai multe ori la rând.
 - **Stelele:** la sfârșitul rundei primește 1–3 ⭐, după câte răspunsuri corecte a avut. Harta păstrează cel mai bun rezultat.
@@ -123,7 +144,7 @@ La teste:
 
 1. Deschizi aplicația în browser (pe calculator sau telefon).
 2. Alegi un nume. Poți juca și fără cont, dar cu un cont cu email și parolă progresul se păstrează pe orice dispozitiv.
-3. Pe prima pagină alegi **Insula Învățării** ca să înveți, **Află termenii necunoscuți** ca să exersezi exercițiul 46 sau **Arena Concursului** ca să concurezi cu alți copii.
+3. Pe prima pagină alegi **Insula Învățării** ca să înveți și să exersezi sau **Arena Concursului** ca să concurezi cu alți copii.
 4. Din bara de sus alegi limba: **🇷🇴 RO** sau **🇬🇧 EN**.
 
 Pe prima pagină mai sunt două butoane:

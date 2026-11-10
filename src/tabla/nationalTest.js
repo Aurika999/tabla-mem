@@ -1,4 +1,5 @@
 import { tr } from './i18n';
+import { buildFractionRound } from './fractionProblems';
 // Testele „Evaluarea Națională la finalul clasei a II-a” la Matematică și Explorarea mediului:
 // 2026 („Animale de companie”, 18 itemi) și cele două din 2025 („Medii de viață” și „Animale polare”),
 // fiecare cu toți itemii,
@@ -650,6 +651,9 @@ function buildAdd3Round(first) {
 let add3Rounds = 0;
 let ITEMS_ADD3 = buildAdd3Round(true);
 
+// Fracții: la fiecare rundă, alte desene și alte numere.
+let ITEMS_FRACTIONS = buildFractionRound();
+
 // ================= Adunări în coloană: exercițiul 8 din manual =================
 // „Calculează, apoi ordonează crescător rezultatele. Scrie literele corespunzătoare numerelor
 // pentru a descoperi o pasăre care se hrănește cu pește.” Fiecare adunare are litera ei, ca în carte.
@@ -800,6 +804,10 @@ export function newNationalRound(level) {
     }
     return;
   }
+  if (level === 'fractii') {
+    ITEMS_FRACTIONS = buildFractionRound();
+    return;
+  }
   if (level === 'adunari3') {
     add3Rounds += 1;
     ITEMS_ADD3 = buildAdd3Round(add3Rounds === 1);
@@ -829,6 +837,7 @@ const TESTS = {
   adunari8: { practice: true, title: 'Adunări în coloană', get items() { return ITEMS_COLUMN_SUM; } },
   scaderi3: { practice: true, title: 'Scăderi cu numere de 3 cifre', get items() { return ITEMS_SUB3; } },
   adunari3: { practice: true, title: 'Adunări cu numere de 3 cifre', get items() { return ITEMS_ADD3; } },
+  fractii: { practice: true, title: 'Fracții', get items() { return ITEMS_FRACTIONS; } },
 };
 
 // Exercițiile fără cronometru, cu itemi în ordine (testele și exersările de pe prima pagină).
@@ -837,6 +846,7 @@ export const COLUMN_LEVELS = ['scaderi2'];
 export const COLUMN_SUM_LEVELS = ['adunari8'];
 export const COLUMN3_LEVELS = ['scaderi3'];
 export const ADD3_LEVELS = ['adunari3'];
+export const FRACTION_LEVELS = ['fractii'];
 
 // Un nivel cu itemi ficși, fără cronometru, la care poți sări peste un item și reveni la el.
 export function isNationalLevel(level) {
