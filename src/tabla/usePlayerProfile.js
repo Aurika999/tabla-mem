@@ -118,13 +118,15 @@ export function usePlayerProfile() {
 
   // Doar când profilul e încărcat: altfel, la schimbarea contului, am scrie
   // numele vechi de pe dispozitiv peste profilul contului nou.
+  // Doar pentru conturile cu email: sesiunea anonimă de dinainte de logare
+  // ar apărea altfel ca un jucător în plus (dublură cu 0 puncte).
   useEffect(() => {
-    if (ready) touchPlayer({ uid, name, country });
-  }, [ready, uid, name, country]);
+    if (ready && !isAnonymous) touchPlayer({ uid, name, country });
+  }, [ready, isAnonymous, uid, name, country]);
 
   // Semn de viață cât timp jocul e deschis și vizibil, pentru „online” în chat.
   useEffect(() => {
-    if (!ready || !uid || !name) return undefined;
+    if (!ready || isAnonymous || !uid || !name) return undefined;
     const beat = () => {
       if (document.visibilityState === 'visible') touchPlayer({ uid, name, country });
     };
@@ -134,7 +136,7 @@ export function usePlayerProfile() {
       clearInterval(id);
       document.removeEventListener('visibilitychange', beat);
     };
-  }, [ready, uid, name, country]);
+  }, [ready, isAnonymous, uid, name, country]);
 
   const applyProfile = useCallback(async (newName, newCountry) => {
     const trimmed = newName.trim();

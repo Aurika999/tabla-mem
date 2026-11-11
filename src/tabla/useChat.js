@@ -187,6 +187,11 @@ export function useChatNotifications(uid, activeChatId) {
   return { conversations, isUnread, unreadCount, incoming, dismissIncoming };
 }
 
+// Ascundem dublurile rămase din sesiunile anonime: fără cont și fără puncte.
+export function isRealPlayer(p) {
+  return Boolean(p.name) && (p.hasAccount || (p.totalPoints || 0) > 0);
+}
+
 export function usePlayers() {
   const [players, setPlayers] = useState([]);
 
@@ -200,7 +205,7 @@ export function usePlayers() {
     const q = query(collection(db, PLAYERS_COLLECTION), limit(MAX_PLAYERS));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const lastActive = p => (p.lastSeenAt ?? p.lastPlayedAt)?.toMillis() ?? 0;
-      const list = snapshot.docs.map(d => ({ uid: d.id, ...d.data() }));
+      const list = snapshot.docs.map(d => ({ uid: d.id, ...d.data() })).filter(isRealPlayer);
       list.sort((a, b) => lastActive(b) - lastActive(a));
       setPlayers(list);
     }, (err) => {
@@ -216,7 +221,8 @@ export function usePlayers() {
 export async function touchPlayer({ uid, name, country }) {
   if (!firebaseEnabled || !uid || !name) return;
   // increment(0) pune totalPoints = 0 la jucătorii noi și nu schimbă punctele existente.
-  const data = { name, lastSeenAt: serverTimestamp(), totalPoints: increment(0) };
+  // hasAccount: jucătorul are cont cu email (nu e o sesiune anonimă rămasă de dinainte de logare).
+  const data = { name, lastSeenAt: serverTimestamp(), totalPoints: increment(0), hasAccount: true };
   if (country) data.country = country;
   try {
     await setDoc(doc(db, PLAYERS_COLLECTION, uid), data, { merge: true });

@@ -4,6 +4,7 @@ import {
   runTransaction, serverTimestamp, setDoc, limit, where,
 } from 'firebase/firestore';
 import { db, firebaseEnabled } from '../firebase';
+import { isRealPlayer } from './useChat';
 
 const SCORES_COLLECTION = 'scores';
 const PLAYERS_COLLECTION = 'players';
@@ -71,7 +72,7 @@ export function useGlobalLeaderboard() {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const list = snapshot.docs
         .map(d => ({ id: d.id, ...d.data() }))
-        .filter(p => p.name)
+        .filter(isRealPlayer)
         .map(p => ({ ...p, totalPoints: p.totalPoints || 0 }));
       list.sort((a, b) => b.totalPoints - a.totalPoints);
       setEntries(list);
