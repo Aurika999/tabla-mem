@@ -447,6 +447,9 @@ function Conversation({
   );
 }
 
+const MIN_SEARCH_LETTERS = 2;
+const MAX_SEARCH_RESULTS = 8;
+
 export default function Chat({
   uid, name, firebaseEnabled, peer, onSelectPeer, conversations, isUnread, onCall, callBusy,
 }) {
@@ -475,9 +478,14 @@ export default function Chat({
   const activeChatId = peer && uid ? privateChatId(uid, peer.uid) : null;
   const conversationUids = new Set(conversations.map(c => peerOf(c, uid).uid));
   const term = search.trim().toLowerCase();
-  const otherPlayers = players.filter(p =>
-    p.uid !== uid && p.name && !conversationUids.has(p.uid)
-    && (!term || p.name.toLowerCase().includes(term)));
+  // Ceilalți jucători nu apar toți în listă: îi găsești doar căutându-i după nume
+  // (cel puțin 2 litere), ca să vorbești doar cu cine cunoști.
+  const searching = term.length >= MIN_SEARCH_LETTERS;
+  const otherPlayers = searching
+    ? players.filter(p =>
+      p.uid !== uid && p.name && !conversationUids.has(p.uid) && p.name.toLowerCase().includes(term))
+      .slice(0, MAX_SEARCH_RESULTS)
+    : [];
   const shownConversations = conversations.filter(c =>
     !term || peerOf(c, uid).name.toLowerCase().includes(term));
   const playersCount = players.filter(p => p.name).length;
@@ -491,8 +499,11 @@ export default function Chat({
             className="chat-search"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder={tr('🔍 Caută un jucător')}
+            placeholder={tr('🔍 Caută un jucător după nume')}
           />
+          {!term && (
+            <p className="chat-search-hint">{tr('Scrie numele cuiva pe care îl cunoști ca să-i trimiți un mesaj.')}</p>
+          )}
           <button className={`chat-contact${!peer ? ' active' : ''}`} onClick={() => select(null)}>
             <span className="chat-header-icon small">🌍</span>
             <span className="chat-contact-body">
@@ -532,7 +543,7 @@ export default function Chat({
               </button>
             );
           })}
-          {otherPlayers.length > 0 && <div className="chat-section">{tr('Jucători')}</div>}
+          {otherPlayers.length > 0 && <div className="chat-section">{tr('Rezultatele căutării')}</div>}
           {otherPlayers.map(p => (
             <button
               key={p.uid}
@@ -549,8 +560,11 @@ export default function Chat({
               </span>
             </button>
           ))}
-          {shownConversations.length === 0 && otherPlayers.length === 0 && (
-            <p className="leaderboard-empty">{term ? tr('Niciun jucător găsit.') : tr('Încă nu sunt alți jucători.')}</p>
+          {term && !searching && (
+            <p className="leaderboard-empty">{tr('Mai scrie cel puțin o literă…')}</p>
+          )}
+          {searching && shownConversations.length === 0 && otherPlayers.length === 0 && (
+            <p className="leaderboard-empty">{tr('Niciun jucător găsit.')}</p>
           )}
         </div>
         <Conversation

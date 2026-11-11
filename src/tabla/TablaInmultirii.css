@@ -40,6 +40,7 @@
 .tabla-inmultirii .chat-layout{display:grid;grid-template-columns:270px 1fr;height:min(70vh,620px);min-height:440px;border:2px solid #e6eefc;border-radius:18px;overflow:hidden;background:#fff}
 .tabla-inmultirii .chat-sidebar{display:flex;flex-direction:column;overflow-y:auto;border-right:2px solid #eef2f8;background:#fff;min-height:0}
 .tabla-inmultirii .chat-search{margin:10px;border:0;background:#f0f2f5;border-radius:10px;padding:9px 12px;font:inherit;font-weight:700;min-width:0}
+.tabla-inmultirii .chat-search-hint{margin:-4px 12px 6px;font-size:12px;color:#667781;font-weight:600;line-height:1.3}
 .tabla-inmultirii .chat-section{font-size:12px;font-weight:900;color:#008069;text-transform:uppercase;padding:10px 14px 4px}
 .tabla-inmultirii .chat-contact{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid #f0f2f5;background:#fff;padding:9px 12px;color:#111b21;font:inherit}
 .tabla-inmultirii .chat-contact:hover{background:#f5f6f6}

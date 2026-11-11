@@ -2297,6 +2297,10 @@ const EN = {
   "Partea colorată din prima figură este mai mică: {l} < {r}.": "The coloured part of the first figure is smaller: {l} < {r}.",
   "Partea colorată din prima figură este mai mare: {l} > {r}.": "The coloured part of the first figure is bigger: {l} > {r}.",
   "✏️ Cum scriem fracția: jos, în câte părți egale e împărțit întregul; sus, câte părți sunt colorate.": "✏️ How we write a fraction: at the bottom, how many equal parts the whole is divided into; at the top, how many parts are coloured.",
+  "🔍 Caută un jucător după nume": "🔍 Search for a player by name",
+  "Scrie numele cuiva pe care îl cunoști ca să-i trimiți un mesaj.": "Type the name of someone you know to send them a message.",
+  "Rezultatele căutării": "Search results",
+  "Mai scrie cel puțin o literă…": "Type at least one more letter…",
 };
 
 export default EN;
