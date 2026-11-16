@@ -6,6 +6,7 @@ import {
 } from 'firebase/firestore';
 import { db, firebaseEnabled } from '../firebase';
 import { tr } from './i18n';
+import { cleanText, useBlockedUids } from './chatSafety';
 
 const GENERAL_COLLECTION = 'messages';
 const CHATS_COLLECTION = 'chats';
@@ -51,7 +52,7 @@ export function useMessages(chatId) {
     const unsubscribe = onSnapshot(q, { includeMetadataChanges: true }, (snapshot) => {
       // Cele mai noi vin primele din query; le afișăm în ordine cronologică.
       setMessages(snapshot.docs
-        .map(d => ({ id: d.id, ...d.data(), pending: d.metadata.hasPendingWrites }))
+        .map(d => cleanMessage({ id: d.id, ...d.data(), pending: d.metadata.hasPendingWrites }))
         .reverse());
       setLoading(false);
     }, (err) => {
@@ -64,6 +65,13 @@ export function useMessages(chatId) {
   return { messages, loading };
 }
 
+// Mesajele vechi (scrise înainte de filtru) se afișează și ele curățate.
+function cleanMessage(msg) {
+  const out = { ...msg, text: cleanText(msg.text) };
+  if (msg.replyTo) out.replyTo = { ...msg.replyTo, text: cleanText(msg.replyTo.text) };
+  return out;
+}
+
 function useConversations(uid) {
   const [conversations, setConversations] = useState([]);
   const [loaded, setLoaded] = useState(false);
@@ -74,7 +82,8 @@ function useConversations(uid) {
     if (!firebaseEnabled || !uid) return undefined;
     const q = query(collection(db, CHATS_COLLECTION), where('members', 'array-contains', uid));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const list = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      const list = snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
+        .map(c => ({ ...c, lastMessage: cleanText(c.lastMessage) }));
       list.sort((a, b) => updatedMillis(b) - updatedMillis(a));
       setConversations(list);
       setLoaded(true);
@@ -138,6 +147,9 @@ function showSystemNotification(sender, text) {
 // mesajele noi. activeChatId = conversația deschisă acum (null dacă niciuna).
 export function useChatNotifications(uid, activeChatId) {
   const { conversations, loaded } = useConversations(uid);
+  const blocked = useBlockedUids(uid);
+  const blockedRef = useRef(blocked);
+  blockedRef.current = blocked;
   const [readTimes, setReadTimes] = useState({});
   const [incoming, setIncoming] = useState(null);
   const seenRef = useRef(null);
@@ -167,8 +179,10 @@ export function useChatNotifications(uid, activeChatId) {
     conversations.forEach(c => { next[c.id] = updatedMillis(c); });
     seenRef.current = next;
     if (prev === null) return;
+    // Mesajele de la jucătorii blocați nu mai apar ca notificare.
     const fresh = conversations.find(c =>
-      c.lastSender !== uid && next[c.id] > (prev[c.id] ?? 0) && c.id !== activeChatRef.current);
+      c.lastSender !== uid && next[c.id] > (prev[c.id] ?? 0) && c.id !== activeChatRef.current
+      && !blockedRef.current.has(c.lastSender));
     if (!fresh) return;
     const sender = peerOf(fresh, uid);
     setIncoming({ chatId: fresh.id, peer: sender, text: fresh.lastMessage, at: next[fresh.id] });
@@ -176,15 +190,15 @@ export function useChatNotifications(uid, activeChatId) {
   }, [conversations, loaded, uid]);
 
   const isUnread = useCallback((conv) => {
-    if (conv.lastSender === uid || !conv.updatedAt) return false;
+    if (conv.lastSender === uid || !conv.updatedAt || blocked.has(conv.lastSender)) return false;
     const readAt = readTimes[conv.id] ?? loadReadTime(conv.id);
     return updatedMillis(conv) > readAt;
-  }, [readTimes, uid]);
+  }, [readTimes, uid, blocked]);
 
   const unreadCount = conversations.filter(isUnread).length;
   const dismissIncoming = useCallback(() => setIncoming(null), []);
 
-  return { conversations, isUnread, unreadCount, incoming, dismissIncoming };
+  return { conversations, isUnread, unreadCount, incoming, dismissIncoming, blocked };
 }
 
 // Ascundem dublurile rămase din sesiunile anonime: fără cont și fără puncte.
@@ -302,7 +316,8 @@ export function useSendMessage() {
   // peer null = camera generală; altfel { uid, name } al celuilalt jucător.
   // replyTo = mesajul la care se răspunde ({ id, name, text }), opțional.
   return useCallback(async ({ uid, name, text, peer, replyTo }) => {
-    const trimmed = text.trim().slice(0, MAX_MESSAGE_LENGTH);
+    // Cuvintele urâte, telefonul și emailul nu pleacă din aplicație.
+    const trimmed = cleanText(text.trim()).slice(0, MAX_MESSAGE_LENGTH);
     if (!firebaseEnabled || !uid || !name || !trimmed) return false;
     const message = { uid, name, text: trimmed, createdAt: serverTimestamp() };
     if (replyTo) {
@@ -310,7 +325,7 @@ export function useSendMessage() {
         id: replyTo.id,
         uid: replyTo.uid || '',
         name: replyTo.name || '',
-        text: (replyTo.text || '').slice(0, MAX_REPLY_QUOTE),
+        text: cleanText(replyTo.text || '').slice(0, MAX_REPLY_QUOTE),
       };
     }
     try {

@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import {
   getAuth, signInAnonymously, onAuthStateChanged, updateProfile,
   EmailAuthProvider, linkWithCredential, signInWithEmailAndPassword, signOut, sendPasswordResetEmail,
-  reauthenticateWithCredential, updatePassword,
+  reauthenticateWithCredential, updatePassword, deleteUser,
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
@@ -27,5 +27,5 @@ export const db = app ? getFirestore(app) : null;
 export {
   signInAnonymously, onAuthStateChanged, updateProfile,
   EmailAuthProvider, linkWithCredential, signInWithEmailAndPassword, signOut, sendPasswordResetEmail,
-  reauthenticateWithCredential, updatePassword,
+  reauthenticateWithCredential, updatePassword, deleteUser,
 };

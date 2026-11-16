@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   useMessages, usePlayers, useSendMessage, privateChatId, peerOf, markChatRead, setChatTyping, formatCallDuration,
   MAX_MESSAGE_LENGTH, ONLINE_WINDOW_MS, TYPING_WINDOW_MS,
@@ -6,7 +6,11 @@ import {
 import Avatar from './Avatar';
 import Flag from './Flag';
 import ChatText from './ChatText';
+import { privacyUrl } from '../legal';
 import { tr, getLang } from '../i18n';
+import {
+  blockPlayer, unblockPlayer, reportPlayer, REPORT_REASONS, hasChatConsent, saveChatConsent,
+} from '../chatSafety';
 
 const EMOJIS = [
   '😀', '😃', '😄', '😁', '😆', '😂', '🤣', '😊', '🙂', '😉',
@@ -138,11 +142,111 @@ function CallLogBubble({ msg, mine, date, peer, canCall, onCall }) {
   );
 }
 
+// Raportarea unui jucător (și, opțional, blocarea lui). Raportul ajunge la administrator.
+function ReportDialog({
+  uid, name, target, chatId, blocked, onClose,
+}) {
+  const [reason, setReason] = useState('rude');
+  const [alsoBlock, setAlsoBlock] = useState(!blocked.has(target.player.uid));
+  const [status, setStatus] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('sending');
+    try {
+      await reportPlayer({
+        uid, name, reported: target.player, chatId, message: target.message, reason,
+      });
+      if (alsoBlock && !blocked.has(target.player.uid)) await blockPlayer(uid, target.player.uid);
+      setStatus('done');
+    } catch (err) {
+      console.error('Nu am putut trimite raportul', err);
+      setStatus('error');
+    }
+  };
+
+  return (
+    <div className="overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label={tr('Raportează')}>
+      <div className="modal chat-report" onClick={e => e.stopPropagation()}>
+        {status === 'done' ? (
+          <>
+            <div className="reward">🛡️</div>
+            <p>{tr('Mulțumim! Am primit raportul și îl verificăm. Dacă te-a supărat cineva, spune-le și părinților sau doamnei învățătoare.')}</p>
+            <button className="bigbtn" onClick={onClose}>{tr('Închide')}</button>
+          </>
+        ) : (
+          <form onSubmit={handleSubmit} className="auth-form">
+            <h2>{tr('⚠️ Raportează pe {name}', { name: target.player.name })}</h2>
+            {target.message && <p className="chat-report-quote">„{target.message.text}”</p>}
+            <p className="auth-note">{tr('Ce s-a întâmplat?')}</p>
+            {REPORT_REASONS.map(([key, label]) => (
+              <label key={key} className="chat-report-option">
+                <input type="radio" name="reason" checked={reason === key} onChange={() => setReason(key)} />
+                {' '}{tr(label)}
+              </label>
+            ))}
+            {!blocked.has(target.player.uid) && (
+              <label className="chat-report-option">
+                <input type="checkbox" checked={alsoBlock} onChange={e => setAlsoBlock(e.target.checked)} />
+                {' '}{tr('Blochează-l (nu-ți mai poate scrie și nu te mai poate suna)')}
+              </label>
+            )}
+            {status === 'error' && <p className="chat-error">{tr('Nu am putut trimite raportul. Mai încearcă!')}</p>}
+            <button className="bigbtn" type="submit" disabled={status === 'sending'}>
+              {status === 'sending' ? tr('Se trimite…') : tr('Trimite raportul')}
+            </button>
+            <button type="button" className="auth-link" onClick={onClose}>{tr('Renunță')}</button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Înainte de chat: copilul confirmă că părinții știu și sunt de acord, și află regulile.
+function ConsentGate({ uid, onAccept }) {
+  const [checked, setChecked] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const accept = async () => {
+    setBusy(true);
+    try {
+      await saveChatConsent(uid);
+    } catch (err) {
+      console.error('Nu am putut salva acordul pentru chat', err);
+    }
+    onAccept();
+  };
+  return (
+    <div className="chat-consent">
+      <div className="reward">🛡️</div>
+      <h3>{tr('Înainte să intri în chat')}</h3>
+      <ul>
+        <li>{tr('Vorbește doar cu copii pe care îi cunoști (colegi, prieteni).')}</li>
+        <li>{tr('Nu spune niciodată adresa, numărul de telefon, școala sau parolele tale.')}</li>
+        <li>{tr('Nu trimite poze și nu accepta să te întâlnești cu cineva cunoscut doar din joc.')}</li>
+        <li>{tr('Dacă cineva te supără, apasă ⚠️ ca să-l raportezi sau 🚫 ca să-l blochezi, și spune-le părinților.')}</li>
+      </ul>
+      <label className="chat-report-option">
+        <input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)} />
+        {' '}{tr('Părintele meu (sau tutorele) știe și este de acord să folosesc chatul și apelurile.')}
+      </label>
+      <button className="bigbtn" onClick={accept} disabled={!checked || busy}>{tr('Intră în chat 💬')}</button>
+      <p className="auth-note">
+        <a href={privacyUrl()} target="_blank" rel="noopener noreferrer">{tr('Politica de confidențialitate')}</a>
+      </p>
+    </div>
+  );
+}
+
 function Conversation({
-  uid, name, peer, profiles, conversation, playersCount, onCall, callBusy, onBack,
+  uid, name, peer, profiles, conversation, playersCount, onCall, callBusy, onBack, blocked,
 }) {
   const chatId = peer ? privateChatId(uid, peer.uid) : null;
-  const { messages, loading } = useMessages(chatId);
+  const { messages: allMessages, loading } = useMessages(chatId);
+  // Mesajele jucătorilor blocați nu se mai văd (nici în camera generală).
+  const messages = useMemo(() => allMessages.filter(m => m.uid === uid || !blocked.has(m.uid)), [allMessages, uid, blocked]);
+  const peerBlocked = Boolean(peer && blocked.has(peer.uid));
+  const [reportTarget, setReportTarget] = useState(null);
   const sendMessage = useSendMessage();
   const now = useNow(5000);
   const [text, setText] = useState('');
@@ -272,7 +376,17 @@ function Conversation({
     setTimeout(() => setHighlightId(null), 1500);
   };
 
-  const canWrite = Boolean(name && uid);
+  const canWrite = Boolean(name && uid) && !peerBlocked;
+
+  const toggleBlock = async () => {
+    try {
+      if (peerBlocked) await unblockPlayer(uid, peer.uid);
+      else await blockPlayer(uid, peer.uid);
+    } catch (err) {
+      console.error('Nu am putut schimba blocarea', err);
+      setError(tr('Nu am putut salva. Mai încearcă!'));
+    }
+  };
   const emptyText = peer ? tr('Scrie-i primul mesaj lui {name}! 👋', { name: peer.name }) : tr('Niciun mesaj încă. Spune salut! 👋');
 
   let status;
@@ -330,7 +444,30 @@ function Conversation({
             📞
           </button>
         )}
+        {peer && (
+          <button
+            className="chat-header-call"
+            onClick={() => setReportTarget({ player: peer })}
+            title={tr('Raportează')}
+            aria-label={tr('Raportează pe {name}', { name: peer.name })}
+          >
+            ⚠️
+          </button>
+        )}
+        {peer && (
+          <button
+            className="chat-header-call"
+            onClick={toggleBlock}
+            title={peerBlocked ? tr('Deblochează') : tr('Blochează')}
+            aria-label={peerBlocked ? tr('Deblochează') : tr('Blochează')}
+          >
+            {peerBlocked ? '🔓' : '🚫'}
+          </button>
+        )}
       </div>
+      {peerBlocked && (
+        <p className="chat-blocked-note">{tr('🚫 L-ai blocat pe {name}. Nu-ți mai poate scrie și nu te mai poate suna.', { name: peer.name })}</p>
+      )}
 
       <div className="chat-wallpaper">
         <div className="chat-messages" ref={listRef} onScroll={handleScroll}>
@@ -388,6 +525,16 @@ function Conversation({
                     ↩
                   </button>
                 )}
+                {!mine && uid && (
+                  <button
+                    className="chat-reply-btn"
+                    onClick={() => setReportTarget({ player: { uid: msg.uid, name: msg.name }, message: msg })}
+                    title={tr('Raportează mesajul')}
+                    aria-label={tr('Raportează mesajul')}
+                  >
+                    ⚠️
+                  </button>
+                )}
               </div>
             );
           })}
@@ -443,17 +590,23 @@ function Conversation({
         <button type="submit" className="chat-send" disabled={!canWrite || !text.trim()} aria-label={tr('Trimite')}>➤</button>
       </form>
       {error && <p className="chat-error">{error}</p>}
+      {reportTarget && (
+        <ReportDialog uid={uid} name={name} target={reportTarget} chatId={chatId} blocked={blocked}
+          onClose={() => setReportTarget(null)} />
+      )}
     </div>
   );
 }
 
+const NO_BLOCKS = new Set();
 const MIN_SEARCH_LETTERS = 2;
 const MAX_SEARCH_RESULTS = 8;
 
 export default function Chat({
-  uid, name, firebaseEnabled, peer, onSelectPeer, conversations, isUnread, onCall, callBusy,
+  uid, name, firebaseEnabled, peer, onSelectPeer, conversations, isUnread, onCall, callBusy, blocked = NO_BLOCKS,
 }) {
   const players = usePlayers();
+  const [consentGiven, setConsentGiven] = useState(false);
   const now = useNow(30000);
   const [search, setSearch] = useState('');
   // Pe telefon arătăm fie lista, fie conversația (ca în WhatsApp).
@@ -466,6 +619,15 @@ export default function Chat({
       <aside className="panel chat">
         <h2>{tr('💬 CHAT')}</h2>
         <p className="leaderboard-empty">{tr('Chatul are nevoie de Firebase configurat.')}</p>
+      </aside>
+    );
+  }
+
+  if (!consentGiven && !hasChatConsent(profiles[uid])) {
+    return (
+      <aside className="panel chat">
+        <h2>{tr('💬 CHAT')}</h2>
+        <ConsentGate uid={uid} onAccept={() => setConsentGiven(true)} />
       </aside>
     );
   }
@@ -535,7 +697,8 @@ export default function Chat({
                   </span>
                   <span className="chat-contact-bottom">
                     <small className={isTyping ? 'chat-status-typing' : ''}>
-                      {isTyping ? tr('scrie…') : `${conv.lastSender === uid ? `${tr('Tu')}: ` : ''}${lastMessageText(conv.lastMessage)}`}
+                      {blocked.has(other.uid) ? tr('🚫 Blocat')
+                        : isTyping ? tr('scrie…') : `${conv.lastSender === uid ? `${tr('Tu')}: ` : ''}${lastMessageText(conv.lastMessage)}`}
                     </small>
                     {unread && <span className="chat-unread" title={tr('Mesaj nou')} />}
                   </span>
@@ -556,7 +719,7 @@ export default function Chat({
               </span>
               <span className="chat-contact-body">
                 <span className="chat-contact-name">{p.name} <Flag code={p.country} /></span>
-                <small>{isOnline(p, now) ? tr('online') : tr('Apasă ca să-i scrii')}</small>
+                <small>{blocked.has(p.uid) ? tr('🚫 Blocat') : isOnline(p, now) ? tr('online') : tr('Apasă ca să-i scrii')}</small>
               </span>
             </button>
           ))}
@@ -578,6 +741,7 @@ export default function Chat({
           onCall={onCall}
           callBusy={callBusy}
           onBack={() => setMobileView('list')}
+          blocked={blocked}
         />
       </div>
     </aside>

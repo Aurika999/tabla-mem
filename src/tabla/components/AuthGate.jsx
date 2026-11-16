@@ -5,6 +5,8 @@ import {
 } from '../usePlayerProfile';
 import Flag from './Flag';
 import { tr } from '../i18n';
+import { privacyUrl } from '../legal';
+import { hasBadWords } from '../chatSafety';
 
 export function CountrySelect({ value, onChange }) {
   return (
@@ -26,6 +28,7 @@ function RegisterForm({ initialName, initialCountry, onRegister }) {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [country, setCountry] = useState(initialCountry);
+  const [consent, setConsent] = useState(false);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -33,12 +36,14 @@ function RegisterForm({ initialName, initialCountry, onRegister }) {
     e.preventDefault();
     const cleanEmail = normalizeEmail(email);
     if (!displayName.trim()) return setError(tr('Scrie numele care apare în joc.'));
+    if (hasBadWords(displayName)) return setError(tr('Alege un alt nume, fără cuvinte urâte.'));
     if (!EMAIL_PATTERN.test(cleanEmail)) return setError(tr('Scrie o adresă de email validă.'));
     if (password.length < MIN_PASSWORD_LENGTH) {
       return setError(tr('Parola trebuie să aibă cel puțin {n} caractere.', { n: MIN_PASSWORD_LENGTH }));
     }
     if (password !== password2) return setError(tr('Cele două parole nu sunt la fel.'));
     if (!country) return setError(tr('Alege țara ta.'));
+    if (!consent) return setError(tr('Contul trebuie creat de un părinte sau cu acordul lui. Bifează căsuța.'));
     setBusy(true);
     setError('');
     try {
@@ -74,6 +79,11 @@ function RegisterForm({ initialName, initialCountry, onRegister }) {
           onChange={e => setPassword2(e.target.value)} autoComplete="new-password" />
       </label>
       <CountrySelect value={country} onChange={setCountry} />
+      <label className="chat-report-option">
+        <input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)} />
+        {' '}{tr('Sunt părinte/tutore sau am acordul părintelui pentru acest cont și am citit')}{' '}
+        <a href={privacyUrl()} target="_blank" rel="noopener noreferrer">{tr('Politica de confidențialitate')}</a>.
+      </label>
       {error && <p className="chat-error">{error}</p>}
       <button className="bigbtn" type="submit" disabled={busy}>{busy ? tr('Se creează…') : tr('Creează contul 🚀')}</button>
       <p className="auth-note">

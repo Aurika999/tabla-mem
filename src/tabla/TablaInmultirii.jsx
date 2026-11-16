@@ -58,7 +58,7 @@ export default function TablaInmultirii() {
 
   const {
     uid, name, country, email, isAnonymous, ready, avatar, account,
-    saveProfile, register, login, logout, resetPassword, updateAvatar, changePassword, firebaseEnabled,
+    saveProfile, register, login, logout, resetPassword, updateAvatar, changePassword, deleteAccount, firebaseEnabled,
   } = usePlayerProfile();
 
   // Fără cont → înregistrare/logare; cont fără nume sau țară → completare profil.
@@ -143,7 +143,7 @@ export default function TablaInmultirii() {
   const [contestId, setContestId] = useState(null);
   const activeChatId = openPanel === 'chat' && chatPeer && uid ? privateChatId(uid, chatPeer.uid) : null;
   const {
-    conversations, isUnread, unreadCount, incoming, dismissIncoming,
+    conversations, isUnread, unreadCount, incoming, dismissIncoming, blocked,
   } = useChatNotifications(uid, activeChatId);
 
   const {
@@ -209,6 +209,18 @@ export default function TablaInmultirii() {
     setPanelOrigin(null);
     setView('home');
     await logout();
+  };
+
+  // După ștergere, Firebase pornește singur o sesiune nouă, fără cont.
+  const handleDeleteAccount = async (password) => {
+    hangUp();
+    await deleteAccount(password);
+    setOpenPanel(null);
+    setChatPeer(null);
+    setContestId(null);
+    setPanelOrigin(null);
+    setView('home');
+    window.alert(tr('Contul și datele tale au fost șterse.'));
   };
 
   return (
@@ -429,6 +441,7 @@ export default function TablaInmultirii() {
                     onUpdateAvatar={updateAvatar}
                     onChangePassword={changePassword}
                     onLogout={isAnonymous ? null : handleLogout}
+                    onDeleteAccount={firebaseEnabled ? handleDeleteAccount : null}
                   />
                 )}
                 {openPanel === 'contest' && (
@@ -452,6 +465,7 @@ export default function TablaInmultirii() {
                     isUnread={isUnread}
                     onCall={startCall}
                     callBusy={Boolean(call)}
+                    blocked={blocked}
                   />
                 )}
                 <button className="bigbtn" onClick={closePanel}>

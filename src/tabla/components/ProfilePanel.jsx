@@ -6,9 +6,11 @@ import { countryName, isValidCountry } from '../countries';
 import { authErrorMessage, MIN_PASSWORD_LENGTH } from '../usePlayerProfile';
 import { fileToAvatar } from '../avatarImage';
 import { CountrySelect } from './AuthGate';
+import { hasBadWords } from '../chatSafety';
 import Avatar from './Avatar';
 import Flag from './Flag';
 import { tr, getLang } from '../i18n';
+import { privacyUrl, deleteAccountUrl } from '../legal';
 
 const ALL_LEVELS = [...LEVEL_ORDER, PROBLEME_LEVEL, AVANSATE_LEVEL];
 
@@ -94,6 +96,7 @@ function DetailsForm({ name, country, onSave }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newName.trim()) return setStatus(tr('Scrie un nume.'));
+    if (hasBadWords(newName)) return setStatus(tr('Alege un alt nume, fără cuvinte urâte.'));
     if (!isValidCountry(newCountry)) return setStatus(tr('Alege țara.'));
     await onSave(newName, newCountry);
     setStatus(tr('✅ Salvat!'));
@@ -164,9 +167,62 @@ function PasswordForm({ onChangePassword }) {
   );
 }
 
+function DeleteAccount({ isAnonymous, onDeleteAccount }) {
+  const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+  const word = tr('ȘTERGE');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (confirm.trim().toUpperCase() !== word.toUpperCase()) return setError(tr('Scrie {w} ca să confirmi.', { w: word }));
+    setBusy(true);
+    setError('');
+    try {
+      await onDeleteAccount(password);
+    } catch (err) {
+      console.error('Ștergerea contului a eșuat', err);
+      setError(err?.code === 'auth/invalid-credential' || err?.code === 'auth/wrong-password'
+        ? tr('Parola e greșită.')
+        : authErrorMessage(err));
+      setBusy(false);
+    }
+  };
+
+  if (!open) {
+    return (
+      <button className="profile-link-btn profile-delete-btn" onClick={() => setOpen(true)}>{tr('🗑️ Șterge contul')}</button>
+    );
+  }
+
+  return (
+    <form className="auth-form profile-delete" onSubmit={handleSubmit}>
+      <p className="auth-note">
+        {tr('Se șterg pentru totdeauna: contul, numele, poza, punctele, scorurile, mesajele tale din chat și conversațiile private. Nu se mai pot recupera.')}
+      </p>
+      {!isAnonymous && (
+        <label>{tr('Parola contului')}
+          <input className="name-input" type="password" value={password}
+            onChange={e => setPassword(e.target.value)} autoComplete="current-password" />
+        </label>
+      )}
+      <label>{tr('Scrie {w} ca să confirmi', { w: word })}
+        <input className="name-input" value={confirm} onChange={e => setConfirm(e.target.value)} autoCapitalize="characters" />
+      </label>
+      {error && <p className="chat-error">{error}</p>}
+      <button className="bigbtn profile-delete-confirm" type="submit" disabled={busy || (!isAnonymous && !password)}>
+        {busy ? tr('Se șterge…') : tr('🗑️ Șterge contul definitiv')}
+      </button>
+      <button type="button" className="auth-link" onClick={() => setOpen(false)}>{tr('Renunță')}</button>
+    </form>
+  );
+}
+
 export default function ProfilePanel({
   uid, name, country, email, isAnonymous, avatar, account,
-  onSaveDetails, onUpdateAvatar, onChangePassword, onLogout,
+  onSaveDetails, onUpdateAvatar, onChangePassword, onLogout, onDeleteAccount,
 }) {
   const { entries } = useGlobalLeaderboard();
   const { scores } = useMyScores(uid);
@@ -217,6 +273,18 @@ export default function ProfilePanel({
       {onLogout && (
         <button className="bigbtn blue profile-logout" onClick={onLogout}>{tr('🚪 Ieși din cont')}</button>
       )}
+
+      {onDeleteAccount && (
+        <>
+          <h3 className="contest-subtitle">{tr('🗑️ Șterge contul')}</h3>
+          <DeleteAccount isAnonymous={isAnonymous} onDeleteAccount={onDeleteAccount} />
+        </>
+      )}
+      <p className="auth-note profile-legal">
+        <a href={privacyUrl()} target="_blank" rel="noopener noreferrer">{tr('Politica de confidențialitate')}</a>
+        {' · '}
+        <a href={deleteAccountUrl()} target="_blank" rel="noopener noreferrer">{tr('Cum se șterge contul')}</a>
+      </p>
     </aside>
   );
 }

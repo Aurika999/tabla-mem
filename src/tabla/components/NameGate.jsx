@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { featuredCountries, otherCountries } from '../countries';
 import Flag from './Flag';
 import { tr } from '../i18n';
+import { hasBadWords } from '../chatSafety';
 
 export default function NameGate({ initialName = '', initialCountry = '', onSubmit }) {
   const [value, setValue] = useState(initialName);
   const [country, setCountry] = useState(initialCountry);
 
-  const canSubmit = Boolean(value.trim() && country);
+  const badName = hasBadWords(value);
+  const canSubmit = Boolean(value.trim() && country) && !badName;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,6 +45,7 @@ export default function NameGate({ initialName = '', initialCountry = '', onSubm
               {otherCountries().map(c => <option key={c.code} value={c.code}>{c.name}</option>)}
             </select>
           </div>
+          {badName && <p className="chat-error">{tr('Alege un alt nume, fără cuvinte urâte.')}</p>}
           <button className="bigbtn" type="submit" disabled={!canSubmit}>Start! 🚀</button>
         </form>
       </div>

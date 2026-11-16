@@ -661,3 +661,20 @@
 .tabla-inmultirii .lang-switch button{border:0;background:transparent;border-radius:10px;padding:4px 8px;font:inherit;font-weight:900;font-size:13px;color:#7a5a3a;cursor:pointer}
 .tabla-inmultirii .lang-switch button.active{background:#ff9f1c;color:#fff;box-shadow:0 2px 0 #c46d00}
 .tabla-inmultirii .call-notice.raised{bottom:96px;z-index:10}
+
+/* ---- Siguranța chatului: acordul părinților, raportare, blocare ---- */
+.chat-consent { max-width: 560px; margin: 0 auto; padding: 8px 4px; text-align: left; }
+.chat-consent h3 { text-align: center; margin: 4px 0 10px; }
+.chat-consent .reward { text-align: center; }
+.chat-consent ul { padding-left: 20px; margin: 0 0 14px; line-height: 1.5; }
+.chat-consent .bigbtn { display: block; margin: 12px auto 0; }
+.chat-report-option { display: block; text-align: left; margin: 6px 0; line-height: 1.4; cursor: pointer; }
+.chat-report-option input { margin-right: 4px; }
+.chat-report { max-width: 440px; }
+.chat-report h2 { font-size: 1.2em; }
+.chat-report-quote { font-style: italic; background: #f3f6fa; border-radius: 8px; padding: 6px 10px; word-break: break-word; }
+.chat-blocked-note { margin: 0; padding: 6px 10px; background: #ffecec; color: #a12626; font-size: .9em; text-align: center; }
+.profile-delete-btn { color: #c0392b; margin-top: 8px; }
+.profile-delete { border: 2px solid #f5c6c6; border-radius: 12px; padding: 10px; }
+.profile-delete-confirm { background: #d64545; }
+.profile-legal { margin-top: 18px; text-align: center; }

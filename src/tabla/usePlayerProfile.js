@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   auth, firebaseEnabled, onAuthStateChanged, signInAnonymously, updateProfile,
   EmailAuthProvider, linkWithCredential, signInWithEmailAndPassword, signOut, sendPasswordResetEmail,
-  reauthenticateWithCredential, updatePassword,
+  reauthenticateWithCredential, updatePassword, deleteUser,
 } from '../firebase';
+import { deletePlayerData } from './deleteAccount';
 import { loadPlayer, savePlayerAvatar, touchPlayer } from './useChat';
 import { isValidCountry } from './countries';
 import { tr } from './i18n';
@@ -194,6 +195,30 @@ export function usePlayerProfile() {
     await sendPasswordResetEmail(auth, normalizeEmail(resetEmail));
   }, []);
 
+  // Șterge contul și toate datele jucătorului (cerință Google Play).
+  // Pentru conturile cu email, Firebase cere parola din nou înainte de ștergere.
+  const deleteAccount = useCallback(async (password) => {
+    const user = auth.currentUser;
+    if (!user) return;
+    if (!user.isAnonymous) {
+      await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, password));
+    }
+    await deletePlayerData(user.uid);
+    await deleteUser(user);
+    // Progresul de pe dispozitiv (nume, țară, insule, mesaje citite) se șterge și el; limba rămâne.
+    try {
+      Object.keys(localStorage)
+        .filter(k => k.startsWith('tabla-inmultirii:') && k !== 'tabla-inmultirii:lang')
+        .forEach(k => localStorage.removeItem(k));
+    } catch {
+      // Fără localStorage nu avem ce șterge.
+    }
+    setName('');
+    setCountry('');
+    setEmail('');
+    setAvatar('');
+  }, []);
+
   const logout = useCallback(async () => {
     writeStorage(NAME_STORAGE_KEY, '');
     writeStorage(COUNTRY_STORAGE_KEY, '');
@@ -207,6 +232,6 @@ export function usePlayerProfile() {
 
   return {
     uid, name, country, email, isAnonymous, ready, avatar, account,
-    saveProfile, register, login, logout, resetPassword, updateAvatar, changePassword, firebaseEnabled,
+    saveProfile, register, login, logout, resetPassword, updateAvatar, changePassword, deleteAccount, firebaseEnabled,
   };
 }

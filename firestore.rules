@@ -24,13 +24,26 @@ service cloud.firestore {
                  && data.durationSec <= 86400);
     }
 
+    // Jucatorul `owner` l-a blocat pe `other`? (lista e in blocks/{owner}).
+    function blockedBy(owner, other) {
+      return exists(/databases/$(database)/documents/blocks/$(owner))
+             && other in get(/databases/$(database)/documents/blocks/$(owner)).data.get('uids', []);
+    }
+
+    // Niciunul dintre cei doi membri ai conversatiei nu l-a blocat pe cel care scrie.
+    function notBlockedIn(chatId) {
+      return !blockedBy(chatId.split('_')[0], request.auth.uid)
+             && !blockedBy(chatId.split('_')[1], request.auth.uid);
+    }
+
     // Clasament pe nivel: oricine poate citi (public), dar fiecare user
     // poate scrie doar propriul scor (uid-ul din document trebuie sa fie al lui).
     match /scores/{scoreId} {
       allow read: if true;
       allow create, update: if request.auth != null
                              && request.resource.data.uid == request.auth.uid;
-      allow delete: if false;
+      // Stergerea contului: fiecare isi sterge doar scorurile lui.
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
     }
 
     // Clasament general: oricine poate citi, dar fiecare user isi poate
@@ -45,7 +58,31 @@ service cloud.firestore {
                                  || (request.resource.data.avatar is string
                                      && request.resource.data.avatar.size() <= 100000
                                      && request.resource.data.avatar.matches('^data:image/jpeg;base64,[A-Za-z0-9+/=]+$')));
-      allow delete: if false;
+      allow delete: if request.auth != null && request.auth.uid == playerId;
+    }
+
+    // Lista celor blocati de un jucator: doar el o vede si o schimba.
+    match /blocks/{ownerId} {
+      allow read, delete: if request.auth != null && request.auth.uid == ownerId;
+      allow create, update: if request.auth != null
+                            && request.auth.uid == ownerId
+                            && request.resource.data.keys().hasOnly(['uids'])
+                            && request.resource.data.uids is list
+                            && request.resource.data.uids.size() <= 500;
+    }
+
+    // Rapoartele trimise din chat. Le vede doar administratorul, din consola Firebase.
+    match /reports/{reportId} {
+      allow create: if request.auth != null
+                    && request.resource.data.reporter == request.auth.uid
+                    && request.resource.data.keys().hasOnly(['reporter', 'reporterName', 'reported', 'reportedName',
+                         'chatId', 'messageId', 'messageText', 'reason', 'createdAt', 'status'])
+                    && request.resource.data.reason in ['rude', 'bully', 'personal', 'other']
+                    && request.resource.data.messageText is string
+                    && request.resource.data.messageText.size() <= 300
+                    && request.resource.data.status == 'new'
+                    && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if false;
     }
 
     // Chat comun: oricine e autentificat poate citi si trimite mesaje,
@@ -64,7 +101,9 @@ service cloud.firestore {
                     && request.resource.data.text.size() > 0
                     && request.resource.data.text.size() <= 300
                     && request.resource.data.createdAt == request.time;
-      allow update, delete: if false;
+      allow update: if false;
+      // Stergerea contului: fiecare isi sterge doar mesajele lui.
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
     }
 
     // Conversatii private intre doi jucatori. Id-ul e "uidA_uidB" (sortate),
@@ -74,6 +113,7 @@ service cloud.firestore {
                   && request.auth.uid in resource.data.members;
       allow create, update: if request.auth != null
                             && request.auth.uid in chatId.split('_')
+                            && notBlockedIn(chatId)
                             && request.resource.data.members.size() == 2
                             && request.resource.data.members.toSet() == chatId.split('_').toSet()
                             && request.resource.data.lastSender == request.auth.uid
@@ -89,14 +129,16 @@ service cloud.firestore {
                          .affectedKeys().hasOnly([request.auth.uid])
                     && request.resource.data.get('typing', {}).diff(resource.data.get('typing', {}))
                          .affectedKeys().hasOnly([request.auth.uid]);
-      allow delete: if false;
+      // Stergerea contului: un membru poate sterge conversatia.
+      allow delete: if request.auth != null && request.auth.uid in resource.data.members;
 
       match /messages/{messageId} {
         allow read: if request.auth != null
                     && request.auth.uid in chatId.split('_');
         allow create: if request.auth != null
                       && request.auth.uid in chatId.split('_')
-                      && request.resource.data.keys().hasOnly(['uid', 'name', 'text', 'createdAt', 'replyTo', 'type', 'callStatus', 'durationSec'])
+                      && notBlockedIn(chatId)
+                      && request.resource.data.keys().hasOnly(['uid', 'name', 'text', 'createdAt', 'replyTo', 'type', 'callStatus', 'durationSec', 'video'])
                       && validReply(request.resource.data)
                       && validCallLog(request.resource.data)
                       && request.resource.data.uid == request.auth.uid
@@ -107,7 +149,8 @@ service cloud.firestore {
                       && request.resource.data.text.size() > 0
                       && request.resource.data.text.size() <= 300
                       && request.resource.data.createdAt == request.time;
-        allow update, delete: if false;
+        allow update: if false;
+        allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
       }
     }
 
@@ -125,6 +168,7 @@ service cloud.firestore {
                     && request.resource.data.caller == request.auth.uid
                     && request.resource.data.callee is string
                     && request.resource.data.callee != request.auth.uid
+                    && !blockedBy(request.resource.data.callee, request.auth.uid)
                     && request.resource.data.status == 'ringing';
       allow update: if isParty(resource.data)
                     && request.resource.data.caller == resource.data.caller
@@ -180,7 +224,7 @@ service cloud.firestore {
                               && request.resource.data.correct is int
                               && request.resource.data.correct >= 0
                               && request.resource.data.correct <= 10;
-        allow delete: if false;
+        allow delete: if request.auth != null && request.auth.uid == playerId;
       }
     }
 

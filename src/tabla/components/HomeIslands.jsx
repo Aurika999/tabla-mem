@@ -6,6 +6,7 @@ import { REVIEW_LEVELS } from '../reviewProblems';
 import InstallButton from './InstallButton';
 import { Island, Waves, useMediaQuery, PHONE_QUERY } from './MapHome';
 import { getLang, tr } from '../i18n';
+import { privacyUrl } from '../legal';
 
 // Prima pagină (Arena Concursului și Insula Învățării), pagina „Insula Învățării”
 // (Insula Isteților, Tabla înmulțirii, Tabla împărțirii, Evaluare) și pagina
@@ -245,7 +246,7 @@ export default function HomeIslands({
       title: tr('SCĂDERI ÎN COLOANĂ'),
       subtitle: scores.scaderi2
         ? tr('➖ Cel mai bun: {v0} corecte · descoperă animalul', { v0: scores.scaderi2.correct })
-        : tr('➖ 73 − 37 · descoperă animalul · fără cronometru'),
+        : tr('➖ 82 − 46 · descoperă animalul · fără cronometru'),
       cta: tr('➖ Calculează'),
       onClick: () => onOpenNational('scaderi2'),
     },
@@ -255,7 +256,7 @@ export default function HomeIslands({
       title: tr('ADUNĂRI ÎN COLOANĂ'),
       subtitle: scores.adunari8
         ? tr('➕ Cel mai bun: {v0} corecte · descoperă animalul', { v0: scores.adunari8.correct })
-        : tr('➕ 39 + 15 · descoperă animalul · fără cronometru'),
+        : tr('➕ 47 + 28 · descoperă animalul · fără cronometru'),
       cta: tr('➕ Adună'),
       onClick: () => onOpenNational('adunari8'),
     },
@@ -455,6 +456,11 @@ export default function HomeIslands({
       {mode === 'home' && (
         <button onClick={() => window.open(`${process.env.PUBLIC_URL}/${getLang() === 'en' ? 'about-the-game.pdf' : 'despre-joc.pdf'}`, '_blank', 'noopener')}>
           <span>📄</span>{tr('Despre joc')}
+        </button>
+      )}
+      {mode === 'home' && (
+        <button onClick={() => window.open(privacyUrl(), '_blank', 'noopener')}>
+          <span>🔒</span>{tr('Confidențialitate')}
         </button>
       )}
       {mode === 'home' && <InstallButton />}
