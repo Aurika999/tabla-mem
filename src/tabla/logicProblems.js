@@ -162,7 +162,7 @@ const LEVEL3 = [
   },
 ];
 
-// ---------- Nivelul 4: „Exersez și rezolv” — ca în manual (înmulțiri + probleme) ----------
+// ---------- Nivelul 4: „Mă antrenez și rezolv” (înmulțiri + probleme) ----------
 const TRUE_FALSE = ['Adevărat', 'Fals'];
 
 function trueFalse(text, isTrue, explanation) {
@@ -244,54 +244,54 @@ const LEVEL4 = [
       tr('{v0} × {a} = {limit}, care nu e mai mare decât {v1}. Următorul: {best} × {v2} = {v3} > {v4}.', { v0: limit / a, a, limit, v1: limit, best, v2: a, v3: best * a, v4: limit }),
       [best - 1, best + 1, limit - a]);
   },
-  // Diana și cele 4 prietene au cumpărat bilete…
+  // O fată merge la piscină cu câteva prietene (atenție: și ea plătește).
   () => {
     const n = pick(['Diana', 'Ioana', 'Mara', 'Sofia', 'Elena']); const friends = randInt(2, 6); const price = randInt(3, 9);
     const people = friends + 1;
-    return problem(tr('{n} și cele {friends} prietene ale ei au cumpărat bilete la observatorul astronomic. ', { n, friends })
-      + tr('Ce sumă au plătit fetele, dacă un bilet costă {price} lei?', { price }), people * price,
+    return problem(tr('{n} merge la piscină împreună cu {friends} prietene. ', { n, friends })
+      + tr('Intrarea costă {price} lei de persoană. Cât plătesc fetele în total?', { price }), people * price,
       tr('Atenție: sunt {n} plus {friends} prietene, adică {people} fete. {v0} × {price} = {v1} lei.', { n, friends, people, v0: people, price, v1: people * price }),
       [friends * price, people + price, people * price + price]);
   },
-  // La observator pot intra 8 persoane într-o tură…
+  // Un carusel cu locuri pentru câțiva copii, mai multe ture.
   () => {
     const per = randInt(4, 10); const rounds = randInt(2, 9);
-    return problem(tr('La observatorul astronomic pot intra cel mult {per} persoane într-o tură. ', { per })
-      + tr('Care este numărul maxim de vizitatori care pot intra în {rounds} ture?', { rounds }), per * rounds,
-      tr('În fiecare tură intră {per} persoane: {rounds} × {v0} = {v1}.', { per, rounds, v0: per, v1: per * rounds }), [per + rounds, per * rounds - per, per * rounds + per]);
+    return problem(tr('Pe caruselul din parc încap cel mult {per} copii la o tură. ', { per })
+      + tr('Câți copii se pot da cel mult în {rounds} ture?', { rounds }), per * rounds,
+      tr('La fiecare tură urcă {per} copii: {rounds} × {v0} = {v1}.', { per, rounds, v0: per, v1: per * rounds }), [per + rounds, per * rounds - per, per * rounds + per]);
   },
-  // Lucrări așezate câte 5 pe 6 rânduri; s-au vândut 27…
+  // Ghivece pe rânduri în seră; unele sunt luate.
   () => {
     const per = randInt(3, 9); const rows = randInt(3, 9); const total = per * rows; const sold = randInt(Math.ceil(total / 3), total - 1);
-    return problem(tr('Lucrările pentru expoziția „Universul” au fost așezate câte {per} pe {rows} rânduri. ', { per, rows })
-      + tr('Câte lucrări au mai rămas, dacă s-au vândut {sold}?', { sold }), total - sold,
-      tr('Întâi aflăm câte lucrări erau: {rows} × {per} = {total}. Apoi scădem ce s-a vândut: {v0} - {sold} = {v1}.', { rows, per, total, v0: total, sold, v1: total - sold }),
+    return problem(tr('În sera școlii sunt {rows} rânduri cu câte {per} ghivece cu flori. ', { per, rows })
+      + tr('Copiii au dus {sold} ghivece acasă, de 1 Iunie. Câte ghivece au rămas în seră?', { sold }), total - sold,
+      tr('Întâi aflăm câte ghivece erau: {rows} × {per} = {total}. Apoi scădem ce s-a dus acasă: {v0} - {sold} = {v1}.', { rows, per, total, v0: total, sold, v1: total - sold }),
       [total, total + sold, total - sold + 1]);
   },
-  // Ceai de mentă și de fructe de 5 ori mai multe — câte în total?
+  // Gogoși simple și de câteva ori mai multe cu gem — câte în total?
   () => {
     const mint = randInt(3, 9); const k = randInt(2, 6); const fruit = mint * k;
-    return problem(tr('La un chioșc s-au vândut {mint} pahare cu ceai de mentă, iar cu ceai de fructe de {k} ori mai multe. ', { mint, k })
-      + tr('Câte pahare cu ceai s-au vândut în total?'), mint + fruit,
-      tr('Ceai de fructe: {mint} × {k} = {fruit} pahare. În total: {v0} + {v1} = {v2}.', { mint, k, fruit, v0: mint, v1: fruit, v2: mint + fruit }),
+    return problem(tr('La târg s-au vândut {mint} gogoși simple, iar gogoși cu gem de {k} ori mai multe. ', { mint, k })
+      + tr('Câte gogoși s-au vândut în total?'), mint + fruit,
+      tr('Cu gem: {mint} × {k} = {fruit} gogoși. În total: {v0} + {v1} = {v2}.', { mint, k, fruit, v0: mint, v1: fruit, v2: mint + fruit }),
       [fruit, mint + k, mint * (k + 2)]);
   },
-  // Un buchet are 5 trandafiri mov și 4 albi; câți în 5 buchete?
+  // O pungă cu bile roșii și albastre; câte în câteva pungi la fel?
   () => {
     const purple = randInt(2, 6); const white = randInt(2, 5); const b = randInt(2, 6);
     const perBouquet = purple + white;
-    return problem(tr('Un buchet de flori are {purple} trandafiri mov și {white} albi. ', { purple, white })
-      + tr('Câți trandafiri sunt în {b} buchete de același fel?', { b }), perBouquet * b,
-      tr('Într-un buchet sunt {purple} + {white} = {perBouquet} trandafiri. În {b} buchete: {v0} × {v1} = {v2}. ', { purple, white, perBouquet, b, v0: b, v1: perBouquet, v2: perBouquet * b })
+    return problem(tr('Într-o pungă sunt {purple} bile roșii și {white} bile albastre. ', { purple, white })
+      + tr('Câte bile sunt în {b} pungi la fel?', { b }), perBouquet * b,
+      tr('Într-o pungă sunt {purple} + {white} = {perBouquet} bile. În {b} pungi: {v0} × {v1} = {v2}. ', { purple, white, perBouquet, b, v0: b, v1: perBouquet, v2: perBouquet * b })
       + tr('(Sau: {b} × {purple} + {v0} × {white} = {v1} + {v2}.)', { b, purple, v0: b, white, v1: b * purple, v2: b * white }),
       [purple * white * b, perBouquet + b, purple * b]);
   },
-  // Suma dintre triplul lui 5 și produsul numerelor 9 și 4.
+  // Dublul sau triplul unui număr, adunat cu un produs.
   () => {
     const n = randInt(2, 9); const a = randInt(2, 9); const b = randInt(2, 9);
     const mult = pick([['dublul', 2], ['triplul', 3]]);
     const answer = n * mult[1] + a * b;
-    return problem(tr('Află suma dintre {v0} lui {n} și produsul numerelor {a} și {b}.', { v0: mult[0], n, a, b }), answer,
+    return problem(tr('Adună {v0} lui {n} cu rezultatul lui {a} × {b}. Ce obții?', { v0: mult[0], n, a, b }), answer,
       tr('{v0} lui {n}: {v1} × {v2} = {v3}. ', { v0: mult[0][0].toUpperCase() + mult[0].slice(1), n, v1: n, v2: mult[1], v3: n * mult[1] })
       + tr('Produsul: {a} × {b} = {v0}. Suma: {v1} + {v2} = {answer}.', { a, b, v0: a * b, v1: n * mult[1], v2: a * b, answer }),
       [n + mult[1] + a * b, n * mult[1] + a + b, a * b]);

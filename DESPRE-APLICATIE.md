@@ -4,7 +4,7 @@
 
 **Math Owl**, „Insula isteților la matematică”, este un joc educativ de matematică pe care copiii îl folosesc în browser, pe calculator sau pe telefon. Cu el, copiii învață și exersează **înmulțirea, împărțirea, adunarea și scăderea** și se pregătesc pentru **Evaluarea Națională de la finalul clasei a II-a**.
 
-Exercițiile urmează **manualul școlar**: lecțiile „Descopăr – Aplic – Exersez – Rezolv probleme”, casetele „Reține” și problemele din carte. Totul e prezentat ca o aventură pe o hartă cu insule.
+Exercițiile acoperă **materia de matematică din clasa a II-a**: fiecare lecție are casetă „Reține” și patru trepte, „Învăț – Încerc – Mă antrenez – Probleme”. Toate problemele și poveștile sunt scrise de noi. Totul e prezentat ca o aventură pe o hartă cu insule.
 
 Aplicația este în **română și engleză**. Limba se schimbă oricând din bara de sus (🇷🇴 RO / 🇬🇧 EN).
 
@@ -14,7 +14,7 @@ Aplicația este în **română și engleză**. Limba se schimbă oricând din ba
 - **Părinților**, care pot urmări progresul copilului: nivelurile terminate, stelele, punctele și rezultatul la teste.
 - **Învățătorilor**, care pot folosi aplicația ca exercițiu suplimentar sau pentru concursuri între elevii clasei.
 
-Aplicația folosește termenii din manual: deîmpărțit, împărțitor, cât, „de 3 ori mai mic”, „cu 3 mai mic”, proba înmulțirii. În engleză, toate exercițiile, explicațiile și problemele sunt traduse.
+Aplicația folosește termenii învățați la școală: deîmpărțit, împărțitor, cât, „de 3 ori mai mic”, „cu 3 mai mic”, proba înmulțirii. În engleză, toate exercițiile, explicațiile și problemele sunt traduse.
 
 ## Cum arată aplicația
 
@@ -25,10 +25,10 @@ Prima pagină
 ├── 🏁 Arena Concursului             – concursuri cu alți copii
 └── 🎒 Insula Învățării
     ├── 🧩 Insula Isteților          – 14 insule, de la ușor la avansat
-    ├── 📘 Tabla înmulțirii          – lecțiile din manual: înmulțirea cu 2 … cu 9
+    ├── 📘 Tabla înmulțirii          – lecțiile: înmulțirea cu 2 … cu 9
     ├── ➗ Tabla împărțirii          – împărțirea și lecțiile „împărțirea la 2 … la 9”
     ├── 🎓 Evaluarea Națională       – testele oficiale din 2025 și 2026 + recapitulare
-    ├── ✏️ Termenii necunoscuți      – exercițiul 46: a + 34 = 62
+    ├── ✏️ Termenii necunoscuți      – ecuații ca a + 34 = 62
     ├── ➖ Scăderi în coloană        – 2 cifre, cu ghicitoare: descoperă animalul
     ├── ➕ Adunări în coloană        – 2 cifre, cu ghicitoare: descoperă animalul
     ├── 🔢 Scăderi cu 3 cifre        – 258 − 137, în coloană
@@ -47,14 +47,14 @@ Apăsând pe socotelnița din colțul stânga-sus, copilul se întoarce oricând
 |---|---|
 | 🟢 Ușor | Adunări și scăderi (până la 20) · Înmulțiri până la 5 × 5 |
 | 🟡 Mediu | Mai mult, mai puțin (bani, vârste) · Tabla până la 10 × 10 · Probleme cu înmulțire · Calculez (factori lipsă, dublu, triplu) |
-| 🟠 Greu | Probleme în doi pași · Înmulțiri cu 11 și 12 · Exersez ca în manual · Probleme pe pași · Exersez și rezolv |
+| 🟠 Greu | Probleme în doi pași · Înmulțiri cu 11 și 12 · Mă antrenez cu factori · Probleme pe pași · Mă antrenez și rezolv |
 | 🔴 Avansat | Înmulțiri mari (până la 12 × 12) · Provocări · **Testul final**, care dă calificativ (FB, B, S, I) |
 
-### 📘 Tabla înmulțirii: lecțiile din manual
+### 📘 Tabla înmulțirii: lecțiile
 
 Câte o lecție pentru înmulțirea cu **2, 3, 4, 5, 6, 7, 8 și 9**. Fiecare lecție are:
-- caseta **„📖 Reține”**, cu regula și tabla înmulțirii, ca în carte;
-- 4 niveluri: **Descopăr, Aplic, Exersez, Rezolv probleme**, cu exercițiile și problemele din manual.
+- caseta **„📖 Reține”**, cu regula și tabla înmulțirii;
+- 4 niveluri: **Învăț, Încerc, Mă antrenez, Probleme**, cu exerciții și probleme noi la fiecare joc.
 
 ### ➗ Tabla împărțirii
 
@@ -67,7 +67,7 @@ Câte o lecție pentru înmulțirea cu **2, 3, 4, 5, 6, 7, 8 și 9**. Fiecare le
   - proba înmulțirii și a împărțirii.
 - **Împărțirea la 2, 3, 4, 5, 6, 7, 8 și 9**: câte o insulă pentru fiecare, cu „Reține” și cele 4 niveluri. Fiecare insulă folosește doar împărțirea la numărul ei.
 
-### ✏️ Află termenii necunoscuți (exercițiul 46)
+### ✏️ Află termenii necunoscuți
 
 - **12 exerciții** în care copilul află numărul care lipsește: a + 34 = 62, b − 68 = 19, 45 − d = 26 și altele.
 - Exercițiile cu paranteze se rezolvă **pe pași**: întâi paranteza, apoi termenul necunoscut.
@@ -88,18 +88,18 @@ Patru insule cu calcule scrise **pe verticală, ca în caiet**, pe hârtie cu p�
 - **Rezultatul se scrie de la tastatură**, cifră cu cifră, în căsuțele de sub linie, nu se alege din variante. Ca pe hârtie, copilul începe cu unitățile (căsuța din dreapta), iar cursorul trece singur spre stânga. Pe telefon se deschide tastatura cu cifre.
 - După „✔️ Verifică”, căsuțele se fac **verzi** (corect) sau **roșii** (greșit).
 - **„💡 Cum se rezolvă?”** explică pe coloane: „Unitățile: 3 − 7 nu se poate, așa că împrumutăm o zece: 13 − 7 = 6…”, cu împrumutul, cu ce „ținem minte” și cu verificarea.
-- **Ghicitoare cu animale** (la adunările și scăderile cu 2 cifre, ca exercițiul 8 din manual): sub fiecare calcul e o literă. La final, copilul ordonează rezultatele **crescător sau descrescător** și citește literele, iar acestea formează numele unui animal (PELICAN, HAMSTER, PANDA, ZEBRA, KOALA…). Primește și un indiciu, de exemplu „un urs alb-negru care mănâncă bambus”.
-- **Prima rundă** are exercițiile din carte. **La fiecare rundă nouă**, jocul face alte calcule și alege alt animal, așa că exercițiile nu se repetă.
-- **Fără cronometru**, ca la exercițiul 46.
+- **Ghicitoare cu animale** (la adunările și scăderile cu 2 cifre): sub fiecare calcul e o literă. La final, copilul ordonează rezultatele **crescător sau descrescător** și citește literele, iar acestea formează numele unui animal (PELICAN, HAMSTER, PANDA, ZEBRA, KOALA…). Primește și un indiciu, de exemplu „un urs alb-negru care mănâncă bambus”.
+- **La fiecare rundă**, jocul face alte calcule și alege alt animal, așa că exercițiile nu se repetă.
+- **Fără cronometru**, ca la termenii necunoscuți.
 
 ### 🎓 Evaluarea Națională (clasa a II-a)
 
 - **Testul din 2026**, „Animale de companie”: 18 itemi.
 - **Testul din 2025**, „Medii de viață”: 12 itemi.
 - **Testul din 2025**, „Animale de la Polul Sud și de la Polul Nord”: 12 itemi.
-- **Probleme de recapitulare**: urși, copaci, veverițe, tren, postere.
+- **Probleme de recapitulare**: ferma, grădina, cărți, brutăria, târgul de toamnă.
 
-Testele reproduc **toți itemii** din testele oficiale, în aceeași ordine și cu același punctaj (100 de puncte). Imaginile din test (tabele, afișe, forme geometrice, șiruri) sunt redesenate în aplicație. Itemii la care, pe foaie, elevul scrie rezolvarea sunt împărțiți **pe pași**, cu variante de răspuns.
+Testele reproduc **toți itemii** din testele oficiale, în aceeași ordine și cu același punctaj (100 de puncte). **Sursa:** testele oficiale publicate de Ministerul Educației / Centrul Național pentru Curriculum și Evaluare (CNPEE). Math Owl nu este o aplicație oficială a Ministerului. Imaginile din test (tabele, afișe, forme geometrice, șiruri) sunt redesenate în aplicație. Itemii la care, pe foaie, elevul scrie rezolvarea sunt împărțiți **pe pași**, cu variante de răspuns.
 
 La teste:
 - **nu există cronometru**;
@@ -109,7 +109,7 @@ La teste:
 ## Cum se joacă
 
 - **Runda** are 10 întrebări, cu 4 variante de răspuns fiecare. La testele de Evaluare Națională, runda are toți itemii testului. La calculele în coloană, rezultatul se scrie în căsuțe.
-- **Timpul** este de 30 de secunde pe întrebare. Testele de Evaluare Națională, exercițiul 46 și calculele în coloană nu au limită de timp.
+- **Timpul** este de 30 de secunde pe întrebare. Testele de Evaluare Națională, termenii necunoscuți și calculele în coloană nu au limită de timp.
 - **Viețile:** copilul pornește cu 3 vieți și poate avea cel mult 5. O greșeală costă o viață, iar la 5 răspunsuri corecte la rând primește una înapoi. Dacă rămâne fără vieți, poate „cumpăra” una cu 30 de puncte.
 - **Punctele:** 10 puncte pentru fiecare răspuns corect, plus bonus de „combo” când răspunde corect de mai multe ori la rând.
 - **Stelele:** la sfârșitul rundei primește 1–3 ⭐, după câte răspunsuri corecte a avut. Harta păstrează cel mai bun rezultat.

@@ -1,5 +1,5 @@
-// „Înmulțirea cu 5” — exerciții după lecția din manual, pe cele 4 secțiuni:
-// Descopăr, Aplic, Exersez, Rezolv probleme.
+// „Înmulțirea cu 5” — exerciții pe cele 4 secțiuni ale insulei:
+// Învăț, Încerc, Mă antrenez, Probleme.
 // Un exercițiu e fie o înmulțire simplă ({ kind: 'mult', a, b }), afișată mare
 // cu buline la explicație, fie o problemă cu text și variante de răspuns.
 import { makeAnswers } from './data';
@@ -68,9 +68,9 @@ const DISCOVER = [
   },
   () => {
     const friends = randInt(2, 9); const girl = pick(GIRLS);
-    return problem(tr('{girl} trebuie să decupeze câte 5 steluțe pentru fiecare dintre cei {friends} prieteni ai săi. Câte steluțe are de decupat?', { girl, friends }),
+    return problem(tr('{girl} pune câte 5 căpșuni în fiecare dintre cele {friends} cutiuțe. Câte căpșuni pune în total?', { girl, friends }),
       5 * friends,
-      tr('Câte 5 steluțe pentru fiecare prieten: {v0} = {friends} × 5 = {v1} steluțe.', { v0: Array(friends).fill(5).join(' + '), friends, v1: 5 * friends }),
+      tr('Câte 5 căpșuni în fiecare cutiuță: {v0} = {friends} × 5 = {v1} căpșuni.', { v0: Array(friends).fill(5).join(' + '), friends, v1: 5 * friends }),
       [5 + friends, 5 * friends + 5, 5 * (friends - 1)]);
   },
 ];
@@ -81,8 +81,7 @@ const APPLY = [
   () => mult(randInt(1, 10), 5),
   // B. Calculează (trei factori)
   () => {
-    const pairs = [[3, 3], [5, 1], [2, 3], [4, 2], [2, 2], [1, 5], [2, 4], [3, 2]];
-    const [a, b] = pick(pairs);
+    const a = randInt(1, 3); const b = randInt(1, Math.floor(10 / a));
     return problem(tr('Calculează: {a} × {b} × 5 = ?', { a, b }), a * b * 5,
       tr('Întâi {a} × {b} = {v0}, apoi {v1} × 5 = {v2}.', { a, b, v0: a * b, v1: a * b, v2: a * b * 5 }), [a + b + 5, a * b + 5, a * 5]);
   },
@@ -189,59 +188,59 @@ const PRACTICE = [
 
 // ---------- 🧩 Rezolv probleme ----------
 const SOLVE = [
-  // Pe un pantof sunt 5 steluțe. Câte steluțe sunt pe 3 perechi de pantofi?
+  // O mănușă are 5 degete. Câte degete au câteva perechi de mănuși?
   () => {
     const pairs = randInt(2, 5);
     const answer = pairs * 2 * 5;
-    return problem(tr('Pe un pantof sunt imprimate 5 steluțe. Câte steluțe sunt pe {pairs} perechi de pantofi?', { pairs }), answer,
-      tr('Modul I: pe o pereche sunt 2 × 5 = 10 steluțe; pe {pairs} perechi: {v0} × 10 = {answer}. ', { pairs, v0: pairs, answer })
-      + tr('Modul II: {pairs} perechi au {v0} × 2 = {v1} pantofi; {v2} × 5 = {answer} steluțe.', { pairs, v0: pairs, v1: pairs * 2, v2: pairs * 2, answer }),
+    return problem(tr('O mănușă are 5 degete. Câte degete au, la un loc, {pairs} perechi de mănuși?', { pairs }), answer,
+      tr('Modul I: o pereche are 2 × 5 = 10 degete; {pairs} perechi: {v0} × 10 = {answer}. ', { pairs, v0: pairs, answer })
+      + tr('Modul II: {pairs} perechi înseamnă {v0} × 2 = {v1} mănuși; {v2} × 5 = {answer} degete.', { pairs, v0: pairs, v1: pairs * 2, v2: pairs * 2, answer }),
       [pairs * 5, pairs * 2 + 5, answer + 5]);
   },
-  // Diana și cele 4 prietene — 5 fete.
+  // O fată și 4 prietene — 5 fete la piscină.
   () => {
     const girl = pick(GIRLS); const price = randInt(2, 10);
-    return problem(tr('{girl} și cele 4 prietene ale ei au cumpărat bilete la observatorul astronomic. ', { girl })
-      + tr('Ce sumă au plătit fetele, dacă un bilet costă {price} lei?', { price }), 5 * price,
+    return problem(tr('{girl} merge la piscină împreună cu 4 prietene. ', { girl })
+      + tr('Intrarea costă {price} lei de persoană. Cât plătesc fetele în total?', { price }), 5 * price,
       tr('Sunt {girl} plus 4 prietene, adică 5 fete. 5 × {price} = {v0} lei.', { girl, price, v0: 5 * price }), [4 * price, 5 + price, 5 * price + price]);
   },
-  // 8 persoane într-o tură, 5 ture.
+  // O barcă pe lac: câțiva copii la o plimbare, 5 plimbări.
   () => {
     const per = randInt(4, 10);
-    return problem(tr('La observatorul astronomic pot intra cel mult {per} persoane într-o tură. ', { per })
-      + tr('Care este numărul maxim de vizitatori care pot intra în 5 ture?'), 5 * per,
-      tr('În fiecare din cele 5 ture intră {per} persoane: 5 × {v0} = {v1}.', { per, v0: per, v1: 5 * per }), [per + 5, 5 * per - per, 5 * per + per]);
+    return problem(tr('Într-o barcă de pe lac încap cel mult {per} copii. ', { per })
+      + tr('Barca face 5 plimbări. Câți copii se pot plimba cel mult?'), 5 * per,
+      tr('La fiecare din cele 5 plimbări urcă {per} copii: 5 × {v0} = {v1}.', { per, v0: per, v1: 5 * per }), [per + 5, 5 * per - per, 5 * per + per]);
   },
-  // Lucrări câte 5 pe 6 rânduri; s-au vândut 27.
+  // Scaune câte 5 pe rând la serbare; câteva sunt ocupate.
   () => {
     const rows = randInt(4, 10); const total = 5 * rows; const sold = randInt(Math.ceil(total / 2), total - 1);
-    return problem(tr('Lucrările pregătite pentru expoziția „Universul” au fost așezate câte 5 pe {rows} rânduri. ', { rows })
-      + tr('Câte lucrări au mai rămas, dacă s-au vândut {sold}?', { sold }), total - sold,
-      tr('Întâi aflăm câte lucrări erau: {rows} × 5 = {total}. Apoi scădem: {v0} - {sold} = {v1}.', { rows, total, v0: total, sold, v1: total - sold }),
+    return problem(tr('Pentru serbare, scaunele au fost puse câte 5 pe {rows} rânduri. ', { rows })
+      + tr('Au venit {sold} părinți și fiecare s-a așezat pe un scaun. Câte scaune au rămas libere?', { sold }), total - sold,
+      tr('Întâi aflăm câte scaune sunt: {rows} × 5 = {total}. Apoi scădem: {v0} - {sold} = {v1}.', { rows, total, v0: total, sold, v1: total - sold }),
       [total, total + sold, total - sold + 1]);
   },
-  // Ceai de mentă și de fructe de 5 ori mai multe.
+  // Clătite cu gem și de 5 ori mai multe cu ciocolată.
   () => {
     const mint = randInt(2, 9); const fruit = 5 * mint;
-    return problem(tr('La un chioșc s-au vândut {mint} pahare cu ceai de mentă, iar cu ceai de fructe de 5 ori mai multe. ', { mint })
-      + tr('Câte pahare cu ceai s-au vândut în total?'), mint + fruit,
-      tr('Ceai de fructe: {mint} × 5 = {fruit} pahare. În total: {v0} + {v1} = {v2}.', { mint, fruit, v0: mint, v1: fruit, v2: mint + fruit }),
+    return problem(tr('La o tarabă s-au vândut {mint} clătite cu gem și de 5 ori mai multe clătite cu ciocolată. ', { mint })
+      + tr('Câte clătite s-au vândut în total?'), mint + fruit,
+      tr('Cu ciocolată: {mint} × 5 = {fruit} clătite. În total: {v0} + {v1} = {v2}.', { mint, fruit, v0: mint, v1: fruit, v2: mint + fruit }),
       [fruit, mint + 5, mint * 7]);
   },
-  // Un buchet are 5 trandafiri mov și 4 albi; câți în 5 buchete? (în două moduri)
+  // O cutie are 5 creioane verzi și câteva galbene; câte în 5 cutii? (în două moduri)
   () => {
     const white = randInt(2, 5);
     const per = 5 + white; const answer = 5 * per;
-    return problem(tr('Un buchet de flori are 5 trandafiri mov și {white} albi. Câți trandafiri sunt în 5 buchete de același fel?', { white }), answer,
-      tr('Modul I: într-un buchet sunt 5 + {white} = {per} trandafiri; în 5 buchete: 5 × {v0} = {answer}. ', { white, per, v0: per, answer })
-      + tr('Modul II: 5 × 5 = 25 mov și 5 × {white} = {v0} albi; 25 + {v1} = {answer}.', { white, v0: 5 * white, v1: 5 * white, answer }),
+    return problem(tr('O cutie are 5 creioane verzi și {white} creioane galbene. Câte creioane sunt în 5 cutii la fel?', { white }), answer,
+      tr('Modul I: într-o cutie sunt 5 + {white} = {per} creioane; în 5 cutii: 5 × {v0} = {answer}. ', { white, per, v0: per, answer })
+      + tr('Modul II: 5 × 5 = 25 verzi și 5 × {white} = {v0} galbene; 25 + {v1} = {answer}.', { white, v0: 5 * white, v1: 5 * white, answer }),
       [25 + white, per + 5, 25]);
   },
-  // Suma dintre triplul lui 5 și produsul numerelor 9 și 4.
+  // Triplul lui 5 adunat cu un produs.
   () => {
     const a = randInt(2, 9); const b = randInt(2, 9);
     const answer = 15 + a * b;
-    return problem(tr('Află suma dintre triplul lui 5 și produsul numerelor {a} și {b}.', { a, b }), answer,
+    return problem(tr('Adună triplul lui 5 cu rezultatul lui {a} × {b}. Ce obții?', { a, b }), answer,
       tr('Triplul lui 5: 3 × 5 = 15. Produsul: {a} × {b} = {v0}. Suma: 15 + {v1} = {answer}.', { a, b, v0: a * b, v1: a * b, answer }),
       [8 + a * b, 15 + a + b, a * b]);
   },

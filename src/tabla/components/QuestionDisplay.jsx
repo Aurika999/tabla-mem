@@ -51,7 +51,7 @@ function Visual({ visual }) {
       </div>
     );
   }
-  // Două figuri de comparat, cu „?” între ele (ca la exercițiul 15 din manual).
+  // Două figuri de comparat, cu „?” între ele.
   if (visual.type === 'fractionPair') {
     return (
       <div className="fraction-visual fraction-pair">

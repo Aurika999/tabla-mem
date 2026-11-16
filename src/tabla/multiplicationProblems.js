@@ -30,14 +30,14 @@ const FIXED_GROUPS = [
 // Perechi: „pentru fiecare, câte o pereche”; o pereche are 2.
 // `how` = „Câte”/„Câți”, după genul obiectului.
 const PAIRS = [
-  { item: 'mănuși', how: 'Câte', verb: 'tricotează', who: 'Bunica', for: 'nepoți' },
-  { item: 'șosete', how: 'Câte', verb: 'tricotează', who: 'Bunica', for: 'nepoți' },
+  { item: 'șosete', how: 'Câte', verb: 'cumpără', who: 'Bunicul', for: 'nepoți' },
+  { item: 'patine', how: 'Câte', verb: 'închiriază', who: 'Antrenorul', for: 'elevi' },
   { item: 'cercei', how: 'Câți', verb: 'cumpără', who: 'Mătușa', for: 'nepoate' },
   { item: 'papuci', how: 'Câți', verb: 'cumpără', who: 'Mama', for: 'copii' },
 ];
 // „de k ori mai scump”: [ce costă puțin, ce costă mai mult, forma de acord].
 const PRICES = [
-  ['Un fular', 'o căciulă', 'mai scumpă', 'o căciulă'],
+  ['O riglă', 'un penar', 'mai scump', 'un penar'],
   ['Un creion', 'o carte', 'mai scumpă', 'o carte'],
   ['O minge', 'o păpușă', 'mai scumpă', 'o păpușă'],
   ['Un caiet', 'un rucsac', 'mai scump', 'un rucsac'],
@@ -45,6 +45,8 @@ const PRICES = [
   ['Un suc', 'o pizza', 'mai scumpă', 'o pizza'],
 ];
 const BIRDS = [['vrăbii', 'Câte'], ['porumbei', 'Câți'], ['pițigoi', 'Câți'], ['rândunele', 'Câte']];
+// Animalele de companie pentru problemele cu vârste.
+const PETS = ['Pisica', 'Papagalul', 'Țestoasa'];
 
 function randInt(min, max) {
   return min + Math.floor(Math.random() * (max - min + 1));
@@ -78,24 +80,24 @@ const TEMPLATES = [
     const g = randInt(2, 9); const per = randInt(2, 10);
     return mult(tr('Sunt {g} {v0}, iar în {v1} sunt {per} {o}. Câte {v2} sunt în cele {v3} {v4}?', { g, v0: c.many, v1: c.each, per, o, v2: o, v3: g, v4: c.many }), g, per);
   },
-  // Bunica are 8 nepoți și tricotează câte o pereche de mănuși pentru fiecare.
+  // Cineva cumpără câte o pereche de lucruri pentru fiecare copil.
   () => {
     const p = pick(PAIRS); const g = randInt(2, 10);
     return mult(tr('{v0} are {g} {v1} și {v2} câte o pereche de {v3} pentru fiecare. ', { v0: p.who, g, v1: p.for, v2: p.verb, v3: p.item })
       + tr('O pereche are 2 {v0}. {v1} {v2} sunt în total?', { v0: p.item, v1: p.how, v2: p.item }), g, 2);
   },
-  // Un copac are 7 crengi. Pe fiecare creangă stau câte 3 vrăbii.
+  // Stâlpi de gard, pe fiecare câteva păsări.
   () => {
     const [bird, how] = pick(BIRDS); const g = randInt(2, 10); const per = randInt(2, 6);
-    return mult(tr('Un copac are {g} crengi. Pe fiecare creangă stau câte {per} {bird}. {how} {v0} stau în copac?', { g, per, bird, how, v0: bird }), g, per);
+    return mult(tr('Gardul din curte are {g} stâlpi. Pe fiecare stâlp stau câte {per} {bird}. {how} {v0} stau pe gard?', { g, per, bird, how, v0: bird }), g, per);
   },
-  // Ioana are 2 ani, iar vârsta surorii sale e de 3 ori mai mare.
+  // Un animal de companie e de câteva ori mai în vârstă decât cățelul.
   () => {
-    const n = pick(NAMES); const age = randInt(2, 9); const k = randInt(2, 5);
-    const rel = pick([['sora', 'surorii'], ['fratele', 'fratelui'], ['verișoara', 'verișoarei']]);
-    return mult(tr('{n} are {age} ani, iar vârsta {v0} e de {k} ori mai mare. Câți ani are {v1}?', { n, age, v0: rel[1], k, v1: rel[0] }), k, age);
+    const n = pick(NAMES); const age = randInt(1, 4); const k = randInt(2, 4);
+    const pet = pick(PETS);
+    return mult(tr('Cățelul lui {n} are {age} ani. {pet} lui {v0} are de {k} ori mai mulți ani. Câți ani are?', { n, age, pet, v0: n, k }), k, age);
   },
-  // Un fular costă 9 lei, iar o căciulă este de 3 ori mai scumpă.
+  // Un lucru ieftin și altul de câteva ori mai scump.
   () => {
     const [cheap, pricey, adj, question] = pick(PRICES); const price = randInt(2, 10); const k = randInt(2, 5);
     return mult(tr('{cheap} costă {price} lei, iar {pricey} este de {k} ori {adj}. Cât costă {question}?', { cheap, price, pricey, k, adj, question }), k, price);

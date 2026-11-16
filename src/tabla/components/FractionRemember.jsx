@@ -1,7 +1,7 @@
 import { tr } from '../i18n';
 import FractionShape, { Frac } from './FractionShape';
 
-// Caseta „Reține” de la lecția „Fracții”, ca în manual: întreg, jumătate (doime), sfert (pătrime).
+// Caseta „Reține” de la lecția „Fracții”: întreg, jumătate (doime), sfert (pătrime).
 export default function FractionRemember({ onClose }) {
   return (
     <div className="overlay lesson-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label={tr('Reține')}>
@@ -17,7 +17,7 @@ export default function FractionRemember({ onClose }) {
 
         <div className="fraction-rule">
           <p>
-            {tr('Când împărțim un întreg în două părți egale, fiecare parte reprezintă o jumătate sau o doime')}
+            {tr('Dacă tăiem un întreg în 2 bucăți la fel de mari, fiecare bucată este o jumătate, numită și doime')}
             {' '}(<Frac n={1} d={2} />).
           </p>
           <div className="fraction-pictures">
@@ -29,7 +29,7 @@ export default function FractionRemember({ onClose }) {
 
         <div className="fraction-rule">
           <p>
-            {tr('Când împărțim un întreg în 4 părți egale, fiecare parte reprezintă un sfert sau o pătrime')}
+            {tr('Dacă tăiem un întreg în 4 bucăți la fel de mari, fiecare bucată este un sfert, numit și pătrime')}
             {' '}(<Frac n={1} d={4} />).
           </p>
           <div className="fraction-pictures">
@@ -41,7 +41,7 @@ export default function FractionRemember({ onClose }) {
 
         <div className="fraction-rule">
           <p>
-            {tr('Două sferturi formează o jumătate.')} <Frac n={2} d={4} /> = <Frac n={1} d={2} />
+            {tr('Două sferturi fac cât o jumătate.')} <Frac n={2} d={4} /> = <Frac n={1} d={2} />
           </p>
           <div className="fraction-pictures">
             <FractionShape shape="bar" parts={4} filled={2} size={70} />
@@ -52,9 +52,9 @@ export default function FractionRemember({ onClose }) {
         </div>
 
         <ul className="five-tips">
-          <li>{tr('✂️ Părțile trebuie să fie egale! Altfel nu sunt nici jumătăți, nici sferturi.')}</li>
+          <li>{tr('✂️ Bucățile trebuie să fie la fel de mari! Altfel nu sunt nici jumătăți, nici sferturi.')}</li>
           <li>
-            {tr('✏️ Cum scriem fracția: jos, în câte părți egale e împărțit întregul; sus, câte părți sunt colorate.')}
+            {tr('✏️ Cum scriem fracția: sus scriem câte bucăți sunt colorate, iar jos în câte bucăți la fel de mari e tăiat întregul.')}
             {' '}<Frac n={3} d={4} /> <FractionShape shape="square" parts={4} filledIdx={[0, 1, 3]} size={34} />
           </li>
           <li>{tr('➗ Jumătatea unui număr: îl împărțim la 2. Jumătatea lui 8 este 8 : 2 = 4.')}</li>

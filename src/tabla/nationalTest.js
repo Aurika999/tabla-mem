@@ -515,7 +515,7 @@ const ITEMS_TERMS = [
 // Fiecare exercițiu are un video: învățătoarea îl rezolvă la tablă (public/video/termeni-1…12.mp4).
 // ].map((item, i) => ({ ...item, video: tr('termeni-{v0}.mp4', { v0: i + 1 }) }));
 
-// ================= Scăderi în coloană: „Calculează.” (exercițiul 2 din manual) =================
+// ================= Scăderi în coloană cu numere de 2 cifre =================
 // Scăderea se scrie pe verticală, ca în caiet: unitățile sub unități, zecile sub zeci.
 // Greșelile tipice: scazi cifra mică din cea mare fără să te împrumuți, sau uiți zecea împrumutată.
 function columnItem(a, b, letter) {
@@ -581,24 +581,22 @@ function columnSubItem(a, b) {
   };
 }
 
-// Prima rundă: cele 4 scăderi din carte, apoi încă 6 noi; la fiecare rundă nouă, toate 10 sunt noi.
-const SUB3_BOOK = [[258, 137], [478, 76], [729, 717], [567, 562]];
+// La fiecare rundă: 10 scăderi noi, alese la întâmplare.
 function randomSub3() {
   const a = randInt(200, 999);
-  // Uneori scăzătorul are doar 2 cifre (ca 478 − 76).
+  // Uneori scăzătorul are doar 2 cifre.
   const b = Math.random() < 0.25 ? randInt(11, 99) : randInt(100, a - 1);
   return [a, b];
 }
-function buildSub3Round(first) {
-  const pairs = first ? [...SUB3_BOOK] : [];
+function buildSub3Round() {
+  const pairs = [];
   while (pairs.length < 10) {
     const [a, b] = randomSub3();
     if (!pairs.some(([x, y]) => x === a && y === b)) pairs.push([a, b]);
   }
   return pairs.map(([a, b]) => columnSubItem(a, b));
 }
-let sub3Rounds = 0;
-let ITEMS_SUB3 = buildSub3Round(true);
+let ITEMS_SUB3 = buildSub3Round();
 
 // ================= Adunări în coloană cu numere de 3 cifre („C. Efectuează:”) =================
 // Pe coloane, de la unități spre sute: când suma unei coloane trece de 9, scriem unitățile ei
@@ -630,33 +628,30 @@ function columnAdd3Item(a, b) {
   };
 }
 
-// Prima rundă: cele 4 adunări din carte, apoi încă 6 noi; la fiecare rundă nouă, toate 10 sunt noi.
+// La fiecare rundă: 10 adunări noi, alese la întâmplare.
 // Suma rămâne cel mult 999, ca rezultatul să aibă tot 3 cifre.
-const ADD3_BOOK = [[648, 234], [421, 59], [808, 8], [375, 116]];
 function randomAdd3() {
   const a = randInt(100, 899);
   const r = Math.random();
-  // Uneori al doilea număr are 2 cifre sau doar una (ca 421 + 59 și 808 + 8).
+  // Uneori al doilea număr are 2 cifre sau doar una.
   const b = r < 0.15 ? randInt(2, 9) : r < 0.35 ? randInt(11, 99) : randInt(100, 999 - a);
   return a + b <= 999 ? [a, b] : [a, 999 - a];
 }
-function buildAdd3Round(first) {
-  const pairs = first ? [...ADD3_BOOK] : [];
+function buildAdd3Round() {
+  const pairs = [];
   while (pairs.length < 10) {
     const [a, b] = randomAdd3();
     if (b >= 1 && !pairs.some(([x, y]) => x === a && y === b)) pairs.push([a, b]);
   }
   return pairs.map(([a, b]) => columnAdd3Item(a, b));
 }
-let add3Rounds = 0;
-let ITEMS_ADD3 = buildAdd3Round(true);
+let ITEMS_ADD3 = buildAdd3Round();
 
 // Fracții: la fiecare rundă, alte desene și alte numere.
 let ITEMS_FRACTIONS = buildFractionRound();
 
-// ================= Adunări în coloană: exercițiul 8 din manual =================
-// „Calculează, apoi ordonează crescător rezultatele. Scrie literele corespunzătoare numerelor
-// pentru a descoperi o pasăre care se hrănește cu pește.” Fiecare adunare are litera ei, ca în carte.
+// ================= Adunări în coloană cu numere de 2 cifre =================
+// Fiecare adunare are o literă. La final, rezultatele puse în ordine dau numele unui animal.
 function columnSumItem(a, b, letter) {
   const answer = a + b;
   const [ta, ua, tb, ub] = [Math.floor(a / 10), a % 10, Math.floor(b / 10), b % 10];
@@ -680,10 +675,9 @@ function columnSumItem(a, b, letter) {
 }
 
 // Animalele ascunse în ghicitori: numele se scrie la fel în română și în engleză,
-// ca literele să se potrivească în ambele limbi. La adunări, prima rundă e chiar exercițiul din carte (PELICAN).
+// ca literele să se potrivească în ambele limbi. Numerele se aleg la întâmplare la fiecare rundă.
 const SUM_PUZZLES = [
-  { word: 'PELICAN', clue: 'o pasăre care se hrănește cu pește',
-    pairs: [[39, 15, 'E'], [24, 48, 'I'], [58, 17, 'C'], [7, 87, 'N'], [5, 55, 'L'], [42, 39, 'A'], [26, 26, 'P']] },
+  { word: 'PELICAN', clue: 'o pasăre cu ciocul lung și o pungă sub el' },
   { word: 'LEOPARD', clue: 'o felină mare, cu blana pătată' },
   { word: 'HAMSTER', clue: 'un rozător mic, animal de companie' },
   { word: 'JAGUAR', clue: 'o felină mare din pădurile Americii' },
@@ -733,7 +727,7 @@ function lettersToResults(word, min, max, desc) {
   return word.split('').map((letter, i) => [sorted[i], letter]);
 }
 
-// Două numere care adunate dau `sum`; de cele mai multe ori cu trecere peste zece, ca în carte.
+// Două numere care adunate dau `sum`; de cele mai multe ori cu trecere peste zece.
 function sumPair(sum) {
   const [t, u] = [Math.floor(sum / 10), sum % 10];
   for (let tries = 0; tries < 30; tries++) {
@@ -759,11 +753,13 @@ function buildSumRound(puzzle) {
 }
 
 // ---------- Scăderi în coloană (2 cifre), tot cu ghicitoare ----------
-// Prima rundă: scăderile din carte cu rezultate diferite, iar descrescător dau HAMSTER.
-const SUB2_BOOK = { word: 'HAMSTER', clue: 'un rozător mic, animal de companie', desc: true,
-  pairs: [[73, 37, 'S'], [56, 29, 'E'], [91, 47, 'A'], [85, 38, 'H'], [52, 43, 'R'], [43, 14, 'T'], [64, 25, 'M']] };
+// Animalul ghicitorii se alege la întâmplare; rezultatele, ordonate crescător sau descrescător, îi dau numele.
+const randomPuzzle = (except) => {
+  const choices = SUM_PUZZLES.filter(p => p.word !== except);
+  return choices[Math.floor(Math.random() * choices.length)];
+};
 
-// Două numere de 2 cifre a căror diferență e `diff`; de cele mai multe ori cu împrumut, ca în carte.
+// Două numere de 2 cifre a căror diferență e `diff`; de cele mai multe ori cu împrumut.
 function subPair(diff) {
   for (let tries = 0; tries < 40; tries++) {
     const b = randInt(11, 99 - diff);
@@ -782,26 +778,18 @@ function buildSub2Round(puzzle, desc) {
   ];
 }
 
-let sub2Puzzle = SUB2_BOOK;
-let sub2Rounds = 0;
-let ITEMS_COLUMN = buildSub2Round(SUB2_BOOK, true);
+let sub2Puzzle = randomPuzzle();
+let ITEMS_COLUMN = buildSub2Round({ word: sub2Puzzle.word, clue: sub2Puzzle.clue }, Math.random() < 0.5);
 
-let sumPuzzle = SUM_PUZZLES[0];
-let sumRounds = 0;
+let sumPuzzle = randomPuzzle();
 let ITEMS_COLUMN_SUM = buildSumRound(sumPuzzle);
 
 // La fiecare rundă nouă de „Adunări în coloană”: alt animal și alte adunări.
 export function newNationalRound(level) {
   if (level === 'scaderi2') {
-    // Prima rundă e cea din carte; apoi alt animal, ordonat la întâmplare crescător sau descrescător.
-    sub2Rounds += 1;
-    if (sub2Rounds > 1) {
-      const choices = SUM_PUZZLES.filter(p => p.word !== sub2Puzzle.word);
-      sub2Puzzle = choices[Math.floor(Math.random() * choices.length)];
-      ITEMS_COLUMN = buildSub2Round({ word: sub2Puzzle.word, clue: sub2Puzzle.clue }, Math.random() < 0.5);
-    } else {
-      ITEMS_COLUMN = buildSub2Round(SUB2_BOOK, true);
-    }
+    // De fiecare dată alt animal, ordonat la întâmplare crescător sau descrescător.
+    sub2Puzzle = randomPuzzle(sub2Puzzle.word);
+    ITEMS_COLUMN = buildSub2Round({ word: sub2Puzzle.word, clue: sub2Puzzle.clue }, Math.random() < 0.5);
     return;
   }
   if (level === 'fractii') {
@@ -809,21 +797,15 @@ export function newNationalRound(level) {
     return;
   }
   if (level === 'adunari3') {
-    add3Rounds += 1;
-    ITEMS_ADD3 = buildAdd3Round(add3Rounds === 1);
+    ITEMS_ADD3 = buildAdd3Round();
     return;
   }
   if (level === 'scaderi3') {
-    sub3Rounds += 1;
-    ITEMS_SUB3 = buildSub3Round(sub3Rounds === 1);
+    ITEMS_SUB3 = buildSub3Round();
     return;
   }
   if (level !== 'adunari8') return;
-  sumRounds += 1;
-  if (sumRounds > 1) {
-    const choices = SUM_PUZZLES.filter(p => p !== sumPuzzle);
-    sumPuzzle = choices[Math.floor(Math.random() * choices.length)];
-  }
+  sumPuzzle = randomPuzzle(sumPuzzle.word);
   ITEMS_COLUMN_SUM = buildSumRound(sumPuzzle);
 }
 

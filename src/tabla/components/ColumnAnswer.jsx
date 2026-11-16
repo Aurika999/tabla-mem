@@ -70,7 +70,7 @@ export default function ColumnAnswer({ current, answered, selected, onAnswer }) 
           />
         ))}
         <span />
-        {/* Litera de sub rezultat, ca în carte (din litere se descoperă un cuvânt). */}
+        {/* Litera de sub rezultat (din litere se descoperă un cuvânt). */}
         {letter && <span className="column-letter" style={{ gridColumn: `1 / ${width + 1}` }}>{letter}</span>}
         {letter && <span />}
       </div>

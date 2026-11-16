@@ -9,10 +9,10 @@ import { getLang, tr } from '../i18n';
 
 // Prima pagină (Arena Concursului și Insula Învățării), pagina „Insula Învățării”
 // (Insula Isteților, Tabla înmulțirii, Tabla împărțirii, Evaluare) și pagina
-// „Tabla înmulțirii”, cu lecțiile din manual de la 2 la 9.
+// „Tabla înmulțirii”, cu lecțiile de la 2 la 9.
 // Decorurile fiecărei insule, relativ la centrul ei: [emoji, dx, dy, mărime].
 const DECOR = {
-  recap1: [['🌲', -4, -40, 82], ['🐻', -100, 4, 32], ['🐿️', 98, 0, 30], ['🦌', 80, 26, 26], ['🚂', -82, 28, 24]],
+  recap1: [['🌳', -4, -40, 82], ['🐐', -100, 4, 32], ['🌷', 98, 0, 30], ['🍯', 80, 26, 26], ['🚚', -82, 28, 24]],
   national: [['🎓', -4, -40, 84], ['📝', -100, 4, 32], ['🏅', 98, 0, 30], ['✏️', 80, 26, 26], ['📚', -82, 28, 24]],
   en2025: [['🌍', -4, -40, 80], ['🌴', -100, 4, 32], ['🐧', 98, 0, 30], ['📝', 80, 26, 26], ['🦢', -82, 28, 24]],
   en2025b: [['🐻‍❄️', -4, -40, 80], ['🐧', -100, 4, 32], ['🦉', 98, 0, 30], ['📝', 80, 26, 26], ['❄️', -82, 28, 24]],
@@ -162,10 +162,10 @@ const LAYOUTS = {
 
 // Titlul de sus și butonul „înapoi” pentru paginile din interiorul insulelor.
 const SUBPAGES = {
-  school: { title: '🎒 INSULA ÎNVĂȚĂRII', back: '← Prima pagină', greeting: 'Aici înveți! Alege: Insula Isteților, lecțiile din manual, împărțirea, Evaluarea Națională sau calculele în coloană. 🎒' },
-  national: { title: '🎓 EVALUAREA NAȚIONALĂ', back: '← Insula Învățării', greeting: 'Alege un test de la Evaluarea Națională! 🎓' },
+  school: { title: '🎒 INSULA ÎNVĂȚĂRII', back: '← Prima pagină', greeting: 'Aici înveți! Alege: Insula Isteților, lecțiile, împărțirea, Evaluarea Națională sau calculele în coloană. 🎒' },
+  national: { title: '🎓 EVALUAREA NAȚIONALĂ', back: '← Insula Învățării', greeting: 'Alege un test de la Evaluarea Națională! 🎓 Itemii sunt după testele oficiale publicate de Ministerul Educației (CNPEE).' },
   division: { title: '➗ TABLA ÎMPĂRȚIRII', back: '← Insula Învățării', greeting: 'Aici înveți împărțirea! Alege lecția. ➗' },
-  lessons: { title: '📘 TABLA ÎNMULȚIRII', back: '← Insula Învățării', greeting: 'Alege lecția! Fiecare are „📖 Reține” și exerciții din manual. 📘' },
+  lessons: { title: '📘 TABLA ÎNMULȚIRII', back: '← Insula Învățării', greeting: 'Alege lecția! Fiecare are „📖 Reține” și exerciții. 📘' },
 };
 
 function pct(value, total) {
@@ -340,7 +340,7 @@ export default function HomeIslands({
       title: tr('ÎNMULȚIREA CU {factor}', { factor }),
       subtitle: lessonDone(factor) === LESSON_PATHS[factor].length
         ? tr('Știi înmulțirea cu {factor}! 🏆', { factor })
-        : tr('{v0} {v1} / {v2} · lecția din manual', { v0: LESSON_CARDS[factor].icon, v1: lessonDone(factor), v2: LESSON_PATHS[factor].length }),
+        : tr('{v0} {v1} / {v2} · lecție cu exerciții', { v0: LESSON_CARDS[factor].icon, v1: lessonDone(factor), v2: LESSON_PATHS[factor].length }),
       cta: tr('{v0} Învață cu {factor}', { v0: LESSON_CARDS[factor].icon, factor }),
       onClick: () => onOpenLesson(factor),
     })),

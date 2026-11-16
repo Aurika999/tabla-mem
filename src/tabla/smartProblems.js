@@ -20,9 +20,9 @@ const BADGES = {
   ist6: '📝 Calculez · 🟡 Mediu',
   ist7: '🧠 Probleme în doi pași · 🟠 Greu',
   ist8: '🔟 Înmulțiri cu 11 și 12 · 🟠 Greu',
-  ist9: '📒 Exersez ca în manual · 🟠 Greu',
+  ist9: '📒 Mă antrenez cu factori · 🟠 Greu',
   ist10: '🪜 Probleme pe pași · 🟠 Greu',
-  ist11: '🤖 Exersez și rezolv · 🟠 Greu',
+  ist11: '🤖 Mă antrenez și rezolv · 🟠 Greu',
   ist12: '💪 Înmulțiri mari · 🔴 Avansat',
   ist13: '🏆 Provocări · 🔴 Avansat',
   ist14: '🏔️ Testul final · 🔴 Avansat',
@@ -51,7 +51,7 @@ function wordProblem() {
 }
 
 const logic = level => () => buildLogicProblem(level);
-// Exercițiile din fosta insulă „Evaluare” (recapitularea din manual).
+// Exercițiile din fosta insulă „Evaluare” (recapitulare).
 const evaluation = level => () => buildEvalProblem(level);
 
 // Sursa exercițiilor pentru fiecare insulă.
@@ -64,7 +64,7 @@ const SOURCES = {
   ist6: [evaluation('eval1')], // calculez
   ist7: [logic('logica3')], // probleme în doi pași
   ist8: [mult(11, 12, 1, 12)], // înmulțiri cu 11 și 12
-  ist9: [logic('logica4')], // exersez ca în manual
+  ist9: [logic('logica4')], // factori și probleme
   ist10: [evaluation('eval2')], // probleme pe pași
   ist11: [evaluation('eval4')], // exersez și rezolv
   ist12: [mult(6, 12, 6, 12)], // înmulțiri mari

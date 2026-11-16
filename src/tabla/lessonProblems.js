@@ -1,5 +1,5 @@
-// Exerciții pentru lecțiile „Înmulțirea cu 2, 3, 4, 6, 7, 8, 9”, după manual,
-// pe cele 4 secțiuni: Descopăr, Aplic, Exersez, Rezolv probleme.
+// Exerciții pentru lecțiile „Înmulțirea cu 2, 3, 4, 6, 7, 8, 9”,
+// pe cele 4 secțiuni ale insulei: Învăț, Încerc, Mă antrenez, Probleme.
 // (Înmulțirea cu 5 are exercițiile ei în fiveProblems.js.)
 import { makeAnswers } from './data';
 import { tr } from './i18n';
@@ -14,7 +14,7 @@ export const LESSON_LEVELS = {
   8: ['opt1', 'opt2', 'opt3', 'opt4'],
   9: ['noua1', 'noua2', 'noua3', 'noua4'],
 };
-const BADGES = ['🔍 Descopăr', '✏️ Aplic', '⭐ Exersez', '🧩 Rezolv probleme'];
+const BADGES = ['🔍 Învăț', '✏️ Încerc', '⭐ Mă antrenez', '🧩 Probleme'];
 const TRUE_FALSE = ['Adevărat', 'Fals'];
 const SIGNS = ['<', '>', '='];
 const OPERATIONS = ['×', '+', '−'];
@@ -52,22 +52,22 @@ function mult(a, b) {
   return { kind: 'mult', a, b };
 }
 
-// Povestea din „Descopăr”: baterii pentru 6, monede pentru 7.
+// Povestea de la „Învăț”: câte o poveste scurtă pentru fiecare număr.
 const STORY = {
-  2: (k) => problem(tr('Pe fiecare săniuță stau câte 2 copii. Câți copii sunt pe {k} săniuțe?', { k }), 2 * k,
+  2: (k) => problem(tr('În caiac stau câte 2 copii. Câți copii sunt în {k} caiace?', { k }), 2 * k,
     tr('{v0} = de {k} ori câte 2 = {v1} × 2 = {v2} copii.', { v0: Array(k).fill(2).join(' + '), k, v1: k, v2: 2 * k }), [2 + k, 2 * k + 2, 2 * k - 2]),
-  3: (k) => problem(tr('Fiecare copil a pregătit câte 3 bulgări de zăpadă. Câți bulgări au pregătit {k} copii?', { k }), 3 * k,
-    tr('{v0} = de {k} ori câte 3 = {v1} × 3 = {v2} bulgări.', { v0: Array(k).fill(3).join(' + '), k, v1: k, v2: 3 * k }), [3 + k, 3 * k + 3, 3 * k - 3]),
-  4: (k) => problem(tr('Un urs polar are 4 picioare. Câte picioare au {k} urși polari?', { k }), 4 * k,
+  3: (k) => problem(tr('Fiecare copil plantează câte 3 răsaduri de roșii. Câte răsaduri plantează {k} copii?', { k }), 3 * k,
+    tr('{v0} = de {k} ori câte 3 = {v1} × 3 = {v2} răsaduri.', { v0: Array(k).fill(3).join(' + '), k, v1: k, v2: 3 * k }), [3 + k, 3 * k + 3, 3 * k - 3]),
+  4: (k) => problem(tr('Un scaun are 4 picioare. Câte picioare au {k} scaune?', { k }), 4 * k,
     tr('{v0} = de {k} ori câte 4 = {v1} × 4 = {v2} picioare.', { v0: Array(k).fill(4).join(' + '), k, v1: k, v2: 4 * k }), [4 + k, 4 * k + 4, 4 * k - 4]),
-  6: (k) => problem(tr('Într-o cutie sunt 6 baterii. Câte baterii sunt în {k} cutii?', { k }), 6 * k,
-    tr('{v0} = de {k} ori câte 6 = {v1} × 6 = {v2} baterii.', { v0: Array(k).fill(6).join(' + '), k, v1: k, v2: 6 * k }), [6 + k, 6 * k + 6, 6 * k - 6]),
-  7: (k) => problem(tr('Într-un teanc sunt 7 monede. Câte monede sunt în {k} teancuri?', { k }), 7 * k,
-    tr('{v0} = de {k} ori câte 7 = {v1} × 7 = {v2} monede.', { v0: Array(k).fill(7).join(' + '), k, v1: k, v2: 7 * k }), [7 + k, 7 * k + 7, 7 * k - 7]),
-  8: (k) => problem(tr('O caracatiță are 8 brațe. Câte brațe au {k} caracatițe?', { k }), 8 * k,
-    tr('{v0} = de {k} ori câte 8 = {v1} × 8 = {v2} brațe.', { v0: Array(k).fill(8).join(' + '), k, v1: k, v2: 8 * k }), [8 + k, 8 * k + 8, 8 * k - 8]),
-  9: (k) => problem(tr('Într-o cutie sunt 9 baloane. Câte baloane sunt în {k} cutii?', { k }), 9 * k,
-    tr('{v0} = de {k} ori câte 9 = {v1} × 9 = {v2} baloane.', { v0: Array(k).fill(9).join(' + '), k, v1: k, v2: 9 * k }), [9 + k, 9 * k + 9, 9 * k - 9]),
+  6: (k) => problem(tr('O cutie are 6 brioșe. Câte brioșe sunt în {k} cutii?', { k }), 6 * k,
+    tr('{v0} = de {k} ori câte 6 = {v1} × 6 = {v2} brioșe.', { v0: Array(k).fill(6).join(' + '), k, v1: k, v2: 6 * k }), [6 + k, 6 * k + 6, 6 * k - 6]),
+  7: (k) => problem(tr('Pe un raft sunt 7 cărți. Câte cărți sunt pe {k} rafturi?', { k }), 7 * k,
+    tr('{v0} = de {k} ori câte 7 = {v1} × 7 = {v2} cărți.', { v0: Array(k).fill(7).join(' + '), k, v1: k, v2: 7 * k }), [7 + k, 7 * k + 7, 7 * k - 7]),
+  8: (k) => problem(tr('Un păianjen are 8 picioare. Câte picioare au {k} păianjeni?', { k }), 8 * k,
+    tr('{v0} = de {k} ori câte 8 = {v1} × 8 = {v2} picioare.', { v0: Array(k).fill(8).join(' + '), k, v1: k, v2: 8 * k }), [8 + k, 8 * k + 8, 8 * k - 8]),
+  9: (k) => problem(tr('Un pachet are 9 biscuiți. Câți biscuiți sunt în {k} pachete?', { k }), 9 * k,
+    tr('{v0} = de {k} ori câte 9 = {v1} × 9 = {v2} biscuiți.', { v0: Array(k).fill(9).join(' + '), k, v1: k, v2: 9 * k }), [9 + k, 9 * k + 9, 9 * k - 9]),
 };
 
 // Lucruri care au mereu câte N bucăți, pentru problemele cu grupe.
@@ -81,22 +81,22 @@ const GROUPS = {
   9: [['O tablă de X și 0', 'table', 'căsuțe'], ['O cutie', 'cutii', 'baloane'], ['O față de cub Rubik', 'fețe', 'pătrățele']],
 };
 
-// ---------- Exerciții în plus, din lecția „Înmulțirea cu 4” ----------
+// ---------- Exerciții în plus pentru înmulțirea cu 4 ----------
 const FOUR_DISCOVER = [
-  // Lor li se alătură Fram, ursul polar: 4 + 4 + 4 + 4 + 4 = 20.
+  // La câteva mese de câte 4 locuri se mai adaugă o masă.
   () => {
     const bears = randInt(3, 6);
-    return problem(tr('Pe gheață sunt {bears} urși polari. Lor li se alătură Fram, ursul polar. ', { bears })
-      + tr('Câte picioare au urșii la un loc?'), 4 * (bears + 1),
-      tr('Sunt {bears} + 1 = {v0} urși. {v1} × 4 = {v2} picioare ', { bears, v0: bears + 1, v1: bears + 1, v2: 4 * (bears + 1) })
+    return problem(tr('În sala de mese sunt {bears} mese cu câte 4 scaune. Doamna învățătoare mai aduce o masă la fel. ', { bears })
+      + tr('Câte scaune sunt acum la mese?'), 4 * (bears + 1),
+      tr('Sunt {bears} + 1 = {v0} mese. {v1} × 4 = {v2} scaune ', { bears, v0: bears + 1, v1: bears + 1, v2: 4 * (bears + 1) })
       + tr('(sau {bears} × 4 + 4 = {v0} + 4 = {v1}).', { bears, v0: 4 * bears, v1: 4 * (bears + 1) }),
       [4 * bears, bears + 1 + 4, 4 * (bears + 2)]);
   },
-  // Pinguinii: 6 + 6 + 6 + 6 = 24, deci 4 × 6 = 6 × 4.
+  // 4 echipe la fel de mari: 6 + 6 + 6 + 6 = 4 × 6 = 6 × 4.
   () => {
     const per = randInt(3, 9);
-    return problem(tr('Sunt 4 grupuri de pinguini, cu câte {per} pinguini în fiecare grup. Câți pinguini sunt?', { per }), 4 * per,
-      tr('{v0} = 4 × {per} = {v1} × 4 = {v2} pinguini.', { v0: Array(4).fill(per).join(' + '), per, v1: per, v2: 4 * per }), [4 + per, 4 * per + per, 4 * per - 4]);
+    return problem(tr('La ora de sport sunt 4 echipe, cu câte {per} copii în fiecare echipă. Câți copii sunt?', { per }), 4 * per,
+      tr('{v0} = 4 × {per} = {v1} × 4 = {v2} copii.', { v0: Array(4).fill(per).join(' + '), per, v1: per, v2: 4 * per }), [4 + per, 4 * per + per, 4 * per - 4]);
   },
 ];
 
@@ -123,7 +123,7 @@ const FOUR_APPLY = [
 const FOUR_PRACTICE = [
   // Cu 4 mai mare vs. de 4 ori mai mare.
   () => {
-    const n = pick([8, 1, 5, 6, 2, 9, 4, 10]);
+    const n = randInt(1, 10);
     return Math.random() < 0.5
       ? problem(tr('Află numărul cu 4 mai mare decât {n}.', { n }), n + 4,
         tr('„Cu 4 mai mare” înseamnă adunare: {n} + 4 = {v0}. (Atenție: nu e „de 4 ori”!)', { n, v0: n + 4 }), [n * 4, n + 5, n + 3])
@@ -136,23 +136,24 @@ const FOUR_PRACTICE = [
     return problem(tr('Rezolvă după model (4 × 4 = 3 × 4 + 4): {k} × 4 = {v0} × 4 + □', { k, v0: k - 1 }), 4,
       tr('{k} × 4 înseamnă cu încă un 4 mai mult decât {v0} × 4: {v1} + 4 = {v2}.', { k, v0: k - 1, v1: 4 * (k - 1), v2: 4 * k }), [k, k - 1, 4 * k]);
   },
-  // Completează: 5 × 4 = 2 × □, 8 × 3 = □ × 4, 6 × 2 = 3 × □…
+  // Două produse egale, unul cu un factor lipsă: 4 × 6 = 8 × □.
   () => {
-    const [text, answer, explanation] = pick([
-      ['5 × 4 = 2 × □', 10, '5 × 4 = 20, iar 2 × 10 = 20.'],
-      ['□ × 2 = 4 × 4', 8, '4 × 4 = 16, iar 8 × 2 = 16.'],
-      ['8 × 3 = □ × 4', 6, '8 × 3 = 24, iar 6 × 4 = 24.'],
-      ['6 × 2 = 3 × □', 4, '6 × 2 = 12, iar 3 × 4 = 12.'],
-      ['9 × 2 = 3 × □', 6, '9 × 2 = 18, iar 3 × 6 = 18.'],
-      ['1 × □ = 2 × 2', 4, '2 × 2 = 4, iar 1 × 4 = 4.'],
-      ['4 × 6 = 8 × □', 3, '4 × 6 = 24, iar 8 × 3 = 24.'],
-    ]);
+    const [text, answer, explanation] = (() => {
+      const x = randInt(1, 5); const y = 2 * randInt(1, 4);
+      // 4 × (x·y/2) are același rezultat ca 2 × (x·y)… alegem forma cu 4 sau cu 2.
+      const product = 4 * x * y / 2;
+      const left = `4 × ${(x * y) / 2}`;
+      return Math.random() < 0.5
+        ? [`${left} = 2 × □`, product / 2, `${left} = ${product}, iar 2 × ${product / 2} = ${product}.`]
+        : [`□ × 2 = ${left}`, product / 2, `${left} = ${product}, iar ${product / 2} × 2 = ${product}.`];
+    })();
     return problem(tr('Completează cu factorul care lipsește: {text}', { text }), answer,
       tr('Ambele părți trebuie să dea același rezultat: {explanation}', { explanation }), [answer + 1, answer - 1, answer * 2]);
   },
   // Calculează și compară: 2 × 6 ○ 3 × 4.
   () => {
-    const [l, r] = pick([[[2, 6], [3, 4]], [[3, 8], [7, 4]], [[4, 9], [8, 4]], [[2, 4], [4, 2]], [[4, 5], [3, 6]], [[4, 7], [5, 6]]]);
+    const l = [randInt(2, 9), 4]; const r = [randInt(2, 9), randInt(2, 9)];
+    if (Math.random() < 0.5) l.reverse();
     const a = l[0] * l[1]; const b = r[0] * r[1];
     const sign = a < b ? '<' : a > b ? '>' : '=';
     return {
@@ -177,52 +178,52 @@ const FOUR_SOLVE = [
     return problem(tr('Câte roți au {cars} mașinuțe?', { cars }), 4 * cars,
       tr('Fiecare mașinuță are 4 roți: {cars} × 4 = {v0} roți.', { cars, v0: 4 * cars }), [cars + 4, 4 * cars + 4, 4 * cars - 4]);
   },
-  // O cabană are 10 camere, câte 4 locuri în fiecare.
+  // Un autobuz de excursie cu rânduri de câte 4 scaune.
   () => {
     const rooms = randInt(5, 10);
-    return problem(tr('O cabană are {rooms} camere. În fiecare cameră sunt câte 4 locuri de cazare. Câte locuri de cazare are cabana?', { rooms }),
-      4 * rooms, tr('{rooms} camere × 4 locuri = {v0} locuri.', { rooms, v0: 4 * rooms }), [rooms + 4, 4 * rooms + 4, 4 * rooms - 4]);
+    return problem(tr('Autobuzul de excursie are {rooms} rânduri, cu câte 4 scaune pe fiecare rând. Câți copii pot sta pe scaune?', { rooms }),
+      4 * rooms, tr('{rooms} rânduri × 4 scaune = {v0} scaune.', { rooms, v0: 4 * rooms }), [rooms + 4, 4 * rooms + 4, 4 * rooms - 4]);
   },
   // Cu cât este mai mare produsul numerelor 9 și 4 decât suma lor?
   () => {
     const n = randInt(5, 9);
-    return problem(tr('Cu cât este mai mare produsul numerelor {n} și 4 decât suma lor?', { n }), 4 * n - (n + 4),
+    return problem(tr('Calculează {n} × 4 și {n} + 4. Cu cât este mai mare produsul decât suma?', { n }), 4 * n - (n + 4),
       tr('Produsul: {n} × 4 = {v0}. Suma: {v1} + 4 = {v2}. Diferența: {v3} - {v4} = {v5}.', { n, v0: 4 * n, v1: n, v2: n + 4, v3: 4 * n, v4: n + 4, v5: 4 * n - (n + 4) }),
       [4 * n, n + 4, 4 * n + n + 4]);
   },
-  // Mara are 7 ani, iar mama de 4 ori mai mulți. Câți ani va avea mama peste 5 ani?
+  // Bunicul are de 4 ori mai mulți ani decât nepotul; câți ani va avea peste câțiva ani?
   () => {
-    const girl = pick(['Mara', 'Ioana', 'Sofia', 'Ana']); const age = randInt(6, 9); const later = randInt(2, 6);
+    const girl = pick(['Vlad', 'Tudor', 'Radu', 'Petru']); const age = randInt(6, 9); const later = randInt(2, 6);
     const mom = 4 * age;
-    return problem(tr('{girl} are {age} ani, iar mama sa de 4 ori mai mulți. Câți ani va avea mama peste {later} ani?', { girl, age, later }), mom + later,
-      tr('Acum mama are {age} × 4 = {mom} ani. Peste {later} ani: {v0} + {v1} = {v2} ani.', { age, mom, later, v0: mom, v1: later, v2: mom + later }),
+    return problem(tr('{girl} are {age} ani. Bunicul lui are de 4 ori mai mulți ani. Câți ani va avea bunicul peste {later} ani?', { girl, age, later }), mom + later,
+      tr('Acum bunicul are {age} × 4 = {mom} ani. Peste {later} ani: {v0} + {v1} = {v2} ani.', { age, mom, later, v0: mom, v1: later, v2: mom + later }),
       [mom, age + 4 + later, age + later]);
   },
-  // Oana citește o carte cu 198 de pagini; în primele 4 zile câte 9 pagini pe zi.
+  // Un album cu abțibilduri: câteva pe zi, 4 zile.
   () => {
     const per = randInt(6, 9); const total = randInt(60, 99);
     const read = 4 * per;
-    return problem(tr('Oana citește o carte cu {total} de pagini. În primele 4 zile a citit câte {per} pagini pe zi. ', { total, per })
-      + tr('Câte pagini mai are de citit pentru a termina cartea?'), total - read,
-      tr('În 4 zile a citit 4 × {per} = {read} pagini. Mai are {total} - {v0} = {v1} pagini.', { per, read, total, v0: read, v1: total - read }),
+    return problem(tr('Albumul lui Andrei are loc pentru {total} de abțibilduri. În 4 zile, el a lipit câte {per} abțibilduri pe zi. ', { total, per })
+      + tr('Câte abțibilduri mai trebuie să lipească pentru a umple albumul?'), total - read,
+      tr('În 4 zile a lipit 4 × {per} = {read} abțibilduri. Mai are {total} - {v0} = {v1}.', { per, read, total, v0: read, v1: total - read }),
       [total - per, read, total - read + 4]);
   },
 ];
 
-// ---------- Exerciții în plus, din lecția „Înmulțirea cu 3” ----------
+// ---------- Exerciții în plus pentru înmulțirea cu 3 ----------
 const THREE_DISCOVER = [
-  // Dan face și el 3 bulgări și li se alătură: 4 copii.
+  // Câțiva copii culeg câte 3 mere; mai vine un copil.
   () => {
     const kids = randInt(2, 5);
-    return problem(tr('{kids} copii au făcut câte 3 bulgări. Dan face și el 3 bulgări și li se alătură. ', { kids })
-      + tr('Câți bulgări au făcut în total cei {v0} copii?', { v0: kids + 1 }), 3 * (kids + 1),
-      tr('{kids} × 3 = {v0}, plus cei 3 ai lui Dan: {v1} + 3 = {v2} (sau {v3} × 3).', { kids, v0: 3 * kids, v1: 3 * kids, v2: 3 * (kids + 1), v3: kids + 1 }),
+    return problem(tr('{kids} copii culeg câte 3 mere din livadă. Mai vine Cezar și culege și el 3 mere. ', { kids })
+      + tr('Câte mere au cules în total cei {v0} copii?', { v0: kids + 1 }), 3 * (kids + 1),
+      tr('{kids} × 3 = {v0}, plus cele 3 ale lui Cezar: {v1} + 3 = {v2} (sau {v3} × 3).', { kids, v0: 3 * kids, v1: 3 * kids, v2: 3 * (kids + 1), v3: kids + 1 }),
       [3 * kids, kids + 1 + 3, 3 * (kids + 2)]);
   },
-  // Câți bulgări au lovit cele 3 ținte? 5 + 5 + 5 = 3 × 5 = 5 × 3.
+  // 3 vaze cu același număr de lalele: 5 + 5 + 5 = 3 × 5 = 5 × 3.
   () => {
     const per = randInt(3, 9);
-    return problem(tr('Pe fiecare din cele 3 ținte au lovit câte {per} bulgări. Câți bulgări au lovit cele 3 ținte?', { per }), 3 * per,
+    return problem(tr('Pe masă sunt 3 vaze. În fiecare vază sunt câte {per} lalele. Câte lalele sunt în cele 3 vaze?', { per }), 3 * per,
       `${per} + ${per} + ${per} = 3 × ${per} = ${per} × 3 = ${3 * per}.`, [3 + per, 3 * per + per, 3 * per - 3]);
   },
 ];
@@ -245,16 +246,16 @@ const THREE_APPLY = [
 const THREE_PRACTICE = [
   // Cu 3 mai mare vs. de 3 ori mai mare.
   () => {
-    const n = pick([7, 5, 2, 9, 4, 10, 8, 3]);
+    const n = randInt(2, 10);
     return Math.random() < 0.5
       ? problem(tr('Află numărul cu 3 mai mare decât {n}.', { n }), n + 3,
         tr('„Cu 3 mai mare” înseamnă adunare: {n} + 3 = {v0}.', { n, v0: n + 3 }), [n * 3, n + 4, n + 2])
       : problem(tr('Află numărul de 3 ori mai mare decât {n}.', { n }), n * 3,
         tr('„De 3 ori mai mare” înseamnă înmulțire: {n} × 3 = {v0}.', { n, v0: n * 3 }), [n + 3, n * 3 + 3, n * 3 - 3]);
   },
-  // Află triplul numerelor pare mai mari decât 3 și mai mici decât 12.
+  // Triplul unui număr.
   () => {
-    const n = pick([4, 6, 8, 10]);
+    const n = randInt(2, 10);
     return problem(tr('Află triplul numărului {n}.', { n }), 3 * n,
       tr('Triplul înseamnă de 3 ori mai mare: 3 × {n} = {v0}.', { n, v0: 3 * n }), [n + 3, 2 * n, 3 * n + 3]);
   },
@@ -273,55 +274,55 @@ const THREE_PRACTICE = [
 ];
 
 const THREE_SOLVE = [
-  // Un copac are 7 crengi, pe fiecare câte 3 vrăbii.
+  // Stâlpi de gard cu câte 3 porumbei.
   () => {
     const b = randInt(3, 9);
-    return problem(tr('Un copac are {b} crengi. Pe fiecare creangă stau câte 3 vrăbii. Câte vrăbii stau în copac?', { b }), 3 * b,
-      tr('{b} crengi × 3 vrăbii = {v0} vrăbii.', { b, v0: 3 * b }), [b + 3, 3 * b + 3, 3 * b - 3]);
+    return problem(tr('Pe gardul din curte sunt {b} stâlpi. Pe fiecare stâlp stau câte 3 porumbei. Câți porumbei stau pe gard?', { b }), 3 * b,
+      tr('{b} stâlpi × 3 porumbei = {v0} porumbei.', { b, v0: 3 * b }), [b + 3, 3 * b + 3, 3 * b - 3]);
   },
-  // Ioana are 2 ani, sora de 3 ori mai mare.
+  // Un cățel și o pisică de 3 ori mai în vârstă.
   () => {
     const age = randInt(2, 4);
-    return problem(tr('Ioana are {age} ani, iar vârsta surorii sale e de 3 ori mai mare. Câți ani are sora Ioanei?', { age }), 3 * age,
+    return problem(tr('Cățelul lui Matei are {age} ani, iar pisica are de 3 ori mai mulți ani. Câți ani are pisica?', { age }), 3 * age,
       tr('„De 3 ori mai mare”: {age} × 3 = {v0} ani.', { age, v0: 3 * age }), [age + 3, 3 * age + 3, 2 * age]);
   },
-  // Fular 9 lei, căciula de 3 ori mai scumpă. Cât costă un fular și o căciulă?
+  // O gumă și un penar de 3 ori mai scump.
   () => {
     const price = randInt(5, 9); const cap = 3 * price;
-    return problem(tr('Un fular costă {price} lei, iar o căciulă este de 3 ori mai scumpă. Cât costă un fular și o căciulă?', { price }), price + cap,
-      tr('Căciula: {price} × 3 = {cap} lei. Împreună: {v0} + {v1} = {v2} lei.', { price, cap, v0: price, v1: cap, v2: price + cap }), [cap, price + 3, 2 * cap]);
+    return problem(tr('O riglă costă {price} lei, iar un penar costă de 3 ori mai mult. Cât costă o riglă și un penar?', { price }), price + cap,
+      tr('Penarul: {price} × 3 = {cap} lei. Împreună: {v0} + {v1} = {v2} lei.', { price, cap, v0: price, v1: cap, v2: price + cap }), [cap, price + 3, 2 * cap]);
   },
-  // Mihai are 9 invitați, 3 pizza a câte 8 felii; fiecare copil mănâncă câte 2.
+  // Ziua Ralucăi: 3 torturi tăiate în câte 8 felii; fiecare copil ia câte 2.
   () => {
     const guests = randInt(7, 10); const slices = 8; const kids = guests + 1; const total = 3 * slices;
-    return problem(tr('Mihai are {guests} invitați la ziua lui. El comandă 3 pizza, fiecare tăiată în {slices} felii. ', { guests, slices })
-      + tr('Fiecare copil (și Mihai) mănâncă câte 2 felii. Câte felii rămân?'), total - 2 * kids,
-      tr('Felii: 3 × {slices} = {total}. Copii: {guests} + 1 = {kids}, mănâncă {v0} × 2 = {v1}. Rămân {v2} - {v3} = {v4}.', { slices, total, guests, kids, v0: kids, v1: 2 * kids, v2: total, v3: 2 * kids, v4: total - 2 * kids }),
+    return problem(tr('La ziua Ralucăi vin {guests} prieteni. Pe masă sunt 3 torturi, fiecare tăiat în {slices} felii. ', { guests, slices })
+      + tr('Fiecare copil (și Raluca) ia câte 2 felii. Câte felii rămân?'), total - 2 * kids,
+      tr('Felii: 3 × {slices} = {total}. Copii: {guests} + 1 = {kids}, iau {v0} × 2 = {v1} felii. Rămân {v2} - {v3} = {v4}.', { slices, total, guests, kids, v0: kids, v1: 2 * kids, v2: total, v3: 2 * kids, v4: total - 2 * kids }),
       [total - 2 * guests, total, 2 * kids]);
   },
-  // Un creion costă 3 lei; 6 creioane, plătește cu două bancnote de 10 lei.
+  // Un caiet costă 3 lei; câteva caiete, plătește cu două bancnote de 10 lei.
   () => {
     const n = randInt(3, 6);
-    return problem(tr('Un creion costă 3 lei. Ce rest primește Anca dacă își cumpără {n} creioane și plătește cu două bancnote de câte 10 lei?', { n }),
-      20 - 3 * n, tr('Creioanele costă {n} × 3 = {v0} lei. Plătește 2 × 10 = 20 lei. Restul: 20 - {v1} = {v2} lei.', { n, v0: 3 * n, v1: 3 * n, v2: 20 - 3 * n }),
+    return problem(tr('Un caiet costă 3 lei. Tudor cumpără {n} caiete și dă vânzătoarei două bancnote de câte 10 lei. Cât rest primește?', { n }),
+      20 - 3 * n, tr('Caietele costă {n} × 3 = {v0} lei. Tudor dă 2 × 10 = 20 lei. Restul: 20 - {v1} = {v2} lei.', { n, v0: 3 * n, v1: 3 * n, v2: 20 - 3 * n }),
       [10 - 3 * n >= 0 ? 10 - 3 * n : 1, 3 * n, 20 - n]);
   },
 ];
 
-// ---------- Exerciții în plus, din lecția „Înmulțirea cu 2” ----------
+// ---------- Exerciții în plus pentru înmulțirea cu 2 ----------
 const TWO_DISCOVER = [
-  // Dacă mai vine o sanie cu 2 copii, câți copii vor fi pe cele 4 sănii?
+  // Caiace cu câte 2 copii; mai vine un caiac.
   () => {
     const sleds = randInt(2, 6);
-    return problem(tr('Pe {sleds} săniuțe stau câte 2 copii. Dacă mai vine o sanie cu 2 copii, câți copii vor fi pe cele {v0} sănii?', { sleds, v0: sleds + 1 }),
+    return problem(tr('Pe lac sunt {sleds} caiace cu câte 2 copii. Dacă mai vine un caiac cu 2 copii, câți copii vor fi în cele {v0} caiace?', { sleds, v0: sleds + 1 }),
       2 * (sleds + 1),
       tr('{sleds} × 2 = {v0}, plus încă 2: {v1} + 2 = {v2} (sau {v3} × 2).', { sleds, v0: 2 * sleds, v1: 2 * sleds, v2: 2 * (sleds + 1), v3: sleds + 1 }),
       [2 * sleds, sleds + 3, 2 * (sleds + 2)]);
   },
-  // Câți nasturi s-au folosit pentru cei doi oameni de zăpadă? 5 + 5 = 2 × 5.
+  // Două păpuși cu câte câțiva nasturi: 5 + 5 = 2 × 5.
   () => {
     const per = randInt(3, 9);
-    return problem(tr('Fiecare din cei 2 oameni de zăpadă are câte {per} nasturi. Câți nasturi s-au folosit?', { per }), 2 * per,
+    return problem(tr('Fiecare din cele 2 păpuși are câte {per} nasturi pe rochiță. Câți nasturi sunt pe cele două rochițe?', { per }), 2 * per,
       tr('{per} + {v0} = 2 × {v1} = {v2} × 2 = {v3} nasturi.', { per, v0: per, v1: per, v2: per, v3: 2 * per }), [per + 2, 2 * per + 2, 2 * per - 1]);
   },
 ];
@@ -344,7 +345,7 @@ const TWO_APPLY = [
 const TWO_PRACTICE = [
   // Cu 2 mai mare vs. de 2 ori mai mare.
   () => {
-    const n = pick([7, 5, 2, 9, 4, 10, 3, 6]);
+    const n = randInt(2, 10);
     return Math.random() < 0.5
       ? problem(tr('Află numărul cu 2 mai mare decât {n}.', { n }), n + 2,
         tr('„Cu 2 mai mare” înseamnă adunare: {n} + 2 = {v0}.', { n, v0: n + 2 }), [n * 2, n + 3, n + 1])
@@ -384,40 +385,40 @@ const TWO_PRACTICE = [
 ];
 
 const TWO_SOLVE = [
-  // Bunica a tricotat câte o pereche de mănuși pentru cei 8 nepoți.
+  // Bunicul cumpără câte o pereche de șosete pentru fiecare nepot.
   () => {
     const g = randInt(3, 9);
-    return problem(tr('Bunica a tricotat câte o pereche de mănuși pentru cei {g} nepoți ai săi. Câte mănuși a tricotat?', { g }), 2 * g,
-      tr('O pereche are 2 mănuși: {g} × 2 = {v0} mănuși.', { g, v0: 2 * g }), [g, g + 2, 2 * g + 2]);
+    return problem(tr('Bunicul cumpără câte o pereche de șosete pentru fiecare dintre cei {g} nepoți. Câte șosete cumpără?', { g }), 2 * g,
+      tr('O pereche are 2 șosete: {g} × 2 = {v0} șosete.', { g, v0: 2 * g }), [g, g + 2, 2 * g + 2]);
   },
-  // Într-o cutie sunt 7 bomboane. Câte bomboane sunt în două cutii?
+  // Un pachet cu napolitane; două pachete.
   () => {
     const n = randInt(4, 10);
-    return problem(tr('Într-o cutie sunt {n} bomboane. Câte bomboane sunt în două cutii de același fel?', { n }), 2 * n,
-      tr('2 × {n} = {v0} bomboane (sau {v1} + {v2}).', { n, v0: 2 * n, v1: n, v2: n }), [n + 2, 2 * n + 2, n]);
+    return problem(tr('Un pachet are {n} napolitane. Câte napolitane sunt în două pachete la fel?', { n }), 2 * n,
+      tr('2 × {n} = {v0} napolitane (sau {v1} + {v2}).', { n, v0: 2 * n, v1: n, v2: n }), [n + 2, 2 * n + 2, n]);
   },
-  // Numărul băieților e dublu față de cel al fetelor; sunt 9 fete. Câți copii?
+  // La cercul de șah sunt de două ori mai mulți băieți decât fete.
   () => {
     const girls = randInt(4, 9); const boys = 2 * girls;
-    return problem(tr('Numărul băieților de pe pârtie este dublu față de cel al fetelor. Știind că sunt {girls} fete, ', { girls })
-      + tr('află câți copii sunt pe pârtie.'), girls + boys,
+    return problem(tr('La cercul de șah, băieții sunt de două ori mai mulți decât fetele. Sunt {girls} fete. ', { girls })
+      + tr('Câți copii vin la cercul de șah?'), girls + boys,
       tr('Băieți: 2 × {girls} = {boys}. Copii: {v0} + {v1} = {v2}.', { girls, boys, v0: girls, v1: boys, v2: girls + boys }), [boys, girls + 2, 2 * boys]);
   },
-  // Bilet patinoar: 5 lei copii, adulți de 2 ori mai mare.
+  // Bilet la grădina zoologică: copii și adulți (de 2 ori mai scump).
   () => {
     const price = randInt(3, 8); const adult = 2 * price;
     return Math.random() < 0.5
-      ? problem(tr('Prețul unui bilet de intrare la patinoar este de {price} lei pentru copii, iar pentru adulți de 2 ori mai mare. ', { price })
-        + tr('Cât costă un bilet pentru adulți?'), adult,
+      ? problem(tr('La grădina zoologică, biletul pentru copii costă {price} lei, iar cel pentru adulți costă de 2 ori mai mult. ', { price })
+        + tr('Cât costă biletul unui adult?'), adult,
         tr('{price} × 2 = {adult} lei.', { price, adult }), [price + 2, adult + price, price])
-      : problem(tr('Un bilet la patinoar costă {price} lei pentru copii, iar pentru adulți de 2 ori mai mult. ', { price })
-        + tr('Cât plătesc Ioana și părinții ei pentru intrarea la patinoar?'), price + 2 * adult,
-        tr('Bilet adult: {price} × 2 = {adult} lei. Doi părinți: 2 × {v0} = {v1} lei. Cu Ioana: {v2} + {v3} = {v4} lei.', { price, adult, v0: adult, v1: 2 * adult, v2: 2 * adult, v3: price, v4: price + 2 * adult }),
+      : problem(tr('La grădina zoologică, biletul pentru copii costă {price} lei, iar pentru adulți de 2 ori mai mult. ', { price })
+        + tr('Cât plătește Sebi împreună cu mama și tata?'), price + 2 * adult,
+        tr('Bilet adult: {price} × 2 = {adult} lei. Doi părinți: 2 × {v0} = {v1} lei. Cu Sebi: {v2} + {v3} = {v4} lei.', { price, adult, v0: adult, v1: 2 * adult, v2: 2 * adult, v3: price, v4: price + 2 * adult }),
         [3 * price, price + adult, 2 * adult]);
   },
 ];
 
-// Exerciții în plus, din lecția „Înmulțirea cu 8 sau 9”.
+// Exerciții în plus pentru înmulțirea cu 8 sau 9.
 function extraDiscover(N) {
   if (N === 2) return TWO_DISCOVER;
   if (N === 3) return THREE_DISCOVER;
@@ -445,7 +446,7 @@ function extraApply(N) {
     },
     // D. Completează și calculează: 2 × 3 × 8 = □ × 8
     () => {
-      const [a, b] = pick([[2, 3], [3, 3], [2, 4], [2, 2], [3, 2]]);
+      const a = randInt(2, 3); const b = randInt(2, 4);
       return problem(tr('Completează: {a} × {b} × {N} = □ × {v0}. Ce număr pui în căsuță?', { a, b, N, v0: N }), a * b,
         tr('Grupăm primii doi factori: {a} × {b} = {v0}, deci {v1} × {v2} × {N} = {v3} × {v4} = {v5}.', { a, b, v0: a * b, v1: a, v2: b, N, v3: a * b, v4: N, v5: a * b * N }),
         [a + b, a * b * N, a * b + 1]);
@@ -499,88 +500,88 @@ function extraSolve(N) {
   if (N === 4) return FOUR_SOLVE;
   if (N < 8) return [];
   return [
-    // Habarnam: 6 cutii cu câte 9 baloane, s-au spart 7.
+    // Carnavalul clasei: pungi cu baloane, câteva se sparg.
     () => {
       const boxes = randInt(3, 8); const per = N; const popped = randInt(3, 9);
       const total = boxes * per;
-      return problem(tr('Pentru petrecerea dată în cinstea lui Habarnam, spiridușii au cumpărat {boxes} cutii cu câte {per} baloane fiecare. ', { boxes, per })
-        + tr('Câte baloane au rămas, dacă s-au spart {popped} dintre ele?', { popped }), total - popped,
+      return problem(tr('Pentru carnavalul clasei s-au cumpărat {boxes} pungi cu câte {per} baloane. ', { boxes, per })
+        + tr('În timpul jocurilor s-au spart {popped} baloane. Câte baloane au rămas?', { popped }), total - popped,
         tr('Baloane cumpărate: {boxes} × {per} = {total}. Rămase: {v0} - {popped} = {v1}.', { boxes, per, total, v0: total, popped, v1: total - popped }),
         [total, total + popped, boxes * per - per]);
     },
-    // 3 cutii cu câte 3 cozonaci, fiecare tăiat în 9 felii.
+    // Coșuri de picnic cu pizza, fiecare tăiată în N felii.
     () => {
       const boxes = randInt(2, 3); const per = randInt(2, 3); const slices = N;
       const answer = boxes * per * slices;
-      return problem(tr('La petrecere s-au adus {boxes} cutii cu câte {per} cozonaci. Fiecare cozonac a fost tăiat în {slices} felii. ', { boxes, per, slices })
-        + tr('Câte felii de cozonac s-au obținut?'), answer,
-        tr('Cozonaci: {boxes} × {per} = {v0}. Felii: {v1} × {slices} = {answer}.', { boxes, per, v0: boxes * per, v1: boxes * per, slices, answer }),
+      return problem(tr('La picnic s-au adus {boxes} coșuri, în fiecare câte {per} pizza. Fiecare pizza a fost tăiată în {slices} felii. ', { boxes, per, slices })
+        + tr('Câte felii de pizza sunt?'), answer,
+        tr('Pizza: {boxes} × {per} = {v0}. Felii: {v1} × {slices} = {answer}.', { boxes, per, v0: boxes * per, v1: boxes * per, slices, answer }),
         [boxes * per, boxes + per + slices, boxes * slices]);
     },
-    // 8 ghirlande cu câte 6 steluțe albastre și 4 albe — în două moduri.
+    // Brățări cu mărgele roșii și aurii — în două moduri.
     () => {
       const g = N; const blue = randInt(3, 6); const white = randInt(2, 4);
       const answer = g * (blue + white);
-      return problem(tr('Spiridușii au pregătit {g} ghirlande cu steluțe. Fiecare ghirlandă are {blue} steluțe albastre și {white} albe. ', { g, blue, white })
-        + tr('Câte steluțe au folosit pentru ghirlande?'), answer,
-        tr('Modul I: pe o ghirlandă sunt {blue} + {white} = {v0} steluțe; {g} × {v1} = {answer}. ', { blue, white, v0: blue + white, g, v1: blue + white, answer })
-        + tr('Modul II: {g} × {blue} = {v0} albastre și {v1} × {white} = {v2} albe; {v3} + {v4} = {answer}.', { g, blue, v0: g * blue, v1: g, white, v2: g * white, v3: g * blue, v4: g * white, answer }),
+      return problem(tr('Fetele din clasă fac {g} brățări. Fiecare brățară are {blue} mărgele roșii și {white} mărgele aurii. ', { g, blue, white })
+        + tr('Câte mărgele folosesc pentru toate brățările?'), answer,
+        tr('Modul I: o brățară are {blue} + {white} = {v0} mărgele; {g} × {v1} = {answer}. ', { blue, white, v0: blue + white, g, v1: blue + white, answer })
+        + tr('Modul II: {g} × {blue} = {v0} roșii și {v1} × {white} = {v2} aurii; {v3} + {v4} = {answer}.', { g, blue, v0: g * blue, v1: g, white, v2: g * white, v3: g * blue, v4: g * white, answer }),
         [g * blue, blue + white + g, g * white]);
     },
-    // 8 baxuri cu câte 8 flacoane de apă; au rămas 19.
+    // Lăzi cu mere la crosul școlii; câteva rămân.
     () => {
       const packs = randInt(4, 9); const per = N; const total = packs * per; const left = randInt(5, total - 10);
-      return problem(tr('Pentru petrecere s-au adus {packs} baxuri cu câte {per} flacoane de apă fiecare. ', { packs, per })
-        + tr('Câte flacoane cu apă s-au consumat, dacă au rămas {left}?', { left }), total - left,
-        tr('Flacoane aduse: {packs} × {per} = {total}. Consumate: {v0} - {left} = {v1}.', { packs, per, total, v0: total, left, v1: total - left }),
+      return problem(tr('La crosul școlii s-au adus {packs} lăzi cu câte {per} mere. ', { packs, per })
+        + tr('După cros au rămas {left} mere. Câte mere au mâncat sportivii?', { left }), total - left,
+        tr('Mere aduse: {packs} × {per} = {total}. Mâncate: {v0} - {left} = {v1}.', { packs, per, total, v0: total, left, v1: total - left }),
         [total, total + left, left]);
     },
     // Cu cât e mai mare produsul numerelor 8 și 9 decât suma lor?
     () => {
       const other = randInt(4, 9);
       const product = N * other; const sum = N + other;
-      return problem(tr('Află cu cât este mai mare produsul numerelor {N} și {other} decât suma lor.', { N, other }), product - sum,
+      return problem(tr('Calculează {N} × {other} și {N} + {other}. Cu cât este mai mare produsul decât suma?', { N, other }), product - sum,
         tr('Produsul: {N} × {other} = {product}. Suma: {v0} + {v1} = {sum}. Diferența: {v2} - {v3} = {v4}.', { N, other, product, v0: N, v1: other, sum, v2: product, v3: sum, v4: product - sum }),
         [product, sum, product + sum]);
     },
-    // La triplul numărului 8 adaugă dublul lui 9.
+    // Triplul numărului lecției plus dublul celuilalt.
     () => {
       const other = N === 8 ? 9 : 8;
       const answer = 3 * N + 2 * other;
-      return problem(tr('La triplul numărului {N} adaugă dublul lui {other}. Ce rezultat ai obținut?', { N, other }), answer,
+      return problem(tr('Cât face triplul lui {N} adunat cu dublul lui {other}?', { N, other }), answer,
         tr('Triplul lui {N}: 3 × {v0} = {v1}. Dublul lui {other}: 2 × {v2} = {v3}. Suma: {v4} + {v5} = {answer}.', { N, v0: N, v1: 3 * N, other, v2: other, v3: 2 * other, v4: 3 * N, v5: 2 * other, answer }),
         [3 * N + other, N + 2 * other, 2 * N + 3 * other]);
     },
-    // Habarnam a cumpărat pixuri și creioane; cât au costat / ce rest a primit?
+    // Bunica cumpără caiete și gume: cât costă / ce rest primește?
     () => {
       const pens = randInt(3, 7); const pencils = randInt(3, 8); const penPrice = N; const pencilPrice = randInt(2, 5);
       const cost = pens * penPrice + pencils * pencilPrice;
       const paid = Math.ceil((cost + 1) / 10) * 10;
       return Math.random() < 0.5
-        ? problem(tr('Habarnam a cumpărat {pens} pixuri și {pencils} creioane pentru prietenii lui. ', { pens, pencils })
-          + tr('Cât au costat cadourile, dacă un pix costă {penPrice} lei, iar un creion {pencilPrice} lei?', { penPrice, pencilPrice }), cost,
-          tr('Pixuri: {pens} × {penPrice} = {v0} lei. Creioane: {pencils} × {pencilPrice} = {v1} lei. ', { pens, penPrice, v0: pens * penPrice, pencils, pencilPrice, v1: pencils * pencilPrice })
+        ? problem(tr('Pentru școală, bunica a cumpărat {pens} caiete și {pencils} gume. ', { pens, pencils })
+          + tr('Cât a plătit, dacă un caiet costă {penPrice} lei, iar o gumă {pencilPrice} lei?', { penPrice, pencilPrice }), cost,
+          tr('Caiete: {pens} × {penPrice} = {v0} lei. Gume: {pencils} × {pencilPrice} = {v1} lei. ', { pens, penPrice, v0: pens * penPrice, pencils, pencilPrice, v1: pencils * pencilPrice })
           + tr('Total: {v0} + {v1} = {cost} lei.', { v0: pens * penPrice, v1: pencils * pencilPrice, cost }),
           [pens * penPrice, pencils * pencilPrice, (pens + pencils) * penPrice])
-        : problem(tr('Habarnam a cumpărat {pens} pixuri a câte {penPrice} lei și {pencils} creioane a câte {pencilPrice} lei. ', { pens, penPrice, pencils, pencilPrice })
-          + tr('Ce rest a primit de la {paid} de lei?', { paid }), paid - cost,
-          tr('Cadourile au costat {pens} × {penPrice} + {pencils} × {pencilPrice} = {cost} lei. Restul: {paid} - {v0} = {v1} lei.', { pens, penPrice, pencils, pencilPrice, cost, paid, v0: cost, v1: paid - cost }),
+        : problem(tr('Bunica a cumpărat {pens} caiete a câte {penPrice} lei și {pencils} gume a câte {pencilPrice} lei. ', { pens, penPrice, pencils, pencilPrice })
+          + tr('Ea a plătit cu {paid} de lei. Cât rest a primit?', { paid }), paid - cost,
+          tr('Cumpărăturile au costat {pens} × {penPrice} + {pencils} × {pencilPrice} = {cost} lei. Restul: {paid} - {v0} = {v1} lei.', { pens, penPrice, pencils, pencilPrice, cost, paid, v0: cost, v1: paid - cost }),
           [cost, paid - pens * penPrice, paid - cost + pencilPrice]);
     },
-    // Pe 4 mese sunt câte 2 farfurii; pe fiecare farfurie câte 5 prăjituri.
+    // Rafturi cu coșuri, în fiecare coș câteva ouă.
     () => {
       const tables = N === 8 ? 4 : 3; const plates = 2; const cakes = randInt(3, 5);
       const answer = tables * plates * cakes;
-      return problem(tr('Pe {tables} mese sunt câte {plates} farfurii. Pe fiecare farfurie sunt câte {cakes} prăjituri. Câte prăjituri sunt în total?', { tables, plates, cakes }),
+      return problem(tr('În cămară sunt {tables} rafturi, pe fiecare câte {plates} coșuri. În fiecare coș sunt câte {cakes} ouă. Câte ouă sunt în total?', { tables, plates, cakes }),
         answer,
-        tr('Modul I: {tables} × {plates} = {v0} farfurii; {v1} × {cakes} = {answer}. ', { tables, plates, v0: tables * plates, v1: tables * plates, cakes, answer })
-        + tr('Modul II: {plates} × {cakes} = {v0} prăjituri pe o masă; {tables} × {v1} = {answer}.', { plates, cakes, v0: plates * cakes, tables, v1: plates * cakes, answer }),
+        tr('Modul I: {tables} × {plates} = {v0} coșuri; {v1} × {cakes} = {answer}. ', { tables, plates, v0: tables * plates, v1: tables * plates, cakes, answer })
+        + tr('Modul II: {plates} × {cakes} = {v0} ouă pe un raft; {tables} × {v1} = {answer}.', { plates, cakes, v0: plates * cakes, tables, v1: plates * cakes, answer }),
         [tables * cakes, tables + plates + cakes, plates * cakes]);
     },
   ];
 }
 
-// ---------- 🔍 Descopăr ----------
+// ---------- 🔍 Învăț ----------
 function discover(N) {
   return [
     () => (Math.random() < 0.5 ? mult(randInt(1, 10), N) : mult(N, randInt(1, 10))),
@@ -600,7 +601,7 @@ function discover(N) {
   ];
 }
 
-// ---------- ✏️ Aplic ----------
+// ---------- ✏️ Încerc ----------
 function apply(N) {
   return [
     // A. Efectuează
@@ -615,7 +616,7 @@ function apply(N) {
         choices: shuffle([N * k, N * (k - 1), N * (k + 1), N * (k - 2)]),
       };
     },
-    // C. Înmulțește cu el însuși — doar numere până la cel al lecției (ca în manual: 4, 5, 6, 7).
+    // C. Înmulțește cu el însuși — doar numere până la cel al lecției.
     () => {
       const n = randInt(4, N);
       return problem(tr('Înmulțește numărul {n} cu el însuși.', { n }), n * n,
@@ -623,7 +624,7 @@ function apply(N) {
     },
     // D. Calculează (trei factori)
     () => {
-      const [a, b] = pick([[2, 3], [3, 3], [5, 2], [1, 7], [2, 2], [3, 2], [1, 8], [2, 4]]);
+      const a = randInt(1, 3); const b = randInt(1, 3);
       return problem(tr('Calculează: {a} × {b} × {N} = ?', { a, b, N }), a * b * N,
         tr('Întâi {a} × {b} = {v0}, apoi {v1} × {N} = {v2}.', { a, b, v0: a * b, v1: a * b, N, v2: a * b * N }), [a + b + N, a * b + N, a * N]);
     },
@@ -635,13 +636,12 @@ function apply(N) {
   ];
 }
 
-// ---------- ⭐ Exersez ----------
+// ---------- ⭐ Mă antrenez ----------
 function practice(N) {
   return [
     // Află numerele de N ori mai mari decât…
     () => {
-      // Numerele din manual pentru fiecare lecție.
-      const n = pick({ 2: [7, 5, 2, 9, 4, 10, 3, 6], 3: [7, 5, 2, 9, 4, 10, 8, 3], 4: [8, 1, 5, 6, 2, 9, 4, 10], 7: [1, 3, 5, 7, 9], 8: [2, 4, 7, 10, 9, 5, 8, 3], 9: [4, 7, 9, 5, 3, 8] }[N] || [4, 7, 10, 5, 6, 2, 3, 8, 9]);
+      const n = randInt(2, 10);
       return problem(tr('Află numărul de {N} ori mai mare decât {n}.', { N, n }), N * n,
         tr('„De {N} ori mai mare” înseamnă că înmulțim: {n} × {v0} = {v1}.', { N, n, v0: N, v1: N * n }), [n + N, N * n + N, N * n - N]);
     },
@@ -681,7 +681,7 @@ function practice(N) {
     },
     // Trei factori: 3 × 2 × □ = 36
     () => {
-      const [a, b] = pick([[3, 2], [2, 2], [2, 4], [3, 3], [2, 3]]);
+      const a = randInt(2, 3); const b = randInt(2, 3);
       return problem(tr('Completează factorul potrivit: {a} × {b} × □ = {v0}', { a, b, v0: a * b * N }), N,
         tr('Întâi {a} × {b} = {v0}. Căutăm numărul pentru care {v1} × □ = {v2}: {v3} × {N} = {v4}.', { a, b, v0: a * b, v1: a * b, v2: a * b * N, v3: a * b, N, v4: a * b * N }),
         [N + 1, N - 1, a * b]);
@@ -715,59 +715,59 @@ function practice(N) {
   ];
 }
 
-// ---------- 🧩 Rezolv probleme ----------
+// ---------- 🧩 Probleme ----------
 function solve(N) {
   return [
-    // Pe fiecare din cele 7 rafturi sunt câte 8 borcane cu miere.
+    // Biblioteca clasei: N rafturi cu câte câteva cărți.
     () => {
       const per = randInt(3, 9);
-      return problem(tr('Pe fiecare din cele {N} rafturi din cămară sunt așezate câte {per} borcane cu miere. ', { N, per })
-        + tr('Câte borcane cu miere sunt în cămară?'), N * per,
-        tr('{N} rafturi × {per} borcane = {v0} borcane.', { N, per, v0: N * per }), [N + per, N * per - per, N * per + per]);
+      return problem(tr('Biblioteca clasei are {N} rafturi. Pe fiecare raft sunt câte {per} cărți. ', { N, per })
+        + tr('Câte cărți are biblioteca clasei?'), N * per,
+        tr('{N} rafturi × {per} cărți = {v0} cărți.', { N, per, v0: N * per }), [N + per, N * per - per, N * per + per]);
     },
-    // 8 machete de sateliți, de rachete de 7 ori mai multe — în total?
+    // Atelierul de origami: broscuțe și de N ori mai multe bărcuțe.
     () => {
       const sat = randInt(3, 9); const rockets = sat * N;
-      return problem(tr('La clubul de aeromodele s-au construit {sat} machete de sateliți, iar de rachete de {N} ori mai multe. ', { sat, N })
-        + tr('Câte machete s-au construit în total?'), sat + rockets,
-        tr('Rachete: {sat} × {N} = {rockets}. În total: {v0} + {v1} = {v2} machete.', { sat, N, rockets, v0: sat, v1: rockets, v2: sat + rockets }),
+      return problem(tr('La atelierul de origami, copiii au împăturit {sat} broscuțe și de {N} ori mai multe bărcuțe. ', { sat, N })
+        + tr('Câte figurine au făcut în total?'), sat + rockets,
+        tr('Bărcuțe: {sat} × {N} = {rockets}. În total: {v0} + {v1} = {v2} figurine.', { sat, N, rockets, v0: sat, v1: rockets, v2: sat + rockets }),
         [rockets, sat + N, sat * (N + 2)]);
     },
-    // Laura are 6 cartonașe, Alin de 10 ori mai multe — de câte mai are nevoie Laura?
+    // O fată are câteva timbre, un băiat de câteva ori mai multe — câte îi mai trebuie fetei?
     () => {
       const [girl, boy] = [pick(['Laura', 'Ioana', 'Sofia', 'Mara']), pick(['Alin', 'Matei', 'David', 'Luca'])];
       const has = N; const k = randInt(3, 10); const other = has * k;
-      return problem(tr('{girl} are {has} cartonașe cu planete, iar {boy} de {k} ori mai multe. ', { girl, has, boy, k })
-        + tr('De câte cartonașe mai are nevoie {girl}, pentru a avea câte {boy}?', { girl, boy }), other - has,
-        tr('{boy} are {has} × {k} = {other} cartonașe. {girl} mai are nevoie de {v0} - {v1} = {v2}.', { boy, has, k, other, girl, v0: other, v1: has, v2: other - has }),
+      return problem(tr('{girl} are {has} timbre în clasor, iar {boy} are de {k} ori mai multe. ', { girl, has, boy, k })
+        + tr('Câte timbre îi mai trebuie lui {girl} ca să aibă tot atâtea cât {boy}?', { girl, boy }), other - has,
+        tr('{boy} are {has} × {k} = {other} timbre. {girl} mai are nevoie de {v0} - {v1} = {v2}.', { boy, has, k, other, girl, v0: other, v1: has, v2: other - has }),
         [other, other + has, k]);
     },
-    // 6 lădițe cu câte 9 kg de ceapă; s-a vândut ceapa din 4 lădițe.
+    // Saci cu cartofi la piață; s-au vândut cartofii din câțiva saci.
     () => {
-      // La 2 și 3 numărul lecției e cantitatea din lădiță (altfel ar fi prea puține lădițe).
+      // La 2 și 3 numărul lecției e cantitatea din sac (altfel ar fi prea puțini saci).
       const boxes = N >= 4 ? N : randInt(5, 8); const kg = N >= 4 ? randInt(4, 9) : N; const sold = randInt(2, boxes - 2);
       const left = (boxes - sold) * kg;
-      return problem(tr('La un aprozar s-au adus {boxes} lădițe cu câte {kg} kilograme de ceapă fiecare. ', { boxes, kg })
-        + tr('Câte kilograme de ceapă au rămas, dacă s-a vândut ceapa din {sold} lădițe?', { sold }), left,
-        tr('Modul I: au rămas {boxes} - {sold} = {v0} lădițe; {v1} × {kg} = {left} kg. ', { boxes, sold, v0: boxes - sold, v1: boxes - sold, kg, left })
+      return problem(tr('La piață, un fermier a adus {boxes} saci cu câte {kg} kilograme de cartofi. ', { boxes, kg })
+        + tr('A vândut cartofii din {sold} saci. Câte kilograme de cartofi i-au rămas?', { sold }), left,
+        tr('Modul I: au rămas {boxes} - {sold} = {v0} saci; {v1} × {kg} = {left} kg. ', { boxes, sold, v0: boxes - sold, v1: boxes - sold, kg, left })
         + tr('Modul II: în total {boxes} × {kg} = {v0} kg, s-au vândut {sold} × {v1} = {v2} kg; {v3} - {v4} = {left} kg.', { boxes, kg, v0: boxes * kg, sold, v1: kg, v2: sold * kg, v3: boxes * kg, v4: sold * kg, left }),
         [boxes * kg, sold * kg, left + kg]);
     },
-    // 43 de machete câte 3 într-o cutie; 7 cutii — câte rămân neambalate?
+    // Brioșe puse câte câteva în pungi; câte rămân pe tavă?
     () => {
       const per = randInt(2, 5); const packed = N * per; const total = packed + randInt(3, 25);
-      return problem(tr('{total}{v0} machete trebuie ambalate câte {per} într-o cutie. Dacă sunt {N} cutii, ', { total, v0: total >= 20 ? " de" : "", per, N })
-        + tr('câte machete rămân neambalate?'), total - packed,
-        tr('În {N} cutii încap {v0} × {per} = {packed} machete. Rămân {total} - {v1} = {v2}.', { N, v0: N, per, packed, total, v1: packed, v2: total - packed }),
+      return problem(tr('Brutarul a copt {total}{v0} brioșe și le pune câte {per} într-o pungă. Are doar {N} pungi. ', { total, v0: total >= 20 ? " de" : "", per, N })
+        + tr('Câte brioșe rămân pe tavă?'), total - packed,
+        tr('În {N} pungi încap {v0} × {per} = {packed} brioșe. Rămân {total} - {v1} = {v2}.', { N, v0: N, per, packed, total, v1: packed, v2: total - packed }),
         [packed, total - per, total - N]);
     },
-    // Un factor e 6, celălalt cel mai mare număr par de o cifră; cu cât e mai mic produsul decât 80?
+    // Un factor e numărul lecției, celălalt e descris în cuvinte; cât lipsește până la un număr rotund?
     () => {
       const other = pick([[8, 'cel mai mare număr par de o cifră'], [9, 'cel mai mare număr de o cifră'], [7, 'cel mai mare număr impar de o cifră, mai mic decât 9']]);
       const product = N * other[0];
       const limit = Math.ceil((product + 1) / 10) * 10 + 10;
-      return problem(tr('Un factor al înmulțirii este {N}, iar celălalt este {v0}. ', { N, v0: other[1] })
-        + tr('Cu cât este mai mic produsul lor decât numărul {limit}?', { limit }), limit - product,
+      return problem(tr('Înmulțim {N} cu {v0}. ', { N, v0: other[1] })
+        + tr('Cât mai trebuie adăugat la rezultat ca să ajungem la {limit}?', { limit }), limit - product,
         tr('Celălalt factor este {v0}. Produsul: {N} × {v1} = {product}. Diferența: {limit} - {v2} = {v3}.', { v0: other[0], N, v1: other[0], product, limit, v2: product, v3: limit - product }),
         [product, limit - N - other[0], limit - product + N]);
     },
@@ -781,7 +781,7 @@ function solve(N) {
   ];
 }
 
-// Fiecare secțiune: exercițiile comune + cele în plus pentru lecția cu 8 sau 9.
+// Fiecare secțiune: exercițiile comune + cele în plus pentru unele numere.
 const BUILDERS = [
   N => [...discover(N), ...extraDiscover(N)],
   N => [...apply(N), ...extraApply(N)],

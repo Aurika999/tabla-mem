@@ -1,4 +1,4 @@
-// Un întreg împărțit în părți, ca în manual, cu unele părți colorate.
+// Un întreg împărțit în părți, cu unele părți colorate.
 // shape: circle (cerc), bar (dreptunghi lung), square (pătrat: 2 coloane sau 2 × 2),
 //        squareH (pătrat tăiat orizontal), squareD (pătrat tăiat pe o diagonală),
 //        squareX (pătrat tăiat pe ambele diagonale), tall (dreptunghi în picioare, tăiat orizontal).
@@ -79,7 +79,7 @@ export default function FractionShape({ shape = 'circle', parts, filled = 0, fil
   );
 }
 
-// O fracție scrisă ca în carte: numărătorul deasupra liniei, numitorul dedesubt.
+// O fracție scrisă pe două rânduri: numărătorul deasupra liniei, numitorul dedesubt.
 export function Frac({ n, d }) {
   return (
     <span className="frac" aria-label={`${n}/${d}`}>

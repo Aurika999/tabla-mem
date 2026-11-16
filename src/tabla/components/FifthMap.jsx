@@ -10,13 +10,13 @@ const LAYOUTS = {
     W: 1000,
     H: 610,
     islands: [
-      { level: 'impc1', cx: 165, cy: 380, rx: 128, ry: 62, name: 'Cerul cu Lampioane',
+      { level: 'impc1', cx: 165, cy: 380, rx: 128, ry: 62, name: 'Cerul cu Zmeie',
         decor: [['🏮', 80, 372, 32], ['🌙', 250, 352, 28], ['🔍', 232, 404, 22]] },
-      { level: 'impc2', cx: 390, cy: 215, rx: 130, ry: 62, name: 'Buchetele lui Pippi',
+      { level: 'impc2', cx: 390, cy: 215, rx: 130, ry: 62, name: 'Buchetele Bunicii',
         decor: [['🌷', 305, 205, 32], ['💐', 470, 222, 26], ['🌷', 488, 190, 22]] },
-      { level: 'impc3', cx: 615, cy: 380, rx: 128, ry: 62, name: 'Târgul de Baloane',
+      { level: 'impc3', cx: 615, cy: 380, rx: 128, ry: 62, name: 'Cutiile cu Mingi',
         decor: [['🌙', 540, 362, 32], ['✏️', 700, 370, 26], ['🌙', 690, 404, 22]] },
-      { level: 'impc4', cx: 840, cy: 215, rx: 130, ry: 62, name: 'Biblioteca lui Matei',
+      { level: 'impc4', cx: 840, cy: 215, rx: 130, ry: 62, name: 'Biblioteca Școlii',
         decor: [['🎈', 760, 200, 36], ['📚', 925, 210, 26], ['🍊', 915, 245, 22]] },
     ],
     extras: [['⛵', 470, 110, 30], ['🐬', 500, 470, 40], ['🐳', 950, 560, 30], ['☁️', 960, 70, 26], ['🐠', 290, 560, 22]],
@@ -25,13 +25,13 @@ const LAYOUTS = {
     W: 600,
     H: 1230,
     islands: [
-      { level: 'impc1', cx: 200, cy: 260, rx: 170, ry: 78, name: 'Cerul cu Lampioane',
+      { level: 'impc1', cx: 200, cy: 260, rx: 170, ry: 78, name: 'Cerul cu Zmeie',
         decor: [['🏮', 80, 250, 40], ['🌙', 318, 230, 38]] },
-      { level: 'impc2', cx: 400, cy: 520, rx: 170, ry: 78, name: 'Buchetele lui Pippi',
+      { level: 'impc2', cx: 400, cy: 520, rx: 170, ry: 78, name: 'Buchetele Bunicii',
         decor: [['🌷', 285, 510, 40], ['💐', 515, 500, 36]] },
-      { level: 'impc3', cx: 200, cy: 780, rx: 170, ry: 78, name: 'Târgul de Baloane',
+      { level: 'impc3', cx: 200, cy: 780, rx: 170, ry: 78, name: 'Cutiile cu Mingi',
         decor: [['🌙', 85, 760, 42], ['✏️', 320, 770, 34]] },
-      { level: 'impc4', cx: 400, cy: 1040, rx: 170, ry: 78, name: 'Biblioteca lui Matei',
+      { level: 'impc4', cx: 400, cy: 1040, rx: 170, ry: 78, name: 'Biblioteca Școlii',
         decor: [['🎈', 285, 1020, 44], ['📚', 515, 1030, 34]] },
     ],
     extras: [['⛵', 520, 190, 34], ['🐬', 120, 540, 42], ['🐳', 520, 1190, 32]],
@@ -40,7 +40,7 @@ const LAYOUTS = {
 
 const TABLE = Array.from({ length: 10 }, (_, i) => 5 * (i + 1));
 
-// Caseta „Reține” din manual, într-o fereastră peste hartă.
+// Caseta „Reține”, într-o fereastră peste hartă.
 function FifthLesson({ onClose }) {
   return (
     <div className="overlay lesson-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Reține">
@@ -49,16 +49,16 @@ function FifthLesson({ onClose }) {
         <h2>📖 REȚIN</h2>
 
         <p className="five-rule">
-          Când împărțim un număr la <b>5</b>, obținem un număr <b>de 5 ori mai mic</b> decât acesta.
+          Împărțirea la <b>5</b> face un număr <b>de 5 ori mai mic</b>.
         </p>
         <div className="five-example">
           <div className="five-stars" aria-hidden="true">
-            <span>🏮🏮🏮🏮</span><span>🏮🏮🏮🏮</span><span>🏮🏮🏮🏮</span><span>🏮🏮🏮🏮</span><span>🏮🏮🏮🏮</span>
+            <span>🪁🪁🪁🪁</span><span>🪁🪁🪁🪁</span><span>🪁🪁🪁🪁</span><span>🪁🪁🪁🪁</span><span>🪁🪁🪁🪁</span>
           </div>
           <div className="five-example-text">
             <b>20 − 5 − 5 − 5 − 5 = 0</b>
             <span className="five-arrow">➜</span>
-            <b>20 : 5 = 4</b> (lampioane), verificare: <b>4 × 5 = 20</b>
+            <b>20 : 5 = 4</b> (zmeie pentru fiecare echipă), verificare: <b>4 × 5 = 20</b>
           </div>
         </div>
 
@@ -91,7 +91,7 @@ export default function FifthMap(props) {
         layouts={LAYOUTS}
         ocean={['#ffc9c9', '#ff8787', '#e03131']}
         backLabel="← Tabla împărțirii"
-        intro="Apasă pe „📖 Reține” din colț ca să afli cum împărțim la 5, apoi descoperă, aplică, exersează și rezolvă! 🏮"
+        intro="Apasă pe „📖 Reține” din colț ca să afli cum împărțim la 5, apoi învață, încearcă, antrenează-te și rezolvă probleme! 🏮"
         doneText="Știi împărțirea la 5! 🏆"
         corner={(
           <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={tr('Lecția: împărțirea la 5')}>

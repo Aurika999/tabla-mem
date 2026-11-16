@@ -10,13 +10,13 @@ const LAYOUTS = {
     W: 1000,
     H: 610,
     islands: [
-      { level: 'impt1', cx: 165, cy: 380, rx: 128, ry: 62, name: 'Căsuțele Păsărelelor',
+      { level: 'impt1', cx: 165, cy: 380, rx: 128, ry: 62, name: 'Borcanele cu Creioane',
         decor: [['🏠', 80, 372, 32], ['🐦', 250, 352, 28], ['🔍', 232, 404, 22]] },
-      { level: 'impt2', cx: 390, cy: 215, rx: 130, ry: 62, name: 'Afișele de Primăvară',
+      { level: 'impt2', cx: 390, cy: 215, rx: 130, ry: 62, name: 'Felicitările Ilincăi',
         decor: [['🖼️', 305, 205, 32], ['🎨', 470, 222, 26], ['🖼️', 488, 190, 22]] },
-      { level: 'impt3', cx: 615, cy: 380, rx: 128, ry: 62, name: 'Cuibul Rândunelelor',
+      { level: 'impt3', cx: 615, cy: 380, rx: 128, ry: 62, name: 'Grădina cu Căpșuni',
         decor: [['🐦', 540, 362, 32], ['✏️', 700, 370, 26], ['🐦', 690, 404, 22]] },
-      { level: 'impt4', cx: 840, cy: 215, rx: 130, ry: 62, name: 'Curtea Bunicului',
+      { level: 'impt4', cx: 840, cy: 215, rx: 130, ry: 62, name: 'Acvariul Clasei',
         decor: [['🐥', 760, 200, 36], ['🍫', 925, 210, 26], ['🐣', 915, 245, 22]] },
     ],
     extras: [['⛵', 470, 110, 30], ['🐬', 500, 470, 40], ['🐳', 950, 560, 30], ['☁️', 960, 70, 26], ['🐠', 290, 560, 22]],
@@ -25,13 +25,13 @@ const LAYOUTS = {
     W: 600,
     H: 1230,
     islands: [
-      { level: 'impt1', cx: 200, cy: 260, rx: 170, ry: 78, name: 'Căsuțele Păsărelelor',
+      { level: 'impt1', cx: 200, cy: 260, rx: 170, ry: 78, name: 'Borcanele cu Creioane',
         decor: [['🏠', 80, 250, 40], ['🐦', 318, 230, 38]] },
-      { level: 'impt2', cx: 400, cy: 520, rx: 170, ry: 78, name: 'Afișele de Primăvară',
+      { level: 'impt2', cx: 400, cy: 520, rx: 170, ry: 78, name: 'Felicitările Ilincăi',
         decor: [['🖼️', 285, 510, 40], ['🎨', 515, 500, 36]] },
-      { level: 'impt3', cx: 200, cy: 780, rx: 170, ry: 78, name: 'Cuibul Rândunelelor',
+      { level: 'impt3', cx: 200, cy: 780, rx: 170, ry: 78, name: 'Grădina cu Căpșuni',
         decor: [['🐦', 85, 760, 42], ['✏️', 320, 770, 34]] },
-      { level: 'impt4', cx: 400, cy: 1040, rx: 170, ry: 78, name: 'Curtea Bunicului',
+      { level: 'impt4', cx: 400, cy: 1040, rx: 170, ry: 78, name: 'Acvariul Clasei',
         decor: [['🐥', 285, 1020, 44], ['🍫', 515, 1030, 34]] },
     ],
     extras: [['⛵', 520, 190, 34], ['🐬', 120, 540, 42], ['🐳', 520, 1190, 32]],
@@ -40,7 +40,7 @@ const LAYOUTS = {
 
 const TABLE = Array.from({ length: 10 }, (_, i) => 3 * (i + 1));
 
-// Caseta „Reține” din manual, într-o fereastră peste hartă.
+// Caseta „Reține”, într-o fereastră peste hartă.
 function ThirdLesson({ onClose }) {
   return (
     <div className="overlay lesson-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Reține">
@@ -49,16 +49,16 @@ function ThirdLesson({ onClose }) {
         <h2>📖 REȚIN</h2>
 
         <p className="five-rule">
-          Când împărțim un număr la <b>3</b>, obținem un număr <b>de 3 ori mai mic</b> decât acesta.
+          Împărțirea la <b>3</b> face un număr <b>de 3 ori mai mic</b>.
         </p>
         <div className="five-example">
           <div className="five-stars" aria-hidden="true">
-            <span>🏠🥢🥢🥢🥢</span><span>🏠🥢🥢🥢🥢</span><span>🏠🥢🥢🥢🥢</span>
+            <span>🫙✏️✏️✏️✏️</span><span>🫙✏️✏️✏️✏️</span><span>🫙✏️✏️✏️✏️</span>
           </div>
           <div className="five-example-text">
             <b>12 − 3 − 3 − 3 − 3 = 0</b>
             <span className="five-arrow">➜</span>
-            <b>12 : 3 = 4</b> (bețișoare pe fiecare căsuță), deoarece <b>4 × 3 = 12</b>
+            <b>12 : 3 = 4</b> (creioane în fiecare borcan), deoarece <b>4 × 3 = 12</b>
           </div>
         </div>
 
@@ -69,7 +69,7 @@ function ThirdLesson({ onClose }) {
         </div>
 
         <ul className="five-tips">
-          <li>🐦 3 căsuțe și 12 bețișoare: fiecare căsuță primește <b>12 : 3 = 4</b> bețișoare.</li>
+          <li>🫙 3 borcane și 12 creioane: în fiecare borcan intră <b>12 : 3 = 4</b> creioane.</li>
           <li>✅ Verifici cu înmulțirea: <b>27 : 3 = 9</b> pentru că <b>9 × 3 = 27</b>.</li>
           <li>⚠️ <b>„Cu 3 mai mic”</b> înseamnă − 3, iar <b>„de 3 ori mai mic”</b> înseamnă : 3 — 15 − 3 = 12, dar 15 : 3 = 5.</li>
         </ul>
@@ -91,7 +91,7 @@ export default function ThirdMap(props) {
         layouts={LAYOUTS}
         ocean={['#a5d8ff', '#4dabf7', '#1971c2']}
         backLabel="← Tabla împărțirii"
-        intro="Apasă pe „📖 Reține” din colț ca să afli cum împărțim la 3, apoi descoperă, aplică, exersează și rezolvă! 🐦"
+        intro="Apasă pe „📖 Reține” din colț ca să afli cum împărțim la 3, apoi învață, încearcă, antrenează-te și rezolvă probleme! 🐦"
         doneText="Știi împărțirea la 3! 🏆"
         corner={(
           <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={tr('Lecția: împărțirea la 3')}>

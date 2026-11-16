@@ -10,13 +10,13 @@ const LAYOUTS = {
     W: 1000,
     H: 610,
     islands: [
-      { level: 'impq1', cx: 165, cy: 380, rx: 128, ry: 62, name: 'Garajul lui Petrișor',
+      { level: 'impq1', cx: 165, cy: 380, rx: 128, ry: 62, name: 'Atelierul Tâmplarului',
         decor: [['🚗', 80, 372, 32], ['🍀', 250, 352, 28], ['🔍', 232, 404, 22]] },
-      { level: 'impq2', cx: 390, cy: 215, rx: 130, ry: 62, name: 'Creanga cu Păsări',
+      { level: 'impq2', cx: 390, cy: 215, rx: 130, ry: 62, name: 'Raftul cu Cărți',
         decor: [['🌳', 305, 205, 32], ['🕊️', 470, 222, 26], ['🌳', 488, 190, 22]] },
-      { level: 'impq3', cx: 615, cy: 380, rx: 128, ry: 62, name: 'Stupul Albinelor',
+      { level: 'impq3', cx: 615, cy: 380, rx: 128, ry: 62, name: 'Curtea Școlii',
         decor: [['🍀', 540, 362, 32], ['✏️', 700, 370, 26], ['🍀', 690, 404, 22]] },
-      { level: 'impq4', cx: 840, cy: 215, rx: 130, ry: 62, name: 'Coșul Bunicii',
+      { level: 'impq4', cx: 840, cy: 215, rx: 130, ry: 62, name: 'Coșul cu Fructe',
         decor: [['🐝', 760, 200, 36], ['🧺', 925, 210, 26], ['🍎', 915, 245, 22]] },
     ],
     extras: [['⛵', 470, 110, 30], ['🐬', 500, 470, 40], ['🐳', 950, 560, 30], ['☁️', 960, 70, 26], ['🐠', 290, 560, 22]],
@@ -25,13 +25,13 @@ const LAYOUTS = {
     W: 600,
     H: 1230,
     islands: [
-      { level: 'impq1', cx: 200, cy: 260, rx: 170, ry: 78, name: 'Garajul lui Petrișor',
+      { level: 'impq1', cx: 200, cy: 260, rx: 170, ry: 78, name: 'Atelierul Tâmplarului',
         decor: [['🚗', 80, 250, 40], ['🍀', 318, 230, 38]] },
-      { level: 'impq2', cx: 400, cy: 520, rx: 170, ry: 78, name: 'Creanga cu Păsări',
+      { level: 'impq2', cx: 400, cy: 520, rx: 170, ry: 78, name: 'Raftul cu Cărți',
         decor: [['🌳', 285, 510, 40], ['🕊️', 515, 500, 36]] },
-      { level: 'impq3', cx: 200, cy: 780, rx: 170, ry: 78, name: 'Stupul Albinelor',
+      { level: 'impq3', cx: 200, cy: 780, rx: 170, ry: 78, name: 'Curtea Școlii',
         decor: [['🍀', 85, 760, 42], ['✏️', 320, 770, 34]] },
-      { level: 'impq4', cx: 400, cy: 1040, rx: 170, ry: 78, name: 'Coșul Bunicii',
+      { level: 'impq4', cx: 400, cy: 1040, rx: 170, ry: 78, name: 'Coșul cu Fructe',
         decor: [['🐝', 285, 1020, 44], ['🧺', 515, 1030, 34]] },
     ],
     extras: [['⛵', 520, 190, 34], ['🐬', 120, 540, 42], ['🐳', 520, 1190, 32]],
@@ -40,7 +40,7 @@ const LAYOUTS = {
 
 const TABLE = Array.from({ length: 10 }, (_, i) => 4 * (i + 1));
 
-// Caseta „Reține” din manual, într-o fereastră peste hartă.
+// Caseta „Reține”, într-o fereastră peste hartă.
 function QuarterLesson({ onClose }) {
   return (
     <div className="overlay lesson-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Reține">
@@ -49,17 +49,17 @@ function QuarterLesson({ onClose }) {
         <h2>📖 REȚIN</h2>
 
         <p className="five-rule">
-          Când împărțim un număr la <b>4</b>, obținem un număr <b>de 4 ori mai mic</b> decât acesta
-          sau <b>sfertul</b> numărului.
+          Împărțirea la <b>4</b> face un număr <b>de 4 ori mai mic</b>:
+          obținem <b>sfertul</b> lui.
         </p>
         <div className="five-example">
           <div className="five-stars" aria-hidden="true">
-            <span>🛞🛞🛞🛞</span><span>🛞🛞🛞🛞</span><span>🛞🛞🛞🛞</span><span>🛞🛞🛞🛞</span><span>🛞🛞🛞🛞</span>
+            <span>🪵🪵🪵🪵</span><span>🪵🪵🪵🪵</span><span>🪵🪵🪵🪵</span><span>🪵🪵🪵🪵</span><span>🪵🪵🪵🪵</span>
           </div>
           <div className="five-example-text">
             <b>20 − 4 − 4 − 4 − 4 − 4 = 0</b>
             <span className="five-arrow">➜</span>
-            <b>20 : 4 = 5</b> (mașinuțe), deoarece <b>5 × 4 = 20</b>
+            <b>20 : 4 = 5</b> (scaune), deoarece <b>5 × 4 = 20</b>
           </div>
         </div>
 
@@ -93,7 +93,7 @@ export default function QuarterMap(props) {
         layouts={LAYOUTS}
         ocean={['#d0bfff', '#9775fa', '#6741d9']}
         backLabel="← Tabla împărțirii"
-        intro="Apasă pe „📖 Reține” din colț ca să afli ce este sfertul, apoi descoperă, aplică, exersează și rezolvă! 🍀"
+        intro="Apasă pe „📖 Reține” din colț ca să afli ce este sfertul, apoi învață, încearcă, antrenează-te și rezolvă probleme! 🍀"
         doneText="Știi împărțirea la 4! 🏆"
         corner={(
           <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={tr('Lecția: împărțirea la 4')}>

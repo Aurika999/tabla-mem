@@ -4,7 +4,7 @@
 
 **Math Owl**, “The island of math whizzes”, is an educational math game that children play in the browser, on a computer or a phone. With it, children learn and practise **multiplication, division, addition and subtraction** and prepare for the **Romanian National Assessment at the end of 2nd grade**.
 
-The exercises follow the **Romanian school textbook**: the “Discover – Apply – Practice – Solve problems” lessons, the “Remember” boxes and the problems from the book. Everything is presented as an adventure on a map of islands.
+The exercises cover the **Year 2 maths curriculum**: each lesson has a “Remember” box and four steps, “Learn – Try – Practice – Problems”. All the problems and stories are our own. Everything is presented as an adventure on a map of islands.
 
 The app is available in **Romanian and English**. The language can be changed at any time from the top bar (🇷🇴 RO / 🇬🇧 EN).
 
@@ -14,7 +14,7 @@ The app is available in **Romanian and English**. The language can be changed at
 - **Parents**, who can follow the child's progress: completed levels, stars, points and test results.
 - **Teachers**, who can use the app as extra practice or for contests between the pupils in their class.
 
-The app uses the terms from the textbook: dividend, divisor, quotient, “3 times smaller”, “3 less”, checking by multiplication. In English, all the exercises, explanations and word problems are translated.
+The app uses the terms children learn at school: dividend, divisor, quotient, “3 times smaller”, “3 less”, checking by multiplication. In English, all the exercises, explanations and word problems are translated.
 
 ## What the app looks like
 
@@ -25,10 +25,10 @@ Home page
 ├── 🏁 Contest Arena              – contests with other children
 └── 🎒 Learning Island
     ├── 🧩 Puzzle Island          – 14 islands, from easy to advanced
-    ├── 📘 Multiplication table   – the textbook lessons: multiplying by 2 … by 9
+    ├── 📘 Multiplication table   – the lessons: multiplying by 2 … by 9
     ├── ➗ Division table         – division and the lessons “dividing by 2 … by 9”
     ├── 🎓 National Assessment    – the official 2025 and 2026 tests + review
-    ├── ✏️ Unknown terms          – exercise 46: a + 34 = 62
+    ├── ✏️ Unknown terms          – equations like a + 34 = 62
     ├── ➖ Column subtraction     – 2 digits, with a riddle: discover the animal
     ├── ➕ Column addition        – 2 digits, with a riddle: discover the animal
     ├── 🔢 3-digit subtraction    – 258 − 137, in a column
@@ -47,14 +47,14 @@ Tapping the abacus in the top-left corner always takes the child back to the hom
 |---|---|
 | 🟢 Easy | Additions and subtractions (up to 20) · Multiplications up to 5 × 5 |
 | 🟡 Medium | More, less (money, ages) · Times tables up to 10 × 10 · Multiplication word problems · Calculate (missing factors, double, triple) |
-| 🟠 Hard | Two-step problems · Multiplying by 11 and 12 · Practice like in the textbook · Step-by-step problems · Practise and solve |
+| 🟠 Hard | Two-step problems · Multiplying by 11 and 12 · Practice with factors · Step-by-step problems · Practice and solve |
 | 🔴 Advanced | Big multiplications (up to 12 × 12) · Challenges · **The final test**, which gives a grade (FB, B, S, I – Very good, Good, Satisfactory, Insufficient) |
 
-### 📘 Multiplication table: the textbook lessons
+### 📘 Multiplication table: the lessons
 
 One lesson for multiplying by **2, 3, 4, 5, 6, 7, 8 and 9**. Each lesson has:
-- the **“📖 Remember”** box, with the rule and the times table, as in the book;
-- 4 levels: **Discover, Apply, Practice, Solve problems**, with the exercises and problems from the textbook.
+- the **“📖 Remember”** box, with the rule and the times table;
+- 4 levels: **Learn, Try, Practice, Problems**, with new exercises and problems every game.
 
 ### ➗ Division table
 
@@ -67,7 +67,7 @@ One lesson for multiplying by **2, 3, 4, 5, 6, 7, 8 and 9**. Each lesson has:
   - checking multiplication and division.
 - **Dividing by 2, 3, 4, 5, 6, 7, 8 and 9**: one island for each, with “Remember” and the 4 levels. Each island only uses division by its own number.
 
-### ✏️ Find the unknown terms (exercise 46)
+### ✏️ Find the unknown terms
 
 - **12 exercises** in which the child finds the missing number: a + 34 = 62, b − 68 = 19, 45 − d = 26 and others.
 - The exercises with brackets are solved **step by step**: first the brackets, then the unknown term.
@@ -88,18 +88,18 @@ Four islands with calculations written **vertically, as in an exercise book**, o
 - **The child types the result**, digit by digit, in the boxes under the line, instead of choosing it from options. As on paper, they start with the units (the box on the right) and the cursor moves left by itself. On a phone, the number keyboard opens.
 - After “✔️ Check”, the boxes turn **green** (correct) or **red** (wrong).
 - **“💡 How to solve it?”** explains column by column: “Units: we can't do 3 − 7, so we borrow one ten: 13 − 7 = 6…”, with borrowing, carrying and the check.
-- **Animal riddle** (in 2-digit addition and subtraction, like exercise 8 in the textbook): each calculation has a letter under it. At the end, the child puts the results in **increasing or decreasing order** and reads the letters, which spell the name of an animal (PELICAN, HAMSTER, PANDA, ZEBRA, KOALA…). There is also a clue, for example “a black-and-white bear that eats bamboo”.
-- **The first round** has the exercises from the textbook. **In every new round**, the game makes new calculations and picks another animal, so the exercises do not repeat.
-- **No timer**, as in exercise 46.
+- **Animal riddle** (in 2-digit addition and subtraction): each calculation has a letter under it. At the end, the child puts the results in **increasing or decreasing order** and reads the letters, which spell the name of an animal (PELICAN, HAMSTER, PANDA, ZEBRA, KOALA…). There is also a clue, for example “a black-and-white bear that eats bamboo”.
+- **In every round**, the game makes new calculations and picks another animal, so the exercises do not repeat.
+- **No timer**, as with the unknown terms.
 
 ### 🎓 National Assessment (2nd grade)
 
 - **The 2026 test**, “Pets”: 18 items.
 - **The 2025 test**, “Habitats”: 12 items.
 - **The 2025 test**, “Animals from the South Pole and the North Pole”: 12 items.
-- **Review problems**: bears, trees, squirrels, a train, posters.
+- **Review problems**: the farm, the garden, books, the bakery, the autumn fair.
 
-The tests reproduce **all the items** from the official tests, in the same order and with the same scoring (100 points). The pictures from the test (tables, posters, geometric shapes, sequences) are redrawn in the app. The items where, on paper, the pupil writes out the solution are split **into steps**, with answer choices.
+The tests reproduce **all the items** from the official tests, in the same order and with the same scoring (100 points). **Source:** the official tests published by the Romanian Ministry of Education / National Centre for Curriculum and Assessment (CNPEE). Math Owl is not an official Ministry app. The pictures from the test (tables, posters, geometric shapes, sequences) are redrawn in the app. The items where, on paper, the pupil writes out the solution are split **into steps**, with answer choices.
 
 In the tests:
 - **there is no timer**;
@@ -109,7 +109,7 @@ In the tests:
 ## How to play
 
 - **A round** has 10 questions, with 4 answer choices each. In the National Assessment tests, the round has all the items of the test. In the column calculations, the result is typed into boxes.
-- **The time** is 30 seconds per question. The National Assessment tests, exercise 46 and the column calculations have no time limit.
+- **The time** is 30 seconds per question. The National Assessment tests, the unknown terms and the column calculations have no time limit.
 - **Lives:** the child starts with 3 lives and can have at most 5. A mistake costs a life, and 5 correct answers in a row give one back. If the child runs out of lives, they can “buy” one for 30 points.
 - **Points:** 10 points for each correct answer, plus a “combo” bonus for several correct answers in a row.
 - **Stars:** at the end of the round the child gets 1–3 ⭐, depending on the number of correct answers. The map keeps the best result.

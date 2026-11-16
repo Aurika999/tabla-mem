@@ -1,5 +1,5 @@
 import { tr } from './i18n';
-// Fracții (lecția 10 din manual): jumătatea (doimea) și sfertul (pătrimea) unui întreg,
+// Fracții: jumătatea (doimea) și sfertul (pătrimea) unui întreg,
 // „două sferturi formează o jumătate” și jumătatea / sfertul numerelor 4, 8, 12, 16, 20.
 // O rundă are 10 exerciții, de fiecare dată altele.
 
@@ -12,8 +12,8 @@ const TWO_QUARTERS = 'două sferturi (2/4)';
 const THREE_QUARTERS = 'trei sferturi (3/4)';
 const WHOLE = 'un întreg';
 
-const HALF_RULE = 'Când împărțim un întreg în două părți egale, fiecare parte reprezintă o jumătate sau o doime (1/2).';
-const QUARTER_RULE = 'Când împărțim un întreg în 4 părți egale, fiecare parte reprezintă un sfert sau o pătrime (1/4).';
+const HALF_RULE = 'Dacă tăiem un întreg în 2 bucăți la fel de mari, fiecare bucată este o jumătate (o doime), adică 1/2.';
+const QUARTER_RULE = 'Dacă tăiem un întreg în 4 bucăți la fel de mari, fiecare bucată este un sfert (o pătrime), adică 1/4.';
 
 // Variante numerice: răspunsul și greșeli tipice, toate diferite și pozitive.
 function numberChoices(answer, mistakes) {
@@ -43,7 +43,7 @@ function pictureItem(kind) {
   };
 }
 
-// Este întregul împărțit în părți egale? (ca la „Alege imaginile în care întregul este împărțit în jumătăți”)
+// Este întregul împărțit în părți egale?
 const EQUAL_HALVES = 'Da, în jumătăți';
 const EQUAL_QUARTERS = 'Da, în sferturi';
 const NOT_EQUAL = 'Nu, părțile nu sunt egale';
@@ -114,13 +114,13 @@ function conceptItem() {
   };
 }
 
-// Probleme scurte, ca în lecție (pepenele lui Annika și Tommy) și cu numere.
+// Probleme scurte cu jumătăți și sferturi (pepenele, pizza) și cu numere.
 function wordItem() {
   const kind = pick(['melonHalf', 'melonQuarter', 'pizza', 'candies', 'kids']);
   if (kind === 'melonHalf') {
     return {
       points: 1,
-      get text() { return tr('Annika a tăiat pepenele în două părți egale. O parte o păstrează, cealaltă i-o dă lui Tommy. Ce parte din pepene primește Tommy?'); },
+      get text() { return tr('Matei taie un pepene în două bucăți la fel de mari. Una o păstrează, iar pe cealaltă o dă surorii lui, Ana. Ce parte din pepene primește Ana?'); },
       answer: HALF,
       choices: shuffle([HALF, QUARTER, WHOLE, TWO_QUARTERS]),
       get explanation() { return tr(HALF_RULE); },
@@ -129,7 +129,7 @@ function wordItem() {
   if (kind === 'melonQuarter') {
     return {
       points: 1,
-      get text() { return tr('Tommy și-a împărțit jumătatea de pepene în două părți egale. O parte i-o dă Annikăi. Ce parte din întregul pepene primește Annika?'); },
+      get text() { return tr('Ana își taie jumătatea de pepene în două bucăți la fel de mari și îi dă una prietenei ei, Ioana. Ce parte din întregul pepene primește Ioana?'); },
       answer: QUARTER,
       choices: shuffle([QUARTER, HALF, WHOLE, THREE_QUARTERS]),
       get explanation() { return tr('Jumătatea împărțită în două părți egale dă o pătrime din întreg: un sfert, 1/4. Două sferturi formează o jumătate.'); },
@@ -165,8 +165,8 @@ function wordItem() {
   };
 }
 
-// ---------- Exercițiul 14: „Scrie fracția corespunzătoare pentru fiecare figură.” ----------
-// Figurile din carte: pătrate tăiate în 4 (cu părțile colorate oriunde), pe diagonale, dreptunghiuri.
+// ---------- Ce fracție arată figura? ----------
+// Pătrate tăiate în 4 (cu părțile colorate oriunde), pe diagonale, cercuri, dreptunghiuri.
 // [formă, părți, părțile colorate]
 const FIGURES = [
   ['square', 4, [0]], ['square', 4, [3]], ['square', 4, [1, 2]], ['square', 4, [0, 3]], ['square', 4, [0, 1, 3]],
@@ -190,7 +190,7 @@ function writeFractionItem(figure) {
   const answer = `${k}/${parts}`;
   return {
     points: 1,
-    get text() { return tr('Scrie fracția corespunzătoare figurii.'); },
+    get text() { return tr('Ce fracție arată figura? Numără părțile colorate și toate părțile.'); },
     visual: { type: 'fraction', shape, parts, filledIdx },
     answer,
     choices: shuffle(FRACTION_CHOICES[parts]),
@@ -200,8 +200,8 @@ function writeFractionItem(figure) {
   };
 }
 
-// ---------- Exercițiul 15: „Scrie fracția pentru fiecare pereche de figuri și compară-le.” ----------
-// Ca în carte (o jumătate și două sferturi sunt egale), plus perechi cu < și >.
+// ---------- Compară două fracții desenate ----------
+// O jumătate și două sferturi sunt egale; plus perechi cu < și >.
 const PAIRS_EQUAL = [
   [['circle', 2, [1]], ['circle', 4, [2, 3]]],
   [['squareD', 2, [0]], ['squareX', 4, [0, 1]]],
@@ -226,7 +226,7 @@ function compareItem(pair) {
   const toVisual = ([shape, parts, filledIdx]) => ({ shape, parts, filledIdx });
   return {
     points: 1,
-    get text() { return tr('Scrie fracția fiecărei figuri și compară-le. Ce semn pui în locul lui „?”?'); },
+    get text() { return tr('Care figură are partea colorată mai mare? Ce semn pui în locul lui „?”?'); },
     visual: { type: 'fractionPair', left: toVisual(left), right: toVisual(right) },
     answer: sign,
     choices: ['<', '=', '>'],
@@ -240,7 +240,7 @@ function compareItem(pair) {
 }
 
 // O rundă de 12: imagini, fracția figurii, comparări, părți egale, o întrebare, jumătăți, sferturi și o problemă.
-// Numerele din carte sunt 4, 8, 12, 16, 20; continuăm cu alți multipli de 4.
+// Numere care se împart exact la 4.
 export function buildFractionRound() {
   const numbers = shuffle([4, 8, 12, 16, 20, 24, 28, 32, 36, 40]);
   const figures = shuffle(FIGURES);

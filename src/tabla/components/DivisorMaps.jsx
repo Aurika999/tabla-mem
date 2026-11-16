@@ -39,11 +39,11 @@ const LESSONS = {
     icon: '🍬',
     path: DIV6_PATH,
     ocean: ['#fcc2d7', '#f06595', '#c2255c'],
-    layouts: buildLayouts(DIV6_PATH, ['Biblioteca Deliei', 'Cofetăria Andreei', 'Atelierul de Cuburi', 'Rafturile Mirunei'],
-      [['📚', '🐱', '📖'], ['🍬', '🎁', '🍭'], ['🧸', '🎨', '🧩'], ['📚', '🗄️', '⭐']]),
+    layouts: buildLayouts(DIV6_PATH, ['Puzzle-ul lui Vlad', 'Pungile lui Ștefan', 'Ziua Sportului', 'Biblioteca Școlii'],
+      [['🧩', '🐱', '🖼️'], ['🍬', '🎁', '🍭'], ['⚽', '🏅', '👟'], ['📚', '🗄️', '⭐']]),
     tips: [
-      <li key="1">📚 Delia citește 42 de pagini în 6 zile: <b>42 : 6 = 7</b> pagini pe zi, pentru că <b>7 × 6 = 42</b>.</li>,
-      <li key="2">🍬 54 de bomboane în 6 cutii: <b>54 : 6 = 9</b> bomboane într-o cutie.</li>,
+      <li key="1">🧩 Un puzzle cu 42 de piese, terminat în 6 zile: <b>42 : 6 = 7</b> piese pe zi, pentru că <b>7 × 6 = 42</b>.</li>,
+      <li key="2">🍬 54 de bomboane în 6 pungi la fel: <b>54 : 6 = 9</b> bomboane într-o pungă.</li>,
       <li key="3">✅ Verifici prin operația inversă: <b>6 × 4 = 24</b>, deci <b>24 : 6 = 4</b>.</li>,
       <li key="4">⚠️ <b>„Cu 6 mai mic”</b> înseamnă − 6, iar <b>„de 6 ori mai mic”</b> înseamnă : 6.</li>,
     ],
@@ -53,10 +53,10 @@ const LESSONS = {
     icon: '📅',
     path: DIV7_PATH,
     ocean: ['#c3fae8', '#63e6be', '#0ca678'],
-    layouts: buildLayouts(DIV7_PATH, ['Camera lui Radu', 'Calendarul Săptămânii', 'Cutiile lui Mihnea', 'Curtea lui Dănuț'],
-      [['🐶', '📖', '🎒'], ['📅', '☀️', '🌙'], ['🧸', '📦', '🧩'], ['🐔', '🦆', '🪿']]),
+    layouts: buildLayouts(DIV7_PATH, ['Caietul Ilincăi', 'Calendarul Săptămânii', 'Cutiile lui Petru', 'Ferma lui Sandu'],
+      [['📓', '✏️', '🎒'], ['📅', '☀️', '🌙'], ['🧸', '📦', '🧩'], ['🐔', '🦆', '🦃']]),
     tips: [
-      <li key="1">📖 Radu citește 42 de pagini într-o săptămână (7 zile): <b>42 : 7 = 6</b> pagini pe zi, pentru că <b>6 × 7 = 42</b>.</li>,
+      <li key="1">📓 42 de probleme rezolvate într-o săptămână (7 zile): <b>42 : 7 = 6</b> probleme pe zi, pentru că <b>6 × 7 = 42</b>.</li>,
       <li key="2">📅 O săptămână are 7 zile: 21 de zile înseamnă <b>21 : 7 = 3</b> săptămâni.</li>,
       <li key="3">✅ Verifici prin operația inversă: <b>7 × 4 = 28</b>, deci <b>28 : 7 = 4</b>.</li>,
       <li key="4">⚠️ <b>„Cu 7 mai puține”</b> înseamnă − 7, iar <b>„de 7 ori mai puține”</b> înseamnă : 7.</li>,
@@ -67,10 +67,10 @@ const LESSONS = {
     icon: '🐙',
     path: DIV8_PATH,
     ocean: ['#bac8ff', '#748ffc', '#3b5bdb'],
-    layouts: buildLayouts(DIV8_PATH, ['Albumul Ioanei', 'Acvariul Caracatițelor', 'Grădina cu Iepurași', 'Plicurile Oliviei'],
-      [['🃏', '📒', '👧'], ['🐙', '🐠', '🫧'], ['🐰', '🥕', '🌷'], ['✉️', '🦉', '🌻']]),
+    layouts: buildLayouts(DIV8_PATH, ['Clasorul Sarei', 'Plaja cu Scoici', 'Grădina cu Iepurași', 'Plicurile Medeei'],
+      [['📮', '📒', '👧'], ['🐚', '⭐', '🫧'], ['🐰', '🥕', '🌷'], ['✉️', '🦖', '🚗']]),
     tips: [
-      <li key="1">🃏 Ioana pune 72 de cartonașe pe 8 file: <b>72 : 8 = 9</b> cartonașe pe filă, pentru că <b>9 × 8 = 72</b>.</li>,
+      <li key="1">📮 72 de timbre puse în mod egal pe 8 pagini: <b>72 : 8 = 9</b> timbre pe pagină, pentru că <b>9 × 8 = 72</b>.</li>,
       <li key="2">🕷️ Un păianjen are 8 picioare: 40 de picioare înseamnă <b>40 : 8 = 5</b> păianjeni.</li>,
       <li key="3">✅ Verifici prin operația inversă: <b>8 × 7 = 56</b>, deci <b>56 : 8 = 7</b>.</li>,
       <li key="4">⚠️ <b>„Cu 8 mai mic”</b> înseamnă − 8, iar <b>„de 8 ori mai mic”</b> înseamnă : 8.</li>,
@@ -81,10 +81,10 @@ const LESSONS = {
     icon: '🎯',
     path: DIV9_PATH,
     ocean: ['#ffec99', '#ffd43b', '#f08c00'],
-    layouts: buildLayouts(DIV9_PATH, ['Albumul lui David', 'Livada cu Cireșe', 'Stadionul Echipelor', 'Florăria lui Pavel'],
-      [['🃏', '📒', '👦'], ['🍒', '🌳', '🧺'], ['⚽', '🥅', '🏆'], ['🌹', '💐', '📿']]),
+    layouts: buildLayouts(DIV9_PATH, ['Albumul lui Luca', 'Livada cu Cireșe', 'Stadionul Echipelor', 'Magazinul de Baloane'],
+      [['🌟', '📒', '👦'], ['🍒', '🌳', '🧺'], ['⚽', '🥅', '🏆'], ['🎈', '🎉', '🥚']]),
     tips: [
-      <li key="1">🃏 David pune câte 9 cartonașe pe o filă: 72 de cartonașe ocupă <b>72 : 9 = 8</b> file, pentru că <b>8 × 9 = 72</b>.</li>,
+      <li key="1">🌟 Câte 9 abțibilduri pe o pagină: 72 de abțibilduri umplu <b>72 : 9 = 8</b> pagini, pentru că <b>8 × 9 = 72</b>.</li>,
       <li key="2">⚽ O echipă are 9 jucători: 27 de jucători formează <b>27 : 9 = 3</b> echipe.</li>,
       <li key="3">✅ Verifici prin operația inversă: <b>9 × 6 = 54</b>, deci <b>54 : 9 = 6</b>.</li>,
       <li key="4">⚠️ <b>„Cu 9 mai mic”</b> înseamnă − 9, iar <b>„de 9 ori mai mic”</b> înseamnă : 9.</li>,
@@ -92,7 +92,7 @@ const LESSONS = {
   },
 };
 
-// Caseta „Reține” din manual, într-o fereastră peste hartă.
+// Caseta „Reține”, într-o fereastră peste hartă.
 function Lesson({ d, onClose }) {
   return (
     <div className="overlay lesson-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Reține">
@@ -129,7 +129,7 @@ function DivisorMap({ d, ...props }) {
         layouts={lesson.layouts}
         ocean={lesson.ocean}
         backLabel="← Tabla împărțirii"
-        intro={tr('Apasă pe „📖 Reține” din colț ca să afli cum împărțim la {d}, apoi descoperă, aplică, exersează și rezolvă! {icon}', { d, icon: lesson.icon })}
+        intro={tr('Apasă pe „📖 Reține” din colț ca să afli cum împărțim la {d}, apoi învață, încearcă, antrenează-te și rezolvă probleme! {icon}', { d, icon: lesson.icon })}
         doneText={tr('Știi împărțirea la {d}! 🏆', { d })}
         corner={(
           <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={tr('Lecția: împărțirea la {d}', { d })}>

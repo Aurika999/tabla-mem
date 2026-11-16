@@ -1,6 +1,6 @@
-// „Împărțirea” — lecția din manual: împărțirea ca scădere repetată și
-// împărțirea ca operație inversă înmulțirii. Patru secțiuni: Descopăr, Aplic,
-// Exersez, Rezolv probleme. Unele exerciții se rezolvă pe pași (ca la Evaluare).
+// „Împărțirea”: împărțirea ca scădere repetată și ca operație inversă
+// înmulțirii. Patru secțiuni: Învăț, Încerc, Mă antrenez, Probleme.
+// Unele exerciții se rezolvă pe pași (ca la Evaluare).
 import { makeAnswers } from './data';
 import { tr, getLang } from './i18n';
 
@@ -15,16 +15,16 @@ export const DIV7_LEVELS = ['impse1', 'impse2', 'impse3', 'impse4'];
 export const DIV8_LEVELS = ['impo1', 'impo2', 'impo3', 'impo4'];
 export const DIV9_LEVELS = ['impn1', 'impn2', 'impn3', 'impn4'];
 const BADGES = {
-  imp1: '🔍 Descopăr', imp2: '✏️ Aplic', imp3: '⭐ Exersez', imp4: '🧩 Rezolv probleme',
+  imp1: '🔍 Învăț', imp2: '✏️ Încerc', imp3: '⭐ Mă antrenez', imp4: '🧩 Probleme',
   imp5: '🔟 Împărțirea la 10', imp6: '☝️ Cazuri speciale', imp7: '✅ Proba', imp8: '🧩 Rezolv și verific',
-  impd1: '🔍 Descopăr', impd2: '✏️ Aplic', impd3: '⭐ Exersez', impd4: '🧩 Rezolv probleme',
-  impt1: '🔍 Descopăr', impt2: '✏️ Aplic', impt3: '⭐ Exersez', impt4: '🧩 Rezolv probleme',
-  impq1: '🔍 Descopăr', impq2: '✏️ Aplic', impq3: '⭐ Exersez', impq4: '🧩 Rezolv probleme',
-  impc1: '🔍 Descopăr', impc2: '✏️ Aplic', impc3: '⭐ Exersez', impc4: '🧩 Rezolv probleme',
-  impsa1: '🔍 Descopăr', impsa2: '✏️ Aplic', impsa3: '⭐ Exersez', impsa4: '🧩 Rezolv probleme',
-  impse1: '🔍 Descopăr', impse2: '✏️ Aplic', impse3: '⭐ Exersez', impse4: '🧩 Rezolv probleme',
-  impo1: '🔍 Descopăr', impo2: '✏️ Aplic', impo3: '⭐ Exersez', impo4: '🧩 Rezolv probleme',
-  impn1: '🔍 Descopăr', impn2: '✏️ Aplic', impn3: '⭐ Exersez', impn4: '🧩 Rezolv probleme',
+  impd1: '🔍 Învăț', impd2: '✏️ Încerc', impd3: '⭐ Mă antrenez', impd4: '🧩 Probleme',
+  impt1: '🔍 Învăț', impt2: '✏️ Încerc', impt3: '⭐ Mă antrenez', impt4: '🧩 Probleme',
+  impq1: '🔍 Învăț', impq2: '✏️ Încerc', impq3: '⭐ Mă antrenez', impq4: '🧩 Probleme',
+  impc1: '🔍 Învăț', impc2: '✏️ Încerc', impc3: '⭐ Mă antrenez', impc4: '🧩 Probleme',
+  impsa1: '🔍 Învăț', impsa2: '✏️ Încerc', impsa3: '⭐ Mă antrenez', impsa4: '🧩 Probleme',
+  impse1: '🔍 Învăț', impse2: '✏️ Încerc', impse3: '⭐ Mă antrenez', impse4: '🧩 Probleme',
+  impo1: '🔍 Învăț', impo2: '✏️ Încerc', impo3: '⭐ Mă antrenez', impo4: '🧩 Probleme',
+  impn1: '🔍 Învăț', impn2: '✏️ Încerc', impn3: '⭐ Mă antrenez', impn4: '🧩 Probleme',
 };
 const GIRLS = ['Mara', 'Ioana', 'Sofia', 'Ana', 'Elena', 'Diana'];
 
@@ -72,7 +72,7 @@ function division(minDivisor = 2, maxDivisor = 9, minQ = 2, maxQ = 9) {
   return { dividend: divisor * quotient, divisor, quotient };
 }
 
-// „20 de buburuze”, dar „12 buburuze”: în română „de” apare de la 20 în sus.
+// „20 de castane”, dar „12 castane”: în română „de” apare de la 20 în sus.
 // În loc de căsuța goală, numărul lipsă e ascuns sub o floare, o minge sau un fruct.
 const HIDERS = ['🌸', '🌼', '⚽', '🏀', '🍎', '🍐', '🍓', '🍊'];
 
@@ -85,14 +85,14 @@ function repeatedSubtraction(dividend, divisor) {
   return `${dividend} − ${Array(dividend / divisor).fill(divisor).join(' − ')} = 0`;
 }
 
-// ---------- 🔍 Descopăr ----------
+// ---------- 🔍 Învăț ----------
 const DISCOVER = [
-  // Mara a cules 12 păpădii și le împarte în mod egal celor 3 prietene.
+  // O fată strânge castane și le împarte în mod egal prietenelor.
   () => {
     const { dividend, divisor, quotient } = division(2, 5, 2, 6);
     const girl = pick(GIRLS);
-    return problem(tr('{girl} a cules {v0}. Ea vrea să le împartă, în mod egal, celor {divisor} prietene ale sale. ', { girl, v0: count(dividend, 'păpădii'), divisor })
-      + tr('Câte păpădii va primi fiecare?'), quotient,
+    return problem(tr('{girl} a strâns în parc {v0}. Le împarte în mod egal celor {divisor} prietene ale ei. ', { girl, v0: count(dividend, 'castane'), divisor })
+      + tr('Câte castane primește fiecare prietenă?'), quotient,
       tr('Scădem câte {divisor} până ajungem la 0: {v0}. Am scăzut de {quotient} ori, deci ', { divisor, v0: repeatedSubtraction(dividend, divisor), quotient })
       + `${dividend} : ${divisor} = ${quotient}.`, [quotient + 1, quotient - 1, dividend - divisor]);
   },
@@ -102,29 +102,29 @@ const DISCOVER = [
     return problem(tr('{v0}. De câte ori am scăzut {divisor}?', { v0: repeatedSubtraction(dividend, divisor), divisor }), quotient,
       tr('Am scăzut {divisor} de {quotient} ori, deci {dividend} : {v0} = {v1}.', { divisor, quotient, dividend, v0: divisor, v1: quotient }), [quotient + 1, divisor, quotient - 1]);
   },
-  // Pe fiecare din cele 6 flori s-au așezat câte doi gândăcei.
+  // Farfurii cu câte câteva clătite.
   () => {
     const flowers = randInt(3, 9); const per = randInt(2, 4);
-    return problem(tr('Pe fiecare din cele {flowers} flori s-au așezat câte {per} gândăcei. Câți gândăcei sunt în total?', { flowers, per }), flowers * per,
-      tr('{flowers} × {per} = {v0} gândăcei.', { flowers, per, v0: flowers * per }), [flowers + per, flowers * per + per, flowers * per - per]);
+    return problem(tr('Pe masă sunt {flowers} farfurii, pe fiecare câte {per} clătite. Câte clătite sunt în total?', { flowers, per }), flowers * per,
+      tr('{flowers} × {per} = {v0} clătite.', { flowers, per, v0: flowers * per }), [flowers + per, flowers * per + per, flowers * per - per]);
   },
-  // Cei 12 gândăcei s-au împărțit în mod egal în 6 grupe.
+  // Copii împărțiți în mod egal în echipe.
   () => {
     const { dividend, divisor, quotient } = division(2, 6, 3, 6);
-    return problem(tr('{v0} se împart în mod egal în {divisor} grupe. Câți gândăcei vor fi în fiecare grupă?', { v0: count(dividend, 'gândăcei'), divisor }), quotient,
+    return problem(tr('La ora de sport, {v0} se împart în mod egal în {divisor} echipe. Câți copii sunt în fiecare echipă?', { v0: count(dividend, 'copii'), divisor }), quotient,
       tr('Împărțim în mod egal: {dividend} : {divisor} = {quotient}, pentru că {v0} × {v1} = {v2}.', { dividend, divisor, quotient, v0: divisor, v1: quotient, v2: dividend }),
       [quotient + 1, divisor, dividend - divisor]);
   },
-  // Cei 12 gândăcei se grupează câte 2. Câte grupe se vor forma?
+  // Copii grupați câte câțiva. Câte grupe se formează?
   () => {
     const { dividend, divisor, quotient } = division(2, 5, 2, 9);
-    return problem(tr('{v0} se așază în grupe, câte {divisor} gândăcei în fiecare grupă. ', { v0: count(dividend, 'gândăcei'), divisor })
+    return problem(tr('În excursie, {v0} merg în grupe de câte {divisor} copii. ', { v0: count(dividend, 'copii'), divisor })
       + tr('Câte grupe se formează?'), quotient,
       tr('Formăm grupe de câte {divisor}: {dividend} : {v0} = {quotient} grupe.', { divisor, dividend, v0: divisor, quotient }), [quotient + 1, divisor, quotient - 1]);
   },
 ];
 
-// ---------- ✏️ Aplic ----------
+// ---------- ✏️ Încerc ----------
 const APPLY = [
   // A. Asociază fiecărei scăderi repetate operația de împărțire potrivită.
   () => {
@@ -158,11 +158,11 @@ const APPLY = [
     return problem(tr('Transformă în scăderi repetate și află câtul: {dividend} : {divisor} = ?', { dividend, divisor }), quotient,
       tr('{v0}, deci {dividend} : {divisor} = {quotient}.', { v0: repeatedSubtraction(dividend, divisor), dividend, divisor, quotient }), [quotient + 1, quotient - 1, divisor]);
   },
-  // D. 40 de buburuze, câte 10 pe o frunză.
+  // D. Copii în tabără, câte câțiva într-un cort.
   () => {
     const per = pick([10, 5, 4, 2]); const leaves = randInt(2, per === 10 ? 6 : 8);
-    return problem(tr('În poieniță au venit {v0}. Ele se așază câte {per} pe o frunză. Pe câte frunze se așază toate buburuzele?', { v0: count(per * leaves, 'buburuze'), per }),
-      leaves, tr('{v0} : {per} = {leaves} frunze, pentru că {v1} × {v2} = {v3}.', { v0: per * leaves, per, leaves, v1: leaves, v2: per, v3: per * leaves }), [leaves + 1, per, leaves - 1]);
+    return problem(tr('În tabără au venit {v0}. Ei dorm câte {per} într-un cort. De câte corturi este nevoie?', { v0: count(per * leaves, 'copii'), per }),
+      leaves, tr('{v0} : {per} = {leaves} corturi, pentru că {v1} × {v2} = {v3}.', { v0: per * leaves, per, leaves, v1: leaves, v2: per, v3: per * leaves }), [leaves + 1, per, leaves - 1]);
   },
   // Provocare: 12 obiecte împărțite în grupe de câte 2, apoi 3, apoi 4.
   () => {
@@ -172,7 +172,7 @@ const APPLY = [
   },
 ];
 
-// ---------- ⭐ Exersez ----------
+// ---------- ⭐ Mă antrenez ----------
 const PRACTICE = [
   // Află câtul și argumentează: 18 : 9 = 2 pentru că 2 × 9 = 18.
   () => {
@@ -227,7 +227,7 @@ const PRACTICE = [
   },
 ];
 
-// ---------- 🧩 Rezolv probleme ----------
+// ---------- 🧩 Probleme ----------
 const SOLVE = [
   // Împărțire în mod egal.
   () => {
@@ -262,13 +262,13 @@ const SOLVE = [
       [tr('Câte primește fiecare copil? {total} : {kids} = ?', { total, kids }), total / kids, [total / kids + 1, kids, total - kids]],
     ], tr('Prăjituri: {boxes} × {per} = {total}. Fiecare copil: {v0} : {kids} = {v1}.', { boxes, per, total, v0: total, kids, v1: total / kids }));
   },
-  // În poieniță au venit 40 de buburuze. Ele se așază câte 10 pe o frunză.
+  // Copii la cort: câte câțiva într-un cort.
   () => {
     const per = pick([10, 5, 4, 3, 2]); const leaves = randInt(3, per === 10 ? 9 : 8);
     const total = per * leaves;
-    return problem(tr('În poieniță au venit {v0}. Ele se așază câte {per} pe o frunză. ', { v0: count(total, 'buburuze'), per })
-      + tr('Pe câte frunze se așază toate buburuzele?'), leaves,
-      tr('{total} : {per} = {leaves} frunze, pentru că {v0} × {v1} = {v2}.', { total, per, leaves, v0: leaves, v1: per, v2: total }), [leaves + 1, leaves - 1, total - per]);
+    return problem(tr('La tabăra de vară au venit {v0}. Ei dorm câte {per} într-un cort. ', { v0: count(total, 'copii'), per })
+      + tr('De câte corturi este nevoie?'), leaves,
+      tr('{total} : {per} = {leaves} corturi, pentru că {v0} × {v1} = {v2}.', { total, per, leaves, v0: leaves, v1: per, v2: total }), [leaves + 1, leaves - 1, total - per]);
   },
 ];
 
@@ -276,19 +276,19 @@ const SOLVE = [
 const EVEN_TO_20 = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20];
 
 const HALF_DISCOVER = [
-  // Iepurica a pregătit 8 coronițe, împărțite în mod egal pe cele două mese.
+  // Sandvișuri împărțite în mod egal în două coșuri.
   () => {
     const n = pick([6, 8, 10, 12, 14, 16]);
-    return problem(tr('Pentru petrecerea de primăvară, Iepurica a pregătit {v0} de flori. ', { v0: count(n, 'coronițe') })
-      + tr('Ele au fost împărțite în mod egal pe cele două mese. Câte coronițe sunt pe o masă?'), n / 2,
-      tr('{v0}, deci {n} : 2 = {v1}, deoarece {v2} × 2 = {v3}. Pe fiecare masă e jumătate din coronițe.', { v0: repeatedSubtraction(n, 2), n, v1: n / 2, v2: n / 2, v3: n }),
+    return problem(tr('Pentru picnic, mama a pregătit {v0}. ', { v0: count(n, 'sandvișuri') })
+      + tr('Le pune în mod egal în două coșuri. Câte sandvișuri sunt într-un coș?'), n / 2,
+      tr('{v0}, deci {n} : 2 = {v1}, deoarece {v2} × 2 = {v3}. În fiecare coș e jumătate din sandvișuri.', { v0: repeatedSubtraction(n, 2), n, v1: n / 2, v2: n / 2, v3: n }),
       [n / 2 + 1, n - 2, n / 2 - 1]);
   },
-  // Cele 10 berze s-au așezat câte 2 într-un cuib.
+  // Fete care stau câte 2 pe o bancă.
   () => {
     const n = pick([6, 8, 10, 12, 14, 16, 18]);
-    return problem(tr('Cele {v0} s-au așezat câte 2 într-un cuib. În câte cuiburi s-au așezat toate berzele?', { v0: count(n, 'berze') }), n / 2,
-      tr('{v0}, deci {n} : 2 = {v1} cuiburi, pentru că {v2} × 2 = {v3}.', { v0: repeatedSubtraction(n, 2), n, v1: n / 2, v2: n / 2, v3: n }), [n / 2 + 1, n - 2, n / 2 - 1]);
+    return problem(tr('Cele {v0} din parc stau câte 2 pe o bancă. Pe câte bănci stau toate fetele?', { v0: count(n, 'fete') }), n / 2,
+      tr('{v0}, deci {n} : 2 = {v1} bănci, pentru că {v2} × 2 = {v3}.', { v0: repeatedSubtraction(n, 2), n, v1: n / 2, v2: n / 2, v3: n }), [n / 2 + 1, n - 2, n / 2 - 1]);
   },
   // Verificarea: 8 : 2 = 4 pentru că 4 × 2 = 8.
   () => {
@@ -389,14 +389,14 @@ const HALF_SOLVE = [
     return problem(tr('Două {items} de același fel costă {n} lei. Cât costă un {item}?', { items, n, item }), n / 2,
       tr('Prețul unui {item} e jumătate: {n} : 2 = {v0} lei.', { item, n, v0: n / 2 }), [n - 2, n * 2, n / 2 + 1]);
   },
-  // Miruna are 14 lalele. Jumătate dăruiește mamei, restul bunicii (pe pași).
+  // Un băiat dă jumătate din mere surorii, restul fratelui (pe pași).
   () => {
     const n = pick([8, 10, 12, 14, 16, 18, 20]);
-    return stepped(tr('Miruna are {v0}. Jumătate dintre ele le dăruiește mamei, iar restul le dăruiește bunicii. ', { v0: count(n, 'lalele') })
-      + tr('Câte lalele primește bunica?'), [
-      [tr('Câte lalele primește mama? (jumătate din {n})', { n }), n / 2, [n - 2, n / 2 + 1, n * 2]],
-      [tr('Câte lalele rămân pentru bunica? {n} - {v0} = ?', { n, v0: n / 2 }), n / 2, [n, n / 2 + 1, n - 2]],
-    ], tr('Mama primește {n} : 2 = {v0}. Bunica primește restul: {v1} - {v2} = {v3} (tot jumătate!).', { n, v0: n / 2, v1: n, v2: n / 2, v3: n / 2 }));
+    return stepped(tr('Sorin are {v0}. Jumătate dintre ele le dă surorii lui, iar restul le dă fratelui mai mic. ', { v0: count(n, 'mere') })
+      + tr('Câte mere primește fratele?'), [
+      [tr('Câte mere primește sora? (jumătate din {n})', { n }), n / 2, [n - 2, n / 2 + 1, n * 2]],
+      [tr('Câte mere rămân pentru frate? {n} - {v0} = ?', { n, v0: n / 2 }), n / 2, [n, n / 2 + 1, n - 2]],
+    ], tr('Sora primește {n} : 2 = {v0}. Fratele primește restul: {v1} - {v2} = {v3} (tot jumătate!).', { n, v0: n / 2, v1: n, v2: n / 2, v3: n / 2 }));
   },
   // Câte sticle de 2 litri se pot umple cu 12 litri de lapte? Dar cu 18?
   () => {
@@ -404,19 +404,19 @@ const HALF_SOLVE = [
     return problem(tr('Câte sticle de 2 litri se pot umple cu {l} litri de lapte?', { l }), l / 2,
       tr('Fiecare sticlă ia 2 litri: {l} : 2 = {v0} sticle.', { l, v0: l / 2 }), [l - 2, l / 2 + 1, l * 2]);
   },
-  // Adina are 14 cercei roz și 10 albaștri. Câte perechi în total? (pe pași)
+  // Șosete albe și colorate: câte perechi în total? (pe pași)
   () => {
     const pink = pick([8, 10, 12, 14, 16]); const blue = pick([6, 8, 10, 12]);
-    return stepped(tr('Adina are {v0} roz și {v1} albaștri. Câte perechi de cercei are în total?', { v0: count(pink, 'cercei'), v1: count(blue, 'cercei') }), [
-      [tr('Câte perechi de cercei roz are? {pink} : 2 = ?', { pink }), pink / 2, [pink - 2, pink / 2 + 1, pink * 2]],
-      [tr('Câte perechi de cercei albaștri are? {blue} : 2 = ?', { blue }), blue / 2, [blue - 2, blue / 2 + 1, blue * 2]],
+    return stepped(tr('În sertarul lui Dinu sunt {v0} albe și {v1} colorate. Câte perechi de șosete sunt în total?', { v0: count(pink, 'șosete'), v1: count(blue, 'șosete') }), [
+      [tr('Câte perechi de șosete albe sunt? {pink} : 2 = ?', { pink }), pink / 2, [pink - 2, pink / 2 + 1, pink * 2]],
+      [tr('Câte perechi de șosete colorate sunt? {blue} : 2 = ?', { blue }), blue / 2, [blue - 2, blue / 2 + 1, blue * 2]],
       [tr('Câte perechi are în total? {v0} + {v1} = ?', { v0: pink / 2, v1: blue / 2 }), (pink + blue) / 2, [pink + blue, pink / 2, (pink + blue) / 2 + 1]],
-    ], tr('Roz: {pink} : 2 = {v0} perechi. Albaștri: {blue} : 2 = {v1} perechi. Total: {v2} + {v3} = {v4}.', { pink, v0: pink / 2, blue, v1: blue / 2, v2: pink / 2, v3: blue / 2, v4: (pink + blue) / 2 }));
+    ], tr('Albe: {pink} : 2 = {v0} perechi. Colorate: {blue} : 2 = {v1} perechi. Total: {v2} + {v3} = {v4}.', { pink, v0: pink / 2, blue, v1: blue / 2, v2: pink / 2, v3: blue / 2, v4: (pink + blue) / 2 }));
   },
-  // Berzele și cuiburile, iepurica și mesele (variante noi).
+  // Perechi de lucruri din dulap.
   () => {
     const n = pick([12, 14, 16, 18, 20]);
-    const [what, where] = pick([['pantofi', 'perechi'], ['mănuși', 'perechi'], ['șosete', 'perechi']]);
+    const [what, where] = pick([['pantofi', 'perechi'], ['mănuși', 'perechi'], ['cizme', 'perechi']]);
     return problem(tr('În dulap sunt {v0}. Câte {where} de {what} sunt?', { v0: count(n, what), where, what }), n / 2,
       tr('O pereche are 2 bucăți: {n} : 2 = {v0} perechi.', { n, v0: n / 2 }), [n - 2, n / 2 + 1, n * 2]);
   },
@@ -427,19 +427,19 @@ const OPERATIONS = ['+', '−', '×', ':'];
 const SIGNS = ['<', '>', '='];
 
 const THIRD_DISCOVER = [
-  // Carla și Răzvan au 3 căsuțe pentru păsărele și 12 bețișoare colorate.
+  // Creioane puse în mod egal în 3 borcane.
   () => {
     const k = randInt(2, 8); const n = 3 * k;
-    return problem(tr('Carla și Răzvan au făcut 3 căsuțe identice pentru păsărele. Vor folosi pentru decor {v0} colorate. ', { v0: count(n, 'bețișoare') })
-      + tr('Câte bețișoare va avea fiecare căsuță?'), k,
-      tr('{n} : 3 = {k} bețișoare, deoarece {v0} × 3 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 3, k - 1]);
+    return problem(tr('Tudor și Ilinca au 3 borcane la fel pentru creioane. Vor să pună în ele {v0}, același număr în fiecare borcan. ', { v0: count(n, 'creioane') })
+      + tr('Câte creioane vor fi într-un borcan?'), k,
+      tr('{n} : 3 = {k} creioane, deoarece {v0} × 3 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 3, k - 1]);
   },
-  // Echipa Mariei a adus 9 ilustrații; pentru fiecare afiș trebuie 3.
+  // Felicitări cu câte 3 abțibilduri.
   () => {
     const k = randInt(2, 9); const n = 3 * k;
-    return problem(tr('Echipa Mariei a adus {v0}. Pentru fiecare afiș are nevoie de câte 3 ilustrații. ', { v0: count(n, 'ilustrații') })
-      + tr('Pentru câte afișe vor ajunge?'), k,
-      tr('{n} : 3 = {k} afișe, deoarece {v0} × 3 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 3, k - 1]);
+    return problem(tr('Ilinca are {v0}. Pe fiecare felicitare lipește câte 3 abțibilduri. ', { v0: count(n, 'abțibilduri') })
+      + tr('Câte felicitări poate face?'), k,
+      tr('{n} : 3 = {k} felicitări, deoarece {v0} × 3 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 3, k - 1]);
   },
   () => {
     const k = randInt(1, 10); const n = 3 * k;
@@ -515,10 +515,10 @@ const THIRD_PRACTICE = [
       choices: SIGNS,
     };
   },
-  // Ce numere se ascund în spatele rândunelelor? 🐦 : 3 = 5.
+  // Ce număr se ascunde sub căpșună? 🍓 : 3 = 5.
   () => {
     const k = randInt(1, 10);
-    return problem(tr('Ce număr se ascunde în spatele rândunelei? 🐦 : 3 = {k}', { k }), 3 * k,
+    return problem(tr('Ce număr se ascunde sub căpșună? 🍓 : 3 = {k}', { k }), 3 * k,
       tr('Căutăm numărul care împărțit la 3 dă {k}: {v0} × 3 = {v1}.', { k, v0: k, v1: 3 * k }), [k + 3, k, 3 * k + 3]);
   },
   // Rezolvă după model: 24 : 3 : 2 = 8 : 2 = 4 (pe pași).
@@ -561,29 +561,29 @@ const THIRD_SOLVE = [
     return problem(tr('Află cât costă o {item}, dacă 3 {items} de același fel costă {v0}.', { item, items, v0: count(total, 'lei') }), k,
       tr('{total} : 3 = {k} lei.', { total, k }), [k + 3, total - 3, k + 1]);
   },
-  // Într-o bancă se pot așeza 3 copii. Câte bănci sunt necesare pentru 24 de copii?
+  // La o masă din cantină încap 3 copii. Câte mese trebuie?
   () => {
     const k = randInt(3, 10); const kids = 3 * k;
-    return problem(tr('Într-o bancă se pot așeza 3 copii. Câte bănci sunt necesare pentru {v0}?', { v0: count(kids, 'copii') }), k,
-      tr('{kids} : 3 = {k} bănci.', { kids, k }), [k + 1, kids - 3, k - 1]);
+    return problem(tr('La o masă din cantină încap 3 copii. De câte mese este nevoie pentru {v0}?', { v0: count(kids, 'copii') }), k,
+      tr('{kids} : 3 = {k} mese.', { kids, k }), [k + 1, kids - 3, k - 1]);
   },
-  // Bunicul are 18 puișori galbeni, iar negri de 3 ori mai puțini. Câți în total? (pe pași)
+  // Pești portocalii și albaștri de 3 ori mai puțini. Câți în total? (pe pași)
   () => {
     const black = randInt(2, 7); const yellow = 3 * black;
-    return stepped(tr('Bunicul are {v0} galbeni, iar negri de 3 ori mai puțini. Câți puișori are în total?', { v0: count(yellow, 'puișori') }), [
-      [tr('Câți puișori negri are? {yellow} : 3 = ?', { yellow }), black, [yellow - 3, black + 1, yellow * 3 > 99 ? black + 3 : yellow * 3]],
-      [tr('Câți puișori are în total? {yellow} + {black} = ?', { yellow, black }), yellow + black, [yellow, yellow + black + 1, yellow - black]],
-    ], tr('Negri: {yellow} : 3 = {black}. În total: {v0} + {v1} = {v2}.', { yellow, black, v0: yellow, v1: black, v2: yellow + black }));
+    return stepped(tr('În acvariul clasei sunt {v0} portocalii, iar pești albaștri sunt de 3 ori mai puțini. Câți pești sunt în acvariu?', { v0: count(yellow, 'pești') }), [
+      [tr('Câți pești albaștri sunt? {yellow} : 3 = ?', { yellow }), black, [yellow - 3, black + 1, yellow * 3 > 99 ? black + 3 : yellow * 3]],
+      [tr('Câți pești sunt în total? {yellow} + {black} = ?', { yellow, black }), yellow + black, [yellow, yellow + black + 1, yellow - black]],
+    ], tr('Albaștri: {yellow} : 3 = {black}. În total: {v0} + {v1} = {v2}.', { yellow, black, v0: yellow, v1: black, v2: yellow + black }));
   },
-  // Rareș: 20 de curiozități, 12 despre berze, despre rândunele de 3 ori mai puține. (pe pași)
+  // Exerciții de adunare și de 3 ori mai puține de scădere; câte mai sunt? (pe pași)
   () => {
     const storks = pick([9, 12, 15]); const swallows = storks / 3; const total = storks + swallows + randInt(2, 6);
-    return stepped(tr('Rareș trebuie să scrie {v0} despre păsări. Până acum a scris {storks} curiozități despre berze ', { v0: count(total, 'curiozități'), storks })
-      + tr('și de 3 ori mai puține despre rândunele. Câte curiozități mai are de scris?'), [
-      [tr('Câte curiozități a scris despre rândunele? {storks} : 3 = ?', { storks }), swallows, [storks - 3, swallows + 1, storks]],
-      [tr('Câte a scris în total până acum? {storks} + {swallows} = ?', { storks, swallows }), storks + swallows, [storks, storks + swallows + 1, storks - swallows]],
-      [tr('Câte mai are de scris? {total} - {v0} = ?', { total, v0: storks + swallows }), total - storks - swallows, [total - storks, total - swallows, total - storks - swallows + 1]],
-    ], tr('Rândunele: {storks} : 3 = {swallows}. Scrise: {v0} + {v1} = {v2}. Mai are: {total} - {v3} = {v4}.', { storks, swallows, v0: storks, v1: swallows, v2: storks + swallows, total, v3: storks + swallows, v4: total - storks - swallows }));
+    return stepped(tr('Bianca are de rezolvat {v0} în vacanță. Până acum a rezolvat {storks} exerciții de adunare ', { v0: count(total, 'exerciții'), storks })
+      + tr('și de 3 ori mai puține exerciții de scădere. Câte exerciții mai are de rezolvat?'), [
+      [tr('Câte exerciții de scădere a rezolvat? {storks} : 3 = ?', { storks }), swallows, [storks - 3, swallows + 1, storks]],
+      [tr('Câte a rezolvat până acum? {storks} + {swallows} = ?', { storks, swallows }), storks + swallows, [storks, storks + swallows + 1, storks - swallows]],
+      [tr('Câte mai are de rezolvat? {total} - {v0} = ?', { total, v0: storks + swallows }), total - storks - swallows, [total - storks, total - swallows, total - storks - swallows + 1]],
+    ], tr('Scăderi: {storks} : 3 = {swallows}. Rezolvate: {v0} + {v1} = {v2}. Mai are: {total} - {v3} = {v4}.', { storks, swallows, v0: storks, v1: swallows, v2: storks + swallows, total, v3: storks + swallows, v4: total - storks - swallows }));
   },
   // Împărțire în 3 grupe egale.
   () => {
@@ -596,17 +596,17 @@ const THIRD_SOLVE = [
 
 // ================= „Împărțirea la 4” =================
 const QUARTER_DISCOVER = [
-  // Pentru câte mașinuțe îi vor ajunge lui Petrișor cele 20 de roți?
+  // Picioare pentru scaune: câte 4 la fiecare scaun.
   () => {
     const k = randInt(2, 9); const n = 4 * k;
-    return problem(tr('Petrișor are {v0}. Pune câte 4 roți la o mașinuță. Pentru câte mașinuțe îi ajung roțile?', { v0: count(n, 'roți') }), k,
-      tr('{n} : 4 = {k} mașinuțe, deoarece {v0} × 4 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 4, k - 1]);
+    return problem(tr('Tâmplarul are {v0} de scaun. La fiecare scaun pune câte 4 picioare. Pentru câte scaune îi ajung?', { v0: count(n, 'picioare') }), k,
+      tr('{n} : 4 = {k} scaune, deoarece {v0} × 4 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 4, k - 1]);
   },
-  // Cele 16 păsări se așază în mod egal pe 4 crengi.
+  // Cărți așezate în mod egal pe 4 rafturi.
   () => {
     const k = randInt(2, 9); const n = 4 * k;
-    return problem(tr('Cele {v0} vor să se așeze pe 4 crengi, același număr pe fiecare creangă. Câte păsări vor fi pe o creangă?', { v0: count(n, 'păsări') }), k,
-      tr('{n} : 4 = {k} păsări, deoarece {v0} × 4 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 4, k - 1]);
+    return problem(tr('Cele {v0} noi trebuie puse pe 4 rafturi, același număr pe fiecare raft. Câte cărți vor fi pe un raft?', { v0: count(n, 'cărți') }), k,
+      tr('{n} : 4 = {k} cărți, deoarece {v0} × 4 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 4, k - 1]);
   },
   () => {
     const k = randInt(1, 10); const n = 4 * k;
@@ -702,10 +702,10 @@ const QUARTER_PRACTICE = [
     return problem(tr('Deîmpărțitul este {n}, iar câtul este {v0}. Care este împărțitorul?', { n, v0: n / d }), d,
       tr('Căutăm numărul la care împărțim {n} ca să obținem {v0}: {v1} : {d} = {v2}.', { n, v0: n / d, v1: n, d, v2: n / d }), [d + 1, d + 2, d - 1]);
   },
-  // Află numerele care se ascund în spatele albinelor: 🐝 : 4 = 5.
+  // Ce număr se ascunde sub minge? ⚽ : 4 = 5.
   () => {
     const d = pick([2, 3, 4, 4]); const k = pick([5, 7, 9]);
-    return problem(tr('Ce număr se ascunde în spatele albinei? 🐝 : {d} = {k}', { d, k }), d * k,
+    return problem(tr('Ce număr se ascunde sub minge? ⚽ : {d} = {k}', { d, k }), d * k,
       tr('Căutăm numărul care împărțit la {d} dă {k}: {v0} × {v1} = {v2}.', { d, k, v0: k, v1: d, v2: d * k }), [k + d, d * k + d, d * k - d]);
   },
   // Află numărul când îi știi sfertul.
@@ -723,45 +723,45 @@ const QUARTER_PRACTICE = [
 ];
 
 const QUARTER_SOLVE = [
-  // Numărul fetelor este un sfert din cel al băieților; băieți au fost 20. (pe pași)
+  // La cercul de dans, băieții sunt un sfert din numărul fetelor. (pe pași)
   () => {
     const girls = randInt(3, 9); const boys = 4 * girls;
-    return stepped(tr('La un concurs, numărul fetelor este un sfert din cel al băieților. Câți copii au participat la concurs, dacă băieți au fost {boys}?', { boys }), [
-      [tr('Câte fete au fost? {boys} : 4 = ?', { boys }), girls, [boys - 4, girls + 1, boys / 2]],
+    return stepped(tr('La cercul de dans vin {boys} fete, iar băieții sunt un sfert din numărul fetelor. Câți copii vin la cercul de dans?', { boys }), [
+      [tr('Câți băieți vin? {boys} : 4 = ?', { boys }), girls, [boys - 4, girls + 1, boys / 2]],
       [tr('Câți copii în total? {boys} + {girls} = ?', { boys, girls }), boys + girls, [boys, boys + girls + 1, boys - girls]],
-    ], tr('Fete: {boys} : 4 = {girls}. În total: {v0} + {v1} = {v2} copii.', { boys, girls, v0: boys, v1: girls, v2: boys + girls }));
+    ], tr('Băieți: {boys} : 4 = {girls}. În total: {v0} + {v1} = {v2} copii.', { boys, girls, v0: boys, v1: girls, v2: boys + girls }));
   },
-  // Bunica are 16 mere și 24 de pere; le împarte în mod egal celor 4 nepoți. (pe pași)
+  // Prune și caise împărțite în mod egal la 4 copii. (pe pași)
   () => {
     const [a, b] = pick([[16, 24], [12, 20], [8, 16], [20, 12], [12, 16]]);
-    return stepped(tr('Bunica are într-un coș {a} mere și {v0}. Ea le împarte în mod egal celor 4 nepoți ai ei. Câte fructe primește fiecare?', { a, v0: count(b, 'pere') }), [
-      [tr('Câte mere primește un nepot? {a} : 4 = ?', { a }), a / 4, [a / 4 + 1, a - 4, b / 4]],
-      [tr('Câte pere primește un nepot? {b} : 4 = ?', { b }), b / 4, [b / 4 + 1, b - 4, a / 4]],
+    return stepped(tr('Mama aduce de la piață {a} prune și {v0}. Le împarte în mod egal celor 4 copii ai ei. Câte fructe primește fiecare copil?', { a, v0: count(b, 'caise') }), [
+      [tr('Câte prune primește un copil? {a} : 4 = ?', { a }), a / 4, [a / 4 + 1, a - 4, b / 4]],
+      [tr('Câte caise primește un copil? {b} : 4 = ?', { b }), b / 4, [b / 4 + 1, b - 4, a / 4]],
       [tr('Câte fructe primește fiecare? {v0} + {v1} = ?', { v0: a / 4, v1: b / 4 }), (a + b) / 4, [(a + b) / 4 + 1, a + b, (a + b) / 2]],
-    ], tr('Mere: {a} : 4 = {v0}, pere: {b} : 4 = {v1}, în total {v2} fructe. Al doilea mod: ({v3} + {v4}) : 4 = {v5} : 4 = {v6}.', { a, v0: a / 4, b, v1: b / 4, v2: (a + b) / 4, v3: a, v4: b, v5: a + b, v6: (a + b) / 4 }));
+    ], tr('Prune: {a} : 4 = {v0}, caise: {b} : 4 = {v1}, în total {v2} fructe. Al doilea mod: ({v3} + {v4}) : 4 = {v5} : 4 = {v6}.', { a, v0: a / 4, b, v1: b / 4, v2: (a + b) / 4, v3: a, v4: b, v5: a + b, v6: (a + b) / 4 }));
   },
-  // 24 de albine: un sfert pe salcâm, jumătate din cele rămase pe păpădii. (pe pași)
+  // Copii în curte: un sfert joacă fotbal, jumătate din ceilalți sar coarda. (pe pași)
   () => {
     const total = pick([24, 16, 32, 40]); const quarter = total / 4; const rest = total - quarter;
-    return stepped(tr('{v0} zumzăie prin grădină. Un sfert din ele s-au așezat pe florile de salcâm, iar jumătate din cele rămase s-au așezat pe păpădii. Câte albine sunt pe păpădii?', { v0: count(total, 'albine') }), [
-      [tr('Câte albine sunt pe salcâm? {total} : 4 = ?', { total }), quarter, [total / 2, quarter + 1, total - 4]],
-      [tr('Câte albine au rămas? {total} - {quarter} = ?', { total, quarter }), rest, [rest + 1, total, rest - 2]],
-      [tr('Câte sunt pe păpădii? {rest} : 2 = ?', { rest }), rest / 2, [rest / 2 + 1, rest - 2, quarter]],
-    ], tr('Pe salcâm: {total} : 4 = {quarter}. Rămase: {v0} - {v1} = {rest}. Pe păpădii: {v2} : 2 = {v3}.', { total, quarter, v0: total, v1: quarter, rest, v2: rest, v3: rest / 2 }));
+    return stepped(tr('În pauză, {v0} se joacă în curtea școlii. Un sfert dintre ei joacă fotbal, iar jumătate din ceilalți sar coarda. Câți copii sar coarda?', { v0: count(total, 'copii') }), [
+      [tr('Câți copii joacă fotbal? {total} : 4 = ?', { total }), quarter, [total / 2, quarter + 1, total - 4]],
+      [tr('Câți copii nu joacă fotbal? {total} - {quarter} = ?', { total, quarter }), rest, [rest + 1, total, rest - 2]],
+      [tr('Câți sar coarda? {rest} : 2 = ?', { rest }), rest / 2, [rest / 2 + 1, rest - 2, quarter]],
+    ], tr('Fotbal: {total} : 4 = {quarter}. Ceilalți: {v0} - {v1} = {rest}. Sar coarda: {v2} : 2 = {v3}.', { total, quarter, v0: total, v1: quarter, rest, v2: rest, v3: rest / 2 }));
   },
-  // Problemă cu o împărțire (ghiocei: 32 și 4).
+  // Problemă cu o împărțire: pachete de câte 4 biscuiți.
   () => {
     const k = randInt(4, 10); const n = 4 * k;
-    return problem(tr('Maria a cules {v0} și face buchețele de câte 4 ghiocei. Câte buchețele face?', { v0: count(n, 'ghiocei') }), k,
-      tr('{n} : 4 = {k} buchețele.', { n, k }), [k + 1, n - 4, k - 1]);
+    return problem(tr('Bunica a copt {v0} și îi pune în pachețele de câte 4. Câte pachețele face?', { v0: count(n, 'biscuiți') }), k,
+      tr('{n} : 4 = {k} pachețele.', { n, k }), [k + 1, n - 4, k - 1]);
   },
-  // Problemă cu o împărțire și o adunare (ghiocei: 28 și 4). (pe pași)
+  // Problemă cu o împărțire și o adunare: meri și peri. (pe pași)
   () => {
     const k = randInt(3, 9); const n = 4 * k;
-    return stepped(tr('În grădină sunt {v0} albi, iar brândușe sunt de 4 ori mai puține. Câte flori sunt în total?', { v0: count(n, 'ghiocei') }), [
-      [tr('Câte brândușe sunt? {n} : 4 = ?', { n }), k, [n - 4, k + 1, n / 2]],
-      [tr('Câte flori în total? {n} + {k} = ?', { n, k }), n + k, [n, n + k + 1, n - k]],
-    ], tr('Brândușe: {n} : 4 = {k}. În total: {v0} + {v1} = {v2} flori.', { n, k, v0: n, v1: k, v2: n + k }));
+    return stepped(tr('În livadă sunt {v0}, iar peri sunt de 4 ori mai puțini. Câți pomi sunt în livadă?', { v0: count(n, 'meri') }), [
+      [tr('Câți peri sunt? {n} : 4 = ?', { n }), k, [n - 4, k + 1, n / 2]],
+      [tr('Câți pomi în total? {n} + {k} = ?', { n, k }), n + k, [n, n + k + 1, n - k]],
+    ], tr('Peri: {n} : 4 = {k}. În total: {v0} + {v1} = {v2} pomi.', { n, k, v0: n, v1: k, v2: n + k }));
   },
   // Află cât costă un obiect, dacă 4 obiecte la fel costă ...
   () => {
@@ -773,20 +773,20 @@ const QUARTER_SOLVE = [
 
 // ================= „Împărțirea la 5” =================
 const FIFTH_DISCOVER = [
-  // 5 grupuri de copii au lansat 20 de lampioane.
+  // 5 echipe au înălțat același număr de zmeie.
   () => {
     const k = randInt(2, 6); const n = 5 * k;
     return {
-      ...problem(tr('La lăsarea serii, 5 grupuri de copii au lansat {v0}. Dacă fiecare grup a lansat același număr de lampioane, câte lampioane a lansat un grup?', { v0: count(n, 'lampioane') }), k,
-        tr('{n} : 5 = {k} lampioane. Verificare: {v0} × 5 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 5, k - 1]),
+      ...problem(tr('La concursul de zmeie, 5 echipe au înălțat {v0}. Fiecare echipă a înălțat același număr de zmeie. Câte zmeie a înălțat o echipă?', { v0: count(n, 'zmeie') }), k,
+        tr('{n} : 5 = {k} zmeie. Verificare: {v0} × 5 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 5, k - 1]),
       picture: { icon: '🏮', groups: 5, per: k },
     };
   },
-  // Pippi Șosețica are 35 de lalele și face buchete de câte 5.
+  // Bunica face buchete de câte 5 lalele.
   () => {
     const k = randInt(2, 7); const n = 5 * k;
     return {
-      ...problem(tr('Pippi Șosețica are {v0}. Ea vrea să facă buchete de câte 5. Pentru câte buchete îi ajung lalelele?', { v0: count(n, 'lalele') }), k,
+      ...problem(tr('Bunica a cules din grădină {v0}. Face buchete de câte 5 lalele. Câte buchete face?', { v0: count(n, 'lalele') }), k,
         tr('{n} : 5 = {k} buchete. Verificare: {v0} × 5 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 5, k - 1]),
       picture: { icon: '🌷', groups: k, per: 5 },
     };
@@ -862,10 +862,10 @@ const FIFTH_PRACTICE = [
       choices: SIGNS,
     };
   },
-  // Ce numere se ascund sub lampioane? 🏮 : 5 = 6.
+  // Ce număr se ascunde sub cadou? 🎁 : 5 = 6.
   () => {
     const d = pick([3, 4, 5, 5]); const k = pick([6, 7, 8]);
-    return problem(tr('Ce număr se ascunde sub lampion? 🏮 : {d} = {k}', { d, k }), d * k,
+    return problem(tr('Ce număr se ascunde sub cadou? 🎁 : {d} = {k}', { d, k }), d * k,
       tr('Căutăm numărul care împărțit la {d} dă {k}: {v0} × {v1} = {v2}.', { d, k, v0: k, v1: d, v2: d * k }), [k + d, d * k + d, d * k - d]);
   },
   // Completează casetele pentru a obține egalități: 24 : 3 = 40 : 🍎.
@@ -912,45 +912,45 @@ const FIFTH_PRACTICE = [
 ];
 
 const FIFTH_SOLVE = [
-  // Un kilogram de portocale costă 5 lei. Câte kilograme cumpără Laura cu 25 de lei?
+  // Un kilogram de mere costă 5 lei. Câte kilograme cumpără Dan?
   () => {
     const k = randInt(2, 9); const money = 5 * k;
-    return problem(tr('Un kilogram de portocale costă 5 lei. Câte kilograme de portocale poate cumpăra Laura, dacă are {v0}?', { v0: count(money, 'lei') }), k,
+    return problem(tr('La piață, un kilogram de mere costă 5 lei. Dan are {v0}. Câte kilograme de mere poate cumpăra?', { v0: count(money, 'lei') }), k,
       tr('{money} : 5 = {k} kilograme.', { money, k }), [k + 1, money - 5, k - 1]);
   },
-  // Toma are nevoie de 40 de baloane: pungi cu 5 baloane, apoi cu 4 baloane (pe pași).
+  // Antrenorul are nevoie de mingi: cutii cu 5 mingi, apoi cu 4 mingi (pe pași).
   () => {
     const n = pick([20, 40]);
-    return stepped(tr('Toma are nevoie de {v0}. Câte pungi cu baloane trebuie să cumpere, dacă într-o pungă sunt 5 baloane? Dar dacă într-o pungă sunt 4 baloane?', { v0: count(n, 'baloane') }), [
-      [tr('Pungi cu câte 5 baloane: {n} : 5 = ?', { n }), n / 5, [n / 4, n / 5 + 1, n - 5]],
-      [tr('Pungi cu câte 4 baloane: {n} : 4 = ?', { n }), n / 4, [n / 5, n / 4 + 1, n - 4]],
-    ], tr('{n} : 5 = {v0} pungi, iar {v1} : 4 = {v2} pungi.', { n, v0: n / 5, v1: n, v2: n / 4 }));
+    return stepped(tr('Antrenorul are nevoie de {v0} de tenis. Câte cutii trebuie să cumpere, dacă într-o cutie sunt 5 mingi? Dar dacă într-o cutie sunt 4 mingi?', { v0: count(n, 'mingi') }), [
+      [tr('Cutii cu câte 5 mingi: {n} : 5 = ?', { n }), n / 5, [n / 4, n / 5 + 1, n - 5]],
+      [tr('Cutii cu câte 4 mingi: {n} : 4 = ?', { n }), n / 4, [n / 5, n / 4 + 1, n - 4]],
+    ], tr('{n} : 5 = {v0} cutii, iar {v1} : 4 = {v2} cutii.', { n, v0: n / 5, v1: n, v2: n / 4 }));
   },
-  // Ana are 20 de creioane colorate. În câte grupe le poate repartiza în mod egal?
+  // 20 de copii formează echipe de câte câțiva.
   () => {
     const per = pick([2, 4, 5, 10]);
-    return problem(tr('Ana are 20 de creioane colorate. Le pune în grupe de câte {per}. Câte grupe face?', { per }), 20 / per,
-      tr('20 : {per} = {v0} grupe.', { per, v0: 20 / per }), [20 / per + 1, 20 - per, per]);
+    return problem(tr('La ora de sport sunt 20 de copii. Ei formează echipe de câte {per} copii. Câte echipe sunt?', { per }), 20 / per,
+      tr('20 : {per} = {v0} echipe.', { per, v0: 20 / per }), [20 / per + 1, 20 - per, per]);
   },
-  // Matei: 43 de cărți, 8 pe primul raft, restul în mod egal pe 5 rafturi (pe pași).
+  // Bibliotecara: câteva cărți pe primul raft, restul în mod egal pe 5 rafturi (pe pași).
   () => {
     const [total, first] = pick([[43, 8], [38, 3], [47, 7], [29, 4], [36, 6]]);
     const rest = total - first;
-    return stepped(tr('Matei își aranjează cele {v0} în bibliotecă. El așază {v1} pe primul raft, iar cărțile rămase le împarte în mod egal pe 5 rafturi. Câte cărți vor fi pe ultimul raft?', { v0: count(total, 'cărți'), v1: count(first, 'cărți') }), [
+    return stepped(tr('Doamna bibliotecară a primit {v0} noi. Pune {v1} pe primul raft, iar restul le împarte în mod egal pe 5 rafturi. Câte cărți vor fi pe ultimul raft?', { v0: count(total, 'cărți'), v1: count(first, 'cărți') }), [
       [tr('Câte cărți au rămas? {total} - {first} = ?', { total, first }), rest, [rest + 1, rest - 1, total]],
       [tr('Câte cărți pe un raft? {rest} : 5 = ?', { rest }), rest / 5, [rest / 5 + 1, rest - 5, rest / 5 - 1]],
     ], tr('Rămase: {total} - {first} = {rest}. Pe fiecare raft (deci și pe ultimul): {v0} : 5 = {v1} cărți.', { total, first, rest, v0: rest, v1: rest / 5 }));
   },
-  // Lampioanele din magazin: 9 cutii cu câte 6, 3 zile câte 8, restul în 5 zile (pe pași).
+  // Pepenii de la tarabă: 8 lăzi cu câte 5, 3 zile câte 5, restul în 5 zile (pe pași).
   () => {
-    const total = 54; const sold = 24; const rest = total - sold;
-    return stepped(tr('La un magazin au fost aduse 9 cutii cu câte 6 lampioane fiecare. În primele 3 zile s-au vândut câte 8 lampioane pe zi. ')
-      + tr('Restul au fost vândute în mod egal în următoarele 5 zile. Câte lampioane s-au vândut în ultima zi?'), [
-      ['Câte lampioane au fost aduse? 9 × 6 = ?', total, [56, 45, 48]],
-      ['Câte s-au vândut în primele 3 zile? 3 × 8 = ?', sold, [21, 32, 11]],
-      [tr('Câte au rămas? {total} - {sold} = ?', { total, sold }), rest, [32, 20, 28]],
-      [tr('Câte pe zi în următoarele 5 zile? {rest} : 5 = ?', { rest }), rest / 5, [5, 7, 25]],
-    ], tr('Aduse: 9 × 6 = 54. Vândute în 3 zile: 3 × 8 = 24. Rămase: 54 - 24 = 30. În ultima zi: 30 : 5 = 6 lampioane.'));
+    const total = 40; const sold = 15; const rest = total - sold;
+    return stepped(tr('La o tarabă s-au adus 8 lăzi cu câte 5 pepeni. În primele 3 zile s-au vândut câte 5 pepeni pe zi. ')
+      + tr('Ceilalți pepeni s-au vândut în mod egal în următoarele 5 zile. Câți pepeni s-au vândut în ultima zi?'), [
+      ['Câți pepeni s-au adus? 8 × 5 = ?', total, [45, 35, 13]],
+      ['Câți s-au vândut în primele 3 zile? 3 × 5 = ?', sold, [8, 18, 12]],
+      [tr('Câți au rămas? {total} - {sold} = ?', { total, sold }), rest, [35, 20, 30]],
+      [tr('Câți pe zi în următoarele 5 zile? {rest} : 5 = ?', { rest }), rest / 5, [6, 4, 25]],
+    ], tr('Aduși: 8 × 5 = 40. Vânduți în 3 zile: 3 × 5 = 15. Rămași: 40 - 15 = 25. În ultima zi: 25 : 5 = 5 pepeni.'));
   },
   // Problemă cu prețuri: 5 obiecte la fel.
   () => {
@@ -962,12 +962,12 @@ const FIFTH_SOLVE = [
 ];
 
 // ================= „Împărțirea la 6”, „la 7”, „la 8” și „la 9” =================
-// Datele din manual, separate pe împărțitor: fiecare insulă folosește doar „: 6” sau doar „: 7”.
+// Probleme separate pe împărțitor: fiecare insulă folosește doar „: 6” sau doar „: 7”.
 const BY_DIVISOR = {
   6: {
     stories: [
-      k => [tr('Delia vrea să citească o carte cu {v0} în 6 zile, același număr de pagini în fiecare zi. Câte pagini trebuie să citească în fiecare zi?', { v0: count(6 * k, 'pagini') }), 'pagini'],
-      k => [tr('În 6 cutii identice sunt {v0}. Câte bomboane sunt într-o cutie?', { v0: count(6 * k, 'bomboane') }), 'bomboane'],
+      k => [tr('Vlad vrea să termine un puzzle cu {v0} în 6 zile, punând în fiecare zi același număr de piese. Câte piese pune într-o zi?', { v0: count(6 * k, 'piese') }), 'piese'],
+      k => [tr('În 6 pungi la fel sunt {v0}. Câte bomboane sunt într-o pungă?', { v0: count(6 * k, 'bomboane') }), 'bomboane'],
     ],
     model: [[42, 7], [48, 8], [54, 9], [36, 6].slice(0, 0), [30, 5], [24, 4], [18, 3]].filter(x => x.length),
     smaller: [36, 54, 48, 6, 60, 42, 24, 30],
@@ -981,8 +981,8 @@ const BY_DIVISOR = {
   },
   7: {
     stories: [
-      k => [tr('Radu vrea să citească într-o săptămână o carte cu {v0}. El va citi în fiecare zi același număr de pagini. Câte pagini va citi într-o zi?', { v0: count(7 * k, 'pagini') }), 'pagini'],
-      k => [tr('Mihnea vrea să-și aranjeze cele {v0} în 7 cutii, punând același număr de cuburi în fiecare cutie. Câte cuburi pune într-o cutie?', { v0: count(7 * k, 'cuburi') }), 'cuburi'],
+      k => [tr('Ilinca vrea să rezolve într-o săptămână {v0}, același număr în fiecare zi. Câte probleme rezolvă într-o zi?', { v0: count(7 * k, 'probleme') }), 'probleme'],
+      k => [tr('Petru strânge cele {v0} de joacă în 7 cutii, același număr în fiecare cutie. Câte cuburi sunt într-o cutie?', { v0: count(7 * k, 'cuburi') }), 'cuburi'],
     ],
     model: [[56, 8], [63, 9], [42, 6], [28, 4], [35, 5], [21, 3]],
     smaller: [28, 56, 21, 63, 70, 49, 35, 42],
@@ -996,8 +996,8 @@ const BY_DIVISOR = {
   },
   8: {
     stories: [
-      k => [tr('Ioana are {v0} cu personaje din povești. Vrea să le așeze într-un album cu 8 file, punând pe fiecare filă același număr de cartonașe. Câte cartonașe va avea pe fiecare filă?', { v0: count(8 * k, 'cartonașe') }), 'cartonașe'],
-      k => [tr('Caracatițele din acvariu au în total {v0}. O caracatiță are 8 brațe. Câte caracatițe sunt în acvariu?', { v0: count(8 * k, 'brațe') }), 'caracatițe'],
+      k => [tr('Sara are {v0} cu animale. Le pune într-un clasor cu 8 pagini, același număr pe fiecare pagină. Câte timbre sunt pe o pagină?', { v0: count(8 * k, 'timbre') }), 'cartonașe'],
+      k => [tr('O cutie are 8 creioane. Pe raft sunt cutii pline cu {v0} în total. Câte cutii sunt pe raft?', { v0: count(8 * k, 'creioane') }), 'cutii'],
     ],
     model: [[24, 3], [32, 4], [40, 5], [48, 6], [56, 7], [72, 9], [16, 2]],
     smaller: [64, 56, 48, 16, 72, 80, 24, 40],
@@ -1014,7 +1014,7 @@ const BY_DIVISOR = {
   },
   9: {
     stories: [
-      k => [tr('David are {v0} cu personaje din povești. Vrea să așeze câte 9 cartonașe pe fiecare filă a unui album. Pentru câte file îi vor ajunge cartonașele?', { v0: count(9 * k, 'cartonașe') }), 'file'],
+      k => [tr('Luca are {v0}. Lipește câte 9 abțibilduri pe fiecare pagină a unui album. Câte pagini umple?', { v0: count(9 * k, 'abțibilduri') }), 'pagini'],
       k => [tr('9 copii împart în mod egal {v0}. Câte cireșe primește fiecare copil?', { v0: count(9 * k, 'cireșe') }), 'cireșe'],
     ],
     model: [[27, 3], [36, 4], [45, 5], [54, 6], [63, 7], [72, 8], [18, 2]],
@@ -1170,7 +1170,7 @@ function divisorLesson(d) {
     // Rafturile Mirunei: primele rafturi câte ..., restul în mod egal pe d rafturi (pe pași).
     () => {
       const [total, shelves, per] = pick(data.shelves); const first = shelves * per; const rest = total - first;
-      return stepped(tr('Miruna are în bibliotecă {v0}. Ea așază pe primele {shelves} rafturi câte {per} cărți, iar restul, în mod egal, pe {d} rafturi. Câte cărți vor fi pe fiecare din cele {v1} rafturi?', { v0: count(total, 'cărți'), shelves, per, d, v1: d }), [
+      return stepped(tr('Biblioteca școlii a primit {v0}. Pe primele {shelves} rafturi se pun câte {per} cărți, iar restul, în mod egal, pe {d} rafturi. Câte cărți vor fi pe fiecare din cele {v1} rafturi?', { v0: count(total, 'cărți'), shelves, per, d, v1: d }), [
         [tr('Câte cărți pe primele {shelves} rafturi? {v0} × {per} = ?', { shelves, v0: shelves, per }), first, [first + per, first - 1, shelves + per]],
         [tr('Câte cărți au rămas? {total} - {first} = ?', { total, first }), rest, [rest + 1, rest - 10, total]],
         [tr('Câte pe un raft? {rest} : {d} = ?', { rest, d }), rest / d, [rest / d + 1, rest - d, rest / d - 1]],
@@ -1187,54 +1187,54 @@ function divisorLesson(d) {
 
   if (d === 6) {
     solve.push(
-      // În 6 cutii identice sunt 54 de bomboane: câte într-o cutie? Dar în 3 cutii? (pe pași)
+      // Bomboane în 6 cutii la fel: câte într-o cutie? Dar în 3 cutii? (pe pași)
       () => {
         const k = pick([7, 8, 9]); const n = 6 * k;
-        return stepped(tr('În 6 cutii identice sunt {v0}. Câte bomboane sunt într-o cutie? Dar în 3 cutii?', { v0: count(n, 'bomboane') }), [
+        return stepped(tr('Cofetăria a umplut 6 cutii la fel cu {v0}. Câte bomboane sunt într-o cutie? Dar în 3 cutii?', { v0: count(n, 'bomboane') }), [
           [tr('Într-o cutie: {n} : 6 = ?', { n }), k, [k + 1, n - 6, k - 1]],
           [tr('În 3 cutii: {k} × 3 = ?', { k }), 3 * k, [3 * k + 3, 3 * k + 1, 3 * k - 1]],
         ], tr('Într-o cutie: {n} : 6 = {k}. În 3 cutii: {v0} × 3 = {v1} bomboane.', { n, k, v0: k, v1: 3 * k }));
       },
-      // Andreea a avut 5 cutii și dăruiește 2 bunicilor (pe pași).
+      // Un băiat are 5 pungi și dăruiește 2 verișorilor (pe pași).
       () => {
         const k = pick([6, 7, 8, 9]); const n = 6 * k;
-        return stepped(tr('În 6 cutii identice sunt {v0}. Andreea a avut 5 astfel de cutii și dăruiește celor doi bunici câte o cutie. Câte bomboane i-au rămas?', { v0: count(n, 'bomboane') }), [
-          [tr('Câte bomboane sunt într-o cutie? {n} : 6 = ?', { n }), k, [k + 1, n - 6, k - 1]],
-          ['Câte cutii i-au rămas? 5 - 2 = ?', 3, [2, 4, 7]],
+        return stepped(tr('În 6 pungi la fel sunt {v0}. Ștefan are 5 astfel de pungi și dă câte o pungă celor doi verișori. Câte bomboane îi rămân?', { v0: count(n, 'bomboane') }), [
+          [tr('Câte bomboane sunt într-o pungă? {n} : 6 = ?', { n }), k, [k + 1, n - 6, k - 1]],
+          ['Câte pungi îi rămân? 5 - 2 = ?', 3, [2, 4, 7]],
           [tr('Câte bomboane i-au rămas? 3 × {k} = ?', { k }), 3 * k, [3 * k + 3, 5 * k, 3 * k - 1]],
-        ], tr('Într-o cutie: {n} : 6 = {k}. Cutii rămase: 5 - 2 = 3. Bomboane rămase: 3 × {v0} = {v1}. Al doilea mod: {v2} - {v3} = {v4}.', { n, k, v0: k, v1: 3 * k, v2: 5 * k, v3: 2 * k, v4: 3 * k }));
+        ], tr('Într-o pungă: {n} : 6 = {k}. Pungi rămase: 5 - 2 = 3. Bomboane rămase: 3 × {v0} = {v1}. Al doilea mod: {v2} - {v3} = {v4}.', { n, k, v0: k, v1: 3 * k, v2: 5 * k, v3: 2 * k, v4: 3 * k }));
       },
       // Echipe egale de copii.
       () => {
         const k = randInt(3, 9); const n = 6 * k;
-        return problem(tr('La serbare, {v0} formează 6 echipe cu același număr de copii. Câți copii are fiecare echipă?', { v0: count(n, 'copii') }), k,
+        return problem(tr('La ziua sportului, {v0} se împart în 6 echipe egale. Câți copii are fiecare echipă?', { v0: count(n, 'copii') }), k,
           tr('{n} : 6 = {k} copii.', { n, k }), [k + 1, n - 6, k - 1]);
       },
     );
   } else if (d === 7) {
     solve.push(
-      // Dănuț: găini, rațe cu 7 mai puține, gâște de 7 ori mai puține (pe pași).
+      // Ferma lui Sandu: găini, rațe cu 7 mai puține, curcani de 7 ori mai puțini (pe pași).
       () => {
         const hens = pick([21, 28, 35, 42, 49]); const ducks = hens - 7; const geese = hens / 7;
-        return stepped(tr('Dănuț are {v0}, cu 7 mai puține rațe, iar gâște de 7 ori mai puține decât găini. Câte păsări are băiatul în total?', { v0: count(hens, 'găini') }), [
-          [tr('Câte rațe are? {hens} - 7 = ?', { hens }), ducks, [geese, ducks + 1, hens + 7]],
-          [tr('Câte gâște are? {hens} : 7 = ?', { hens }), geese, [geese + 1, geese + 2, geese === 2 ? 4 : geese - 1]],
+        return stepped(tr('La ferma lui Sandu sunt {v0}. Rațele sunt cu 7 mai puține decât găinile, iar curcanii de 7 ori mai puțini decât găinile. Câte păsări sunt la fermă?', { v0: count(hens, 'găini') }), [
+          [tr('Câte rațe sunt? {hens} - 7 = ?', { hens }), ducks, [geese, ducks + 1, hens + 7]],
+          [tr('Câți curcani sunt? {hens} : 7 = ?', { hens }), geese, [geese + 1, geese + 2, geese === 2 ? 4 : geese - 1]],
           [tr('Câte păsări în total? {hens} + {ducks} + {geese} = ?', { hens, ducks, geese }), hens + ducks + geese, [hens + ducks, hens + ducks + geese + 1, hens + geese]],
-        ], tr('Rațe: {hens} - 7 = {ducks} („cu 7 mai puține” = scădere). Gâște: {v0} : 7 = {geese} („de 7 ori mai puține” = împărțire). În total: {v1}.', { hens, ducks, v0: hens, geese, v1: hens + ducks + geese }));
+        ], tr('Rațe: {hens} - 7 = {ducks} („cu 7 mai puține” = scădere). Curcani: {v0} : 7 = {geese} („de 7 ori mai puțini” = împărțire). În total: {v1}.', { hens, ducks, v0: hens, geese, v1: hens + ducks + geese }));
       },
       // Câte săptămâni?
       () => {
         const k = randInt(2, 9); const n = 7 * k;
-        return problem(tr('O tabără a durat {v0}. Câte săptămâni a durat tabăra? (o săptămână are 7 zile)', { v0: count(n, 'zile') }), k,
+        return problem(tr('Vacanța la munte a durat {v0}. Câte săptămâni a durat vacanța? (o săptămână are 7 zile)', { v0: count(n, 'zile') }), k,
           tr('{n} : 7 = {k} săptămâni.', { n, k }), [k + 1, n - 7, k - 1]);
       },
     );
   } else if (d === 8) {
     solve.push(
-      // Olivia: 48 de abțibilduri cu animale și 24 cu flori, câte 8 într-un plic (pe pași).
+      // Abțibilduri cu dinozauri și cu mașini, câte 8 într-un plic (pe pași).
       () => {
         const [a, b] = pick([[48, 24], [40, 16], [32, 24], [56, 16]]);
-        return stepped(tr('Olivia are {v0} cu animale și {v1} cu flori. Ea pune câte 8 abțibilduri într-un plic. În câte plicuri au fost puse abțibildurile?', { v0: count(a, 'abțibilduri'), v1: count(b, 'abțibilduri') }), [
+        return stepped(tr('Medeea are {v0} cu dinozauri și {v1} cu mașini. Pune câte 8 abțibilduri într-un plic. De câte plicuri are nevoie?', { v0: count(a, 'abțibilduri'), v1: count(b, 'abțibilduri') }), [
           [tr('Câte abțibilduri are în total? {a} + {b} = ?', { a, b }), a + b, [a + b + 10, a + b - 1, a - b]],
           [tr('Câte plicuri? {v0} : 8 = ?', { v0: a + b }), (a + b) / 8, [(a + b) / 8 + 1, (a + b) / 8 - 1, a / 8]],
         ], tr('În total: {a} + {b} = {v0}. Plicuri: {v1} : 8 = {v2}.', { a, b, v0: a + b, v1: a + b, v2: (a + b) / 8 }));
@@ -1245,38 +1245,38 @@ function divisorLesson(d) {
         return problem(tr('Un păianjen are 8 picioare. Câți păianjeni au împreună {v0}?', { v0: count(n, 'picioare') }), k,
           tr('{n} : 8 = {k} păianjeni, pentru că {v0} × 8 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 8, k - 1]);
       },
-      // Caracatițe și scoici: de 8 ori mai puține (pe pași).
+      // Scoici și stele de mare de 8 ori mai puține (pe pași).
       () => {
         const shells = pick([16, 24, 32, 40, 48]); const octo = shells / 8;
-        return stepped(tr('În acvariu sunt {v0}, iar caracatițe de 8 ori mai puține. Câte viețuitoare sunt în total în acvariu?', { v0: count(shells, 'scoici') }), [
-          [tr('Câte caracatițe sunt? {shells} : 8 = ?', { shells }), octo, [shells - 8, octo + 1, octo + 2]],
+        return stepped(tr('Pe plajă, Irina a găsit {v0}, iar stele de mare de 8 ori mai puține. Câte lucruri a găsit Irina în total?', { v0: count(shells, 'scoici') }), [
+          [tr('Câte stele de mare a găsit? {shells} : 8 = ?', { shells }), octo, [shells - 8, octo + 1, octo + 2]],
           [tr('Câte în total? {shells} + {octo} = ?', { shells, octo }), shells + octo, [shells, shells + octo + 1, shells - octo]],
-        ], tr('Caracatițe: {shells} : 8 = {octo}. În total: {v0} + {v1} = {v2}.', { shells, octo, v0: shells, v1: octo, v2: shells + octo }));
+        ], tr('Stele de mare: {shells} : 8 = {octo}. În total: {v0} + {v1} = {v2}.', { shells, octo, v0: shells, v1: octo, v2: shells + octo }));
       },
     );
   } else {
     solve.push(
-      // Pe teren sunt 81 de copii care se așază în mod egal în 9 echipe.
+      // Copii la olimpiada sportivă, în 9 echipe egale.
       () => {
         const k = randInt(3, 9); const n = 9 * k;
-        return problem(tr('Pe teren sunt {v0} care trebuie să se așeze, în mod egal, în 9 echipe. Câți copii vor fi în fiecare echipă?', { v0: count(n, 'copii') }), k,
+        return problem(tr('La olimpiada sportivă participă {v0}, împărțiți în mod egal în 9 echipe. Câți copii are o echipă?', { v0: count(n, 'copii') }), k,
           tr('{n} : 9 = {k} copii, pentru că {v0} × 9 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 9, k - 1]);
       },
-      // Pavel: un buchet cu 9 trandafiri costă 63 de lei; Adina ia 7 trandafiri (pe pași).
+      // 9 baloane cu heliu costă ... lei; câte costă alte câteva baloane la fel (pe pași).
       () => {
         const price = pick([5, 6, 7, 8]); const total = 9 * price; const roses = pick([4, 6, 7]);
-        return stepped(tr('Pentru un buchet cu 9 trandafiri, Pavel a plătit {v0}. Cât plătește Adina pentru un buchet cu {roses} trandafiri de același fel?', { v0: count(total, 'lei'), roses }), [
-          [tr('Cât costă un trandafir? {total} : 9 = ?', { total }), price, [price + 1, total - 9, price - 1]],
-          [tr('Cât costă {roses} trandafiri? {v0} × {price} = ?', { roses, v0: roses, price }), roses * price, [roses * price + price, roses + price, roses * price - 1]],
-        ], tr('Un trandafir: {total} : 9 = {price} lei. {roses} trandafiri: {v0} × {v1} = {v2} lei.', { total, price, roses, v0: roses, v1: price, v2: roses * price }));
+        return stepped(tr('Pentru 9 baloane cu heliu, tata a plătit {v0}. Cât plătește mama pentru {roses} baloane la fel?', { v0: count(total, 'lei'), roses }), [
+          [tr('Cât costă un balon? {total} : 9 = ?', { total }), price, [price + 1, total - 9, price - 1]],
+          [tr('Cât costă {roses} baloane? {v0} × {price} = ?', { roses, v0: roses, price }), roses * price, [roses * price + price, roses + price, roses * price - 1]],
+        ], tr('Un balon: {total} : 9 = {price} lei. {roses} baloane: {v0} × {v1} = {v2} lei.', { total, price, roses, v0: roses, v1: price, v2: roses * price }));
       },
-      // Mădălina: bile colorate, 9 pentru un colier, restul brățări cu câte 9 mărgele (pe pași).
+      // Ouă: 9 pentru o prăjitură, restul în cofraje de câte 9 (pe pași).
       () => {
         const total = pick([36, 45, 54, 63]); const rest = total - 9;
-        return stepped(tr('Mădălina are {v0} colorate. Folosește 9 bile pentru un colier, iar din rest face brățări cu câte 9 mărgele. Câte brățări a făcut fetița?', { v0: count(total, 'bile') }), [
-          [tr('Câte bile au rămas? {total} - 9 = ?', { total }), rest, [rest + 1, total, rest - 9]],
-          [tr('Câte brățări? {rest} : 9 = ?', { rest }), rest / 9, [rest / 9 + 1, rest - 9, rest / 9 - 1]],
-        ], tr('Rămase: {total} - 9 = {rest}. Brățări: {v0} : 9 = {v1}.', { total, rest, v0: rest, v1: rest / 9 }));
+        return stepped(tr('Bunica are {v0}. Folosește 9 ouă pentru o prăjitură, iar restul le pune în cofraje de câte 9. Câte cofraje umple?', { v0: count(total, 'ouă') }), [
+          [tr('Câte ouă au rămas? {total} - 9 = ?', { total }), rest, [rest + 1, total, rest - 9]],
+          [tr('Câte cofraje? {rest} : 9 = ?', { rest }), rest / 9, [rest / 9 + 1, rest - 9, rest / 9 - 1]],
+        ], tr('Rămase: {total} - 9 = {rest}. Cofraje: {v0} : 9 = {v1}.', { total, rest, v0: rest, v1: rest / 9 }));
       },
       // Echipe de câte 9 jucători.
       () => {
@@ -1284,13 +1284,13 @@ function divisorLesson(d) {
         return problem(tr('La un turneu au venit {v0}. O echipă are 9 jucători. Câte echipe s-au format?', { v0: count(n, 'jucători') }), k,
           tr('{n} : 9 = {k} echipe, pentru că {v0} × 9 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 9, k - 1]);
       },
-      // Mere și pere: pere de 9 ori mai puține (pe pași).
+      // Roșii și dovleci de 9 ori mai puțini (pe pași).
       () => {
         const apples = pick([18, 27, 36, 45, 54]); const pears = apples / 9;
-        return stepped(tr('Bunica are {v0}, iar pere de 9 ori mai puține. Câte fructe are bunica în total?', { v0: count(apples, 'mere') }), [
-          [tr('Câte pere are? {apples} : 9 = ?', { apples }), pears, [apples - 9, pears + 1, pears + 2]],
-          [tr('Câte fructe în total? {apples} + {pears} = ?', { apples, pears }), apples + pears, [apples, apples + pears + 1, apples - pears]],
-        ], tr('Pere: {apples} : 9 = {pears}. În total: {v0} + {v1} = {v2}.', { apples, pears, v0: apples, v1: pears, v2: apples + pears }));
+        return stepped(tr('Bunicul a cules din grădină {v0}, iar dovleci de 9 ori mai puțini. Câte legume a cules în total?', { v0: count(apples, 'roșii') }), [
+          [tr('Câți dovleci a cules? {apples} : 9 = ?', { apples }), pears, [apples - 9, pears + 1, pears + 2]],
+          [tr('Câte legume în total? {apples} + {pears} = ?', { apples, pears }), apples + pears, [apples, apples + pears + 1, apples - pears]],
+        ], tr('Dovleci: {apples} : 9 = {pears}. În total: {v0} + {v1} = {v2}.', { apples, pears, v0: apples, v1: pears, v2: apples + pears }));
       },
     );
   }
@@ -1305,11 +1305,11 @@ const NINE_LESSON = divisorLesson(9);
 // ================= „Împărțirea”: cazuri speciale și proba =================
 // 🔟 Împărțirea la 10.
 const BY_TEN = [
-  // Marius a plătit 60 de lei pe mingi; o minge costă 10 lei.
+  // Cărți de colorat a câte 10 lei.
   () => {
     const k = randInt(2, 9); const n = 10 * k;
-    return problem(tr('Marius a cumpărat un set de mingi și a plătit {v0}. Câte mingi a cumpărat, dacă o minge costă 10 lei?', { v0: count(n, 'lei') }), k,
-      tr('{n} : 10 = {k} mingi, pentru că {v0} × 10 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 10, k - 1]);
+    return problem(tr('Sorina a cumpărat cărți de colorat și a plătit {v0}. O carte costă 10 lei. Câte cărți a cumpărat?', { v0: count(n, 'lei') }), k,
+      tr('{n} : 10 = {k} cărți, pentru că {v0} × 10 = {v1}.', { n, k, v0: k, v1: n }), [k + 1, n - 10, k - 1]);
   },
   // Pornind de la tabla înmulțirii cu 10, află câturile.
   () => {
@@ -1341,23 +1341,21 @@ const BY_TEN = [
 
 // ☝️ Împărțirea la el însuși, la 1 și împărțirea lui 0.
 const SPECIAL_CASES = [
-  // Albă-ca-Zăpada are 7 nuci și le împarte celor 7 pitici.
+  // Bunicul împarte nuci în mod egal la tot atâția nepoți.
   () => {
-    const n = pick([7, 7, 5, 6, 8, 9]);
-    const text = n === 7
-      ? 'Albă-ca-Zăpada are 7 nuci. Ea le împarte în mod egal celor 7 pitici. Câte nuci primește fiecare dintre ei?'
-      : tr('Albă-ca-Zăpada are {n} mere. Ea le împarte în mod egal celor {v0} prieteni ai ei. Câte mere primește fiecare?', { n, v0: n });
+    const n = randInt(5, 9);
+    const text = tr('Bunicul are {n} nuci. Le împarte în mod egal celor {v0} nepoți ai lui. Câte nuci primește fiecare nepot?', { n, v0: n });
     return problem(text, 1, tr('{n} : {v0} = 1. Dacă împărțim un număr la el însuși, obținem câtul 1.', { n, v0: n }), [0, n, 2]);
   },
   () => {
     const n = randInt(2, 10);
     return problem(`${n} : ${n} = ?`, 1, tr('Dacă împărțim un număr la el însuși, obținem câtul 1: {n} : {v0} = 1.', { n, v0: n }), [0, n, 2]);
   },
-  // Cristi are 5 coifuri și dăruiește fiecărui prieten câte un coif.
+  // Brățări dăruite câte una fiecărei prietene.
   () => {
     const n = randInt(3, 9);
-    return problem(tr('Cristi are {n} coifuri. La petrecere, el a dăruit fiecărui prieten câte un coif. Câți prieteni au venit la petrecerea lui Cristi?', { n }), n,
-      tr('{n} : 1 = {v0} prieteni. Când împărțim un număr la 1, obținem câtul egal cu acel număr.', { n, v0: n }), [1, n - 1, n + 1]);
+    return problem(tr('Irina a făcut {n} brățări. La ziua ei, a dat câte o brățară fiecărei prietene și nu i-a mai rămas niciuna. Câte prietene au venit?', { n }), n,
+      tr('{n} : 1 = {v0} prietene. Când împărțim un număr la 1, obținem câtul egal cu acel număr.', { n, v0: n }), [1, n - 1, n + 1]);
   },
   // 0 împărțit la orice număr dă câtul 0.
   () => {
@@ -1389,18 +1387,18 @@ const SPECIAL_CASES = [
 
 // ✅ Proba înmulțirii și a împărțirii.
 const PROOF = [
-  // Teodora a cumpărat 8 cutii cu câte 7 brioșe: calcul și proba prin împărțire.
+  // Cutii cu brioșe: calcul și proba prin împărțire.
   () => {
     const a = randInt(3, 9); const b = randInt(3, 9); const p = a * b;
-    return stepped(tr('Pentru o petrecere, Teodora a cumpărat {a} cutii cu câte {b} brioșe fiecare. Câte brioșe sunt în total? Fă și proba prin împărțire.', { a, b }), [
+    return stepped(tr('Pentru picnic, Bogdan a cumpărat {a} cutii cu câte {b} brioșe. Câte brioșe sunt în total? Fă și proba prin împărțire.', { a, b }), [
       [tr('Câte brioșe în total? {a} × {b} = ?', { a, b }), p, [p + 1, p - 1, a + b]],
       [tr('Proba prin împărțire: {p} : {a} = ?', { p, a }), b, [b + 1, b - 1, a]],
     ], tr('{a} × {b} = {p} brioșe. Proba: {v0} : {v1} = {v2} (sau {v3} : {v4} = {v5}).', { a, b, p, v0: p, v1: a, v2: b, v3: p, v4: b, v5: a }));
   },
-  // Teodora împarte în mod egal 56 de brioșe pe 8 farfurii: calcul și proba prin înmulțire.
+  // Brioșe împărțite în mod egal pe farfurii: calcul și proba prin înmulțire.
   () => {
     const d = randInt(3, 9); const q = randInt(3, 9); const n = d * q;
-    return stepped(tr('Teodora împarte în mod egal {v0} pe {d} farfurii. Câte brioșe pune pe o farfurie? Fă și proba prin înmulțire.', { v0: count(n, 'brioșe'), d }), [
+    return stepped(tr('Bogdan pune în mod egal {v0} pe {d} farfurii. Câte brioșe sunt pe o farfurie? Fă și proba prin înmulțire.', { v0: count(n, 'brioșe'), d }), [
       [tr('Câte brioșe pe o farfurie? {n} : {d} = ?', { n, d }), q, [q + 1, q - 1, d]],
       [tr('Proba prin înmulțire: {q} × {d} = ?', { q, d }), n, [n + 1, n - d, n + d]],
     ], tr('{n} : {d} = {q} brioșe. Proba: {v0} × {v1} = {v2}.', { n, d, q, v0: q, v1: d, v2: n }));
@@ -1414,11 +1412,11 @@ const PROOF = [
       [tr('Proba: {q} × {d} = ?', { q, d }), n, [n + 1, n - 1, n + d]],
     ], tr('{n} : {d} = {q}. Proba: {v0} × {v1} = {v2} ✅', { n, d, q, v0: q, v1: d, v2: n }));
   },
-  // Scrie toate operațiile folosind numerele de pe pălării: 3, 9, 27.
+  // Trei numere legate prin înmulțire și împărțire.
   () => {
     const [a, b] = pick([[3, 9], [5, 8], [7, 9], [8, 6], [4, 6], [6, 7]]); const p = a * b;
     const [x, y] = Math.random() < 0.5 ? [a, b] : [b, a];
-    return problem(tr('Pe o pălărie sunt numerele {a}, {b} și {p}. Știm că {v0} × {v1} = {v2}. Cât este {v3} : {x}?', { a, b, p, v0: a, v1: b, v2: p, v3: p, x }), y,
+    return problem(tr('Pe un zmeu sunt scrise numerele {a}, {b} și {p}. Știm că {v0} × {v1} = {v2}. Cât este {v3} : {x}?', { a, b, p, v0: a, v1: b, v2: p, v3: p, x }), y,
       tr('Din {a} × {b} = {p} scriem și împărțirile: {v0} : {v1} = {v2} și {v3} : {v4} = {v5}.', { a, b, p, v0: p, v1: a, v2: b, v3: p, v4: b, v5: a }), [y + 1, x, y - 1]);
   },
   // Care este proba împărțirii?
@@ -1435,19 +1433,19 @@ const PROOF = [
 
 // 🧩 Probleme rezolvate și verificate prin proba.
 const PROOF_SOLVE = [
-  // Pentru 5 ascuțitori voi plăti 15 lei: cât costă o ascuțitoare? (pe pași, cu proba)
+  // Câteva radiere la fel costă ... lei: cât costă una? (pe pași, cu proba)
   () => {
     const k = randInt(2, 6); const many = pick([3, 4, 5]); const total = k * many;
-    return stepped(tr('Adela spune: „Pentru {many} ascuțitori voi plăti {v0}.” Cât costă o ascuțitoare? Verifică apoi prin proba înmulțirii.', { many, v0: count(total, 'lei') }), [
-      [tr('Cât costă o ascuțitoare? {total} : {many} = ?', { total, many }), k, [k + 1, total - many, k - 1]],
+    return stepped(tr('Sebi a plătit {v0} pentru {many} radiere la fel. Cât costă o radieră? Verifică apoi prin proba înmulțirii.', { many, v0: count(total, 'lei') }), [
+      [tr('Cât costă o radieră? {total} : {many} = ?', { total, many }), k, [k + 1, total - many, k - 1]],
       [tr('Proba: {k} × {many} = ?', { k, many }), total, [total + 1, total - 1, k + many]],
     ], tr('{total} : {many} = {k} lei. Proba: {v0} × {v1} = {v2} ✅', { total, many, k, v0: k, v1: many, v2: total }));
   },
-  // Dacă Alex și-ar tripla suma, ar avea 27 de lei. Câți lei are?
+  // Banii din pușculiță, de 3 ori mai mulți, ar fi ... lei. Câți lei sunt acum?
   () => {
     const k = randInt(3, 9); const total = 3 * k;
-    return stepped(tr('Dacă Alex și-ar tripla suma din pușculiță, ar avea {v0}. Câți lei are băiatul în pușculiță?', { v0: count(total, 'lei') }), [
-      [tr('A tripla înseamnă a înmulți cu 3, deci căutăm: {total} : 3 = ?', { total }), k, [k + 1, total - 3, k + 3]],
+    return stepped(tr('Dacă banii din pușculița Ilincăi ar fi de 3 ori mai mulți, ea ar avea {v0}. Câți lei are Ilinca acum în pușculiță?', { v0: count(total, 'lei') }), [
+      [tr('„De 3 ori mai mulți” înseamnă înmulțire cu 3, deci căutăm: {total} : 3 = ?', { total }), k, [k + 1, total - 3, k + 3]],
       [tr('Proba: {k} × 3 = ?', { k }), total, [total + 1, total - 3, k + 3]],
     ], tr('{total} : 3 = {k} lei. Proba: {v0} × 3 = {v1} ✅', { total, k, v0: k, v1: total }));
   },
@@ -1459,13 +1457,13 @@ const PROOF_SOLVE = [
       [tr('Proba: {total} : {boxes} = ?', { total, boxes }), per, [per + 1, per - 1, boxes]],
     ], tr('{per} × {boxes} = {total} creioane. Proba: {v0} : {v1} = {v2} ✅', { per, boxes, total, v0: total, v1: boxes, v2: per }));
   },
-  // Bunica a împărțit 32 de cireșe, în mod egal, celor 4 nepoți. (cu proba prin înmulțire)
+  // Caise împărțite în mod egal la câțiva copii. (cu proba prin înmulțire)
   () => {
     const kids = pick([2, 3, 4, 5]); const each = randInt(4, 9); const total = kids * each;
-    return stepped(tr('Bunica a împărțit {v0}, în mod egal, celor {kids} nepoți. Câte cireșe a primit fiecare? Verifică prin operația inversă.', { v0: count(total, 'cireșe'), kids }), [
+    return stepped(tr('Tata a împărțit {v0}, în mod egal, celor {kids} copii. Câte caise a primit fiecare copil? Verifică prin operația inversă.', { v0: count(total, 'caise'), kids }), [
       [`${total} : ${kids} = ?`, each, [each + 1, each - 1, total - kids]],
       [tr('Proba: {each} × {kids} = ?', { each, kids }), total, [total + 1, total - 1, each + kids]],
-    ], tr('{total} : {kids} = {each} cireșe. Proba: {v0} × {v1} = {v2} ✅', { total, kids, each, v0: each, v1: kids, v2: total }));
+    ], tr('{total} : {kids} = {each} caise. Proba: {v0} × {v1} = {v2} ✅', { total, kids, each, v0: each, v1: kids, v2: total }));
   },
 ];
 

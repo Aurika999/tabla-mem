@@ -4,7 +4,7 @@ import PathIslandMap from './PathIslandMap';
 import { tr } from '../i18n';
 
 // Insulele „Înmulțirea cu 5 / 6 / 7”: câte o insulă pentru fiecare secțiune a
-// lecției din manual (Descopăr, Aplic, Exersez, Rezolv probleme) și caseta
+// lecției (Învăț, Încerc, Mă antrenez, Probleme) și caseta
 // „Reține”, deschisă din colțul hărții.
 
 // Așezarea celor 4 insule; diferă doar nivelurile, numele și decorurile.
@@ -45,14 +45,14 @@ const LESSONS = {
   5: {
     title: '🖐️ ÎNMULȚIREA CU 5',
     ocean: ['#5fb8f0', '#2d8fd6', '#1a64a8'],
-    names: ['Peștera Descoperirilor', 'Atelierul cu Steluțe', 'Poiana Exercițiilor', 'Castelul Problemelor'],
+    names: ['Peștera Descoperirilor', 'Atelierul cu Mănuși', 'Poiana Exercițiilor', 'Castelul Problemelor'],
     decor: [
       [['🔍', -85, -8, 30], ['⭐', 85, -28, 30], ['🌟', 67, 24, 22]],
       [['✂️', -85, -7, 30], ['⭐', 80, 7, 26], ['📒', 98, -19, 26]],
       [['✏️', -70, -20, 32], ['🌼', 85, -8, 26], ['📐', 73, 24, 22]],
       [['🏰', -80, -19, 40], ['👟', 80, -19, 26], ['💐', 95, 21, 24]],
     ],
-    story: { items: '⭐', text: 'steluțe' },
+    story: { items: '🍓', text: 'căpșuni' },
     tips: [
       <>🔢 Numără din 5 în 5: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50.</>,
       <>🔁 Ordinea factorilor nu contează: <b>5 × 3 = 3 × 5 = 15</b>.</>,
@@ -63,14 +63,14 @@ const LESSONS = {
   6: {
     title: '🔋 ÎNMULȚIREA CU 6',
     ocean: ['#66d9a8', '#22a87a', '#127a5a'],
-    names: ['Depozitul de Baterii', 'Laboratorul cu 6', 'Pădurea Exercițiilor', 'Aprozarul Problemelor'],
+    names: ['Brutăria cu Brioșe', 'Laboratorul cu 6', 'Pădurea Exercițiilor', 'Piața Problemelor'],
     decor: [
       [['🔋', -85, -8, 32], ['🔍', 85, -28, 28], ['⚡', 67, 24, 22]],
       [['🧪', -85, -7, 30], ['🔋', 80, 7, 26], ['📒', 98, -19, 24]],
       [['✏️', -70, -20, 32], ['🌲', 85, -8, 28], ['🐝', 73, 24, 22]],
       [['🧅', -80, -19, 34], ['🍯', 80, -19, 28], ['🚀', 95, 21, 24]],
     ],
-    story: { items: '🔋', text: 'baterii' },
+    story: { items: '🧁', text: 'brioșe' },
     tips: [
       <>🔢 Numără din 6 în 6: 6, 12, 18, 24, 30, 36, 42, 48, 54, 60.</>,
       <>🔁 Ordinea factorilor nu contează: <b>6 × 4 = 4 × 6 = 24</b>.</>,
@@ -81,14 +81,14 @@ const LESSONS = {
   7: {
     title: '🪙 ÎNMULȚIREA CU 7',
     ocean: ['#b197fc', '#7950f2', '#5235b8'],
-    names: ['Comoara cu Monede', 'Atelierul cu 7', 'Grădina Exercițiilor', 'Clubul Rachetelor'],
+    names: ['Raftul cu Cărți', 'Atelierul cu 7', 'Grădina Exercițiilor', 'Atelierul de Origami'],
     decor: [
       [['🪙', -85, -8, 32], ['🔍', 85, -28, 28], ['💰', 67, 24, 22]],
       [['🛠️', -85, -7, 30], ['🪙', 80, 7, 26], ['📒', 98, -19, 24]],
       [['✏️', -70, -20, 32], ['🌈', 85, -8, 28], ['🐞', 73, 24, 22]],
       [['🚀', -80, -19, 36], ['🛰️', 80, -19, 28], ['🪐', 95, 21, 24]],
     ],
-    story: { items: '🪙', text: 'monede' },
+    story: { items: '📗', text: 'cărți' },
     tips: [
       <>🔢 Numără din 7 în 7: 7, 14, 21, 28, 35, 42, 49, 56, 63, 70.</>,
       <>🔁 Ordinea factorilor nu contează: <b>7 × 3 = 3 × 7 = 21</b>.</>,
@@ -101,7 +101,7 @@ const LESSONS = {
 LESSONS[2] = {
   title: '🛷 ÎNMULȚIREA CU 2',
   ocean: ['#d0bfff', '#9775fa', '#7048e8'],
-  names: ['Dealul cu Săniuțe', 'Atelierul cu 2', 'Pârtia Exercițiilor', 'Patinoarul Problemelor'],
+  names: ['Lacul cu Caiace', 'Atelierul cu 2', 'Pista Exercițiilor', 'Grădina Zoologică'],
   decor: [
     [['🛷', -85, -8, 32], ['🔍', 85, -28, 28], ['⛄', 67, 24, 24]],
     [['❄️', -85, -7, 30], ['🛷', 80, 7, 26], ['📒', 98, -19, 24]],
@@ -120,14 +120,14 @@ LESSONS[2] = {
 LESSONS[3] = {
   title: '⛄ ÎNMULȚIREA CU 3',
   ocean: ['#99e9f2', '#3bc9db', '#1098ad'],
-  names: ['Dealul cu Bulgări', 'Atelierul cu 3', 'Ținta Exercițiilor', 'Petrecerea lui Mihai'],
+  names: ['Livada cu Mere', 'Atelierul cu 3', 'Ținta Exercițiilor', 'Ziua Ralucăi'],
   decor: [
     [['⛄', -85, -8, 32], ['🔍', 85, -28, 28], ['❄️', 67, 24, 22]],
     [['🎯', -85, -7, 30], ['⛄', 80, 7, 26], ['📒', 98, -19, 24]],
     [['✏️', -70, -20, 32], ['🎯', 85, -8, 28], ['🧣', 73, 24, 22]],
     [['🍕', -80, -19, 34], ['🐦', 80, -19, 28], ['✏️', 95, 21, 24]],
   ],
-  story: { items: '⚪', text: 'bulgări' },
+  story: { items: '🌱', text: 'răsaduri' },
   tips: [
     <>🔢 Numără din 3 în 3: 3, 6, 9, 12, 15, 18, 21, 24, 27, 30.</>,
     <>🎯 Ordinea factorilor nu contează: <b>3 × 5 = 5 × 3 = 15</b>.</>,
@@ -139,14 +139,14 @@ LESSONS[3] = {
 LESSONS[4] = {
   title: '🐻‍❄️ ÎNMULȚIREA CU 4',
   ocean: ['#a5d8ff', '#74b5e8', '#4a8cc4'],
-  names: ['Banchiza Urșilor Polari', 'Atelierul cu 4', 'Ghețarul Exercițiilor', 'Cabana Problemelor'],
+  names: ['Sala cu Mese', 'Atelierul cu 4', 'Ghețarul Exercițiilor', 'Autobuzul Problemelor'],
   decor: [
     [['🐻‍❄️', -85, -8, 32], ['🔍', 85, -28, 28], ['🐧', 67, 24, 24]],
     [['🐟', -85, -7, 30], ['🦉', 80, 7, 26], ['📒', 98, -19, 24]],
     [['✏️', -70, -20, 32], ['🧊', 85, -8, 28], ['❄️', 73, 24, 22]],
     [['🏠', -80, -19, 34], ['🚗', 80, -19, 28], ['📖', 95, 21, 24]],
   ],
-  story: { items: '🐾', text: 'picioare de urs' },
+  story: { items: '🪑', text: 'picioare de scaun' },
   tips: [
     <>🔢 Numără din 4 în 4: 4, 8, 12, 16, 20, 24, 28, 32, 36, 40.</>,
     <>🐧 Ordinea factorilor nu contează: <b>4 × 6 = 6 × 4 = 24</b>.</>,
@@ -158,14 +158,14 @@ LESSONS[4] = {
 LESSONS[8] = {
   title: '🐙 ÎNMULȚIREA CU 8',
   ocean: ['#74c0fc', '#3b8fd6', '#1f5fa8'],
-  names: ['Recifurile Caracatițelor', 'Atelierul cu 8', 'Laguna Exercițiilor', 'Petrecerea lui Habarnam'],
+  names: ['Pânza Păianjenului', 'Atelierul cu 8', 'Laguna Exercițiilor', 'Carnavalul Clasei'],
   decor: [
     [['🐙', -85, -8, 32], ['🔍', 85, -28, 28], ['🐚', 67, 24, 22]],
     [['🧰', -85, -7, 30], ['🐙', 80, 7, 26], ['📒', 98, -19, 24]],
     [['✏️', -70, -20, 32], ['🪸', 85, -8, 28], ['🐠', 73, 24, 22]],
     [['🎂', -80, -19, 34], ['🎁', 80, -19, 28], ['💧', 95, 21, 24]],
   ],
-  story: { items: '🐙', text: 'brațe de caracatiță' },
+  story: { items: '🕷️', text: 'picioare de păianjen' },
   tips: [
     <>🔢 Numără din 8 în 8: 8, 16, 24, 32, 40, 48, 56, 64, 72, 80.</>,
     <>🔁 Ordinea factorilor nu contează: <b>8 × 3 = 3 × 8 = 24</b>.</>,
@@ -177,14 +177,14 @@ LESSONS[8] = {
 LESSONS[9] = {
   title: '🎈 ÎNMULȚIREA CU 9',
   ocean: ['#ffa8a8', '#f06595', '#c2255c'],
-  names: ['Târgul cu Baloane', 'Atelierul cu 9', 'Parcul Exercițiilor', 'Casa Spiridușilor'],
+  names: ['Cămara cu Biscuiți', 'Atelierul cu 9', 'Parcul Exercițiilor', 'Picnicul din Parc'],
   decor: [
     [['🎈', -85, -8, 32], ['🔍', 85, -28, 28], ['🎉', 67, 24, 22]],
     [['🛠️', -85, -7, 30], ['🎈', 80, 7, 26], ['📒', 98, -19, 24]],
     [['✏️', -70, -20, 32], ['🎠', 85, -8, 28], ['🌷', 73, 24, 22]],
     [['🏠', -80, -19, 34], ['🍞', 80, -19, 28], ['⭐', 95, 21, 24]],
   ],
-  story: { items: '🎈', text: 'baloane' },
+  story: { items: '🍪', text: 'biscuiți' },
   tips: [
     <>🔢 Numără din 9 în 9: 9, 18, 27, 36, 45, 54, 63, 72, 81, 90.</>,
     <>🔁 Ordinea factorilor nu contează: <b>9 × 4 = 4 × 9 = 36</b>.</>,
@@ -195,7 +195,7 @@ LESSONS[9] = {
 
 const TABLE = Array.from({ length: 10 }, (_, i) => i + 1);
 
-// Caseta „Reține” din manual, într-o fereastră peste hartă.
+// Caseta „Reține”, într-o fereastră peste hartă.
 function Lesson({ factor, onClose }) {
   const lesson = LESSONS[factor];
   const { items, text } = lesson.story;
@@ -205,7 +205,7 @@ function Lesson({ factor, onClose }) {
         <button className="lesson-close" onClick={onClose} aria-label="Închide">✕</button>
         <h2>📖 REȚIN</h2>
         <p className="five-rule">
-          Când înmulțim un număr cu <b>{factor}</b>, obținem un număr <b>de {factor} ori mai mare</b>.
+          Înmulțirea cu <b>{factor}</b> face un număr <b>de {factor} ori mai mare</b>.
         </p>
         <div className="five-example">
           <div className="five-stars" style={{ gridTemplateColumns: `repeat(${factor}, auto)` }} aria-hidden="true">
@@ -244,7 +244,7 @@ export default function LessonMap({ factor, ...props }) {
         path={LESSON_PATHS[factor]}
         layouts={layoutsFor(lesson.names, lesson.decor, LESSON_PATHS[factor])}
         ocean={lesson.ocean}
-        intro={tr('Apasă pe „📖 Reține” din colț ca să citești lecția, apoi descoperă, aplică, exersează și rezolvă! {icon}', { icon: lesson.title.split(' ')[0] })}
+        intro={tr('Apasă pe „📖 Reține” din colț ca să citești lecția, apoi învață, încearcă, antrenează-te și rezolvă probleme! {icon}', { icon: lesson.title.split(' ')[0] })}
         doneText={tr('Știi înmulțirea cu {factor}! 🏆', { factor })}
         corner={(
           <button className="lesson-btn" onClick={() => setLessonOpen(true)} title={tr('Lecția: înmulțirea cu {factor}', { factor })}>

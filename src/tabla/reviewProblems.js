@@ -1,6 +1,5 @@
 import { tr } from './i18n';
-// „Probleme de recapitulare” (pagina cu urși, copaci, veverițe și postere din manual):
-// probleme cu mai multe operații, rezolvate pe pași. Numerele se schimbă la fiecare rundă.
+// „Probleme de recapitulare”: probleme cu mai multe operații, rezolvate pe pași. Numerele se schimbă la fiecare rundă.
 
 export const REVIEW_LEVELS = ['recap1'];
 
@@ -37,76 +36,76 @@ function count(n, word) {
 }
 
 const TEMPLATES = [
-  // 4. Pui de urs, urși adulți de 4 ori mai mulți, căprioare cu 6 mai multe decât urși.
+  // Ferma: iezi, capre mari de câteva ori mai multe, oi cu câteva mai multe decât caprele.
   () => {
-    const cubs = randInt(5, 9); const times = pick([2, 3, 4]); const more = randInt(3, 9);
-    const adults = cubs * times; const bears = cubs + adults; const deer = bears + more;
+    const kids = randInt(5, 9); const times = pick([2, 3, 4]); const more = randInt(3, 9);
+    const adults = kids * times; const goats = kids + adults; const sheep = goats + more;
     return {
-      text: tr('Într-o rezervație sunt {v0} de urs, de {times} ori mai mulți urși adulți și cu {more} mai multe căprioare decât urși. Câte animale sunt în rezervație?', { v0: count(cubs, 'pui'), times, more }),
+      text: tr('La ferma lui Tudor sunt {v0}. Caprele mari sunt de {times} ori mai multe decât iezii, iar oile sunt cu {more} mai multe decât toate caprele. Câte animale sunt la fermă?', { v0: count(kids, 'iezi'), times, more }),
       steps: [
-        step(tr('Câți urși adulți sunt? {cubs} × {times} = ?', { cubs, times }), adults, [cubs + times, adults + cubs]),
-        step(tr('Câți urși sunt în total? {cubs} + {adults} = ?', { cubs, adults }), bears, [adults, bears + 10]),
-        step(tr('Câte căprioare sunt? {bears} + {more} = ?', { bears, more }), deer, [bears - more, deer + 10]),
-        step(tr('Câte animale sunt în total? {bears} + {deer} = ?', { bears, deer }), bears + deer, [deer + cubs, bears + deer + 10]),
+        step(tr('Câte capre mari sunt? {kids} × {times} = ?', { kids, times }), adults, [kids + times, adults + kids]),
+        step(tr('Câte capre sunt cu totul (iezi și capre mari)? {kids} + {adults} = ?', { kids, adults }), goats, [adults, goats + 10]),
+        step(tr('Câte oi sunt? {goats} + {more} = ?', { goats, more }), sheep, [goats - more, sheep + 10]),
+        step(tr('Câte animale sunt la fermă? {goats} + {sheep} = ?', { goats, sheep }), goats + sheep, [sheep + kids, goats + sheep + 10]),
       ],
-      explanation: tr('Urși adulți: {cubs} × {times} = {adults}. Urși: {v0} + {v1} = {bears}. ', { cubs, times, adults, v0: cubs, v1: adults, bears })
-        + tr('Căprioare: {bears} + {more} = {deer}. În total: {v0} + {v1} = {v2} de animale.', { bears, more, deer, v0: bears, v1: deer, v2: bears + deer }),
+      explanation: tr('Capre mari: {kids} × {times} = {adults}. Toate caprele: {kids} + {adults} = {goats}. ', { kids, times, adults, goats })
+        + tr('Oi: {goats} + {more} = {sheep}. La fermă: {goats} + {sheep} = {v0} de animale.', { goats, more, sheep, v0: goats + sheep }),
     };
   },
-  // 5. Pepinieră: rânduri cu stejari, frasini și mesteceni.
+  // Grădina: rânduri cu lalele, trandafiri și narcise.
   () => {
     const [r1, p1] = [randInt(2, 5), randInt(5, 9)]; const [r2, p2] = [randInt(4, 7), randInt(3, 6)]; const [r3, p3] = [randInt(6, 9), 5];
     const a = r1 * p1; const b = r2 * p2; const c = r3 * p3;
     return {
-      text: tr('Într-o pepinieră sunt {r1} rânduri a câte {p1} stejari pe rând, {r2} rânduri a câte {p2} frasini pe rând și {r3} rânduri a câte {p3} mesteceni pe rând. Câți pomi sunt în total?', { r1, p1, r2, p2, r3, p3 }),
+      text: tr('Bunica și Matei plantează flori în grădină: {r1} rânduri cu câte {p1} lalele, {r2} rânduri cu câte {p2} trandafiri și {r3} rânduri cu câte {p3} narcise. Câte flori au plantat?', { r1, p1, r2, p2, r3, p3 }),
       steps: [
-        step(tr('Câți stejari? {r1} × {p1} = ?', { r1, p1 }), a, [r1 + p1, a + p1]),
-        step(tr('Câți frasini? {r2} × {p2} = ?', { r2, p2 }), b, [r2 + p2, b + p2]),
-        step(tr('Câți mesteceni? {r3} × {p3} = ?', { r3, p3 }), c, [r3 + p3, c + p3]),
-        step(tr('Câți pomi în total? {a} + {b} + {c} = ?', { a, b, c }), a + b + c, [a + b, a + b + c + 10]),
+        step(tr('Câte lalele? {r1} × {p1} = ?', { r1, p1 }), a, [r1 + p1, a + p1]),
+        step(tr('Câți trandafiri? {r2} × {p2} = ?', { r2, p2 }), b, [r2 + p2, b + p2]),
+        step(tr('Câte narcise? {r3} × {p3} = ?', { r3, p3 }), c, [r3 + p3, c + p3]),
+        step(tr('Câte flori în total? {a} + {b} + {c} = ?', { a, b, c }), a + b + c, [a + b, a + b + c + 10]),
       ],
-      explanation: tr('Stejari: {r1} × {p1} = {a}. Frasini: {r2} × {p2} = {b}. Mesteceni: {r3} × {p3} = {c}. ', { r1, p1, a, r2, p2, b, r3, p3, c })
-        + tr('În total: {a} + {b} + {c} = {v0} de pomi.', { a, b, c, v0: a + b + c }),
+      explanation: tr('Lalele: {r1} × {p1} = {a}. Trandafiri: {r2} × {p2} = {b}. Narcise: {r3} × {p3} = {c}. ', { r1, p1, a, r2, p2, b, r3, p3, c })
+        + tr('În total: {a} + {b} + {c} = {v0} de flori.', { a, b, c, v0: a + b + c }),
     };
   },
-  // 6. Două veverițe strâng alune o săptămână (7 zile).
+  // Doi frați citesc câteva pagini pe zi, o săptămână (7 zile).
   () => {
     const x = randInt(3, 6); const y = x + randInt(1, 3);
     return {
-      text: tr('O veveriță strânge provizii pentru iarnă, într-o săptămână, câte {x} alune pe zi, iar altă veveriță strânge câte {y} alune pe zi, timp de o săptămână. Câte alune strâng cele două veverițe într-o săptămână?', { x, y }),
+      text: tr('În vacanță, Ioana citește în fiecare zi câte {x} pagini, iar fratele ei, Luca, câte {y} pagini. Câte pagini citesc cei doi frați într-o săptămână?', { x, y }),
       steps: [
-        step(tr('O săptămână are 7 zile. Prima veveriță: {x} × 7 = ?', { x }), x * 7, [x + 7, x * 6]),
-        step(tr('A doua veveriță: {y} × 7 = ?', { y }), y * 7, [y + 7, y * 6]),
+        step(tr('O săptămână are 7 zile. Câte pagini citește Ioana? {x} × 7 = ?', { x }), x * 7, [x + 7, x * 6]),
+        step(tr('Câte pagini citește Luca? {y} × 7 = ?', { y }), y * 7, [y + 7, y * 6]),
         step(tr('Împreună: {v0} + {v1} = ?', { v0: x * 7, v1: y * 7 }), (x + y) * 7, [(x + y) * 7 + 10, x * 7 + y]),
       ],
-      explanation: tr('Prima: {x} × 7 = {v0}. A doua: {y} × 7 = {v1}. Împreună: {v2} + {v3} = {v4} de alune. ', { x, v0: x * 7, y, v1: y * 7, v2: x * 7, v3: y * 7, v4: (x + y) * 7 })
+      explanation: tr('Ioana: {x} × 7 = {v0}. Luca: {y} × 7 = {v1}. Împreună: {v0} + {v1} = {v2} de pagini. ', { x, v0: x * 7, y, v1: y * 7, v2: (x + y) * 7 })
         + tr('Al doilea mod: ({x} + {y}) × 7 = {v0} × 7 = {v1}.', { x, y, v0: x + y, v1: (x + y) * 7 }),
     };
   },
-  // 7. Tren de marfă: vagoane cu saci, mai multe curse.
+  // Duba brutăriei: lăzi cu pâini, mai multe drumuri.
   () => {
-    const wagons = randInt(2, 4); const sacks = pick([5, 10]); const trips = randInt(2, 5);
-    const perTrip = wagons * sacks;
+    const crates = randInt(2, 4); const loaves = pick([5, 10]); const trips = randInt(2, 5);
+    const perTrip = crates * loaves;
     return {
-      text: tr('Un tren de marfă are {wagons} vagoane. În fiecare vagon sunt câte {sacks} saci cu cereale. Știind că trenul face {trips} curse, transportând de fiecare dată același număr de saci, află câți saci transportă trenul în total.', { wagons, sacks, trips }),
+      text: tr('Duba unei brutării încarcă {crates} lăzi, iar în fiecare ladă sunt câte {loaves} pâini. Într-o dimineață, duba face {trips} drumuri la magazine, de fiecare dată la fel de încărcată. Câte pâini a dus în total?', { crates, loaves, trips }),
       steps: [
-        step(tr('Câți saci duce la o cursă? {wagons} × {sacks} = ?', { wagons, sacks }), perTrip, [wagons + sacks, perTrip + sacks]),
-        step(tr('Câți saci în {trips} curse? {perTrip} × {v0} = ?', { trips, perTrip, v0: trips }), perTrip * trips, [perTrip + trips, perTrip * (trips + 1)]),
+        step(tr('Câte pâini duce la un drum? {crates} × {loaves} = ?', { crates, loaves }), perTrip, [crates + loaves, perTrip + loaves]),
+        step(tr('Câte pâini în {trips} drumuri? {perTrip} × {v0} = ?', { trips, perTrip, v0: trips }), perTrip * trips, [perTrip + trips, perTrip * (trips + 1)]),
       ],
-      explanation: tr('La o cursă: {wagons} × {sacks} = {perTrip} de saci. În {trips} curse: {v0} × {v1} = {v2} de saci.', { wagons, sacks, perTrip, trips, v0: perTrip, v1: trips, v2: perTrip * trips }),
+      explanation: tr('La un drum: {crates} × {loaves} = {perTrip} de pâini. În {trips} drumuri: {perTrip} × {trips} = {v0} de pâini.', { crates, loaves, perTrip, trips, v0: perTrip * trips }),
     };
   },
-  // 8. Postere: clasa A, clasa B de două ori mai multe, clasa C cât celelalte două la un loc.
+  // Târgul de toamnă: trei echipe aduc borcane cu miere.
   () => {
     const a = randInt(5, 12); const b = 2 * a; const c = a + b;
     return {
-      text: tr('Clasa a II-a A a realizat {a} postere cu îndemnuri de protejare a pădurilor, clasa a II-a B a realizat de două ori mai multe, iar clasa a II-a C cât celelalte două clase la un loc. Câte postere au realizat cele trei clase?', { a }),
+      text: tr('La târgul de toamnă al școlii, echipa „Albinele” a adus {a} borcane cu miere, echipa „Fluturii” de două ori mai multe, iar echipa „Buburuzele” cât celelalte două echipe la un loc. Câte borcane au adus cele trei echipe?', { a }),
       steps: [
-        step(tr('Câte postere a făcut clasa B? {a} × 2 = ?', { a }), b, [a + 2, b + 2]),
-        step(tr('Câte postere a făcut clasa C? {a} + {b} = ?', { a, b }), c, [b, c + 10]),
-        step(tr('Câte postere în total? {a} + {b} + {c} = ?', { a, b, c }), a + b + c, [a + b, a + b + c + 10]),
+        step(tr('Câte borcane au adus „Fluturii”? {a} × 2 = ?', { a }), b, [a + 2, b + 2]),
+        step(tr('Câte borcane au adus „Buburuzele”? {a} + {b} = ?', { a, b }), c, [b, c + 10]),
+        step(tr('Câte borcane în total? {a} + {b} + {c} = ?', { a, b, c }), a + b + c, [a + b, a + b + c + 10]),
       ],
-      explanation: tr('Clasa B: {a} × 2 = {b}. Clasa C: {v0} + {v1} = {c}. În total: {v2} + {v3} + {v4} = {v5} de postere.', { a, b, v0: a, v1: b, c, v2: a, v3: b, v4: c, v5: a + b + c }),
+      explanation: tr('„Fluturii”: {a} × 2 = {b}. „Buburuzele”: {a} + {b} = {c}. În total: {a} + {b} + {c} = {v0} de borcane.', { a, b, c, v0: a + b + c }),
     };
   },
 ];
