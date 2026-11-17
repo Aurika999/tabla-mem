@@ -6,7 +6,6 @@ import { REVIEW_LEVELS } from '../reviewProblems';
 import InstallButton from './InstallButton';
 import { Island, Waves, useMediaQuery, PHONE_QUERY } from './MapHome';
 import { getLang, tr } from '../i18n';
-import { privacyUrl } from '../legal';
 
 // Prima pagină (Arena Concursului și Insula Învățării), pagina „Insula Învățării”
 // (Insula Isteților, Tabla înmulțirii, Tabla împărțirii, Evaluare) și pagina
@@ -423,7 +422,7 @@ export default function HomeIslands({
   const greeting = subpage ? tr(subpage.greeting)
     : (name ? tr('Bine ai venit, {name}! Alege o insulă! 🏝️', { name }) : tr('Bine ai venit! Alege o insulă! 🏝️'));
 
-  // Butoanele Clasament (și pe prima pagină: Despre joc, Confidențialitate, Instalează).
+  // Butoanele Clasament (și pe prima pagină: Despre joc, Instalează).
   // Pe telefon stau jos, într-un chenar separat, pe toate paginile cu insule.
   const panelButtons = (
     <>
@@ -431,11 +430,6 @@ export default function HomeIslands({
       {mode === 'home' && (
         <button onClick={() => window.open(`${process.env.PUBLIC_URL}/${getLang() === 'en' ? 'about-the-game.pdf' : 'despre-joc.pdf'}`, '_blank', 'noopener')}>
           <span>📄</span>{tr('Despre joc')}
-        </button>
-      )}
-      {mode === 'home' && (
-        <button onClick={() => window.open(privacyUrl(), '_blank', 'noopener')}>
-          <span>🔒</span>{tr('Confidențialitate')}
         </button>
       )}
       {mode === 'home' && <InstallButton />}

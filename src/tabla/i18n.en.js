@@ -2346,7 +2346,6 @@ const EN = {
   "Cum se șterge contul": "How to delete the account",
   "Contul trebuie creat de un părinte sau cu acordul lui. Bifează căsuța.": "The account must be created by a parent or with their consent. Tick the box.",
   "Sunt părinte/tutore sau am acordul părintelui pentru acest cont și am citit": "I am a parent/guardian or have a parent's consent for this account, and I have read the",
-  "Confidențialitate": "Privacy",
   "Contul și datele tale au fost șterse.": "Your account and data have been deleted.",
   "Reclamă": "Advertisement",
 };

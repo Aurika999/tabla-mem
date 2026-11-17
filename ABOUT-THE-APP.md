@@ -131,10 +131,9 @@ Multi-step problems, solved **in steps**: the farm, the garden, books, the baker
 3. On the home page, choose the **Learning Island** to learn and practise, or the **Contest Arena** to compete with other children.
 4. Choose the language in the top bar: **🇷🇴 RO** or **🇬🇧 EN**.
 
-The home page also has three more buttons:
+The home page also has two more buttons:
 - **📲 Install**: installs the app on a phone or computer so it opens like a regular app (on an iPhone a guide appears: “Share” → “Add to Home Screen”);
 - **📄 About the game**: this document, in the chosen language (Romanian or English);
-- **🔒 Privacy**: the privacy policy (what data is kept and how it is deleted).
 
 ## Technical information (for whoever maintains the app)
 
@@ -145,6 +144,7 @@ The home page also has three more buttons:
 | Accounts and data | Firebase Authentication (anonymous or email and password) and Cloud Firestore (scores, players, contests; the same database is also used by the Math Owl Chat app) |
 | Hosting | Vercel, with automatic deployment from GitHub (`Aurika999/tabla-mem`, branch `main`) |
 | Android | there is also a Capacitor project (`android/`) for a phone app version |
+| Ads | the `AdBanner.jsx` component (Google AdSense) exists but is turned off: its lines in `TablaInmultirii.jsx` are commented out |
 | Security rules | `firestore.rules`; after any change they must be published from the Firebase Console |
 
 Running on a computer: `npm install`, then `npm start`. The app opens at `http://localhost:3000`.

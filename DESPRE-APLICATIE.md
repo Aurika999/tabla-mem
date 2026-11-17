@@ -131,10 +131,9 @@ Probleme cu mai multe operații, rezolvate **pe pași**: ferma, grădina, cărț
 3. Pe prima pagină alegi **Insula Învățării** ca să înveți și să exersezi sau **Arena Concursului** ca să concurezi cu alți copii.
 4. Din bara de sus alegi limba: **🇷🇴 RO** sau **🇬🇧 EN**.
 
-Pe prima pagină mai sunt trei butoane:
+Pe prima pagină mai sunt două butoane:
 - **📲 Instalează**: aplicația se instalează pe telefon sau calculator și se deschide ca o aplicație obișnuită (pe iPhone apare un ghid: „Partajează” → „Adaugă pe ecranul principal”);
 - **📄 Despre joc**: acest document, în limba aleasă (română sau engleză);
-- **🔒 Confidențialitate**: politica de confidențialitate (ce date se păstrează și cum se șterg).
 
 ## Informații tehnice (pentru cine întreține aplicația)
 
@@ -145,6 +144,7 @@ Pe prima pagină mai sunt trei butoane:
 | Conturi și date | Firebase Authentication (anonim sau email și parolă) și Cloud Firestore (scoruri, jucători, concursuri; aceeași bază e folosită și de aplicația Math Owl Chat) |
 | Publicare | Vercel, cu publicare automată din GitHub (`Aurika999/tabla-mem`, ramura `main`) |
 | Android | există și un proiect Capacitor (`android/`) pentru o variantă de aplicație de telefon |
+| Reclame | componenta `AdBanner.jsx` (Google AdSense) există, dar e oprită: rândurile din `TablaInmultirii.jsx` sunt în comentariu |
 | Reguli de securitate | `firestore.rules`; după orice modificare trebuie publicate din Firebase Console |
 
 Pornire pe calculator: `npm install`, apoi `npm start`. Aplicația se deschide la `http://localhost:3000`.
