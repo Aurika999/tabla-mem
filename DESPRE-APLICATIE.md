@@ -2,7 +2,7 @@
 
 ## Pe scurt
 
-**Math Owl**, „Insula isteților la matematică”, este un joc educativ de matematică pe care copiii îl folosesc în browser, pe calculator sau pe telefon. Cu el, copiii învață și exersează **înmulțirea, împărțirea, adunarea și scăderea** și se pregătesc pentru **Evaluarea Națională de la finalul clasei a II-a**.
+**Math Owl**, „Insula isteților la matematică”, este un joc educativ de matematică pe care copiii îl folosesc în browser, pe calculator sau pe telefon. Cu el, copiii învață și exersează **înmulțirea, împărțirea, adunarea și scăderea** și se pregătesc pentru finalul clasei a II-a. Testele de Evaluare Națională sunt într-o aplicație separată.
 
 Exercițiile acoperă **materia de matematică din clasa a II-a**: fiecare lecție are casetă „Reține” și patru trepte, „Învăț – Încerc – Mă antrenez – Probleme”. Toate problemele și poveștile sunt scrise de noi. Totul e prezentat ca o aventură pe o hartă cu insule.
 
@@ -27,12 +27,13 @@ Prima pagină
     ├── 🧩 Insula Isteților          – 14 insule, de la ușor la avansat
     ├── 📘 Tabla înmulțirii          – lecțiile: înmulțirea cu 2 … cu 9
     ├── ➗ Tabla împărțirii          – împărțirea și lecțiile „împărțirea la 2 … la 9”
-    ├── 🎓 Evaluarea Națională       – testele oficiale din 2025 și 2026 + recapitulare
     ├── ✏️ Termenii necunoscuți      – ecuații ca a + 34 = 62
     ├── ➖ Scăderi în coloană        – 2 cifre, cu ghicitoare: descoperă animalul
     ├── ➕ Adunări în coloană        – 2 cifre, cu ghicitoare: descoperă animalul
     ├── 🔢 Scăderi cu 3 cifre        – 258 − 137, în coloană
-    └── 🧮 Adunări cu 3 cifre        – 648 + 234, în coloană
+    ├── 🧮 Adunări cu 3 cifre        – 648 + 234, în coloană
+    ├── 🍉 Fracții                   – jumătate, sfert, treime
+    └── 🌳 Probleme de recapitulare  – probleme pe pași
 ```
 
 Apăsând pe socotelnița din colțul stânga-sus, copilul se întoarce oricând pe prima pagină.
@@ -92,24 +93,14 @@ Patru insule cu calcule scrise **pe verticală, ca în caiet**, pe hârtie cu p�
 - **La fiecare rundă**, jocul face alte calcule și alege alt animal, așa că exercițiile nu se repetă.
 - **Fără cronometru**, ca la termenii necunoscuți.
 
-### 🎓 Evaluarea Națională (clasa a II-a)
+### 🌳 Probleme de recapitulare
 
-- **Testul din 2026**, „Animale de companie”: 18 itemi.
-- **Testul din 2025**, „Medii de viață”: 12 itemi.
-- **Testul din 2025**, „Animale de la Polul Sud și de la Polul Nord”: 12 itemi.
-- **Probleme de recapitulare**: ferma, grădina, cărți, brutăria, târgul de toamnă.
-
-Testele reproduc **toți itemii** din testele oficiale, în aceeași ordine și cu același punctaj (100 de puncte). **Sursa:** testele oficiale publicate de Ministerul Educației / Centrul Național pentru Curriculum și Evaluare (CNPEE). Math Owl nu este o aplicație oficială a Ministerului. Imaginile din test (tabele, afișe, forme geometrice, șiruri) sunt redesenate în aplicație. Itemii la care, pe foaie, elevul scrie rezolvarea sunt împărțiți **pe pași**, cu variante de răspuns.
-
-La teste:
-- **nu există cronometru**;
-- copilul poate **sări peste un item** și reveni la el mai târziu, din lista itemilor nerezolvați;
-- la final primește **punctajul din 100**.
+Probleme cu mai multe operații, rezolvate **pe pași**: ferma, grădina, cărți, brutăria, târgul de toamnă. Numerele se schimbă la fiecare rundă.
 
 ## Cum se joacă
 
-- **Runda** are 10 întrebări, cu 4 variante de răspuns fiecare. La testele de Evaluare Națională, runda are toți itemii testului. La calculele în coloană, rezultatul se scrie în căsuțe.
-- **Timpul** este de 30 de secunde pe întrebare. Testele de Evaluare Națională, termenii necunoscuți și calculele în coloană nu au limită de timp.
+- **Runda** are 10 întrebări, cu 4 variante de răspuns fiecare. La calculele în coloană, rezultatul se scrie în căsuțe.
+- **Timpul** este de 30 de secunde pe întrebare. Termenii necunoscuți, calculele în coloană și fracțiile nu au limită de timp.
 - **Viețile:** copilul pornește cu 3 vieți și poate avea cel mult 5. O greșeală costă o viață, iar la 5 răspunsuri corecte la rând primește una înapoi. Dacă rămâne fără vieți, poate „cumpăra” una cu 30 de puncte.
 - **Punctele:** 10 puncte pentru fiecare răspuns corect, plus bonus de „combo” când răspunde corect de mai multe ori la rând.
 - **Stelele:** la sfârșitul rundei primește 1–3 ⭐, după câte răspunsuri corecte a avut. Harta păstrează cel mai bun rezultat.
@@ -130,15 +121,8 @@ La teste:
   - câștigă cine are cele mai multe răspunsuri corecte (la egalitate, cel mai rapid);
   - premii în puncte: 🥇 +50, 🥈 +30, 🥉 +10;
   - un cuprins pe insule și un anunț 🔔 când alt copil a creat un concurs.
-- **💬 Chat** între jucători:
-  - camera generală și mesaje private, cu emoji, răspuns la un mesaj și notificări;
-  - **linkurile** din mesaje se pot deschide cu un clic;
-  - **videourile** (YouTube, Vimeo sau fișiere video) se pot vedea direct în chat.
-- **📞 Apeluri vocale și 📹 apeluri video**, ca la WhatsApp:
-  - din capul conversației alegi apel vocal (doar sunet) sau apel video (cu camera);
-  - camera se poate porni sau opri și în timpul apelului, iar microfonul se poate opri;
-  - în conversație rămâne istoricul apelurilor (durata, apel pierdut, refuzat), cu butonul „Sună înapoi”.
-- **Profilul:** nume, avatar (poză), țara (steag) și cont cu email și parolă, cu opțiunea de resetare a parolei.
+- **Profilul:** nume, avatar (poză), țara (steag) și cont cu email și parolă, cu opțiunea de resetare a parolei și de ștergere a contului.
+- **💬 Chatul și apelurile** sunt într-o aplicație separată, **Math Owl Chat**, în care intri cu același cont.
 
 ## Cum se folosește
 
@@ -147,9 +131,10 @@ La teste:
 3. Pe prima pagină alegi **Insula Învățării** ca să înveți și să exersezi sau **Arena Concursului** ca să concurezi cu alți copii.
 4. Din bara de sus alegi limba: **🇷🇴 RO** sau **🇬🇧 EN**.
 
-Pe prima pagină mai sunt două butoane:
+Pe prima pagină mai sunt trei butoane:
 - **📲 Instalează**: aplicația se instalează pe telefon sau calculator și se deschide ca o aplicație obișnuită (pe iPhone apare un ghid: „Partajează” → „Adaugă pe ecranul principal”);
-- **📄 Despre joc**: acest document, în limba aleasă (română sau engleză).
+- **📄 Despre joc**: acest document, în limba aleasă (română sau engleză);
+- **🔒 Confidențialitate**: politica de confidențialitate (ce date se păstrează și cum se șterg).
 
 ## Informații tehnice (pentru cine întreține aplicația)
 
@@ -157,8 +142,7 @@ Pe prima pagină mai sunt două butoane:
 |---|---|
 | Interfață | React (Create React App), adaptată pentru telefon; se poate instala ca aplicație (PWA) |
 | Limbi | română și engleză: `src/tabla/i18n.js` (funcția `tr`) și dicționarul `src/tabla/i18n.en.js` |
-| Conturi și date | Firebase Authentication (anonim sau email și parolă) și Cloud Firestore (scoruri, jucători, chat, concursuri, apeluri) |
-| Apeluri | WebRTC direct între jucători; Firestore e folosit doar pentru legătura inițială |
+| Conturi și date | Firebase Authentication (anonim sau email și parolă) și Cloud Firestore (scoruri, jucători, concursuri; aceeași bază e folosită și de aplicația Math Owl Chat) |
 | Publicare | Vercel, cu publicare automată din GitHub (`Aurika999/tabla-mem`, ramura `main`) |
 | Android | există și un proiect Capacitor (`android/`) pentru o variantă de aplicație de telefon |
 | Reguli de securitate | `firestore.rules`; după orice modificare trebuie publicate din Firebase Console |

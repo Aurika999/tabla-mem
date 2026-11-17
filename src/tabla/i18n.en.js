@@ -1424,7 +1424,6 @@ const EN = {
   "▶ Următoarea întrebare": "▶ Next question",
   "▶ Înapoi la exercițiu": "▶ Back to the exercise",
   "▶ Începe concursul": "▶ Start the contest",
-  "▶️ Vezi cum se rezolvă (video)": "▶️ See how to solve it (video)",
   "▶️ Vezi video": "▶️ Watch video",
   "☝️ Cazuri speciale": "☝️ Special cases",
   "⚙️ CONTUL MEU": "⚙️ MY ACCOUNT",
@@ -2271,7 +2270,6 @@ const EN = {
   "Adună {v0} lui {n} cu rezultatul lui {a} × {b}. Ce obții?": "Add {v0} {n} to the result of {a} × {b}. What do you get?",
   "Gardul din curte are {g} stâlpi. Pe fiecare stâlp stau câte {per} {bird}. {how} {v0} stau pe gard?": "The garden fence has {g} posts. On each post sit {per} {bird}. {how} {v0} are on the fence?",
   "Cățelul lui {n} are {age} ani. {pet} lui {v0} are de {k} ori mai mulți ani. Câți ani are?": "{n}'s puppy is {age} years old. {v0}'s {pet} is {k} times as old. How old is it?",
-  "Alege un test de la Evaluarea Națională! 🎓 Itemii sunt după testele oficiale publicate de Ministerul Educației (CNPEE).": "Choose a National Assessment test! 🎓 The items follow the official tests published by the Romanian Ministry of Education (CNPEE).",
   "Bunicul": "Grandpa",
   "patine": "skates",
   "închiriază": "rents",
@@ -2350,6 +2348,7 @@ const EN = {
   "Sunt părinte/tutore sau am acordul părintelui pentru acest cont și am citit": "I am a parent/guardian or have a parent's consent for this account, and I have read the",
   "Confidențialitate": "Privacy",
   "Contul și datele tale au fost șterse.": "Your account and data have been deleted.",
+  "Reclamă": "Advertisement",
 };
 
 export default EN;

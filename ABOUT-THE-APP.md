@@ -2,7 +2,7 @@
 
 ## In short
 
-**Math Owl**, “The island of math whizzes”, is an educational math game that children play in the browser, on a computer or a phone. With it, children learn and practise **multiplication, division, addition and subtraction** and prepare for the **Romanian National Assessment at the end of 2nd grade**.
+**Math Owl**, “The island of math whizzes”, is an educational math game that children play in the browser, on a computer or a phone. With it, children learn and practise **multiplication, division, addition and subtraction** and prepare for the end of 2nd grade. The National Assessment tests are in a separate app.
 
 The exercises cover the **Year 2 maths curriculum**: each lesson has a “Remember” box and four steps, “Learn – Try – Practice – Problems”. All the problems and stories are our own. Everything is presented as an adventure on a map of islands.
 
@@ -27,12 +27,13 @@ Home page
     ├── 🧩 Puzzle Island          – 14 islands, from easy to advanced
     ├── 📘 Multiplication table   – the lessons: multiplying by 2 … by 9
     ├── ➗ Division table         – division and the lessons “dividing by 2 … by 9”
-    ├── 🎓 National Assessment    – the official 2025 and 2026 tests + review
     ├── ✏️ Unknown terms          – equations like a + 34 = 62
     ├── ➖ Column subtraction     – 2 digits, with a riddle: discover the animal
     ├── ➕ Column addition        – 2 digits, with a riddle: discover the animal
     ├── 🔢 3-digit subtraction    – 258 − 137, in a column
-    └── 🧮 3-digit addition       – 648 + 234, in a column
+    ├── 🧮 3-digit addition       – 648 + 234, in a column
+    ├── 🍉 Fractions              – half, quarter, third
+    └── 🌳 Review problems        – problems in steps
 ```
 
 Tapping the abacus in the top-left corner always takes the child back to the home page.
@@ -92,24 +93,14 @@ Four islands with calculations written **vertically, as in an exercise book**, o
 - **In every round**, the game makes new calculations and picks another animal, so the exercises do not repeat.
 - **No timer**, as with the unknown terms.
 
-### 🎓 National Assessment (2nd grade)
+### 🌳 Review problems
 
-- **The 2026 test**, “Pets”: 18 items.
-- **The 2025 test**, “Habitats”: 12 items.
-- **The 2025 test**, “Animals from the South Pole and the North Pole”: 12 items.
-- **Review problems**: the farm, the garden, books, the bakery, the autumn fair.
-
-The tests reproduce **all the items** from the official tests, in the same order and with the same scoring (100 points). **Source:** the official tests published by the Romanian Ministry of Education / National Centre for Curriculum and Assessment (CNPEE). Math Owl is not an official Ministry app. The pictures from the test (tables, posters, geometric shapes, sequences) are redrawn in the app. The items where, on paper, the pupil writes out the solution are split **into steps**, with answer choices.
-
-In the tests:
-- **there is no timer**;
-- the child can **skip an item** and come back to it later, from the list of unsolved items;
-- at the end, the child gets a **score out of 100**.
+Multi-step problems, solved **in steps**: the farm, the garden, books, the bakery, the autumn fair. The numbers change every round.
 
 ## How to play
 
-- **A round** has 10 questions, with 4 answer choices each. In the National Assessment tests, the round has all the items of the test. In the column calculations, the result is typed into boxes.
-- **The time** is 30 seconds per question. The National Assessment tests, the unknown terms and the column calculations have no time limit.
+- **A round** has 10 questions, with 4 answer choices each. In the column calculations, the result is typed into boxes.
+- **The time** is 30 seconds per question. The unknown terms, the column calculations and fractions have no time limit.
 - **Lives:** the child starts with 3 lives and can have at most 5. A mistake costs a life, and 5 correct answers in a row give one back. If the child runs out of lives, they can “buy” one for 30 points.
 - **Points:** 10 points for each correct answer, plus a “combo” bonus for several correct answers in a row.
 - **Stars:** at the end of the round the child gets 1–3 ⭐, depending on the number of correct answers. The map keeps the best result.
@@ -130,15 +121,8 @@ In the tests:
   - the winner is whoever has the most correct answers (in a tie, the fastest);
   - point prizes: 🥇 +50, 🥈 +30, 🥉 +10;
   - a table of contents by island and a 🔔 notice when another child has created a contest.
-- **💬 Chat** between players:
-  - a general room and private messages, with emoji, replies to a message and notifications;
-  - **links** in messages open with one click;
-  - **videos** (YouTube, Vimeo or video files) can be watched right in the chat.
-- **📞 Voice calls and 📹 video calls**, as on WhatsApp:
-  - from the top of the conversation, choose a voice call (sound only) or a video call (with the camera);
-  - the camera can be turned on or off during the call, and the microphone can be muted;
-  - the conversation keeps a call history (duration, missed, declined), with a “Call back” button.
-- **Profile:** name, avatar (photo), country (flag) and an account with email and password, with a password reset option.
+- **Profile:** name, avatar (photo), country (flag) and an account with email and password, with options to reset the password and delete the account.
+- **💬 Chat and calls** are in a separate app, **Math Owl Chat**, where you sign in with the same account.
 
 ## How to use it
 
@@ -147,9 +131,10 @@ In the tests:
 3. On the home page, choose the **Learning Island** to learn and practise, or the **Contest Arena** to compete with other children.
 4. Choose the language in the top bar: **🇷🇴 RO** or **🇬🇧 EN**.
 
-The home page also has two more buttons:
+The home page also has three more buttons:
 - **📲 Install**: installs the app on a phone or computer so it opens like a regular app (on an iPhone a guide appears: “Share” → “Add to Home Screen”);
-- **📄 About the game**: this document, in the chosen language (Romanian or English).
+- **📄 About the game**: this document, in the chosen language (Romanian or English);
+- **🔒 Privacy**: the privacy policy (what data is kept and how it is deleted).
 
 ## Technical information (for whoever maintains the app)
 
@@ -157,8 +142,7 @@ The home page also has two more buttons:
 |---|---|
 | Interface | React (Create React App), adapted for phones; can be installed as an app (PWA) |
 | Languages | Romanian and English: `src/tabla/i18n.js` (the `tr` function) and the dictionary `src/tabla/i18n.en.js` |
-| Accounts and data | Firebase Authentication (anonymous or email and password) and Cloud Firestore (scores, players, chat, contests, calls) |
-| Calls | WebRTC directly between players; Firestore is only used to set up the connection |
+| Accounts and data | Firebase Authentication (anonymous or email and password) and Cloud Firestore (scores, players, contests; the same database is also used by the Math Owl Chat app) |
 | Hosting | Vercel, with automatic deployment from GitHub (`Aurika999/tabla-mem`, branch `main`) |
 | Android | there is also a Capacitor project (`android/`) for a phone app version |
 | Security rules | `firestore.rules`; after any change they must be published from the Firebase Console |

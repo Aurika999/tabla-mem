@@ -144,9 +144,6 @@ export const LEVELS = {
   adunari3: { key: 'adunari3', label: '🧮 ADUNĂRI CU 3 CIFRE', hint: 'Efectuează în coloană · fără cronometru', className: 'lg1' },
   scaderi3: { key: 'scaderi3', label: '🔢 SCĂDERI CU 3 CIFRE', hint: 'Calculează în coloană · fără cronometru', className: 'lg2' },
   adunari8: { key: 'adunari8', label: '➕ ADUNĂRI ÎN COLOANĂ', hint: 'Descoperă animalul · fără cronometru', className: 'lg4' },
-  en2025: { key: 'en2025', label: '🎓 EVALUAREA NAȚIONALĂ 2025', hint: 'Clasa a II-a · Medii de viață', className: 'lg2' },
-  en2025b: { key: 'en2025b', label: '🎓 EVALUAREA NAȚIONALĂ 2025', hint: 'Clasa a II-a · Animale polare', className: 'lg3' },
-  en2026: { key: 'en2026', label: '🎓 EVALUAREA NAȚIONALĂ 2026', hint: 'Clasa a II-a · Animale de companie', className: 'lg1' },
   logica4: { key: 'logica4', label: '🧩 4. MĂ ANTRENEZ ȘI REZOLV', hint: 'Înmulțiri și probleme', className: 'lg4' },
   logica3: { key: 'logica3', label: '🧩 3. PROBLEME ISTEȚE', hint: 'În doi pași, ore, șiruri — până la 100', className: 'lg3' },
 };

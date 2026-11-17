@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { tr } from '../i18n';
 import FractionShape from './FractionShape';
 // Imaginea unei întrebări: grupe egale de obiecte (ex. 18 flori în 3 grupe).
@@ -84,24 +83,6 @@ function Steps({ current }) {
   );
 }
 
-// Butonul „▶️ Vezi video”: învățătoarea rezolvă exercițiul la tablă.
-function VideoButton({ src }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <button type="button" className="video-btn" onClick={() => setOpen(true)}>{tr('▶️ Vezi cum se rezolvă (video)')}</button>
-      {open && (
-        <div className="overlay lesson-overlay" onClick={() => setOpen(false)} role="dialog" aria-modal="true" aria-label="Video">
-          <div className="modal video-modal" onClick={e => e.stopPropagation()}>
-            <button className="lesson-close" onClick={() => setOpen(false)} aria-label={tr('Închide')}>✕</button>
-            <video src={`${process.env.PUBLIC_URL}/video/${src}`} controls autoPlay playsInline />
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
 export default function QuestionDisplay({ current }) {
   if (current.steps) {
     return (
@@ -111,7 +92,6 @@ export default function QuestionDisplay({ current }) {
         {tr(current.problemText)}
         {current.visual && <Visual visual={current.visual} />}
         {current.picture && <Picture picture={current.picture} />}
-        {current.video && <div><VideoButton src={current.video} /></div>}
         <Steps current={current} />
       </div>
     );
@@ -124,7 +104,6 @@ export default function QuestionDisplay({ current }) {
         {tr(current.problemText)}
         {current.visual && <Visual visual={current.visual} />}
         {current.picture && <Picture picture={current.picture} />}
-        {current.video && <div><VideoButton src={current.video} /></div>}
       </div>
     );
   }

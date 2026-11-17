@@ -654,9 +654,6 @@
 .tabla-inmultirii .home-island-cta.column-sum{color:#fff;background:linear-gradient(180deg,#ffa8a8 0%,#f76707 55%,#d9480f 100%);text-shadow:0 2px 0 #0004}
 .tabla-inmultirii .home-island-cta.column{color:#fff;background:linear-gradient(180deg,#74c0fc 0%,#1c7ed6 55%,#1864ab 100%);text-shadow:0 2px 0 #0004}
 .tabla-inmultirii .home-island-cta.terms{color:#fff;background:linear-gradient(180deg,#e599f7 0%,#ae3ec9 55%,#862e9c 100%);text-shadow:0 2px 0 #0004}
-.tabla-inmultirii .video-btn{margin:10px auto 2px;border:0;border-radius:14px;padding:8px 16px;font-weight:900;font-size:15px;color:#fff;background:linear-gradient(180deg,#ff6b6b,#e03131);box-shadow:0 4px 0 #a51111;cursor:pointer}
-.tabla-inmultirii .video-modal{position:relative;width:min(920px,96vw);max-width:none;padding:14px;background:#111}
-.tabla-inmultirii .video-modal video{width:100%;display:block;border-radius:10px}
 .tabla-inmultirii .lang-switch{display:inline-flex;gap:2px;padding:3px}
 .tabla-inmultirii .lang-switch button{border:0;background:transparent;border-radius:10px;padding:4px 8px;font:inherit;font-weight:900;font-size:13px;color:#7a5a3a;cursor:pointer}
 .tabla-inmultirii .lang-switch button.active{background:#ff9f1c;color:#fff;box-shadow:0 2px 0 #c46d00}
@@ -678,3 +675,7 @@
 .profile-delete { border: 2px solid #f5c6c6; border-radius: 12px; padding: 10px; }
 .profile-delete-confirm { background: #d64545; }
 .profile-legal { margin-top: 18px; text-align: center; }
+/* Reclama AdSense: jos, separată clar de butoanele jocului, cu eticheta „Reclamă”. */
+.tabla-inmultirii .ad-banner{margin:28px auto 8px;max-width:970px;padding:8px;border-radius:12px;background:#ffffff14;border:1px dashed #ffffff40}
+.tabla-inmultirii .ad-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#ffffffb0;text-align:center;margin-bottom:4px}
+.tabla-inmultirii .ad-placeholder{min-height:90px;display:flex;flex-direction:column;justify-content:center;text-align:center;color:#ffffffd0;font-size:13px}

@@ -4,7 +4,7 @@ import {
   EIGHT_LEVELS, NINE_LEVELS, FOUR_LEVELS, THREE_LEVELS, TWO_LEVELS, EVAL_LEVELS, OLD_LOGIC_LEVELS, DIVISION_LEVELS, HALF_LEVELS, THIRD_LEVELS, QUARTER_LEVELS, FIFTH_LEVELS, DIV6_LEVELS, DIV7_LEVELS, DIV8_LEVELS, DIV9_LEVELS,
 } from '../data';
 import { useGlobalLeaderboard, useMyScores } from '../useLeaderboard';
-import { ADD3_LEVELS, FRACTION_LEVELS, COLUMN_LEVELS, COLUMN_SUM_LEVELS, COLUMN3_LEVELS, NATIONAL_LEVELS, PRACTICE_LEVELS, questionCount } from '../nationalTest';
+import { ADD3_LEVELS, FRACTION_LEVELS, COLUMN_LEVELS, COLUMN_SUM_LEVELS, COLUMN3_LEVELS, PRACTICE_LEVELS, questionCount } from '../nationalTest';
 import { REVIEW_LEVELS } from '../reviewProblems';
 import Flag from './Flag';
 import Avatar from './Avatar';
@@ -33,7 +33,6 @@ const SCORE_GROUPS = [
   { icon: '🎯', name: 'Împărțirea la 9', levels: DIV9_LEVELS },
   { icon: '🧩', name: 'Insula Isteților', levels: LOGIC_LEVELS },
   { icon: '📝', name: 'Evaluare (veche)', levels: EVAL_LEVELS, onlyIfPlayed: true },
-  { icon: '🎓', name: 'Evaluarea Națională', levels: NATIONAL_LEVELS },
   { icon: '✏️', name: 'Află termenii necunoscuți', levels: PRACTICE_LEVELS },
   { icon: '➖', name: 'Scăderi în coloană', levels: COLUMN_LEVELS },
   { icon: '➕', name: 'Adunări în coloană', levels: COLUMN_SUM_LEVELS },

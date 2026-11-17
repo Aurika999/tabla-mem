@@ -9,7 +9,7 @@ import { buildLogicProblem } from './logicProblems';
 import { buildSmartProblem, isSmartLevel, GRADED_SMART_LEVELS } from './smartProblems';
 import { buildReviewProblem, isReviewLevel } from './reviewProblems';
 import {
-  buildNationalItem, newNationalRound, isNationalLevel, questionCount, nationalMaxPoints, nationalYear, nationalTheme,
+  buildNationalItem, newNationalRound, isNationalLevel, questionCount,
   isPracticeTest, practiceTitle,
 } from './nationalTest';
 import { buildEvalProblem, isEvalLevel, gradeFor } from './evaluationProblems';
@@ -33,7 +33,7 @@ export function generateQuestion(level, index = 0) {
     const base = {
       a: null, b: null, isWordProblem: true, isMultOp: false,
       problemText: q.text, explanation: q.explanation, fruit, badge: q.badge,
-      picture: q.picture || null, visual: q.visual || null, video: q.video || null, examPoints: q.points, examIndex: index,
+      picture: q.picture || null, visual: q.visual || null, examPoints: q.points, examIndex: index,
     };
     if (q.steps) {
       return { ...base, steps: q.steps, stepIndex: 0, correct: q.steps[0].answer, answers: q.steps[0].choices };
@@ -337,22 +337,6 @@ export function useTablaGame(initialLevel = 1, paused = false) {
           text: tr('Ai terminat <b>„{title}”</b>: <b>{correct}/{total}</b> exerciții rezolvate corect.', { title: tr(practiceTitle(stats.level)), correct: stats.correct, total })
             + tr('<br><br>Ai adunat <b>{n}</b> puncte în joc.', { n: stats.points })
             + tr('<br><small>Apasă „Cum se rezolvă?” la fiecare exercițiu, ca să vezi rezolvarea și verificarea.</small>'),
-          showNext: false,
-        });
-      }, 500);
-      return () => clearTimeout(id);
-    }
-    if (stats.q >= total && isNationalLevel(stats.level)) {
-      const id = setTimeout(() => {
-        const max = nationalMaxPoints(stats.level);
-        const pct = stats.examPoints / max;
-        setModal({
-          title: pct >= 0.9 ? tr('🏆 Excelent!') : pct >= 0.7 ? tr('🌟 Foarte bine!') : pct >= 0.5 ? tr('👏 Bravo!') : tr('💪 Mai exersează!'),
-          text: tr('Ai terminat <b>Evaluarea Națională {year} — „{theme}”</b>: <b>{correct}/{total}</b> itemi rezolvați corect.',
-            { year: nationalYear(stats.level), theme: tr(nationalTheme(stats.level)), correct: stats.correct, total })
-            + tr('<br><br><span class="modal-grade">📝 Punctaj: <b>{got} din {max} de puncte</b></span>', { got: stats.examPoints, max })
-            + tr('<br><br>Ai adunat și <b>{n}</b> puncte în joc.', { n: stats.points })
-            + tr('<br><small>Apasă „Cum se rezolvă?” la fiecare item, ca să vezi rezolvarea.</small>'),
           showNext: false,
         });
       }, 500);

@@ -8,12 +8,7 @@ import Header from './components/Header';
 import LevelPanel from './components/LevelPanel';
 import GameCard from './components/GameCard';
 import Leaderboard from './components/Leaderboard';
-import Chat from './components/Chat';
-import ChatToast from './components/ChatToast';
-import CallOverlay from './components/CallOverlay';
 import ContestPanel from './components/ContestPanel';
-import { useCall } from './useCall';
-import { useChatNotifications, privateChatId, requestSystemNotifications } from './useChat';
 import ResultModal from './components/ResultModal';
 import NameGate from './components/NameGate';
 import AuthGate from './components/AuthGate';
@@ -29,6 +24,8 @@ import QuarterMap from './components/QuarterMap';
 import FifthMap from './components/FifthMap';
 import { SixMap, SevenMap, EightMap, NineMap } from './components/DivisorMaps';
 import LessonMap from './components/LessonMap';
+// Reclama e oprită deocamdată; pentru a o porni, scoate comentariile de aici și de mai jos.
+// import AdBanner from './components/AdBanner';
 import { tr, useLang } from './i18n';
 
 const PAGE_TITLE = 'Math Owl';
@@ -117,7 +114,6 @@ export default function TablaInmultirii() {
   const goToLessonsHub = () => goToView('lessons');
   const goToSchool = () => goToView('school');
   const goToDivisionHub = () => goToView('division');
-  const goToNationalHub = () => goToView('national');
   const goToDivisionLesson = () => goToView('divlesson');
   const goToHalfLesson = () => goToView('halflesson');
   const goToThirdLesson = () => goToView('thirdlesson');
@@ -139,21 +135,9 @@ export default function TablaInmultirii() {
     scrollToContent();
   };
 
-  const [chatPeer, setChatPeer] = useState(null);
   const [contestId, setContestId] = useState(null);
-  const activeChatId = openPanel === 'chat' && chatPeer && uid ? privateChatId(uid, chatPeer.uid) : null;
-  const {
-    conversations, isUnread, unreadCount, incoming, dismissIncoming, blocked,
-  } = useChatNotifications(uid, activeChatId);
-
-  const {
-    call, incoming: incomingCall, muted, notice: callNotice, remoteAudioRef, cameraOn, peerCamera, localStream, remoteStream, remoteTracks,
-    startCall, acceptCall, declineCall, hangUp, toggleMute, toggleCamera,
-  } = useCall({ uid, name });
 
   const handleOpenPanel = key => {
-    // Cererea de permisiune trebuie să vină dintr-un clic al utilizatorului.
-    if (key === 'chat') requestSystemNotifications();
     if (view !== 'game') {
       // De pe prima pagină sau de pe hartă, panoul se deschide mereu.
       setPanelOrigin(view);
@@ -167,18 +151,9 @@ export default function TablaInmultirii() {
     scrollToContent();
   };
 
-  const openChatWith = peer => {
-    setChatPeer(peer);
-    if (view !== 'game') setPanelOrigin(view);
-    setView('game');
-    setOpenPanel('chat');
-    dismissIncoming();
-    scrollToContent();
-  };
-
   useEffect(() => {
-    document.title = unreadCount > 0 ? `(${unreadCount}) ${tr(PAGE_TITLE)}` : tr(PAGE_TITLE);
-  }, [unreadCount, lang]);
+    document.title = tr(PAGE_TITLE);
+  }, [lang]);
 
   useEffect(() => {
     if (!modal || !uid || !name) return;
@@ -202,9 +177,7 @@ export default function TablaInmultirii() {
 
   const handleLogout = async () => {
     if (!window.confirm(tr('Sigur vrei să ieși din cont?'))) return;
-    hangUp();
     setOpenPanel(null);
-    setChatPeer(null);
     setContestId(null);
     setPanelOrigin(null);
     setView('home');
@@ -213,10 +186,8 @@ export default function TablaInmultirii() {
 
   // După ștergere, Firebase pornește singur o sesiune nouă, fără cont.
   const handleDeleteAccount = async (password) => {
-    hangUp();
     await deleteAccount(password);
     setOpenPanel(null);
-    setChatPeer(null);
     setContestId(null);
     setPanelOrigin(null);
     setView('home');
@@ -239,13 +210,11 @@ export default function TablaInmultirii() {
             onOpenSchool={goToSchool}
             onOpenNational={level => handleSelectLevel(level)}
             onOpenPanel={handleOpenPanel}
-            chatUnread={unreadCount}
           />
         )}
         {view === 'school' && (
           <HomeIslands
             mode="school"
-            onOpenNationalHub={goToNationalHub}
             onOpenNational={level => handleSelectLevel(level)}
             name={name}
             scores={firebaseEnabled ? myScores : {}}
@@ -256,7 +225,6 @@ export default function TablaInmultirii() {
             onOpenDivision={goToDivisionHub}
             onOpenPanel={handleOpenPanel}
             onBack={goToHome}
-            chatUnread={unreadCount}
           />
         )}
         {view === 'map' && (
@@ -265,7 +233,6 @@ export default function TablaInmultirii() {
             scores={firebaseEnabled ? myScores : {}}
             onPlayLevel={handleSelectLevel}
             onOpenPanel={handleOpenPanel}
-            chatUnread={unreadCount}
             onBack={goToSchool}
           />
         )}
@@ -277,18 +244,6 @@ export default function TablaInmultirii() {
             onOpenLesson={goToLesson}
             onOpenPanel={handleOpenPanel}
             onBack={goToSchool}
-            chatUnread={unreadCount}
-          />
-        )}
-        {view === 'national' && (
-          <HomeIslands
-            mode="national"
-            name={name}
-            scores={firebaseEnabled ? myScores : {}}
-            onOpenNational={level => handleSelectLevel(level)}
-            onOpenPanel={handleOpenPanel}
-            onBack={goToSchool}
-            chatUnread={unreadCount}
           />
         )}
         {view === 'division' && (
@@ -307,7 +262,6 @@ export default function TablaInmultirii() {
             onOpenNineLesson={goToNineLesson}
             onOpenPanel={handleOpenPanel}
             onBack={goToSchool}
-            chatUnread={unreadCount}
           />
         )}
         {view === 'divlesson' && (
@@ -417,7 +371,6 @@ export default function TablaInmultirii() {
             onOpenMap={goToMap}
             openPanel={openPanel}
             onTogglePanel={handleOpenPanel}
-            badges={{ chat: unreadCount }}
           />
 
           <div className="main-content" ref={contentRef}>
@@ -454,25 +407,11 @@ export default function TablaInmultirii() {
                     onContestChange={setContestId}
                   />
                 )}
-                {openPanel === 'chat' && (
-                  <Chat
-                    uid={uid}
-                    name={name}
-                    firebaseEnabled={firebaseEnabled}
-                    peer={chatPeer}
-                    onSelectPeer={setChatPeer}
-                    conversations={conversations}
-                    isUnread={isUnread}
-                    onCall={startCall}
-                    callBusy={Boolean(call)}
-                    blocked={blocked}
-                  />
-                )}
                 <button className="bigbtn" onClick={closePanel}>
                   {tr({
                     home: '🏝️ Înapoi la prima pagină', map: '🗺️ Înapoi la hartă', logic: '🧩 Înapoi la insulă', eval: '📝 Înapoi la insulă',
                     lessons: '📘 Înapoi la Tabla înmulțirii', school: '🎒 Înapoi la Insula Învățării',
-                    division: '➗ Înapoi la Tabla împărțirii', national: '🎓 Înapoi la Evaluarea Națională', divlesson: '➗ Înapoi la insulă', halflesson: '✌️ Înapoi la insulă', thirdlesson: '🐦 Înapoi la insulă', quarterlesson: '🍀 Înapoi la insulă', fifthlesson: '🏮 Înapoi la insulă', sixlesson: '🍬 Înapoi la insulă', sevenlesson: '📅 Înapoi la insulă', eightlesson: '🐙 Înapoi la insulă', ninelesson: '🎯 Înapoi la insulă',
+                    division: '➗ Înapoi la Tabla împărțirii', divlesson: '➗ Înapoi la insulă', halflesson: '✌️ Înapoi la insulă', thirdlesson: '🐦 Înapoi la insulă', quarterlesson: '🍀 Înapoi la insulă', fifthlesson: '🏮 Înapoi la insulă', sixlesson: '🍬 Înapoi la insulă', sevenlesson: '📅 Înapoi la insulă', eightlesson: '🐙 Înapoi la insulă', ninelesson: '🎯 Înapoi la insulă',
                   }[panelOrigin] || (panelOrigin?.startsWith('lesson') && '📖 Înapoi la insulă')
                     || '▶ Înapoi la exercițiu')}
                 </button>
@@ -499,6 +438,9 @@ export default function TablaInmultirii() {
           </div>
         </div>
         )}
+
+        {/* Reclama stă doar pe paginile cu insule, jos — niciodată în timpul unui exercițiu. */}
+        {/* {view !== 'game' && (!firebaseEnabled || ready) && !showAuthGate && !showNameGate && <AdBanner />} */}
       </div>
 
       <ResultModal
@@ -515,24 +457,6 @@ export default function TablaInmultirii() {
           onResetPassword={resetPassword} />
       )}
       {showNameGate && <NameGate initialName={name} initialCountry={country} onSubmit={saveProfile} />}
-      <ChatToast incoming={incoming} onOpen={openChatWith} onDismiss={dismissIncoming} />
-      <CallOverlay
-        call={call}
-        incoming={incomingCall}
-        muted={muted}
-        notice={callNotice}
-        remoteAudioRef={remoteAudioRef}
-        onAccept={acceptCall}
-        onDecline={declineCall}
-        onHangUp={hangUp}
-        onToggleMute={toggleMute}
-        cameraOn={cameraOn}
-        peerCamera={peerCamera}
-        localStream={localStream}
-        remoteStream={remoteStream}
-        remoteTracks={remoteTracks}
-        onToggleCamera={toggleCamera}
-      />
     </div>
   );
 }

@@ -239,7 +239,7 @@ function MobileMap({ scores, current, onSelect }) {
 }
 
 export default function MapHome({
-  name, scores, onPlayLevel, onOpenPanel, chatUnread, onBack,
+  name, scores, onPlayLevel, onOpenPanel, onBack,
 }) {
   const [owlMessage, setOwlMessage] = useState(null);
   const isPhone = useMediaQuery(PHONE_QUERY);
@@ -268,10 +268,6 @@ export default function MapHome({
     <nav className="map-side">
       {isPhone && backButton}
       <button onClick={() => onOpenPanel('leaderboard')}><span>🏆</span>Clasament</button>
-      <button onClick={() => onOpenPanel('chat')}>
-        <span>💬</span>Chat
-        {chatUnread > 0 && <b className="level-badge">{chatUnread}</b>}
-      </button>
     </nav>
   );
 

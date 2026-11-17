@@ -1,7 +1,7 @@
 import {
   LOGIC_PATH, LESSON_PATHS, DIVISION_PATH, HALF_PATH, THIRD_PATH, QUARTER_PATH, FIFTH_PATH, DIV6_PATH, DIV7_PATH, DIV8_PATH, DIV9_PATH, isLevelDone,
 } from '../mapProgress';
-import { NATIONAL_LEVELS, questionCount, nationalYear, nationalTheme } from '../nationalTest';
+import { questionCount } from '../nationalTest';
 import { REVIEW_LEVELS } from '../reviewProblems';
 import InstallButton from './InstallButton';
 import { Island, Waves, useMediaQuery, PHONE_QUERY } from './MapHome';
@@ -14,10 +14,6 @@ import { privacyUrl } from '../legal';
 // Decorurile fiecărei insule, relativ la centrul ei: [emoji, dx, dy, mărime].
 const DECOR = {
   recap1: [['🌳', -4, -40, 82], ['🐐', -100, 4, 32], ['🌷', 98, 0, 30], ['🍯', 80, 26, 26], ['🚚', -82, 28, 24]],
-  national: [['🎓', -4, -40, 84], ['📝', -100, 4, 32], ['🏅', 98, 0, 30], ['✏️', 80, 26, 26], ['📚', -82, 28, 24]],
-  en2025: [['🌍', -4, -40, 80], ['🌴', -100, 4, 32], ['🐧', 98, 0, 30], ['📝', 80, 26, 26], ['🦢', -82, 28, 24]],
-  en2025b: [['🐻‍❄️', -4, -40, 80], ['🐧', -100, 4, 32], ['🦉', 98, 0, 30], ['📝', 80, 26, 26], ['❄️', -82, 28, 24]],
-  en2026: [['🏅', -4, -40, 80], ['🐶', -100, 4, 32], ['🦜', 98, 0, 30], ['📝', 80, 26, 26], ['🐰', -82, 28, 24]],
   termeni46: [['✏️', -4, -40, 80], ['➕', -100, 4, 32], ['➖', 98, 0, 30], ['❓', 80, 26, 26], ['📒', -82, 28, 24]],
   scaderi2: [['📐', -4, -40, 78], ['➖', -100, 4, 34], ['🔢', 98, 0, 30], ['✍️', 80, 26, 26], ['📓', -82, 28, 24]],
   fractii: [['🍉', -4, -42, 80], ['🍕', -100, 4, 34], ['🧁', 98, 0, 30], ['🍫', 80, 26, 26], ['🍞', -82, 28, 24]],
@@ -54,7 +50,7 @@ const HOME_KEYS = ['arena', 'school'];
 // Nivelurile „Tablei înmulțirii” sunt acum în Insula Isteților, pe dificultate.
 // Exercițiile din „Evaluare” sunt acum în Insula Isteților.
 // Exersările fără cronometru (termenii necunoscuți, adunările și scăderile în coloană) sunt tot aici.
-const SCHOOL_KEYS = ['logic', 'lessons', 'division', 'national', 'termeni46', 'scaderi2', 'adunari8', 'scaderi3', 'adunari3', 'fractii'];
+const SCHOOL_KEYS = ['logic', 'lessons', 'division', 'termeni46', 'scaderi2', 'adunari8', 'scaderi3', 'adunari3', 'fractii', ...REVIEW_LEVELS];
 // Lecțiile de împărțire (deocamdată una; se pot adăuga altele).
 const DIVISION_KEYS = ['div1', 'div2', 'div3', 'div4', 'div5', 'div6', 'div7', 'div8', 'div9'];
 const LESSON_FACTORS = [2, 3, 4, 5, 6, 7, 8, 9];
@@ -158,13 +154,11 @@ const LAYOUTS = {
   school: buildLayouts(SCHOOL_KEYS, 300),
   lessons: buildLayouts(LESSON_KEYS, 300),
   division: buildLayouts(DIVISION_KEYS, 300),
-  national: buildLayouts([...NATIONAL_LEVELS, ...REVIEW_LEVELS], 300),
 };
 
 // Titlul de sus și butonul „înapoi” pentru paginile din interiorul insulelor.
 const SUBPAGES = {
-  school: { title: '🎒 INSULA ÎNVĂȚĂRII', back: '← Prima pagină', greeting: 'Aici înveți! Alege: Insula Isteților, lecțiile, împărțirea, Evaluarea Națională sau calculele în coloană. 🎒' },
-  national: { title: '🎓 EVALUAREA NAȚIONALĂ', back: '← Insula Învățării', greeting: 'Alege un test de la Evaluarea Națională! 🎓 Itemii sunt după testele oficiale publicate de Ministerul Educației (CNPEE).' },
+  school: { title: '🎒 INSULA ÎNVĂȚĂRII', back: '← Prima pagină', greeting: 'Aici înveți! Alege: Insula Isteților, lecțiile, împărțirea sau calculele în coloană. 🎒' },
   division: { title: '➗ TABLA ÎMPĂRȚIRII', back: '← Insula Învățării', greeting: 'Aici înveți împărțirea! Alege lecția. ➗' },
   lessons: { title: '📘 TABLA ÎNMULȚIRII', back: '← Insula Învățării', greeting: 'Alege lecția! Fiecare are „📖 Reține” și exerciții. 📘' },
 };
@@ -176,7 +170,7 @@ function pct(value, total) {
 export default function HomeIslands({
   mode = 'home', name, scores, onOpenLearn, onOpenLogic, onOpenLessons, onOpenLesson, onOpenEval, onOpenSchool,
   onOpenDivision, onOpenDivisionLesson, onOpenHalfLesson, onOpenThirdLesson, onOpenQuarterLesson, onOpenFifthLesson, onOpenSixLesson, onOpenSevenLesson, onOpenEightLesson, onOpenNineLesson,
-  onOpenPanel, onBack, chatUnread, onOpenNational, onOpenNationalHub,
+  onOpenPanel, onBack, onOpenNational,
 }) {
   const isPhone = useMediaQuery(PHONE_QUERY);
   const subpage = SUBPAGES[mode];
@@ -291,14 +285,6 @@ export default function HomeIslands({
       onClick: () => onOpenNational('fractii'),
     },
     {
-      key: 'national',
-      ctaClass: 'national',
-      title: tr('EVALUAREA NAȚIONALĂ'),
-      subtitle: tr('🎓 {v0} / {v1} teste date · clasa a II-a', { v0: NATIONAL_LEVELS.filter(level => scores[level]).length, v1: NATIONAL_LEVELS.length }),
-      cta: tr('🎓 Alege testul'),
-      onClick: onOpenNationalHub,
-    },
-    {
       key: 'recap1',
       ctaClass: 'recap',
       title: tr('PROBLEME DE RECAPITULARE'),
@@ -308,17 +294,6 @@ export default function HomeIslands({
       cta: tr('🌳 Rezolvă problemele'),
       onClick: () => onOpenNational('recap1'),
     },
-    // Câte o insulă pentru fiecare test de Evaluare Națională (în pagina „Evaluarea Națională”).
-    ...NATIONAL_LEVELS.map(level => ({
-      key: level,
-      ctaClass: 'national',
-      title: tr('EVALUAREA NAȚIONALĂ {v0}', { v0: nationalYear(level) }),
-      subtitle: scores[level]
-        ? tr('🎓 {v0} · cel mai bun: {v1} / {v2}', { v0: nationalTheme(level), v1: scores[level].correct, v2: questionCount(level) })
-        : tr('🎓 {v0} · {v1} itemi', { v0: nationalTheme(level), v1: questionCount(level) }),
-      cta: tr('🎓 Începe testul'),
-      onClick: () => onOpenNational(level),
-    })),
     {
       key: 'logic',
       title: tr('INSULA ISTEȚILOR'),
@@ -443,12 +418,12 @@ export default function HomeIslands({
       onClick: onOpenNineLesson,
     },
   ];
-  const keys = { home: HOME_KEYS, school: SCHOOL_KEYS, lessons: LESSON_KEYS, division: DIVISION_KEYS, national: [...NATIONAL_LEVELS, ...REVIEW_LEVELS] }[mode];
+  const keys = { home: HOME_KEYS, school: SCHOOL_KEYS, lessons: LESSON_KEYS, division: DIVISION_KEYS }[mode];
   const cards = keys.map(key => allCards.find(card => card.key === key));
   const greeting = subpage ? tr(subpage.greeting)
     : (name ? tr('Bine ai venit, {name}! Alege o insulă! 🏝️', { name }) : tr('Bine ai venit! Alege o insulă! 🏝️'));
 
-  // Butoanele Clasament, Chat (și pe prima pagină: Despre joc, Instalează).
+  // Butoanele Clasament (și pe prima pagină: Despre joc, Confidențialitate, Instalează).
   // Pe telefon stau jos, într-un chenar separat, pe toate paginile cu insule.
   const panelButtons = (
     <>
@@ -465,10 +440,6 @@ export default function HomeIslands({
       )}
       {mode === 'home' && <InstallButton />}
       <button onClick={() => onOpenPanel('leaderboard')}><span>🏆</span>{tr('Clasament')}</button>
-      <button onClick={() => onOpenPanel('chat')}>
-        <span>💬</span>{tr('Chat')}
-        {chatUnread > 0 && <b className="level-badge">{chatUnread}</b>}
-      </button>
     </>
   );
   const navButtons = (
@@ -514,7 +485,7 @@ export default function HomeIslands({
               <div className="logic-title lessons-title">{tr(subpage.title)}</div>
             </>
           )}
-          {/* Pe telefon butonul de întoarcere stă în bara de sus, lângă Clasament și Chat, iar titlul
+          {/* Pe telefon butonul de întoarcere stă în bara de sus, lângă Clasament, iar titlul
               vine imediat sub bară, ca să nu fie acoperit când butoanele trec pe două rânduri. */}
           {/* Pe telefon, pe prima pagină, butoanele stau sub hartă (după insule). */}
           {!(isPhone && mode === 'home') && (
